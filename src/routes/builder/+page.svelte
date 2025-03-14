@@ -2,6 +2,7 @@
     import { theme } from '../globals.js';
     import { pilot_mode, experiment, experiment_file } from './globals.js';
     import Ribbon from './Ribbon.svelte';
+    import RoutinePanel from './Routine.svelte';
     import Panel from '../utils/Panel.svelte';
     import Frame from '../utils/Frame.svelte';
     import Notebook from '../utils/notebook/Notebook.svelte';
@@ -15,7 +16,7 @@
             {#if $experiment !== null}
             {#each Array.from($experiment_file.routines.keys()) as name}
             <NotebookPage id={name} title={name}>
-                <div>{JSON.stringify($experiment_file.routines.get(name))}</div>
+                <RoutinePanel name={name} />
             </NotebookPage>
             {/each}
             {/if}
