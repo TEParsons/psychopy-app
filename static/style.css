@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans");
+@import url("https://fonts.googleapis.com/css?family=JetBrains+Mono");
+@import url("https://fonts.googleapis.com/css?family=Indie+Flower");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Colr+Emoji+Glyf');
+
+:root {
+    /* theme colours */
+    --primary: #F2545B;
+    --secondary: #02A9EA;
+    --tertiary: #6CCC74;
+    --quaternary: #EC9703;
+    --quinary: #F1D302;
+    /* background colours */
+    --base: #FFFFFF;
+    --mantle: #F2F2F2;
+    --crust: #E4E4E4;
+    --overlay: #D6D6D6;
+    background-color: var(--base);
+    /* text colour */
+    --text: #161616;
+    --hltext: #FFFFFF;
+    /* background-specific text colour */
+    --primary-text: var(--hltext);
+    --secondary-text: var(--hltext);
+    --tertiary-text: var(--text);
+    --quaternary-text: var(--hltext);
+    --quinary-text: var(--text);
+    --base-text: var(--text);
+    --mantle-text: var(--text);
+    --crust-text: var(--text);
+    --overlay-text: var(--hltext);
+    color: var(--base-text);
+    /* fonts */
+    --body: Noto Sans;
+    --heading: Noto Sans;
+    --mono: JetBrains Mono;
+    --script: Indie Flower;
+    font-family: var(--body), Noto Color Emoji;
+    font-size: 10pt;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background-color: var(--crust);
+    border: none;
+    padding: 1em;
+    margin: 1rem;
+}
+button:disabled {
+    opacity: 50%;
+}
+button:enabled:hover {
+    background-color: var(--primary);
+    color: var(--primary-text);
+}
+
+
