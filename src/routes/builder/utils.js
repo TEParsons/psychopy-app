@@ -49,7 +49,7 @@ export class ExperimentFile {
         }
     }
 
-    parse_node(node) {
+    parse_node(node, parent) {
         let parsed_node
         // if a Routine, call parse_node on all Components inside it
         if (node.nodeName === "Routine") {
@@ -59,9 +59,17 @@ export class ExperimentFile {
             );
             // parse Components
             for (let comp of node.childNodes) {
-                parsed_node.components.push(
-                    this.parse_node(comp)
-                );
+                let obj = this.parse_node(comp, parsed_node)
+                // skip none
+                if (obj === null) {
+                    continue;
+                }
+                // add to either components list or settings attribute
+                if (comp.nodeName === "RoutineSettingsComponent") {
+                    parsed_node.settings = obj;
+                } else {
+                    parsed_node.components.push(obj);
+                }
             }
             // return now
             return parsed_node;
@@ -79,7 +87,7 @@ export class ExperimentFile {
         if (node.nodeName === "Settings" || node.nodeName.endsWith("Component")) {
             // make Component
             parsed_node = new Component(
-                node.nodeName, node.getAttribute("name"), node.getAttribute("plugin")
+                node.nodeName, node.getAttribute("name"), parent, node.getAttribute("plugin")
             );
         } else if (node.nodeName.endsWith("Routine")) {
             // make StandaloneRoutine
@@ -96,13 +104,15 @@ export class ExperimentFile {
         }
         // populate its params
         for (let param of node.getElementsByTagName("Param")) {
-            parsed_node.params.push(
-                new Param(
-                    param.getAttribute("val"), 
-                    param.getAttribute("valType"), 
-                    param.getAttribute("updates"), 
-                    param.getAttribute("plugin")
-                )
+            let obj = new Param(
+                param.getAttribute("val"), 
+                param.getAttribute("valType"), 
+                param.getAttribute("updates"), 
+                param.getAttribute("plugin")
+            )
+            parsed_node.params.set(
+                param.getAttribute("name"),
+                obj
             )
         }
         // return it
@@ -123,6 +133,17 @@ export class Routine {
     constructor(name) {
         this.name = name;
         this.components = [];
+        this.settings = undefined;
+    }
+
+    get visualStop() {
+        let dur = 1;
+        for (let comp of this.components) {
+            if (comp.visualStop > dur) {
+                dur = comp.visualStop;
+            }
+        }
+        return dur;
     }
 }
 
@@ -132,17 +153,96 @@ export class StandaloneRoutine {
         this.tag = tag;
         this.name = name;
         this.plugin = plugin;
-        this.params = [];
+        this.params = new Map();
     }
 }
 
 
 export class Component {
-    constructor(tag, name, plugin=null) {
+    constructor(tag, name, routine, plugin=null) {
         this.tag = tag;
         this.name = name;
+        this.routine = routine;
         this.plugin = plugin;
-        this.params = [];
+        this.params = new Map();
+    }
+
+    get visualStart() {
+        // todo: get frame rate from exp
+        let fr = 60;
+
+
+        let start_secs = null;
+        if (!this.params.has("startType") || !this.params.has("startVal")) {
+            return start_secs;
+        }
+        let startType = this.params.get("startType").val;
+        let startVal = parseFloat(this.params.get("startVal").val);
+
+        if (startType === "time (s)") {
+            start_secs = startVal;
+        } else if (startType === "frames") {
+            start_secs = startVal / fr;
+        }
+
+        return start_secs;
+    }
+
+    get visualStop() {
+        // todo: get frame rate from exp
+        let fr = 60;
+
+
+        let stop_secs = null;
+        if (!this.params.has("stopType") || !this.params.has("stopVal")) {
+            return stop_secs;
+        }
+        let stopType = this.params.get("stopType").val;
+        let stopVal = parseFloat(this.params.get("stopVal").val);
+
+        if (stopType === "time (s)") {
+            stop_secs = stopVal;
+        } else if (stopType === "duration (s)") {
+            stop_secs = this.visualStart + stopVal;
+        } else if (stopType === "frames") {
+            stop_secs = stopVal / fr;
+        }
+        // sub in null for NaN
+        if (isNaN(stop_secs)) {
+            stop_secs = null;
+        }
+
+        return stop_secs;
+    }
+
+    get forceEnd() {
+        let force_end = false;
+
+        for (let attr of ["forceEndRoutine", "endRoutineOn", "forceEndRoutineOnPress"]) {
+            if (this.params.has(attr)) {
+                if ([
+                    true, "true", "True",  // alias of true
+                    "any click", "correct click", "valid click",  // mouse
+                    "look at", "look away",  // roi
+                ].includes(this.params.get(attr).val)) {
+                    force_end = true;
+                }
+            }
+        }
+
+        return force_end;
+    }
+
+    get disabled() {
+        let disabled = false;
+
+        if (this.params.has("disabled")) {
+            if ([true, "true", "True"].includes(this.params.get("disabled").val)) {
+                disabled = true;
+            }
+        }
+
+        return disabled;
     }
 }
 
@@ -161,7 +261,7 @@ export class LoopInitiator {
     constructor(loopType, name) {
         this.loopType = loopType;
         this.name = name;
-        this.params = [];
+        this.params = new Map();
         this.terminator = undefined;
     }
 }

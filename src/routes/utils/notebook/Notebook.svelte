@@ -1,9 +1,11 @@
 <script>
     import { n_tabs } from './globals.js';
 
+    export let id;
+
 </script>
 
-<div class=notebook style="--n-tabs: {$n_tabs}">
+<div id={id} class=notebook style="--n-tabs: {$n_tabs}">
     <slot></slot>
 </div>
 

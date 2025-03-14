@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js';
-    import { pilot_mode, experiment, experiment_file } from './globals.js';
+    import { pilot_mode, experiment } from './globals.js';
     import Ribbon from './Ribbon.svelte';
     import RoutinePanel from './Routine.svelte';
     import Panel from '../utils/Panel.svelte';
@@ -11,17 +11,16 @@
 
 <Frame rows=3 cols=4>
     <Ribbon slot=ribbon/>
-    <Panel id=routine-pnl title=Routine hspan=3 vspan=2>
-        <Notebook>
+    <Panel id=routine-pnl title=Routines hspan=3 vspan=2>
+        <Notebook id=routine-notebook>
             {#if $experiment !== null}
-            {#each Array.from($experiment_file.routines.keys()) as name}
+            {#each Array.from($experiment.routines.keys()) as name}
             <NotebookPage id={name} title={name}>
                 <RoutinePanel name={name} />
             </NotebookPage>
             {/each}
             {/if}
         </Notebook>
-        
     </Panel>
     <Panel id=components-pnl title=Components vspan=2>
         <button>Component!</button>

@@ -7,9 +7,7 @@
     export let active=false;
     
     // iterate number of tabs
-    console.log(["BEFORE", $n_tabs])
     n_tabs.set($n_tabs + 1)
-    console.log(["AFTER", $n_tabs])
 
     if (active) {
         active_tab.set(id)
@@ -48,8 +46,7 @@
         grid-column-end: span var(--n-tabs);
         padding: .5rem;
         box-sizing: border-box;
-        margin: -1px -1rem 0 -.5rem;
-        width: calc(100% + 1rem);
+        margin-top: -1px;
         background-color: var(--base);
         border: 1px solid var(--overlay);
         z-index: 1;

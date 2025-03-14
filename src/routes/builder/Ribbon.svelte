@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { pilot_mode, experiment, experiment_file, modified } from './globals.js';
+    import { pilot_mode, experiment, modified } from './globals.js';
     import { ExperimentFile } from './utils.js'
     import Ribbon from '../utils/ribbon/Ribbon.svelte'
     import RibbonSection from '../utils/ribbon/Section.svelte'
@@ -26,8 +26,7 @@
         let document = xml_parser.parseFromString(await file.text(), "application/xml");
         // construct an Experiment object from the file
         let exp = new ExperimentFile(document)
-        experiment_file.set(exp);
-        experiment.set(exp.serialize())
+        experiment.set(exp);
     }
 
     /* Edit */
@@ -57,7 +56,7 @@
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.png">
         <RibbonButton id="ribbon-btn-new" icon="/icons/{$theme}/btn-new.png" label="New file" />
         <RibbonButton id="ribbon-btn-open" icon="/icons/{$theme}/btn-open.png" label="Open file"on:click={file_open} />
-        <RibbonButton id="ribbon-btn-save" icon="/icons/{$theme}/btn-save.png" label="Save file" disabled={$experiment_file === null} />
+        <RibbonButton id="ribbon-btn-save" icon="/icons/{$theme}/btn-save.png" label="Save file" disabled={$experiment === null} />
         <RibbonButton id="ribbon-btn-saveas" icon="/icons/{$theme}/btn-saveas.png" label="Save file as"/>        
     </RibbonSection>
 
