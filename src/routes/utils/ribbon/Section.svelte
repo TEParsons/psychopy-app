@@ -47,4 +47,8 @@
         grid-gap: .5em;
         font-size: 1rem;
     }
+
+    section label img {
+        height: 16px;
+    }
 </style>

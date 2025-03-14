@@ -32,57 +32,57 @@
 </script>
 
 <Ribbon>
-    <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.png">
-        <RibbonButton id="ribbon-btn-new" icon="/icons/{$theme}/btn-new.png" label="New file" />
-        <RibbonButton id="ribbon-btn-open" icon="/icons/{$theme}/btn-open.png" label="Open file"on:click={file_open} />
-        <RibbonButton id="ribbon-btn-save" icon="/icons/{$theme}/btn-save.png" label="Save file" disabled={$file === null} />
-        <RibbonButton id="ribbon-btn-saveas" icon="/icons/{$theme}/btn-saveas.png" label="Save file as"/>        
+    <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
+        <RibbonButton id="ribbon-btn-new" icon="/icons/{$theme}/btn-new.svg" label="New file" />
+        <RibbonButton id="ribbon-btn-open" icon="/icons/{$theme}/btn-open.svg" label="Open file"on:click={file_open} />
+        <RibbonButton id="ribbon-btn-save" icon="/icons/{$theme}/btn-save.svg" label="Save file" disabled={$file === null} />
+        <RibbonButton id="ribbon-btn-saveas" icon="/icons/{$theme}/btn-saveas.svg" label="Save file as"/>        
     </RibbonSection>
 
-    <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.png">
-        <RibbonButton id="ribbon-btn-undo" icon="/icons/{$theme}/btn-undo.png" label="Undo" disabled={!$modified} />
-        <RibbonButton id="ribbon-btn-redo" icon="/icons/{$theme}/btn-redo.png" label="Redo" />
-        <RibbonButton id="ribbon-btn-find" icon="/icons/{$theme}/btn-find.png" label="Find" />
+    <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">
+        <RibbonButton id="ribbon-btn-undo" icon="/icons/{$theme}/btn-undo.svg" label="Undo" disabled={!$modified} />
+        <RibbonButton id="ribbon-btn-redo" icon="/icons/{$theme}/btn-redo.svg" label="Redo" />
+        <RibbonButton id="ribbon-btn-find" icon="/icons/{$theme}/btn-find.svg" label="Find" />
     </RibbonSection>
 
-    <RibbonSection id=experiment label=Script icon="/icons/{$theme}/rbn-experiment.png">       
-        <RibbonButton id="ribbon-btn-colors" icon="/icons/{$theme}/btn-colors.png" label="Color picker" />        
+    <RibbonSection id=experiment label=Script icon="/icons/{$theme}/rbn-experiment.svg">       
+        <RibbonButton id="ribbon-btn-colors" icon="/icons/{$theme}/btn-colors.svg" label="Color picker" />        
         <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={pilot_mode} on:click={toggle_pilot_mode} />        
         {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-sendpilot" icon="/icons/{$theme}/btn-sendpilot.png" label="Send to runner" />
+        <RibbonButton id="ribbon-btn-sendpilot" icon="/icons/{$theme}/btn-sendpilot.svg" label="Send to runner" />
         {:else}
-        <RibbonButton id="ribbon-btn-sendrun" icon="/icons/{$theme}/btn-sendrun.png" label="Send to runner" />
+        <RibbonButton id="ribbon-btn-sendrun" icon="/icons/{$theme}/btn-sendrun.svg" label="Send to runner" />
         {/if}
     </RibbonSection>
 
-    <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.png">
-        <RibbonButton id="ribbon-btn-monitors" icon="/icons/{$theme}/btn-monitors.png" label="Monitor centre" />
+    <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
+        <RibbonButton id="ribbon-btn-monitors" icon="/icons/{$theme}/btn-monitors.svg" label="Monitor centre" />
         {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-pilotpy" icon="/icons/{$theme}/btn-pilotpy.png" label="Pilot in Python" disabled={!$file.endsWith(".py")} />
+        <RibbonButton id="ribbon-btn-pilotpy" icon="/icons/{$theme}/btn-pilotpy.svg" label="Pilot in Python" disabled={!$file.endsWith(".py")} />
         {:else}
-        <RibbonButton id="ribbon-btn-runpy" icon="/icons/{$theme}/btn-runpy.png" label="Run in Python" disabled={!$file.endsWith(".py")} />
+        <RibbonButton id="ribbon-btn-runpy" icon="/icons/{$theme}/btn-runpy.svg" label="Run in Python" disabled={!$file.endsWith(".py")} />
         {/if}
     </RibbonSection>
 
-    <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.png">
+    <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
         {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-pilotjs" icon="/icons/{$theme}/btn-pilotjs.png" label="Pilot in browser" disabled={!$file.endsWith(".js")} />
+        <RibbonButton id="ribbon-btn-pilotjs" icon="/icons/{$theme}/btn-pilotjs.svg" label="Pilot in browser" disabled={!$file.endsWith(".js")} />
         {:else}
-        <RibbonButton id="ribbon-btn-runjs" icon="/icons/{$theme}/btn-runjs.png" label="Run in browser" disabled={!$file.endsWith(".js")} />
+        <RibbonButton id="ribbon-btn-runjs" icon="/icons/{$theme}/btn-runjs.svg" label="Run in browser" disabled={!$file.endsWith(".js")} />
         {/if}
-        <RibbonButton id="ribbon-btn-sync" icon="/icons/{$theme}/btn-sync.png" label="Sync to Pavlovia" />
+        <RibbonButton id="ribbon-btn-sync" icon="/icons/{$theme}/btn-sync.svg" label="Sync to Pavlovia" />
     </RibbonSection>
 
-    <RibbonSection id=pavlovia label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.png">
+    <RibbonSection id=pavlovia label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.svg">
         ToddOST
         No project
     </RibbonSection>
 
     <RibbonSection gap></RibbonSection>
 
-    <RibbonSection id=views label=Views icon="/icons/{$theme}/rbn-windows.png">
-        <RibbonButton id="ribbon-btn-builder"  icon="/icons/{$theme}/btn-builder.png" label="Builder view" on:click={new_builder_frame} />
-        <RibbonButton id="ribbon-btn-coder"  icon="/icons/{$theme}/btn-coder.png" label="Coder view" on:click={new_coder_frame} />
-        <RibbonButton id="ribbon-btn-runner" icon="/icons/{$theme}/btn-runner.png" label="Runner view" on:click={new_runner_frame} />
+    <RibbonSection id=views label=Views icon="/icons/{$theme}/rbn-windows.svg">
+        <RibbonButton id="ribbon-btn-builder"  icon="/icons/{$theme}/btn-builder.svg" label="Builder view" on:click={new_builder_frame} />
+        <RibbonButton id="ribbon-btn-coder"  icon="/icons/{$theme}/btn-coder.svg" label="Coder view" on:click={new_coder_frame} />
+        <RibbonButton id="ribbon-btn-runner" icon="/icons/{$theme}/btn-runner.svg" label="Runner view" on:click={new_runner_frame} />
     </RibbonSection>
 </Ribbon>

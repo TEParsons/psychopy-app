@@ -19,4 +19,8 @@
     button:enabled:hover {
         background-color: var(--mantle);
     }
+
+    button img {
+        height: 32px;
+    }
 </style>

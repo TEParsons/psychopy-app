@@ -13,11 +13,11 @@
 </script>
 
 <button id="ribbon-btn-builder" onclick={new_builder_frame}>
-    <img src="/icons/{$theme}/btn-builder.png" alt="Builder view" />
+    <img src="/icons/{$theme}/btn-builder.svg" alt="Builder view" />
 </button>
 <button id="ribbon-btn-coder" onclick={new_coder_frame}>
-    <img src="/icons/{$theme}/btn-coder.png" alt="Coder view" />
+    <img src="/icons/{$theme}/btn-coder.svg" alt="Coder view" />
 </button>
 <button id="ribbon-btn-runner" onclick={new_runner_frame}>
-    <img src="/icons/{$theme}/btn-runner.png" alt="Runner view" />
+    <img src="/icons/{$theme}/btn-runner.svg" alt="Runner view" />
 </button>

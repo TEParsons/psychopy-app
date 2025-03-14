@@ -58,4 +58,6 @@ button:enabled:hover {
     color: var(--primary-text);
 }
 
-
+img {
+    min-height: 16px;
+}

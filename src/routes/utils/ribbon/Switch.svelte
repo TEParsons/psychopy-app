@@ -9,7 +9,7 @@
 
 <button id={id} class="switch-ctrl" on:click>
     <span class="{$state ? "active" : "inactive"}">{left}</span>
-    <img src="/icons/{$theme}/ctrl-switch-{$state ? "left" : "right"}.png" alt="Toggle ({$state ? "left" : "right"})"/>
+    <img src="/icons/{$theme}/ctrl-switch-{$state ? "left" : "right"}.svg" alt="Toggle ({$state ? "left" : "right"})"/>
     <span class="{$state ? "inactive" : "active"}">{right}</span>
 </button>
 

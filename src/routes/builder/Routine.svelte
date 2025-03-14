@@ -1,4 +1,5 @@
 <script>
+    import { theme } from '../globals.js';
     import { pilot_mode, experiment } from './globals.js';
 
     export let name;
@@ -17,6 +18,7 @@
         "
     >
         {component.params.get('name').val}
+        <img src="/icons/{$theme}/components/{component.tag}.svg" alt="" />
     </label>
     <div class=comp-timeline id={component.params.get('name').val}>
         <div 
@@ -40,10 +42,19 @@
         padding: 1rem .5rem;
     }
     .comp-name {
+        display: grid;
+        grid-template-columns: [name] min-content [icon] 3rem;
+        grid-gap: 1rem;
+        
+        align-items: center;
+        justify-items: center;
         grid-column-start: name;
         font-size: 1.2rem;
-        padding: 1rem .5rem;
+        padding: .5rem 1rem;
         justify-self: right;
+    }
+    .comp-name img {
+        height: 3.5rem;
     }
     .comp-timeline {
         position: relative;
@@ -54,8 +65,8 @@
     }
     .comp-timeline-bar {
         position: absolute;
-        top: 1rem;
-        bottom: 1rem;
+        top: 1.25rem;
+        bottom: 1.25rem;
         background-color: var(--secondary);
     }
 </style>
