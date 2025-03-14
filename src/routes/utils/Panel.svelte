@@ -32,7 +32,6 @@
     }
     .panel {
         position: relative;
-        padding: var(--panel-padding);
         background-color: var(--mantle);
         border-radius: .25rem;
         overflow: hidden;
@@ -45,8 +44,6 @@
         overflow-x: hidden;
     }
     .panel .pnl-title {
-        margin: calc(var(--panel-padding) * -1);
-        margin-bottom: var(--panel-padding);
         padding: .3em 1rem;
         background-color: var(--overlay);
     }

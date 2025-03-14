@@ -38,7 +38,9 @@
         padding: .25rem;
         text-align: center;
         z-index: 0;
-        border-radius: .5rem .5rem 0 0;
+    }
+    .notebook-tab:hover {
+        background-color: var(--crust);
     }
     .notebook-page {
         display: grid;
@@ -46,14 +48,10 @@
         grid-column-end: span var(--n-tabs);
         padding: .5rem;
         box-sizing: border-box;
-        margin-top: -1px;
         background-color: var(--base);
-        border: 1px solid var(--overlay);
         z-index: 1;
-        border-radius: 0 0 .25rem .25rem;
     }
     .notebook-tab.active {
-        border: 1px solid var(--overlay);
         border-bottom: none;
         background-color: var(--base);
         z-index: 2;
