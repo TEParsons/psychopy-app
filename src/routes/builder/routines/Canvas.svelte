@@ -177,6 +177,7 @@
     #routine-settings {
         background-color: var(--mantle);
         margin-bottom: 0;
+        justify-self: start;
     }
     #routine-settings:hover {
         background-color: var(--primary);
