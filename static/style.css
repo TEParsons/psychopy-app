@@ -45,6 +45,7 @@ body {
 }
 
 button {
+    font-family: var(--body);
     background-color: var(--crust);
     border: none;
     padding: 1em;
