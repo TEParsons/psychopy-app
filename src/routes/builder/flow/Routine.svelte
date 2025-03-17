@@ -1,7 +1,10 @@
 <script>
     export let element;
+    import EntryPoint from './EntryPoint.svelte'    
+
 </script>
 
+<EntryPoint></EntryPoint>
 <div class=routine id=flow-{element.name}>{element.name}</div>
 
 <style>

@@ -1,11 +1,14 @@
 <script>
     import { theme } from '../../globals.js';
+    import { flow_inserting } from '../globals.js';
     import { FlowLoop } from '../utils.js'
     import RoutineNode from './Routine.svelte';
+    import EntryPoint from './EntryPoint.svelte'
 
     export let element;
 </script>
 
+<EntryPoint></EntryPoint>
 <div class=loop id=loop-{element.name}>
     {#if element}
     <label for=loop-{element.name}>{element.name}</label>
@@ -20,6 +23,7 @@
     {/if}
     {/each}
     {/if}
+    <EntryPoint></EntryPoint>
 </div>
 
 <style>
@@ -28,10 +32,10 @@
         display: flex;
         flex-direction: row;
         align-items: start;
-        gap: 2rem;
+        gap: 1rem;
         border: 1px solid var(--outline);
         border-radius: 1rem;
-        padding: 2rem;
+        padding: 2rem 1rem;
         padding-top: 0;
     }
     .loop label {

@@ -1,10 +1,16 @@
 <script>
     import FlowCanvas from './Canvas.svelte';
+    import { flow_inserting } from '../globals.js';
+
+    function start_inserting() {
+        flow_inserting.set(true)
+    }
+
 </script>
 
 <div class=flow-panel>
     <div class=flow-buttons>
-        <button class=horizontal id=add-routine>
+        <button class=horizontal id=add-routine on:click={start_inserting}>
             <img src="/icons/light/btn-routine.svg" alt="" />
             <label for=add-routine>Add Routine</label>
         </button>

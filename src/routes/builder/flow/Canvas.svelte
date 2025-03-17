@@ -1,5 +1,5 @@
 <script>
-    import { pilot_mode, experiment } from '../globals.js';
+    import { pilot_mode, experiment, flow_inserting } from '../globals.js';
     import { Routine, FlowLoop } from '../utils.js'
     import Flow from './Flow.svelte';
     import LoopNode from './Loop.svelte';
@@ -27,4 +27,5 @@
         display: flex;
         align-items: start;
     }
+    
 </style>
