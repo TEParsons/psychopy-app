@@ -24,7 +24,7 @@
     var ticks = [];
     for (let tick = 0; tick < last_increment; tick += increment) {
         ticks.push({
-            label: tick + increment,
+            label: Math.round((tick + increment) * 100) / 100,
             proportion: 1
         })
     }
@@ -150,6 +150,8 @@
         border-left: 1px solid var(--overlay);
         width: 100%;
         text-align: right;
+    }.comp-timeline-tick:last-child {
+        border-right: 1px solid var(--overlay);
     }
     .comp-timeline-tick label {
         padding-right: .5rem;
