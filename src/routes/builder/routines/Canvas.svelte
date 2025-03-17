@@ -44,7 +44,11 @@
 </script>
 
 <div class=routine-canvas>
-    
+    <button id=routine-settings>
+        <img src="icons/{$theme}/btn-settings.svg" alt="" />
+        <label for=routine-settings>Settings</label>
+    </button>
+
     {#if routine.components.length}
     <div class=comp-name></div>
     <div class=comp-overshoot-timeline></div>
@@ -168,7 +172,18 @@
         top: 25%;
         bottom: 25%;
     }
-    .routine-timeline {
-        height: 2rem;
+
+    #routine-settings {
+        background-color: var(--mantle);
+        margin-bottom: 0;
+        display: grid;
+        grid-template-columns: 2rem min-content;
+        align-items: center;
+        justify-content: center;
+        grid-gap: .5rem;
+    }
+    #routine-settings:hover {
+        background-color: var(--primary);
+        color: var(--primary-text);
     }
 </style>
