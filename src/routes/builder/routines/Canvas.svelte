@@ -122,6 +122,7 @@
         display: grid;
         grid-template-columns: [name] min-content [undershoot] 3rem [timeline] 1fr [overshoot] 3rem;
         grid-gap: 0;
+        padding-bottom: 2rem;
     }
     .comp-name {
         display: grid;
