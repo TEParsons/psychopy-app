@@ -46,7 +46,7 @@
 <div class=routine-canvas>
     <button class=horizontal id=routine-settings>
         <img src="icons/{$theme}/btn-settings.svg" alt="" />
-        <label for=routine-settings>Settings</label>
+        <label for=routine-settings>Routine settings</label>
     </button>
 
     {#if routine.components.length}
@@ -146,7 +146,7 @@
         grid-column-start: timeline;
     }
     .comp-timeline-tick {
-        color: var(--overlay);
+        color: var(--outline);
         border-left: 1px solid var(--overlay);
         width: 100%;
         text-align: right;

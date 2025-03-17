@@ -10,6 +10,7 @@
     --tertiary: #6CCC74;
     --quaternary: #EC9703;
     --quinary: #F1D302;
+    --outline: #66666E;
     /* background colours */
     --base: #FFFFFF;
     --mantle: #F2F2F2;
@@ -25,6 +26,7 @@
     --tertiary-text: var(--text);
     --quaternary-text: var(--hltext);
     --quinary-text: var(--text);
+    --outline-text: var(--hltext);
     --base-text: var(--text);
     --mantle-text: var(--text);
     --crust-text: var(--text);

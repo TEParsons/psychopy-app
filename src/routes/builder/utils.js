@@ -34,17 +34,24 @@ export class ExperimentFile {
         }
         // construct flow
         this.flow = []
+        let currentLoop = this.flow;
         for (let emt of flow_node.childNodes) {
             let parsed_emt = this.parse_node(emt);
             if (parsed_emt === null) {
                 continue;
             }
             if (emt.nodeName === "LoopInitiator") {
-                this.flow.push(this.loops.get(parsed_emt.name));
+                let loop = new FlowLoop(
+                    this.loops.get(parsed_emt.name),
+                    this.loops.get(parsed_emt.name).terminator,
+                    currentLoop
+                );
+                currentLoop.push(loop);
+                currentLoop = loop;
             } else if (emt.nodeName === "LoopTerminator") {
-                this.flow.push(this.loops.get(parsed_emt.name).terminator);
+                currentLoop = currentLoop.parent;
             } else {
-                this.flow.push(this.routines.get(parsed_emt.name));
+                currentLoop.push(this.routines.get(parsed_emt.name));
             }
         }
     }
@@ -253,6 +260,23 @@ export class Param {
         this.valType = valType;
         this.updates = updates;
         this.plugin = plugin;
+    }
+}
+
+
+export class FlowLoop {
+    constructor(initiator, terminator, parent) {
+        this.loopType = initiator.loopType;
+        this.name = initiator.name;
+        this.params = initiator.params;
+        this.parent = parent;
+        this.initiator = initiator;
+        this.terminator = undefined;
+        this.routines = [];
+    }
+
+    push(emt) {
+        this.routines.push(emt);
     }
 }
 

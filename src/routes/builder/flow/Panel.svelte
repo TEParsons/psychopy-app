@@ -1,5 +1,5 @@
 <script>
-
+    import FlowCanvas from './Canvas.svelte';
 </script>
 
 <div class=flow-panel>
@@ -13,15 +13,13 @@
             <label for=add-loop>Add Loop</label>
         </button>
     </div>
-    <div class=flow-canvas>
-        
-    </div>
+    <FlowCanvas></FlowCanvas>
 </div>
 
 <style>
     .flow-panel {
         display: grid;
-        grid-template-columns: [buttons] min-content ;
+        grid-template-columns: [buttons] min-content [canvas] 1fr;
     }
     .flow-buttons {
         padding: 1rem;
