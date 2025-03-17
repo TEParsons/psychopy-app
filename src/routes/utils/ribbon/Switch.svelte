@@ -19,6 +19,7 @@
         padding: 0.25rem;
         margin: 0;
         grid-row-start: buttons;
+        padding-bottom: 0.5rem;
     }
 
     button.switch-ctrl {

@@ -13,6 +13,7 @@
     button {
         background-color: transparent;
         padding: 0.25rem;
+        padding-bottom: 0.5rem;
         margin: 0;
         grid-row-start: buttons;
     }
