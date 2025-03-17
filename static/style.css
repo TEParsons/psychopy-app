@@ -50,7 +50,31 @@ button {
     border: none;
     padding: 1em;
     margin: 1rem;
+    display: grid;
+    align-items: center;
+    justify-content: center;
 }
+button.horizontal {
+    grid-template-columns: [icon] 2rem [label] max-content;
+    grid-gap: 0 .5rem;
+}
+button.horizontal img {
+    grid-row-start: icon;
+}
+button.horizontal label {
+    grid-row-start: label;
+}
+button.vertical {
+    grid-template-rows: [icon] 4rem [label] min-content;
+    grid-gap: .5rem 0;
+}
+button.vertical img {
+    grid-column-start: icon;
+}
+button.vertical label {
+    grid-column-start: label;
+}
+
 button:disabled {
     opacity: 50%;
 }

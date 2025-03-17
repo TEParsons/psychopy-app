@@ -44,7 +44,7 @@
 </script>
 
 <div class=routine-canvas>
-    <button id=routine-settings>
+    <button class=horizontal id=routine-settings>
         <img src="icons/{$theme}/btn-settings.svg" alt="" />
         <label for=routine-settings>Settings</label>
     </button>
@@ -177,11 +177,6 @@
     #routine-settings {
         background-color: var(--mantle);
         margin-bottom: 0;
-        display: grid;
-        grid-template-columns: 2rem min-content;
-        align-items: center;
-        justify-content: center;
-        grid-gap: .5rem;
     }
     #routine-settings:hover {
         background-color: var(--primary);

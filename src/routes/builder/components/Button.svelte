@@ -10,7 +10,7 @@
     }
 </script>
 
-<button class=component-button id=add-{component}-btn>
+<button class="component-button vertical" id=add-{component}-btn>
     <img src="/icons/{$theme}/components/{component}.svg" alt="">
     <label for=add-{component}-btn>{title_case(component)}</label>
 </button>
@@ -18,10 +18,6 @@
 <style>
     button.component-button {
         background-color: var(--mantle);
-        display: grid;
-        grid-template-rows: [icon] 4rem [label] 1rem;
-        align-items: center;
-        justify-items: center;
         width: 4rem;
         box-sizing: content-box;
         margin: 0;
