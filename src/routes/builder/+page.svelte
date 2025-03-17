@@ -7,8 +7,8 @@
     import NotebookPage from '../utils/notebook/Page.svelte';
 
     import Ribbon from './Ribbon.svelte';
-    import RoutinePanel from './Routines.svelte';
     import ComponentsPanel from './components/Panel.svelte';
+    import RoutineCanvas from './routines/Canvas.svelte'
 </script>
 
 <Frame rows=3 cols=4>
@@ -18,7 +18,7 @@
             {#if $experiment !== null}
             {#each Array.from($experiment.routines.keys()) as name}
             <NotebookPage id={name} title={name}>
-                <RoutinePanel name={name} />
+                <RoutineCanvas name={name} />
             </NotebookPage>
             {/each}
             {/if}

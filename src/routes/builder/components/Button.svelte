@@ -32,7 +32,7 @@
         color: var(--text);
     }
     button.component-button img {
-        width: 4rem;
+        width: 3.5rem;
     }
     button.component-button label {
         
