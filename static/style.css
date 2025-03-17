@@ -52,11 +52,12 @@ button {
     margin: .5rem;
     display: grid;
     align-items: center;
-    justify-content: center;
 }
 button.horizontal {
     grid-template-columns: [icon] 2rem [label] max-content;
     grid-gap: 0 .5rem;
+    align-items: center;
+    justify-content: start;
 }
 button.horizontal img {
     grid-row-start: icon;
@@ -67,6 +68,8 @@ button.horizontal label {
 button.vertical {
     grid-template-rows: [icon] 4rem [label] min-content;
     grid-gap: .5rem 0;
+    align-items: center;
+    justify-content: center;
 }
 button.vertical img {
     grid-column-start: icon;

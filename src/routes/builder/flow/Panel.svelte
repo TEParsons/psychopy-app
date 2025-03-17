@@ -5,11 +5,11 @@
 <div class=flow-panel>
     <div class=flow-buttons>
         <button class=horizontal id=add-routine>
-            <img src="/icons/light/btn-loop.svg" alt="" />
+            <img src="/icons/light/btn-routine.svg" alt="" />
             <label for=add-routine>Add Routine</label>
         </button>
         <button class=horizontal id=add-loop>
-            <img src="/icons/light/btn-routine.svg" alt="" />
+            <img src="/icons/light/btn-loop.svg" alt="" />
             <label for=add-loop>Add Loop</label>
         </button>
     </div>
