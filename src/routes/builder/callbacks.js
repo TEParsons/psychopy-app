@@ -29,8 +29,7 @@ export async function file_open() {
 /* Experiment */
 
 export function toggle_pilot_mode() {
-    console.log(pilot_mode.subscribe())
-    pilot_mode.set(!pilot_mode)
+    pilot_mode.update((val) => {return !val})
 }
 
 /* Views */
