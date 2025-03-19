@@ -42,29 +42,17 @@
         <RibbonButton id="ribbon-btn-monitors" icon="/icons/{$theme}/btn-monitors.svg" label="Monitor centre" />        
         <RibbonButton id="ribbon-btn-settings" icon="/icons/{$theme}/btn-settings.svg" label="Experiment settings" />        
         <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={pilot_mode} on:click={toggle_pilot_mode} />        
-        {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-sendpilot" icon="/icons/{$theme}/btn-sendpilot.svg" label="Send to runner" />
-        {:else}
-        <RibbonButton id="ribbon-btn-sendrun" icon="/icons/{$theme}/btn-sendrun.svg" label="Send to runner" />
-        {/if}
+        <RibbonButton id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" label="Send to runner" />
     </RibbonSection>
 
     <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
         <RibbonButton id="ribbon-btn-compilepy" icon="/icons/{$theme}/btn-compilepy.svg" label="Compile to Python" />
-        {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-pilotpy" icon="/icons/{$theme}/btn-pilotpy.svg" label="Pilot in Python" />
-        {:else}
-        <RibbonButton id="ribbon-btn-runpy" icon="/icons/{$theme}/btn-runpy.svg" label="Run in Python" />
-        {/if}
+        <RibbonButton id="ribbon-btn-{$pilot_mode ? "pilotpy" : "runpy"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotpy" : "runpy"}.svg" label="{$pilot_mode ? "Pilot" : "Run"} in Python" />
     </RibbonSection>
 
     <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
         <RibbonButton id="ribbon-btn-compilejs" icon="/icons/{$theme}/btn-compilejs.svg" label="Compile to JavaScript" />
-        {#if $pilot_mode}
-        <RibbonButton id="ribbon-btn-pilotjs" icon="/icons/{$theme}/btn-pilotjs.svg" label="Pilot in browser" />
-        {:else}
-        <RibbonButton id="ribbon-btn-runjs" icon="/icons/{$theme}/btn-runjs.svg" label="Run in browser" />
-        {/if}
+        <RibbonButton id="ribbon-btn-{$pilot_mode ? "pilotjs" : "runjs"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotjs" : "runjs"}.svg" label="{$pilot_mode ? "Pilot" : "Run"} in browser" />
         <RibbonButton id="ribbon-btn-sync" icon="/icons/{$theme}/btn-sync.svg" label="Sync to Pavlovia" />
     </RibbonSection>
 
