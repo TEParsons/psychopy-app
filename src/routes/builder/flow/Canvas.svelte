@@ -13,7 +13,7 @@
         {#if emt instanceof FlowLoop}
         <LoopNode element={emt}></LoopNode>
         {:else}
-        <RoutineNode element={emt.name}></RoutineNode>
+        <RoutineNode element={emt}></RoutineNode>
         {/if}
         {/each}
         {/if}
