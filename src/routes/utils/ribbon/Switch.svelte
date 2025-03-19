@@ -21,6 +21,9 @@
         grid-row-start: buttons;
         padding-bottom: 0.5rem;
     }
+    button img {
+        width: 32px;
+    }
 
     button.switch-ctrl {
         display: grid;
