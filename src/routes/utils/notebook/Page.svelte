@@ -3,8 +3,8 @@
 
     export let id;
     export let title;
-    export let icon;
-    export let active=false;
+    export let icon = undefined;
+    export let active = false;
     
     // iterate number of tabs
     n_tabs.set($n_tabs + 1)
