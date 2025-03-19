@@ -2,11 +2,12 @@
     export let id;
     export let icon;
     export let label;
-    export let disabled;
+    export let disabled = false;
 </script>
 
 <button id={id} disabled={disabled} on:click>
     <img src={icon} alt={label} />
+    <slot></slot>
 </button>
 
 <style>

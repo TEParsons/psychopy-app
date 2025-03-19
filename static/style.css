@@ -80,14 +80,10 @@ button.vertical label {
     grid-column-start: label;
 }
 
-button:disabled {
+button:disabled * {
     opacity: 50%;
 }
 button:enabled:hover {
     background-color: var(--primary);
     color: var(--primary-text);
-}
-
-img {
-    min-height: 16px;
 }

@@ -5,13 +5,15 @@
     import Frame from '../utils/Frame.svelte';
 
     import Ribbon from './Ribbon.svelte';
+    import Menu from './Menu.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
 </script>
 
 <Frame rows=3 cols=4>
-    <Ribbon slot=ribbon />
+    <Ribbon slot=ribbon></Ribbon>
+    <Menu></Menu>
 
     <Panel id=routine-pnl title=Routines hspan=3 vspan=2>
         <RoutinesNotebook></RoutinesNotebook>

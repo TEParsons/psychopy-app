@@ -1,58 +1,30 @@
 <script>
     import { theme } from '../globals.js'
     import { pilot_mode, experiment, modified } from './globals.js';
-    import { ExperimentFile } from './utils.js'
-    import Ribbon from '../utils/ribbon/Ribbon.svelte'
-    import RibbonSection from '../utils/ribbon/Section.svelte'
-    import RibbonButton from '../utils/ribbon/Button.svelte'
-    import RibbonSwitchButton from '../utils/ribbon/Switch.svelte'
+    import Menu from './Menu.svelte';
+    import Ribbon from '../utils/ribbon/Ribbon.svelte';
+    import RibbonSection from '../utils/ribbon/Section.svelte';
+    import RibbonButton from '../utils/ribbon/Button.svelte';
+    import RibbonSwitchButton from '../utils/ribbon/Switch.svelte';
+    import RibbonMenu from '../utils/ribbon/Menu.svelte';
 
-    /* File */
-
-    async function file_open() {
-        // get file handle from system dialog
-        let handle = await window.showOpenFilePicker({
-            types: [{
-                description: "PsychoPy Experiments",
-                accept: {
-                    "application/xml": [".psyexp"]
-                }
-            }]
-        });
-        // get file blob from handle
-        let file = await handle[0].getFile();
-        // load xml
-        let xml_parser = new DOMParser()
-        let document = xml_parser.parseFromString(await file.text(), "application/xml");
-        // construct an Experiment object from the file
-        let exp = new ExperimentFile(document)
-        experiment.set(exp);
-    }
-
-    /* Edit */
-
-    /* Experiment */
-
-    function toggle_pilot_mode() {
-        pilot_mode.set(!$pilot_mode)
-    }
-
-    /* Views */
-
-    function new_builder_frame() {
-        window.open("/builder");
-    }
-    function new_coder_frame() {
-        window.open("/coder");
-    }
-    function new_runner_frame() {
-        window.open("/runner");
-    }
+    import { 
+        // file
+        file_open,
+        // experiment
+        toggle_pilot_mode,
+        // views
+        new_builder_frame,
+        new_coder_frame,
+        new_runner_frame,
+    } from './callbacks.js'
 
     
 </script>
 
 <Ribbon>
+    <RibbonMenu>
+    </RibbonMenu>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton id="ribbon-btn-new" icon="/icons/{$theme}/btn-new.svg" label="New file" />
         <RibbonButton id="ribbon-btn-open" icon="/icons/{$theme}/btn-open.svg" label="Open file"on:click={file_open} />
