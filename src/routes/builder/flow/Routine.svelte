@@ -1,11 +1,21 @@
 <script>
     export let element;
-    import EntryPoint from './EntryPoint.svelte'    
+    import EntryPoint from './EntryPoint.svelte'   
+    import { flow_inserting } from '../globals'; 
+    import { dragging } from './dragging';
+    import { json } from '@sveltejs/kit';
+
+    function on_dragstart(evt) {
+        dragging.set(element)
+    }
+    function on_dragend(evt) {
+        dragging.set(null)
+    }
 
 </script>
 
-<EntryPoint></EntryPoint>
-<div class=routine id=flow-{element.name}>{element.name}</div>
+<EntryPoint index={element.index}></EntryPoint>
+<div class=routine id=flow-{element.name} draggable="true" on:dragstart={on_dragstart} on:dragend={ondragend} role="none">{element.name}</div>
 
 <style>
     .routine {

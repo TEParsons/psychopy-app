@@ -33,7 +33,7 @@ export class ExperimentFile {
             this.loops.get(parsed_terminator.name).terminator = parsed_terminator;
         }
         // construct flow
-        this.flow = []
+        this.flow = new Flow()
         let currentLoop = this.flow;
         for (let emt of flow_node.childNodes) {
             let parsed_emt = this.parse_node(emt);
@@ -46,12 +46,12 @@ export class ExperimentFile {
                     this.loops.get(parsed_emt.name).terminator,
                     currentLoop
                 );
-                currentLoop.push(loop);
+                currentLoop.routines.push(loop);
                 currentLoop = loop;
             } else if (emt.nodeName === "LoopTerminator") {
                 currentLoop = currentLoop.parent;
             } else {
-                currentLoop.push(this.routines.get(parsed_emt.name));
+                currentLoop.routines.push(this.routines.get(parsed_emt.name));
             }
         }
     }
@@ -62,7 +62,8 @@ export class ExperimentFile {
         if (node.nodeName === "Routine") {
             // make Routine
             parsed_node = new Routine(
-                node.getAttribute("name")
+                node.getAttribute("name"),
+                this
             );
             // parse Components
             for (let comp of node.childNodes) {
@@ -85,6 +86,7 @@ export class ExperimentFile {
         if (node.nodeName === "LoopTerminator") {
             // make LoopTerminator
             parsed_node = new LoopTerminator(
+                this,
                 node.getAttribute("name")
             );
             // return now
@@ -99,12 +101,12 @@ export class ExperimentFile {
         } else if (node.nodeName.endsWith("Routine")) {
             // make StandaloneRoutine
             parsed_node = new StandaloneRoutine(
-                node.nodeName, node.getAttribute("name"), node.getAttribute("plugin")
+                this, node.nodeName, node.getAttribute("name"), node.getAttribute("plugin")
             );
         } else if (node.nodeName === "LoopInitiator") {
             // make LoopInitiator
             parsed_node = new LoopInitiator(
-                node.getAttribute("loopType"), node.getAttribute("name")
+                this, node.getAttribute("loopType"), node.getAttribute("name")
             );
         } else {
             return null;
@@ -137,7 +139,8 @@ export class ExperimentFile {
 
 
 export class Routine {
-    constructor(name) {
+    constructor(name, exp) {
+        this.exp = exp;
         this.name = name;
         this.components = [];
         this.settings = undefined;
@@ -152,11 +155,21 @@ export class Routine {
         }
         return dur;
     }
+
+    get index() {
+        let flat_flow = this.exp.flow.flatten();
+        for (let i in flat_flow) {
+            if (flat_flow[i] === this) {
+                return i;
+            }
+        }
+    }
 }
 
 
 export class StandaloneRoutine {
-    constructor(tag, name, plugin=null) {
+    constructor(exp, tag, name, plugin=null) {
+        this.exp = this.exp;
         this.tag = tag;
         this.name = name;
         this.plugin = plugin;
@@ -264,6 +277,33 @@ export class Param {
 }
 
 
+export class Flow {
+    constructor(exp) {
+        this.exp;
+        this.routines = [];
+    }
+
+    flatten() {
+        let flat = [];
+        for (let rt of this.routines) {
+            if (rt instanceof FlowLoop) {
+                flat.push(rt.initiator);
+                for (let subrt of rt.flatten()) {
+                    flat.push(subrt);
+                }
+                flat.push(rt.terminator);
+            } else {
+                flat.push(rt);
+            }
+        }
+
+        return flat
+    }
+
+    
+}
+
+
 export class FlowLoop {
     constructor(initiator, terminator, parent) {
         this.loopType = initiator.loopType;
@@ -271,28 +311,60 @@ export class FlowLoop {
         this.params = initiator.params;
         this.parent = parent;
         this.initiator = initiator;
-        this.terminator = undefined;
+        this.terminator = terminator;
         this.routines = [];
     }
 
-    push(emt) {
-        this.routines.push(emt);
+    flatten() {
+        let flat = [];
+        for (let rt of this.routines) {
+            if (rt instanceof FlowLoop) {
+                flat.push(rt.initiator);
+                for (let subrt of rt.flatten()) {
+                    flat.push(subrt);
+                }
+                flat.push(rt.terminator);
+            } else {
+                flat.push(rt);
+            }
+        }
+
+        return flat
     }
 }
 
 
 export class LoopInitiator {
-    constructor(loopType, name) {
+    constructor(exp, loopType, name) {
+        this.exp = exp;
         this.loopType = loopType;
         this.name = name;
         this.params = new Map();
         this.terminator = undefined;
     }
+
+    get index() {
+        let flat_flow = this.exp.flow.flatten();
+        for (let i in flat_flow) {
+            if (flat_flow[i] === this) {
+                return i;
+            }
+        }    }
 }
 
 
 export class LoopTerminator {
-    constructor(name) {
+    constructor(exp, name) {
+        this.exp = exp;
         this.name = name;
+    }
+
+    get index() {
+        let flat_flow = this.exp.flow.flatten();
+        for (let i in flat_flow) {
+            if (flat_flow[i] === this) {
+                return i;
+            }
+        }
     }
 }

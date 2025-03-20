@@ -8,7 +8,7 @@
     export let element;
 </script>
 
-<EntryPoint></EntryPoint>
+<EntryPoint index={element.initiator.index}></EntryPoint>
 <div class=loop id=loop-{element.name}>
     {#if element}
     <label for=loop-{element.name}>{element.name}</label>
@@ -23,7 +23,7 @@
     {/if}
     {/each}
     {/if}
-    <EntryPoint></EntryPoint>
+    <EntryPoint index={element.terminator.index}></EntryPoint>
 </div>
 
 <style>

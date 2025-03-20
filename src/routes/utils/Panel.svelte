@@ -17,8 +17,8 @@
     }
 </script>
 
-<div class="panel" id={id} style="grid-column-end: span {hspan}; grid-row-end: span {vspan}" on:dragenter={ondrop}>
-    <div class="pnl-title" draggable=true on:dragstart={ondrag}>
+<div class="panel" id={id} style="grid-column-end: span {hspan}; grid-row-end: span {vspan}">
+    <div class="pnl-title" draggable=true>
         {title}
     </div>
     <div class="pnl-content">
