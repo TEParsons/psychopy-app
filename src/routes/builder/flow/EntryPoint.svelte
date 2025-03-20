@@ -1,7 +1,7 @@
 <script>
     import { dragging } from './dragging';
     import { experiment } from '../globals.js'
-
+    import { writable } from 'svelte/store';
 
     export let index;
 
@@ -9,17 +9,38 @@
         evt.preventDefault();
     }
 
+    function on_dragenter(evt) {
+        hovered.set(true);
+    }
+
+    function on_dragleave(evt) {
+        hovered.set(false);
+    }
+
     function on_drop(evt) {
         evt.preventDefault();
+        // we're done dragging
+        hovered.set(false);
         // move dragged routine to new position in the flow
         $experiment.flow.relocateElement($dragging, index)
         // update experiment so subscribed views update
         experiment.set($experiment)
     }
+
+    let hovered = writable(false);
+
 </script>
 
-<div class="entry-point {$dragging !== null ? "active" : "inactive"}">
-    <button class="hitbox" on:dragover={on_dragover} on:drop={on_drop} aria-label="Entry point"></button>
+<div class="entry-point" class:active={$dragging} class:hovered={$hovered}>
+    <button 
+        class="hitbox" 
+        on:dragenter={on_dragenter} 
+        on:dragover={on_dragover} 
+        on:dragleave={on_dragleave} 
+        on:drop={on_drop} 
+        aria-label="Entry point"
+    >
+    </button>
 </div>
 
 <style>
@@ -35,9 +56,10 @@
         background-color: var(--outline);
     }
     .entry-point.active {
-        opacity: 0.5;
+        opacity: 1;
     }
-    .entry-point.active:hover {
+    .entry-point.active:hover,
+    .entry-point.hovered {
         opacity: 1;
         background-color: var(--primary);
     }
