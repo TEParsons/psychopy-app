@@ -3,6 +3,7 @@
     import { experiment } from '../globals.js'
     import { writable } from 'svelte/store';
 
+    export let routine;
     export let index;
 
     function on_dragover(evt) {
@@ -21,8 +22,8 @@
         evt.preventDefault();
         // we're done dragging
         hovered.set(false);
-        // move dragged routine to new position in the flow
-        $experiment.flow.relocateElement($dragging, index)
+        // move dragged component to new position in the routine
+        routine.relocateComponent($dragging, index)
         // update experiment so subscribed views update
         experiment.set($experiment)
     }
@@ -45,15 +46,16 @@
 
 <style>
     .entry-point {
+        position: relative;
+        grid-column-start: entrypoints;
         opacity: 0;
         border-radius: 100%;
-        height: .75rem;
-        width: .75rem;
+        height: 1rem;
+        width: 100%;
+        background-color: var(--outline);
+        align-self: start;
         padding: 0;
         margin: 0;
-        position: relative;
-        transform: translateY(-50%);
-        background-color: var(--outline);
     }
     .entry-point.active {
         opacity: 1;

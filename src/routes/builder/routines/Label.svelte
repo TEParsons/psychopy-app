@@ -1,7 +1,15 @@
 <script>
+    import { dragging } from './dragging.js';
     import { theme } from '../../globals.js';
 
     export let component;
+
+    function on_dragstart(evt) {
+        dragging.set(component.index)
+    }
+    function on_dragend(evt) {
+        dragging.set(null)
+    }
 </script>
 
 
@@ -9,6 +17,10 @@
     class=comp-name 
     for={component.params.get('name').val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
+    draggable="true" 
+    on:dragstart={on_dragstart} 
+    on:dragend={on_dragend} 
+    role="none"
 >
     {component.params.get('name').val}
     <img 

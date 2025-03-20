@@ -184,6 +184,32 @@ export class Routine {
             }
         }
     }
+
+    relocateComponent(fromIndex, toIndex) {
+        // convert indices to int
+        fromIndex = parseInt(fromIndex)
+        toIndex = parseInt(toIndex)
+        // if this changes the indices, adjust
+        if (toIndex > fromIndex) {
+            toIndex -= 1;
+        }
+        // if toIndex was -1, move to end
+        if (toIndex < 0) {
+            toIndex = this.components.length;
+        }
+        // pop component from array
+        let emt = this.components[fromIndex]
+        this.components = Array.prototype.concat(
+            this.components.slice(0, fromIndex),
+            this.components.slice(fromIndex+1)
+        )
+        // insert back in at new position
+        this.components = Array.prototype.concat(
+            this.components.slice(0, toIndex),
+            emt,
+            this.components.slice(toIndex),
+        )
+    }
 }
 
 export class StandaloneRoutine {
@@ -281,6 +307,14 @@ export class Component {
         return force_end;
     }
 
+    get index() {
+        for (let i in this.routine.components) {
+            if (this.routine.components[i] === this) {
+                return i;
+            }
+        }
+    }
+
     get disabled() {
         let disabled = false;
 
@@ -369,6 +403,10 @@ export class Flow {
         // if this changes the indices, adjust
         if (toIndex > fromIndex) {
             toIndex -= 1;
+        }
+        // if toIndex was -1, move to end
+        if (toIndex < 0) {
+            toIndex = this.flat.length;
         }
         // pop element from flat array
         let emt = this.flat[fromIndex]
