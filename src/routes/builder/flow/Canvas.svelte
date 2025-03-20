@@ -10,7 +10,7 @@
 <div class=flow-canvas>
     <Flow>
         {#if $experiment}
-        {#each $experiment.flow.routines as emt}
+        {#each $experiment.flow.dynamic as emt}
         {#if emt instanceof FlowLoop}
         <LoopNode element={emt}></LoopNode>
         {:else}

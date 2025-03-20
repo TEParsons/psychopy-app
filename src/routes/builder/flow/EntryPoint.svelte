@@ -1,5 +1,6 @@
 <script>
     import { dragging } from './dragging';
+    import { experiment } from '../globals.js'
 
 
     export let index;
@@ -7,9 +8,13 @@
     function on_dragover(evt) {
         evt.preventDefault();
     }
+
     function on_drop(evt) {
         evt.preventDefault();
-        console.log([$dragging, index])
+        // move dragged routine to new position in the flow
+        $experiment.flow.relocateElement($dragging, index)
+        // update experiment so subscribed views update
+        experiment.set($experiment)
     }
 </script>
 

@@ -1,7 +1,6 @@
 <script>
     export let element;
     import EntryPoint from './EntryPoint.svelte'   
-    import { flow_inserting } from '../globals'; 
     import { dragging } from './dragging';
     import { json } from '@sveltejs/kit';
 
@@ -15,7 +14,7 @@
 </script>
 
 <EntryPoint index={element.index}></EntryPoint>
-<div class=routine id=flow-{element.name} draggable="true" on:dragstart={on_dragstart} on:dragend={ondragend} role="none">{element.name}</div>
+<div class=routine id=flow-{element.name} draggable="true" on:dragstart={on_dragstart} on:dragend={on_dragend} role="none">{element.name}</div>
 
 <style>
     .routine {

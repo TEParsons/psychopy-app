@@ -1,6 +1,5 @@
 <script>
     import { theme } from '../../globals.js';
-    import { flow_inserting } from '../globals.js';
     
     import { FlowLoop } from "../experiment.js";
     import RoutineNode from './Routine.svelte';

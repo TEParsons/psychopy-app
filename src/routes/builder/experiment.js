@@ -42,20 +42,10 @@ export class Experiment {
             if (parsed_emt === null) {
                 continue;
             }
-            if (emt.nodeName === "LoopInitiator") {
-                let loop = new FlowLoop(
-                    this.loops.get(parsed_emt.name),
-                    this.loops.get(parsed_emt.name).terminator,
-                    currentLoop
-                );
-                currentLoop.routines.push(loop);
-                currentLoop = loop;
-            } else if (emt.nodeName === "LoopTerminator") {
-                currentLoop = currentLoop.parent;
-            } else {
-                currentLoop.routines.push(this.routines.get(parsed_emt.name));
-            }
+            this.flow.flat.push(parsed_emt)
         }
+        // update dynamic flow
+        this.flow.dynamicize()
     }
 
     parse_node(node, parent) {
@@ -157,9 +147,8 @@ export class Routine {
     }
 
     get index() {
-        let flat_flow = this.exp.flow.flatten();
-        for (let i in flat_flow) {
-            if (flat_flow[i] === this) {
+        for (let i in this.exp.flow.flat) {
+            if (this.exp.flow.flat[i] === this) {
                 return i;
             }
         }
@@ -276,37 +265,95 @@ export class Param {
 export class Flow {
     constructor(exp) {
         this.exp;
-        this.routines = [];
+        this.flat = [];
+        this.dynamic = [];
     }
 
     flatten() {
-        let flat = [];
-        for (let rt of this.routines) {
+        this.flat = [];
+        for (let rt of this.dynamic) {
             if (rt instanceof FlowLoop) {
-                flat.push(rt.initiator);
+                this.flat.push(rt.initiator);
                 for (let subrt of rt.flatten()) {
-                    flat.push(subrt);
+                    this.flat.push(subrt);
                 }
-                flat.push(rt.terminator);
+                this.flat.push(rt.terminator);
             } else {
-                flat.push(rt);
+                this.flat.push(rt);
             }
         }
-
-        return flat;
     }
 
+    dynamicize() {
+        // construct flow
+        let currentLoop = this;
+        this.dynamic = [];
+        for (let rt of this.flat) {
+            // iterate through a flattened flow
+            if (rt instanceof LoopInitiator) {
+                // create a loop when we get to an initiator
+                let loop = new FlowLoop(
+                    rt,
+                    currentLoop
+                );
+                // add to the current loop
+                if (currentLoop instanceof Flow) {
+                    currentLoop.dynamic.push(loop)
+                } else {
+                    currentLoop.routines.push(loop)
+                }
+                currentLoop = loop;
+            } else if (rt instanceof LoopTerminator) {
+                // close current loop, if any
+                if (currentLoop instanceof Flow) {
+                    throw "Loop Terminator found with no matching Loop Initiator"
+                } else {
+                    currentLoop.terminator = rt;
+                    currentLoop = currentLoop.parent;
+                }
+            } else {
+                if (currentLoop instanceof Flow) {
+                    currentLoop.dynamic.push(rt);
+                } else {
+                    currentLoop.routines.push(rt);
+                }
+            }
+        }
+    }
 
+    relocateElement(fromIndex, toIndex) {
+        // convert indices to int
+        fromIndex = parseInt(fromIndex)
+        toIndex = parseInt(toIndex)
+        // if this changes the indices, adjust
+        if (toIndex > fromIndex) {
+            toIndex -= 1;
+        }
+        // pop element from flat array
+        let emt = this.flat[fromIndex]
+        this.flat = Array.prototype.concat(
+            this.flat.slice(0, fromIndex),
+            this.flat.slice(fromIndex+1)
+        )
+        // insert back in at new position
+        this.flat = Array.prototype.concat(
+            this.flat.slice(0, toIndex),
+            emt,
+            this.flat.slice(toIndex),
+        )
+        // update dynamic array
+        this.dynamicize();
+    }
 }
 
 export class FlowLoop {
-    constructor(initiator, terminator, parent) {
+    constructor(initiator, parent) {
         this.loopType = initiator.loopType;
         this.name = initiator.name;
         this.params = initiator.params;
         this.parent = parent;
         this.initiator = initiator;
-        this.terminator = terminator;
+        this.terminator = undefined;
         this.routines = [];
     }
 
@@ -338,9 +385,8 @@ export class LoopInitiator {
     }
 
     get index() {
-        let flat_flow = this.exp.flow.flatten();
-        for (let i in flat_flow) {
-            if (flat_flow[i] === this) {
+        for (let i in this.exp.flow.flat) {
+            if (this.exp.flow.flat[i] === this) {
                 return i;
             }
         }
@@ -354,9 +400,8 @@ export class LoopTerminator {
     }
 
     get index() {
-        let flat_flow = this.exp.flow.flatten();
-        for (let i in flat_flow) {
-            if (flat_flow[i] === this) {
+        for (let i in this.exp.flow.flat) {
+            if (this.exp.flow.flat[i] === this) {
                 return i;
             }
         }

@@ -1,9 +1,9 @@
 <script>
     import FlowCanvas from './Canvas.svelte';
-    import { flow_inserting } from '../globals.js';
+    import { dragging } from './dragging.js';
 
     function start_inserting() {
-        flow_inserting.set(true)
+        dragging.set(null)
     }
 
 </script>
