@@ -1,13 +1,11 @@
 <script>
-    import { active_tab, n_tabs } from './globals.js'
+    import { active_tab, n_tabs } from './globals.js';
+    import { onMount, onDestroy } from 'svelte';
 
     export let id;
     export let title;
     export let icon = undefined;
     export let active = false;
-    
-    // iterate number of tabs
-    n_tabs.set($n_tabs + 1)
 
     if (active) {
         active_tab.set(id)
@@ -16,9 +14,12 @@
     function on_tab() {
         active_tab.set(this.htmlFor)
     }
+
+    onMount(() => {$n_tabs += 1})
+    onDestroy(() => {$n_tabs -= 1})
 </script>
 
-<label for={id} class="notebook-tab {$active_tab === id ? "active" : ""}" on:click={on_tab} >
+<label for={id} class="notebook-tab {$active_tab === id ? "active" : ""}" on:click={on_tab}>
     {#if icon}
     <img src={icon} alt=""/>
     {/if}
