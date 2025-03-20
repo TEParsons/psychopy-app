@@ -146,6 +146,37 @@ export class Routine {
         return dur;
     }
 
+    get visualTicks() {
+        // work out timeline increments based on routine duration
+        let increment;
+        if (this.visualStop < 2) {
+            increment = 0.1;
+        } else if (this.visualStop < 20) {
+            increment = 1;
+        } else if (this.visualStop < 200) {
+            increment = 10;
+        } else {
+            increment = 100;
+        }
+        // work out duration to last increment
+        let last_increment = Math.floor(this.visualStop / increment) * increment;
+        // work out ticks for timeline grid
+        var ticks = [];
+        for (let tick = 0; tick < last_increment; tick += increment) {
+            ticks.push({
+                label: Math.round((tick + increment) * 100) / 100,
+                proportion: 1
+            })
+        }
+        // work out remainder for last section
+        let remainder = (this.visualStop - last_increment) / increment;
+
+        return {
+            labels: ticks,
+            remainder: remainder
+        }
+    }
+
     get index() {
         for (let i in this.exp.flow.flat) {
             if (this.exp.flow.flat[i] === this) {
@@ -220,6 +251,16 @@ export class Component {
         }
 
         return stop_secs;
+    }
+
+    get visualColor() {
+        if (this.disabled) {
+            return "overlay";
+        } else if (this.forceEnd) {
+            return "quaternary";
+        } else {
+            return "secondary";
+        }
     }
 
     get forceEnd() {
