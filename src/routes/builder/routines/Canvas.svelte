@@ -1,7 +1,8 @@
 <script>
     import { theme } from '../../globals.js';
     import { pilot_mode, experiment } from '../globals.js';
-    import { Component } from '../utils.js';
+    
+    import { Component } from "../experiment.js";
 
     export let name;
 

@@ -1,6 +1,5 @@
 <script>
     import { theme } from '../../globals.js';
-    import Loop from './Loop.svelte'
     import EntryPoint from './EntryPoint.svelte'
 
 </script>
@@ -11,7 +10,7 @@
         <img class=flowline-arrow src="/icons/{$theme}/sym-arrow-right.svg" alt="<"/>
     </div>
     <slot></slot>
-    <EntryPoint></EntryPoint>
+    <EntryPoint index=-1></EntryPoint>
 </div>
 
 <style>

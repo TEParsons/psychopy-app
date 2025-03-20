@@ -1,6 +1,7 @@
 <script>
-    import { pilot_mode, experiment, flow_inserting } from '../globals.js';
-    import { Routine, FlowLoop } from '../utils.js'
+    import { pilot_mode, experiment } from '../globals.js';
+    
+    import { FlowLoop } from "../experiment.js";
     import Flow from './Flow.svelte';
     import LoopNode from './Loop.svelte';
     import RoutineNode from './Routine.svelte';

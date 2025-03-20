@@ -6,7 +6,7 @@
     import { json } from '@sveltejs/kit';
 
     function on_dragstart(evt) {
-        dragging.set(element)
+        dragging.set(element.index)
     }
     function on_dragend(evt) {
         dragging.set(null)

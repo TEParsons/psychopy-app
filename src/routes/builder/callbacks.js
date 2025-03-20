@@ -1,5 +1,5 @@
 import { pilot_mode, experiment, modified } from './globals.js';
-import { ExperimentFile } from './utils.js'
+import { Experiment } from "./experiment.js";
 
 
 /* File */
@@ -20,7 +20,7 @@ export async function file_open() {
     let xml_parser = new DOMParser()
     let document = xml_parser.parseFromString(await file.text(), "application/xml");
     // construct an Experiment object from the file
-    let exp = new ExperimentFile(document)
+    let exp = new Experiment(document)
     experiment.set(exp);
 }
 

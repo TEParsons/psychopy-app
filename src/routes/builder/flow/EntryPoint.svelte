@@ -1,5 +1,4 @@
 <script>
-    import { flow_inserting } from '../globals.js';
     import { dragging } from './dragging';
 
 
@@ -14,7 +13,7 @@
     }
 </script>
 
-<div class="entry-point {$flow_inserting || $dragging !== null ? "active" : "inactive"}">
+<div class="entry-point {$dragging !== null ? "active" : "inactive"}">
     <button class="hitbox" on:dragover={on_dragover} on:drop={on_drop} aria-label="Entry point"></button>
 </div>
 
