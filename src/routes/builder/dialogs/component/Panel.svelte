@@ -39,9 +39,6 @@
         display: grid;
         grid-auto-flow: row;
         grid-gap: 1rem;
-        padding: 1rem 2rem;
-        width: 50rem;
-        max-width: 100%;
     }
     .param-ctrl {
         display: grid;
@@ -49,7 +46,6 @@
         grid-template-rows: [label] min-content [ctrl] auto;
         grid-gap: .5rem;
         align-items: end;
-        min-width: 30rem;
     }
     .param-ctrl .param-gap {
         grid-column-start: gap;
