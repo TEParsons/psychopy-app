@@ -11,7 +11,7 @@
     }
 
     function on_dragenter(evt) {
-        hovered.set(true);
+        hovered.set($dragging !== null);
     }
 
     function on_dragleave(evt) {
@@ -22,6 +22,10 @@
         evt.preventDefault();
         // we're done dragging
         hovered.set(false);
+        // make sure it's a valid element
+        if ($dragging === null) {
+            return;
+        }
         // move dragged component to new position in the routine
         routine.relocateComponent($dragging, index)
         // update experiment so subscribed views update
