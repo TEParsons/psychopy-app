@@ -36,19 +36,20 @@
 <style>
     .notebook-tab {
         grid-row-start: tabs;
-        background-color: var(--mantle);
+        background-color: var(--crust);
         border: none;
-        padding: .25rem;
+        padding: .25rem 1rem;
         text-align: center;
         z-index: 0;
+        border-radius: .5rem .5rem 0 0;
     }
     .notebook-tab:hover {
-        background-color: var(--crust);
+        background-color: var(--mantle);
     }
     .notebook-page {
         display: grid;
         grid-row-start: page;
-        grid-column-end: span var(--n-tabs);
+        grid-column-end: span calc(var(--n-tabs) + 1);
         padding: .5rem;
         box-sizing: border-box;
         background-color: var(--base);
