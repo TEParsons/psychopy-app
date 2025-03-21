@@ -1,6 +1,7 @@
 import { pilot_mode, experiment, modified, currentFile } from './globals.js';
 import { Experiment } from "./experiment.js";
 import { writable, get } from 'svelte/store';
+import xmlFormat from 'xml-formatter';
 
 
 /* File */
@@ -40,6 +41,8 @@ export async function file_save() {
     // convert to an xml string
     let ser = new XMLSerializer()
     let content = ser.serializeToString(node)
+    // make human readable
+    content = xmlFormat(content)
     // get file writable from handle
     let handle = get(currentFile)
     let file = await handle.createWritable();
