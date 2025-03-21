@@ -49,6 +49,7 @@
         display: grid;
         grid-row-start: page;
         grid-column-end: span var(--n-tabs);
+        justify-content: center;
         padding: .5rem;
         box-sizing: border-box;
         background-color: var(--base);
