@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { pilot_mode, experiment, modified } from './globals.js';
+    import { pilot_mode, currentFile, modified } from './globals.js';
     import Menu from './Menu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';
@@ -8,9 +8,12 @@
     import RibbonSwitchButton from '../utils/ribbon/Switch.svelte';
     import RibbonMenu from '../utils/ribbon/Menu.svelte';
 
-    import { 
+    import {
         // file
+        file_new,
         file_open,
+        file_save,
+        file_save_as,
         // experiment
         toggle_pilot_mode,
         // views
@@ -26,10 +29,32 @@
     <RibbonMenu>
     </RibbonMenu>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
-        <RibbonButton id="ribbon-btn-new" icon="/icons/{$theme}/btn-new.svg" label="New file" />
-        <RibbonButton id="ribbon-btn-open" icon="/icons/{$theme}/btn-open.svg" label="Open file"on:click={file_open} />
-        <RibbonButton id="ribbon-btn-save" icon="/icons/{$theme}/btn-save.svg" label="Save file" disabled={$experiment === null} />
-        <RibbonButton id="ribbon-btn-saveas" icon="/icons/{$theme}/btn-saveas.svg" label="Save file as"/>        
+        <RibbonButton 
+            id="ribbon-btn-new" 
+            icon="/icons/{$theme}/btn-new.svg" 
+            label="New file" 
+            on:click={file_new}
+        />
+        <RibbonButton 
+            id="ribbon-btn-open" 
+            icon="/icons/{$theme}/btn-open.svg" 
+            label="Open file" 
+            on:click={file_open} 
+        />
+        <RibbonButton 
+            id="ribbon-btn-save" 
+            icon="/icons/{$theme}/btn-save.svg" 
+            label="Save file" 
+            on:click={file_save}
+            disabled={$currentFile === null || !$modified} 
+        />
+        <RibbonButton 
+            id="ribbon-btn-saveas" 
+            icon="/icons/{$theme}/btn-saveas.svg" 
+            label="Save file as" 
+            on:click={file_save_as} 
+            disabled={$currentFile === null} 
+        />        
     </RibbonSection>
 
     <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">

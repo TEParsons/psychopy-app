@@ -12,7 +12,6 @@
     }
 </script>
 
-
 <label 
     class=comp-name 
     for={component.params.get('name').val} 

@@ -3,15 +3,21 @@
 export class Experiment {
     /**
      *
+     * @param {String} filename Name of the experiment file
      * @param {Document} document XML document to create an Experiment from
      */
-    constructor(document) {
+    constructor(filename, document) {
+        // store filename
+        this.filename = filename;
         // store xml document
         this.document = document;
         // get top level nodes
+        let exp_node = this.document.getElementsByTagName("PsychoPy2experiment")[0];
         let settings_node = this.document.getElementsByTagName("Settings")[0];
         let routines_node = this.document.getElementsByTagName("Routines")[0];
         let flow_node = this.document.getElementsByTagName("Flow")[0];
+        // get version
+        this.version = exp_node.getAttribute("version");
         // get settings
         this.settings = this.parse_node(settings_node);
         // get routines
@@ -106,6 +112,7 @@ export class Experiment {
         // populate its params
         for (let param of node.getElementsByTagName("Param")) {
             let obj = new Param(
+                param.getAttribute("name"),
                 param.getAttribute("val"),
                 param.getAttribute("valType"),
                 param.getAttribute("updates"),
@@ -120,16 +127,73 @@ export class Experiment {
         return parsed_node;
     }
 
-
     /**
-     * Display this Experiment as a JSON string
+     * Get this experiment as a JSON string.
      */
-    serialize() {
+    toJSON() {
         return JSON.stringify(this, null, "\t");
     }
+
+    /**
+     * Get this experiment as an XML string
+     */
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        let main = doc.createElement("PsychoPy2experiment")
+        main.setAttribute("encoding", "utf-8")
+        main.setAttribute("version", this.version)
+        // let flow_node = doc.createElement("Flow");
+
+        // create settings node
+        let settingsNode = this.settings.toXML();
+        settingsNode.removeAttribute("name")
+        settingsNode.removeAttribute("plugin")
+        main.appendChild(settingsNode)
+
+        // create routines node
+        let routinesNode = doc.createElement("Routines");
+        for (let [name, routine] of [...this.routines]) {
+            // get xml of each routine
+            routinesNode.appendChild(
+                routine.toXML()
+            )
+        }
+        main.appendChild(routinesNode)
+
+        // create flow node
+        let flowNode = this.flow.toXML()
+        main.appendChild(flowNode)
+
+        return main
+    }
+
+    /**
+     * Save this Experiment as a psyexp file
+     */
+    async save() {
+        // get file handle from system dialog
+        let handle = await window.showOpenFilePicker({
+            types: [{
+                description: "PsychoPy Experiments",
+                accept: {
+                    "application/xml": [".psyexp"]
+                }
+            }]
+        });
+        // get file blob from handle
+        let file = await handle[0].getFile();
+        // load xml
+        let xml_parser = new DOMParser()
+        let document = xml_parser.parseFromString(await file.text(), "application/xml");
+        // construct an Experiment object from the file
+        let exp = new Experiment(document)
+    }
+    
 }
 export class Routine {
     constructor(name, exp) {
+        this.tag = "Routine";
         this.exp = exp;
         this.name = name;
         this.components = [];
@@ -210,6 +274,26 @@ export class Routine {
             this.components.slice(toIndex),
         )
     }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("Routine");
+        node.setAttribute("name", this.name);
+        // add settings
+        node.appendChild(
+            this.settings.toXML()
+        )
+        // add components
+        for (let component of this.components) {
+            node.appendChild(
+                component.toXML()
+            )
+        }
+
+        return node
+    }
 }
 
 export class StandaloneRoutine {
@@ -219,6 +303,23 @@ export class StandaloneRoutine {
         this.name = name;
         this.plugin = plugin;
         this.params = new Map();
+    }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement(this.tag);
+        node.setAttribute("name", this.name);
+        node.setAttribute("plugin", this.plugin);
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.appendChild(
+                param.toXML()
+            )
+        }
+
+        return node
     }
 }
 
@@ -326,14 +427,48 @@ export class Component {
 
         return disabled;
     }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement(this.tag);
+        node.setAttribute("name", this.name);
+        node.setAttribute("plugin", this.plugin);
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.appendChild(
+                param.toXML()
+            )
+        }
+
+        return node
+    }
 }
 
 export class Param {
-    constructor(val, valType, updates, plugin = null) {
+    constructor(name, val, valType, updates, plugin = null) {
+        this.name = name;
         this.val = val;
         this.valType = valType;
         this.updates = updates;
         this.plugin = plugin;
+    }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("Param");
+        // assign values
+        node.setAttribute("val", this.val);
+        node.setAttribute("valType", this.valType);
+        node.setAttribute("updates", this.updates);
+        node.setAttribute("name", this.name);
+        node.setAttribute("val", this.val);
+        node.setAttribute("plugin", this.plugin);
+
+        return node
     }
 }
 
@@ -423,6 +558,27 @@ export class Flow {
         // update dynamic array
         this.dynamicize();
     }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("Flow");
+        // iterate through flat contents
+        for (let emt of this.flat) {
+            if (emt instanceof Routine || emt instanceof StandaloneRoutine) {
+                let subnode = doc.createElement(emt.tag)
+                subnode.setAttribute("name", emt.name)
+                node.appendChild(subnode)
+            } else {
+                node.appendChild(
+                    emt.toXML()
+                )
+            }
+        }
+
+        return node
+    }
 }
 
 export class FlowLoop {
@@ -470,6 +626,23 @@ export class LoopInitiator {
             }
         }
     }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("LoopInitiator");
+        node.setAttribute("loopType", this.loopType);
+        node.setAttribute("name", this.name);
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.appendChild(
+                param.toXML()
+            )
+        }
+
+        return node
+    }
 }
 
 export class LoopTerminator {
@@ -484,6 +657,16 @@ export class LoopTerminator {
                 return i;
             }
         }
+    }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("LoopTerminator");
+        node.setAttribute("name", this.name);
+
+        return node
     }
 }
 
