@@ -38,7 +38,7 @@
 </script>
 
 <div class="entry-point" class:active={$dragging !== null} class:hovered={$hovered}>
-    <img src="icons/{$theme}/sym-arrow-right{$hovered ? "-hl" : ""}.svg"/>
+    <img src="icons/{$theme}/sym-arrow-right{$hovered ? "-hl" : ""}.svg" alt=">" />
     <button 
         class="hitbox" 
         on:dragenter={on_dragenter} 
