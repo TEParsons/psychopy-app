@@ -41,7 +41,7 @@
         padding-bottom: 2rem;
     }
     #routine-settings {
-        margin: 1rem;
+        grid-column-start: name;
         justify-self: start;
         z-index: 2;
     }
