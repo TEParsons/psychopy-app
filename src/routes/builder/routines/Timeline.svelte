@@ -16,4 +16,8 @@
 
 <style>
     @import url(./timeline.css);
+
+    .comp-timeline {
+        align-content: end;
+    }
 </style>
