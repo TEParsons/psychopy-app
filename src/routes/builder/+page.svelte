@@ -9,6 +9,17 @@
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
+    import { browser } from '$app/environment';
+
+    experiment.subscribe((value) => {
+        if (browser) {
+            if (value) {
+                document.title = "PsychoPy Builder: " + value.filename;
+            } else {
+                document.title = "PsychoPy Builder";
+            }
+        }
+    })
 </script>
 
 <Frame rows=3 cols=4>
