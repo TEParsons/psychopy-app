@@ -7,10 +7,10 @@
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
 
-    export let name;
+    export let routine;
 
     // get information about ticks from routine
-    let ticks = $experiment.routines.get(name).visualTicks;
+    let ticks = routine.visualTicks;
 </script>
 
 <div class=routine-canvas>
@@ -19,18 +19,18 @@
         <label for=routine-settings>Routine settings</label>
     </button>
 
-    {#if $experiment.routines.get(name).components}
+    {#if routine.components}
     <TimelineHeader ticks={ticks}></TimelineHeader>
     {/if}
 
-    {#each $experiment.routines.get(name).components as component}
+    {#each routine.components as component}
     {#if component !== null}
-    <EntryPoint routine={$experiment.routines.get(name)} index={component.index}></EntryPoint>
+    <EntryPoint routine={routine} index={component.index}></EntryPoint>
     <ComponentLabel component={component}></ComponentLabel>
     <ComponentTimelineBar component={component} ticks={ticks}></ComponentTimelineBar>
     {/if}
     {/each}
-    <EntryPoint routine={$experiment.routines.get(name)} index=-1></EntryPoint>
+    <EntryPoint routine={routine} index=-1></EntryPoint>
 </div>
 
 <style>
