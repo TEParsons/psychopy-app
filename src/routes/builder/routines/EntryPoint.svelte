@@ -1,4 +1,5 @@
 <script>
+    import { theme } from '../../globals.js';
     import { dragging } from './globals.js';
     import { experiment } from '../globals.js'
     import { writable } from 'svelte/store';
@@ -37,6 +38,7 @@
 </script>
 
 <div class="entry-point" class:active={$dragging !== null} class:hovered={$hovered}>
+    <img src="icons/{$theme}/sym-arrow-right{$hovered ? "-hl" : ""}.svg"/>
     <button 
         class="hitbox" 
         on:dragenter={on_dragenter} 
@@ -53,21 +55,15 @@
         position: relative;
         grid-column-start: entrypoints;
         opacity: 0;
-        border-radius: 100%;
-        height: 1rem;
-        width: 100%;
-        background-color: var(--outline);
         align-self: start;
         padding: 0;
         margin: 0;
     }
+    .entry-point img {
+        height: 1rem;
+    }
     .entry-point.active {
         opacity: 1;
-    }
-    .entry-point.active:hover,
-    .entry-point.hovered {
-        opacity: 1;
-        background-color: var(--primary);
     }
 
     .entry-point .hitbox {
