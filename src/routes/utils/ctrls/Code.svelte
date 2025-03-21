@@ -8,7 +8,6 @@
         document.getElementById('line-numbers').innerHTML = Array.from({
             length: textarea.value.split('\n').length,
         }, (_, i) => `<div>${i + 1}</div>`).join('');
-        console.log("NUM")
     }
     onMount(on_text);
 </script>

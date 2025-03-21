@@ -19,7 +19,7 @@
         <label for=routine-settings>Routine settings</label>
     </button>
 
-    {#if $experiment.routines.get(name).components.length}
+    {#if $experiment.routines.get(name).components}
     <TimelineHeader ticks={ticks}></TimelineHeader>
     {/if}
 

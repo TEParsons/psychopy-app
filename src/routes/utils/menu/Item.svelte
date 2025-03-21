@@ -43,7 +43,7 @@
         margin: 0;
         width: 100%;
     }
-    .menu-item button:hover {
+    .menu-item button:enabled:hover {
         background-color: var(--mantle);
         color: var(--mantle-text);
     }
