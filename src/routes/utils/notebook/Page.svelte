@@ -1,31 +1,33 @@
 <script>
-    import { active_tab, n_tabs } from './globals.js';
+    import { n_tabs } from './globals.js';
     import { onMount, onDestroy } from 'svelte';
 
     export let id;
     export let title;
     export let icon = undefined;
-    export let active = false;
+    export let activeTracker;
 
-    if (active) {
-        active_tab.set(id)
+    function onClick() {
+        activeTracker.set(id)
     }
 
-    function on_tab() {
-        active_tab.set(this.htmlFor)
-    }
-
-    onMount(() => {$n_tabs += 1})
+    onMount(() => {
+        $n_tabs += 1;
+        // if no current page yet, make this current
+        if ($activeTracker === undefined) {
+            activeTracker.set(id);
+        }
+    })
     onDestroy(() => {$n_tabs -= 1})
 </script>
 
-<label for={id} class="notebook-tab {$active_tab === id ? "active" : ""}" on:click={on_tab}>
+<label for={id} class="notebook-tab" class:active={$activeTracker === id} on:click={onClick}>
     {#if icon}
-    <img src={icon} alt=""/>
+    <img src={icon} alt="" />
     {/if}
     {title}
 </label>
-{#if $active_tab === id}
+{#if $activeTracker === id}
 <div class=notebook-page id={id}>
     <slot></slot>
 </div>

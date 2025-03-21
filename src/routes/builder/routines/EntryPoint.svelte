@@ -1,5 +1,5 @@
 <script>
-    import { dragging } from './dragging';
+    import { dragging } from './globals.js';
     import { experiment } from '../globals.js'
     import { writable } from 'svelte/store';
 

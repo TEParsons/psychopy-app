@@ -1,5 +1,5 @@
 <script>
-    import { dragging } from './dragging.js';
+    import { dragging } from './globals.js';
     import { theme } from '../../globals.js';
 
     export let component;
