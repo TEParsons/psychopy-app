@@ -21,14 +21,14 @@
 </section>
 
 <style>
-    button.component-section-btn {
+    button {
         background-color: var(--crust);
+    }
+    button.component-section-btn {
+        border-radius: 0;
         padding: .5rem;
         width: 100%;
         margin: 0;
-    }
-    button.component-section-btn:hover {
-        background-color: var(--primary);
     }
     .component-section-buttons {
         display: flex;

@@ -32,4 +32,7 @@
         display: grid;
         grid-auto-flow: row;
     }
+    button {
+        background-color: var(--crust);
+    }
 </style>

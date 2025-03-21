@@ -48,12 +48,13 @@ body {
 
 button {
     font-family: var(--body);
-    background-color: var(--crust);
+    background-color: var(--mantle);
     border: none;
     padding: 1em;
     margin: .5rem;
     display: grid;
     align-items: center;
+    border-radius: .5rem;
 }
 button.horizontal {
     grid-template-columns: [icon] 2rem [label] max-content;
@@ -84,6 +85,5 @@ button:disabled * {
     opacity: 50%;
 }
 button:enabled:hover {
-    background-color: var(--primary);
-    color: var(--primary-text);
+    background-color: var(--base);
 }

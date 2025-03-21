@@ -40,14 +40,12 @@
         grid-gap: 0;
         padding-bottom: 2rem;
     }
-
     #routine-settings {
-        background-color: var(--mantle);
-        margin-bottom: 0;
+        margin: 1rem;
         justify-self: start;
+        z-index: 2;
     }
-    #routine-settings:hover {
-        background-color: var(--primary);
-        color: var(--primary-text);
+    button#routine-settings:enabled:hover {
+        background-color: var(--crust);
     }
 </style>
