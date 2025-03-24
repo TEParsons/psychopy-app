@@ -5,9 +5,10 @@
     export let state;
     export let left;
     export let right;
+    export let disabled;
 </script>
 
-<button id={id} class="switch-ctrl" on:click>
+<button id={id} class="switch-ctrl" on:click disabled={disabled}>
     <span class="{$state ? "active" : "inactive"}">{left}</span>
     <img src="/icons/{$theme}/ctrl-switch-{$state ? "left" : "right"}.svg" alt="Toggle ({$state ? "left" : "right"})"/>
     <span class="{$state ? "inactive" : "active"}">{right}</span>
@@ -36,10 +37,10 @@
         color: var(--text);
         background-color: transparent;
     }
-    button.switch-ctrl .active {
+    button.switch-ctrl .active:enabled {
         opacity: 100%;
     }
-    button.switch-ctrl .inactive {
+    button.switch-ctrl .inactive:enabled {
         opacity: 50%;
     }
 </style>

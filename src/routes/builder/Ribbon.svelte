@@ -16,11 +16,13 @@
         file_save_as,
         // experiment
         toggle_pilot_mode,
+
         // views
         new_builder_frame,
         new_coder_frame,
         new_runner_frame,
     } from './callbacks.js'
+
     import Dialog from './dialogs/component/Dialog.svelte';
 
     let dialog;
@@ -65,11 +67,11 @@
     </RibbonSection>
     
     <RibbonSection id=experiment label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
-        <RibbonButton 
+        <!-- <RibbonButton 
             id="ribbon-btn-monitors" 
             icon="/icons/{$theme}/btn-monitors.svg" 
             label="Monitor centre" 
-        />        
+        />         -->
         <RibbonButton 
             id="ribbon-btn-settings" 
             icon="/icons/{$theme}/btn-settings.svg" 
@@ -84,8 +86,19 @@
             bind:dialog
         ></Dialog>
         {/if}
-        <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={pilot_mode} on:click={toggle_pilot_mode} />        
-        <RibbonButton id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" label="Send to runner" />
+        <RibbonSwitchButton 
+            id="ribbon-btn-pilot-toggle" 
+            left=Pilot 
+            right=Run 
+            state={pilot_mode} 
+            on:click={toggle_pilot_mode} 
+            disabled={$experiment === null}
+        />        
+        <RibbonButton 
+            id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" 
+            icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" 
+            label="Send to runner" 
+        />
     </RibbonSection>
 
     <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
