@@ -7,7 +7,7 @@
 </script>
 
 <dialog id={id} bind:this={dialog} on:close>
-    <div class="title" draggable=true>
+    <div class="title">
         <label for={id}>Editing: {title}</label>
         <div class=gap></div>
         <button id=close on:click={() => { dialog.close() }}>x</button>
