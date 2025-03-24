@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { pilot_mode, currentFile, modified } from './globals.js';
+    import { pilot_mode, currentFile, modified, experiment } from './globals.js';
     import Menu from './Menu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';
@@ -21,8 +21,9 @@
         new_coder_frame,
         new_runner_frame,
     } from './callbacks.js'
+    import Dialog from './dialogs/component/Dialog.svelte';
 
-    
+    let dialog;
 </script>
 
 <Ribbon>
@@ -64,8 +65,25 @@
     </RibbonSection>
     
     <RibbonSection id=experiment label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
-        <RibbonButton id="ribbon-btn-monitors" icon="/icons/{$theme}/btn-monitors.svg" label="Monitor centre" />        
-        <RibbonButton id="ribbon-btn-settings" icon="/icons/{$theme}/btn-settings.svg" label="Experiment settings" />        
+        <RibbonButton 
+            id="ribbon-btn-monitors" 
+            icon="/icons/{$theme}/btn-monitors.svg" 
+            label="Monitor centre" 
+        />        
+        <RibbonButton 
+            id="ribbon-btn-settings" 
+            icon="/icons/{$theme}/btn-settings.svg" 
+            label="Experiment settings" 
+            on:click={() => dialog.showModal()}
+        />
+        {#if $experiment !== null }
+        <Dialog 
+            id="dlg-exp-settings"
+            component={$experiment.settings} 
+            helpLink="" 
+            bind:dialog
+        ></Dialog>
+        {/if}
         <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={pilot_mode} on:click={toggle_pilot_mode} />        
         <RibbonButton id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" label="Send to runner" />
     </RibbonSection>
