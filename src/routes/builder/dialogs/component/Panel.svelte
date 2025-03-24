@@ -5,9 +5,11 @@
     import Notebook from '../../../utils/notebook/Notebook.svelte';
     import NotebookPage from '../../../utils/notebook/Page.svelte';
     import { currentPage } from './globals.js';
+    import { sortParams } from '../../experiment.js';
 
     export let helpLink = undefined;
     export let component;
+    export let tempParams;
 
 
     function on_help() {
@@ -17,7 +19,7 @@
 </script>
 
 <Notebook id="{component.name}-params">
-{#each [...component.sortedParams] as [categ, params]}
+{#each [...sortParams($tempParams)] as [categ, params]}
     <NotebookPage id="{component.name}-{categ}" title={categ} activeTracker={currentPage}>
     <div class=params-panel>
         {#each [...params] as [name, param]}
@@ -30,7 +32,7 @@
                 <option>Each repeat</option>
                 <option>Each frame</option>
             </select>
-            <input class=param-value type="text" value={param.value} />
+            <input class=param-value type="text" value={param.val} />
         </div>
         {/each}
     </div>

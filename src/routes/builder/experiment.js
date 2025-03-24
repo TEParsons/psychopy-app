@@ -1,3 +1,4 @@
+import { writable } from "svelte/store";
 
 
 export class Experiment {
@@ -338,6 +339,25 @@ export class StandaloneRoutine {
     }
 }
 
+/**
+ * 
+ * @param {Map<string, Param>} params Parameters to sort
+ * @returns Parameters sorted into categories
+ */
+export function sortParams(params) {
+    let sorted = new Map();
+    for (let [name, param] of [...params]) {
+        // make sure we have an entry for this categ
+        if (!sorted.has(param.categ)) {
+            sorted.set(param.categ, new Map())
+        }
+        // add param
+        sorted.get(param.categ).set(name, param)
+    }
+
+    return sorted
+}
+
 export class Component {
     constructor(tag, name, routine, plugin = null) {
         this.tag = tag;
@@ -347,18 +367,13 @@ export class Component {
         this.params = new Map();
     }
 
-    get sortedParams() {
-        let sorted = new Map();
+    copyParams() {
+        let params = new Map();
         for (let [name, param] of [...this.params]) {
-            // make sure we have an entry for this categ
-            if (!sorted.has(param.categ)) {
-                sorted.set(param.categ, new Map())
-            }
-            // add param
-            sorted.get(param.categ).set(name, param)
+            params.set(name, param.copy())
         }
 
-        return sorted
+        return params
     }
 
     get visualStart() {
@@ -483,6 +498,17 @@ export class Param {
         this.valType = valType;
         this.updates = updates;
         this.plugin = plugin;
+    }
+
+    copy() {
+        return new Param(
+            this.name,
+            this.val,
+            this.categ,
+            this.valType,
+            this.updates,
+            this.plugin
+        )
     }
 
     toXML() {
