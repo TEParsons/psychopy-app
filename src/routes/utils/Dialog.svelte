@@ -10,7 +10,9 @@
     <div class="title">
         <label for={id}>Editing: {title}</label>
         <div class=gap></div>
-        <button id=close on:click={() => { dialog.close() }}>x</button>
+        <div class=title-btns>
+            <button id=close on:click={() => { dialog.close() }}>x</button>
+        </div>
     </div>
     <div class="content">
         <slot></slot>
@@ -39,7 +41,7 @@
     }
     dialog .title {
         display: grid;
-        grid-template-columns: [title] max-content [gap] auto [close] 2rem;
+        grid-template-columns: [title] max-content [gap] auto [close] min-content;
         align-items: center;
         justify-items: start;
         padding: .3em 1rem;
@@ -49,12 +51,22 @@
     dialog .title label {
         padding: .5rem;
     }
-    button#close {
+    .title-btns button {
         margin: 0;
         height: 100%;
         width: 100%;
-        padding: .5rem;
+        padding: .5rem 1rem;
         margin: 0;
         border-radius: 0;
+        background-color: var(--overlay);
+        color: var(--text);
+    }
+    .title-btns button:enabled:hover {
+        background-color: var(--base);
+        color: var(--text);
+    }
+    .title-btns button#close:enabled:hover {
+        background-color: var(--primary);
+        color: var(--primary-text);
     }
 </style>
