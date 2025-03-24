@@ -26,7 +26,7 @@
     role="none"
 >
     <img class=edit src="/icons/{$theme}/btn-edit.svg" alt=✎ />
-    {component.params.get('name').val}
+    {component.name}
     <img 
         src="/icons/{$theme}/components/{component.tag}.svg" 
         alt="" 

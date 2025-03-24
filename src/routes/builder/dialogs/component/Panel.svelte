@@ -2,6 +2,9 @@
     import { theme } from '../../../globals.js';
     import { StandaloneRoutine, Routine } from '../../experiment.js';
     import { experiment } from '../../globals.js';
+    import Notebook from '../../../utils/notebook/Notebook.svelte';
+    import NotebookPage from '../../../utils/notebook/Page.svelte';
+    import { currentPage } from './globals.js';
 
     export let helpLink = undefined;
     export let component;
@@ -13,25 +16,30 @@
 
 </script>
 
-
-<div class=params-panel>
-    {#each [...component.params] as [name, param]}
-    <div class=param-ctrl id={name}>
-        <label class=param-label for={name}>{name}</label>
-        <div class=param-gap></div>
-        <select class=param-updates id={name}-updates>
-            <!-- todo: Get allowedUpdates from comp yaml -->
-            <option>Constant</option>
-            <option>Each repeat</option>
-            <option>Each frame</option>
-        </select>
-        <input class=param-value type="text" value={param.value} />
+<Notebook id="{component.name}-params">
+{#each [...component.sortedParams] as [categ, params]}
+    <NotebookPage id="{component.name}-{categ}" title={categ} activeTracker={currentPage}>
+    <div class=params-panel>
+        {#each [...params] as [name, param]}
+        <div class=param-ctrl id={name}>
+            <label class=param-label for={name}>{name}</label>
+            <div class=param-gap></div>
+            <select class=param-updates id={name}-updates>
+                <!-- todo: Get allowedUpdates from comp yaml -->
+                <option>Constant</option>
+                <option>Each repeat</option>
+                <option>Each frame</option>
+            </select>
+            <input class=param-value type="text" value={param.value} />
+        </div>
+        {/each}
     </div>
-    {/each}
-    {#if helpLink}
-    <button on:click={on_help} class=help-btn>Help</button>
-    {/if}
-</div>
+    </NotebookPage>
+{/each}
+</Notebook>
+{#if helpLink}
+<button on:click={on_help} class=help-btn>Help</button>
+{/if}
 
 
 <style>
@@ -41,6 +49,7 @@
         grid-gap: 1rem;
         margin: auto;
         width: 45rem;
+        padding: 1rem;
     }
     .param-ctrl {
         display: grid;

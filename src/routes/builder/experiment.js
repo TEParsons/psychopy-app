@@ -114,6 +114,7 @@ export class Experiment {
             let obj = new Param(
                 param.getAttribute("name"),
                 param.getAttribute("val"),
+                param.getAttribute("categ"),
                 param.getAttribute("valType"),
                 param.getAttribute("updates"),
                 param.getAttribute("plugin")
@@ -305,6 +306,20 @@ export class StandaloneRoutine {
         this.params = new Map();
     }
 
+    get sortedParams() {
+        let sorted = new Map();
+        for (let [name, param] of [...this.params]) {
+            // make sure we have an entry for this categ
+            if (!sorted.has(param.categ)) {
+                sorted.set(param.categ, new Map())
+            }
+            // add param
+            sorted.get(param.categ).set(name, param)
+        }
+
+        return sorted
+    }
+
     toXML() {
         // create document
         let doc = document.implementation.createDocument(null, "xml");
@@ -330,6 +345,20 @@ export class Component {
         this.routine = routine;
         this.plugin = plugin;
         this.params = new Map();
+    }
+
+    get sortedParams() {
+        let sorted = new Map();
+        for (let [name, param] of [...this.params]) {
+            // make sure we have an entry for this categ
+            if (!sorted.has(param.categ)) {
+                sorted.set(param.categ, new Map())
+            }
+            // add param
+            sorted.get(param.categ).set(name, param)
+        }
+
+        return sorted
     }
 
     get visualStart() {
@@ -447,9 +476,10 @@ export class Component {
 }
 
 export class Param {
-    constructor(name, val, valType, updates, plugin = null) {
+    constructor(name, val, categ, valType, updates, plugin = null) {
         this.name = name;
         this.val = val;
+        this.categ = categ;
         this.valType = valType;
         this.updates = updates;
         this.plugin = plugin;
