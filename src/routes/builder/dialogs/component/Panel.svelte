@@ -44,7 +44,7 @@
     }
     .param-ctrl {
         display: grid;
-        grid-template-columns: [label] min-content [gap] auto [updates] min-content;
+        grid-template-columns: [label] max-content [gap] auto [updates] min-content;
         grid-template-rows: [label] min-content [ctrl] auto;
         grid-gap: .5rem;
         align-items: end;

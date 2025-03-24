@@ -41,7 +41,6 @@
         padding: .25rem 1rem;
         text-align: center;
         z-index: 0;
-        border-radius: .5rem .5rem 0 0;
     }
     .notebook-tab:hover {
         background-color: var(--mantle);
