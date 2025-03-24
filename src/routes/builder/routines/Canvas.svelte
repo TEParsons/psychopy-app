@@ -6,18 +6,31 @@
     import ComponentTimelineBar from './TimelineBar.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
+    import Dialog from '../dialogs/component/Dialog.svelte';
 
     export let routine;
 
     // get information about ticks from routine
     let ticks = routine.visualTicks;
+
+    let dialog;
 </script>
 
 <div class=routine-canvas>
-    <button class=horizontal id=routine-settings>
+    <button 
+        class=horizontal 
+        id=routine-settings
+        on:click={() => dialog.showModal()}
+    >
         <img src="icons/{$theme}/btn-settings.svg" alt="" />
         <label for=routine-settings>Routine settings</label>
     </button>
+    <Dialog 
+        id="dlg-{routine.name}"
+        component={routine.settings} 
+        helpLink="" 
+        bind:dialog
+    ></Dialog>
 
     {#if routine.components}
     <TimelineHeader ticks={ticks}></TimelineHeader>
