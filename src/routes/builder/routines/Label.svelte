@@ -36,7 +36,7 @@
     id="dlg-{component.name}"
     component={component} 
     helpLink="" 
-    bind:dialog
+    bind:handle={dialog}
 ></Dialog>
 
 <style>

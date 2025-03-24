@@ -6,33 +6,45 @@
     import NotebookPage from '../../../utils/notebook/Page.svelte';
     import { currentPage } from './globals.js';
     import { sortParams } from '../../experiment.js';
+    import { writable } from 'svelte/store';
 
     export let helpLink = undefined;
     export let component;
-    export let tempParams;
 
+    let tempParams = writable(component.copyParams())
 
     function on_help() {
         window.open(helpLink, '_blank').focus();
     }
 
+    function discardChanges() {
+        // reset temp params from component to discard any live changes
+        tempParams.set(component.copyParams())
+    }
+
+    function applyChanges() {
+        // apply temporary params to component
+        component.params = $tempParams
+    }
+
+    let notebook;
 </script>
 
-<Notebook id="{component.name}-params">
+<Notebook id="{component.name}-params" handle={notebook}>
+
 {#each [...sortParams($tempParams)] as [categ, params]}
-    <NotebookPage id="{component.name}-{categ}" title={categ} activeTracker={currentPage}>
+    <NotebookPage id="{categ}" title={categ} activeTracker={currentPage}>
     <div class=params-panel>
         {#each [...params] as [name, param]}
         <div class=param-ctrl id={name}>
             <label class=param-label for={name}>{name}</label>
             <div class=param-gap></div>
             <select class=param-updates id={name}-updates>
-                <!-- todo: Get allowedUpdates from comp yaml -->
-                <option>Constant</option>
-                <option>Each repeat</option>
-                <option>Each frame</option>
+                {#each param.allowedUpdates as ud}
+                <option value={ud}>{ud}</option>
+                {/each}
             </select>
-            <input class=param-value type="text" value={param.val} />
+            <input class=param-value type="text" bind:value={param.val} />
         </div>
         {/each}
     </div>

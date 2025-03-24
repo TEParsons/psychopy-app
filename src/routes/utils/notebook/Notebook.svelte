@@ -1,11 +1,14 @@
 <script>
+    import { onMount } from 'svelte';
     import { n_tabs } from './globals.js';
 
     export let id;
 
+    export let handle;
+
 </script>
 
-<div id={id} class=notebook style="--n-tabs: {$n_tabs}">
+<div id={id} class=notebook style="--n-tabs: {$n_tabs}" bind:this={handle}>
     <slot></slot>
 </div>
 

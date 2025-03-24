@@ -13,14 +13,14 @@
     // get information about ticks from routine
     let ticks = routine.visualTicks;
 
-    let dialog;
+    let settingsDlg;
 </script>
 
 <div class=routine-canvas>
     <button 
         class=horizontal 
         id=routine-settings
-        on:click={() => dialog.showModal()}
+        on:click={() => settingsDlg.showModal()}
     >
         <img src="icons/{$theme}/btn-settings.svg" alt="" />
         <label for=routine-settings>Routine settings</label>
@@ -29,7 +29,7 @@
         id="dlg-{routine.name}"
         component={routine.settings} 
         helpLink="" 
-        bind:dialog
+        bind:handle={settingsDlg}
     ></Dialog>
 
     {#if routine.components}

@@ -8,15 +8,6 @@
     import { onMount, onDestroy } from 'svelte';
     import { StandaloneRoutine, Routine } from '../experiment.js';
 
-    onMount(() => {
-        // get notebook object on mount
-        let notebook = document.getElementById("routine-notebook")
-        // set initial active tab to be first page
-        if (notebook?.children[0]) {
-            currentPage.set(notebook?.children[0].htmlFor);
-        }
-    })
-
 </script>
 
 

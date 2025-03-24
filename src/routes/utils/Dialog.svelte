@@ -2,16 +2,16 @@
     export let title;
 
     export let id;
-    export let dialog;
+    export let handle;
 
 </script>
 
-<dialog id={id} bind:this={dialog} on:close>
+<dialog id={id} bind:this={handle} on:close>
     <div class="title">
         <label for={id}>Editing: {title}</label>
         <div class=gap></div>
         <div class=title-btns>
-            <button id=close on:click={() => { dialog.close() }}>x</button>
+            <button id=close on:click={() => { handle.close() }}>x</button>
         </div>
     </div>
     <div class="content">

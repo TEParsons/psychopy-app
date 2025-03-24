@@ -1,4 +1,6 @@
 import { writable } from "svelte/store";
+// get component profiles from json file
+import ComponentProfiles from "$lib/components.json"
 
 
 export class Experiment {
@@ -110,20 +112,55 @@ export class Experiment {
         } else {
             return null;
         }
+        // get template for this object
+        let profile = ComponentProfiles[parsed_node.tag]
+        // create template params first
+        if (profile !== undefined) {
+            for (let key in profile.params) {
+                let obj = new Param(
+                    key, 
+                    profile.params[key].val, 
+                    profile.params[key].categ, 
+                    profile.params[key].allowedVals, 
+                    profile.params[key].valType, 
+                    profile.params[key].inputType, 
+                    profile.params[key].updates, 
+                    profile.params[key].allowedUpdates, 
+                    profile.params[key].label,
+                    profile.params[key].hint,
+                    profile.params[key].plugin,
+                )
+                parsed_node.params.set(key, obj);
+            }
+        }
         // populate its params
         for (let param of node.getElementsByTagName("Param")) {
-            let obj = new Param(
-                param.getAttribute("name"),
-                param.getAttribute("val"),
-                param.getAttribute("categ"),
-                param.getAttribute("valType"),
-                param.getAttribute("updates"),
-                param.getAttribute("plugin")
-            );
-            parsed_node.params.set(
-                param.getAttribute("name"),
-                obj
-            );
+            let name = param.getAttribute("name")
+            // if param was templated, fill in variable attributes
+            if (parsed_node.params.has(name)) {
+                let template = parsed_node.params.get(name);
+                param.name = param.getAttribute("val") || template.val
+                param.name = param.getAttribute("valType") || template.valType
+                param.name = param.getAttribute("updates") || template.updates
+                param.name = param.getAttribute("plugin") || template.plugin
+            } else {
+                let obj = new Param(
+                    name, 
+                    param.getAttribute("val"), 
+                    "Unknown", 
+                    undefined, 
+                    param.getAttribute("valType"), 
+                    "inv", 
+                    param.getAttribute("updates"), 
+                    [], 
+                    param.getAttribute("name"),
+                    "Parameter not recognised",
+                    param.getAttribute("plugin"),
+                );
+                parsed_node.params.set(name, obj);
+            }
+            
+            
         }
         // return it
         return parsed_node;
@@ -307,18 +344,13 @@ export class StandaloneRoutine {
         this.params = new Map();
     }
 
-    get sortedParams() {
-        let sorted = new Map();
+    copyParams() {
+        let params = new Map();
         for (let [name, param] of [...this.params]) {
-            // make sure we have an entry for this categ
-            if (!sorted.has(param.categ)) {
-                sorted.set(param.categ, new Map())
-            }
-            // add param
-            sorted.get(param.categ).set(name, param)
+            params.set(name, param.copy())
         }
-
-        return sorted
+        console.log(["COPIED", params])
+        return params
     }
 
     toXML() {
@@ -491,23 +523,45 @@ export class Component {
 }
 
 export class Param {
-    constructor(name, val, categ, valType, updates, plugin = null) {
+    constructor(
+        name, 
+        val, 
+        categ, 
+        allowedVals, 
+        valType, 
+        inputType, 
+        updates, 
+        allowedUpdates, 
+        label,
+        hint,
+        plugin = null,
+    ) {
         this.name = name;
         this.val = val;
-        this.categ = categ;
+        this.categ = categ || "Unknown";
+        this.allowedVals = allowedVals;
         this.valType = valType;
+        this.inputType = inputType;
         this.updates = updates;
+        this.allowedUpdates = allowedUpdates;
+        this.label = label || name;
+        this.hint = hint || name;
         this.plugin = plugin;
     }
 
     copy() {
         return new Param(
-            this.name,
-            this.val,
-            this.categ,
-            this.valType,
-            this.updates,
-            this.plugin
+            this.name, 
+            this.val, 
+            this.categ, 
+            this.allowedVals, 
+            this.valType, 
+            this.inputType, 
+            this.updates, 
+            this.allowedUpdates, 
+            this.label,
+            this.hint,
+            this.plugin,
         )
     }
 

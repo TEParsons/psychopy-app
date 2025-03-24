@@ -25,7 +25,7 @@
 
     import Dialog from './dialogs/component/Dialog.svelte';
 
-    let dialog;
+    let settingsDlg;
     let menu;
 </script>
 
@@ -78,14 +78,15 @@
             id="ribbon-btn-settings" 
             icon="/icons/{$theme}/btn-settings.svg" 
             label="Experiment settings" 
-            on:click={() => dialog.showModal()}
+            on:click={() => {settingsDlg.showModal()}}
+            disabled={$experiment === null}
         />
         {#if $experiment !== null }
         <Dialog 
             id="dlg-exp-settings"
             component={$experiment.settings} 
             helpLink="" 
-            bind:dialog
+            bind:handle={settingsDlg}
         ></Dialog>
         {/if}
         <RibbonSwitchButton 
