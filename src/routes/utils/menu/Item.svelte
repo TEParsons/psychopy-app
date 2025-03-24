@@ -6,16 +6,22 @@
     export let icon = undefined;
     export let submenu = false;
     export let disabled = false;
+    export let back = false;
 </script>
 
 <li class=menu-item>
     <button on:click id={id} disabled={disabled}>
         <label for={id}>
+            {#if back}
+            <img class=back-arrow src="/icons/{$theme}/sym-arrow-left.svg" alt="<" />
+            {:else}
             <img class=menu-item-icon src={icon} alt="" />
+            {/if}
             <span class=menu-item-text>{label}</span>
             {#if submenu}
             <img class=submenu-arrow src="/icons/{$theme}/sym-arrow-right.svg" alt=">" />
             {/if}
+            
         </label>
     </button>
     <div class=submenu-container hidden>
@@ -65,6 +71,10 @@
     .menu-item label .submenu-arrow {
         grid-column-start: arrow;
         width: .25rem;
+    }
+    .menu-item label .back-arrow {
+        grid-column-start: icon;
+        width: .5rem;
     }
     
 </style>

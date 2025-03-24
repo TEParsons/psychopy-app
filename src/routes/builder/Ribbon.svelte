@@ -26,10 +26,12 @@
     import Dialog from './dialogs/component/Dialog.svelte';
 
     let dialog;
+    let menu;
 </script>
 
 <Ribbon>
-    <RibbonMenu>
+    <RibbonMenu menu={menu}>
+        <Menu></Menu>
     </RibbonMenu>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton 

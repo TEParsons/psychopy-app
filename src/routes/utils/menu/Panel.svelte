@@ -4,31 +4,28 @@
     import Item from './Item.svelte'
 
     function close_menu() {
-        document.getElementById("frame-menu").hidden = true;
-        document.getElementById("frame-menu-filter").style.display = "none";
+        menu.close()
     }
+
+    export let menu;
 </script>
 
-<ul class=frame-menu id=frame-menu on:focusout={close_menu} hidden>
-    <button class=back-btn id=frame-menu-back on:click={close_menu}>
-        <img src="/icons/{$theme}/sym-arrow-left.svg" alt="<" />
-    </button>
+<dialog class=frame-menu bind:this={menu}>
+    <Item 
+        label=""
+        id=back
+        back 
+        on:click={() => { menu.close() }}
+    />
     <slot></slot>
-</ul>
-<button id=frame-menu-filter on:click={close_menu}></button>
+</dialog>
 
 <style>
     .frame-menu {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: auto;
         z-index: 100;
         background-color: var(--base);
         box-shadow: .5rem 0 .5rem rgba(0, 0, 0, 0.1);
-        margin: 0;
-        padding: 0;
+        margin: 1rem;
     }
     .back-btn {
         margin: 0;
