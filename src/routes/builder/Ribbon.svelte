@@ -94,22 +94,34 @@
             on:click={toggle_pilot_mode} 
             disabled={$experiment === null}
         />        
-        <RibbonButton 
+        <!-- <RibbonButton 
             id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" 
             icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" 
             label="Send to runner" 
-        />
+        /> -->
     </RibbonSection>
 
-    <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
+    <!-- <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
         <RibbonButton id="ribbon-btn-compilepy" icon="/icons/{$theme}/btn-compilepy.svg" label="Compile to Python" />
         <RibbonButton id="ribbon-btn-{$pilot_mode ? "pilotpy" : "runpy"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotpy" : "runpy"}.svg" label="{$pilot_mode ? "Pilot" : "Run"} in Python" />
-    </RibbonSection>
+    </RibbonSection> -->
 
     <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
-        <RibbonButton id="ribbon-btn-compilejs" icon="/icons/{$theme}/btn-compilejs.svg" label="Compile to JavaScript" />
-        <RibbonButton id="ribbon-btn-{$pilot_mode ? "pilotjs" : "runjs"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotjs" : "runjs"}.svg" label="{$pilot_mode ? "Pilot" : "Run"} in browser" />
-        <RibbonButton id="ribbon-btn-sync" icon="/icons/{$theme}/btn-sync.svg" label="Sync to Pavlovia" />
+        <!-- <RibbonButton 
+            id="ribbon-btn-compilejs" 
+            icon="/icons/{$theme}/btn-compilejs.svg" 
+            label="Compile to JavaScript" 
+        /> -->
+        <RibbonButton 
+            id="ribbon-btn-{$pilot_mode ? "pilotjs" : "runjs"}" 
+            icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotjs" : "runjs"}.svg" 
+            label="{$pilot_mode ? "Pilot" : "Run"} in browser" 
+        />
+        <!-- <RibbonButton 
+            id="ribbon-btn-sync" 
+            icon="/icons/{$theme}/btn-sync.svg" 
+            label="Sync to Pavlovia" 
+        /> -->
     </RibbonSection>
 
     <RibbonSection id=pavlovia label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.svg">
@@ -120,8 +132,23 @@
     <RibbonSection gap></RibbonSection>
 
     <RibbonSection id=views label=Views icon="/icons/{$theme}/rbn-windows.svg">
-        <RibbonButton id="ribbon-btn-builder"  icon="/icons/{$theme}/btn-builder.svg" label="Builder view" on:click={new_builder_frame} />
-        <RibbonButton id="ribbon-btn-coder"  icon="/icons/{$theme}/btn-coder.svg" label="Coder view" on:click={new_coder_frame} />
-        <RibbonButton id="ribbon-btn-runner" icon="/icons/{$theme}/btn-runner.svg" label="Runner view" on:click={new_runner_frame} />
+        <RibbonButton 
+            id="ribbon-btn-builder" 
+            icon="/icons/{$theme}/btn-builder.svg" 
+            label="Builder view" 
+            on:click={new_builder_frame} 
+        />
+        <RibbonButton 
+            id="ribbon-btn-coder"  
+            icon="/icons/{$theme}/btn-coder.svg" 
+            label="Coder view" 
+            on:click={new_coder_frame} 
+        />
+        <RibbonButton 
+            id="ribbon-btn-runner" 
+            icon="/icons/{$theme}/btn-runner.svg" 
+            label="Runner view" 
+            on:click={new_runner_frame} 
+        />
     </RibbonSection>
 </Ribbon>
