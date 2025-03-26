@@ -8,24 +8,9 @@
     import { sortParams } from '../../experiment.js';
     import { writable } from 'svelte/store';
 
-    export let helpLink = undefined;
     export let component;
 
     let tempParams = writable(component.copyParams())
-
-    function on_help() {
-        window.open(helpLink, '_blank').focus();
-    }
-
-    function discardChanges() {
-        // reset temp params from component to discard any live changes
-        tempParams.set(component.copyParams())
-    }
-
-    function applyChanges() {
-        // apply temporary params to component
-        component.params = $tempParams
-    }
 
     let notebook;
 </script>
@@ -53,9 +38,6 @@
     </NotebookPage>
 {/each}
 </Notebook>
-{#if helpLink}
-<button on:click={on_help} class=help-btn>Help</button>
-{/if}
 
 
 <style>

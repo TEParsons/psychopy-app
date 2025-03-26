@@ -398,6 +398,15 @@ export class Component {
         this.params = new Map();
     }
 
+    new(tag, routine) {
+        comp = new Component(
+            tag,
+            ComponentProfiles[tag].params.name.val,
+            routine,
+            ComponentProfiles[tag].params.plugin.val,
+        )
+    }
+
     copyParams() {
         let params = new Map();
         for (let [name, param] of [...this.params]) {
