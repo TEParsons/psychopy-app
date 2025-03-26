@@ -9,14 +9,12 @@
     import { writable } from 'svelte/store';
 
     export let component;
-
-    let tempParams = writable(sortParams(component.copyParams()))
+    export let tempParams;
 
     let notebook;
 </script>
 
 <Notebook id="{component.name}-params" handle={notebook}>
-
 {#each [...$tempParams] as [categ, params]}
     <NotebookPage id="{categ}" title={categ} activeTracker={currentPage}>
     <div class=params-panel>

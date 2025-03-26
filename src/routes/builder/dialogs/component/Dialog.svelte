@@ -9,7 +9,7 @@
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '../../experiment.js';
 
-    let tempParams = writable(component.copyParams())
+    let tempParams = writable(sortParams(component.copyParams()))
 
     function discardChanges(evt) {
         

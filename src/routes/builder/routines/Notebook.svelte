@@ -2,7 +2,7 @@
     import Notebook from '../../utils/notebook/Notebook.svelte';
     import NotebookPage from '../../utils/notebook/Page.svelte';
     import RoutineCanvas from './Canvas.svelte';
-    import StandaloneRoutineCanvas from '../dialogs/component/Panel.svelte'
+    import StandaloneRoutineCanvas from './Standalone.svelte'
     import { experiment } from '../globals.js';
     import { currentPage } from './globals.js';
     import { onMount, onDestroy } from 'svelte';
