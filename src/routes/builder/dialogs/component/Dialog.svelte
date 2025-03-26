@@ -7,17 +7,21 @@
     export let id;
 
     import Panel from './Panel.svelte';
+    import { sortParams, unsortParams } from '../../experiment.js';
 
     let tempParams = writable(component.copyParams())
 
-    function discardChanges() {
+    function discardChanges(evt) {
+        
         // reset temp params from component to discard any live changes
-        tempParams.set(component.copyParams())
+        tempParams.set(
+            sortParams(component.copyParams())
+        )
     }
 
-    function applyChanges() {
+    function applyChanges(evt) {
         // apply temporary params to component
-        component.params = $tempParams
+        component.params = unsortParams($tempParams)
     }
 
 </script>

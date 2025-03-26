@@ -388,6 +388,19 @@ export function sortParams(params) {
 
     return sorted
 }
+export function unsortParams(sorted) {
+    let unsorted = new Map();
+    // iterate through categories
+    for (let [categ, params] of [...sorted]) {
+        // iterate through params in category
+        for (let [name, param] of [...params]) {
+            // add param to flat array
+            unsorted.set(name, param);
+        }
+    }
+
+    return unsorted;
+}
 
 export class Component {
     constructor(tag, name, routine, plugin = null) {

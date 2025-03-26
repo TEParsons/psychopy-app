@@ -10,14 +10,14 @@
 
     export let component;
 
-    let tempParams = writable(component.copyParams())
+    let tempParams = writable(sortParams(component.copyParams()))
 
     let notebook;
 </script>
 
 <Notebook id="{component.name}-params" handle={notebook}>
 
-{#each [...sortParams($tempParams)] as [categ, params]}
+{#each [...$tempParams] as [categ, params]}
     <NotebookPage id="{categ}" title={categ} activeTracker={currentPage}>
     <div class=params-panel>
         {#each [...params] as [name, param]}
