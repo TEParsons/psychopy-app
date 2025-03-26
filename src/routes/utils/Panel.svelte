@@ -31,20 +31,24 @@
         --panel-padding: .5rem;
     }
     .panel {
+        display: grid;
         position: relative;
         background-color: var(--mantle);
         border-radius: .25rem;
         overflow: hidden;
+        grid-template: min-content 1fr / 1fr;
     }
     .panel .pnl-content {
         position: relative;
-        width: 100%;
-        height: 100%;
+        height: stretch;
+        width: stretch;
         overflow-y: auto;
-        overflow-x: hidden;
+        overflow-x: auto;
     }
     .panel .pnl-title {
         padding: .3em 1rem;
         background-color: var(--overlay);
+        width: stretch;
+        overflow: hidden;
     }
 </style>

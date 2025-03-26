@@ -46,7 +46,12 @@
         background-color: var(--mantle);
     }
     .notebook-page {
-        display: grid;
+        position: relative;
+        height: auto;
+        overflow-y: auto;
+        width: auto;
+        overflow-x: auto;
+
         grid-row-start: page;
         grid-column-end: span calc(var(--n-tabs) + 1);
         padding: .5rem;

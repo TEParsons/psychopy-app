@@ -10,5 +10,6 @@
         flex-direction: row;
         padding: .5em;
         background-color: var(--crust);
+        position: relative;
     }    
 </style>

@@ -11,7 +11,7 @@
 </script>
 
 
-<Notebook id=routine-notebook>
+<Notebook id=routine-notebook flush>
     {#if $experiment !== null}
     {#each Array.from($experiment.routines.keys()) as name}
     <NotebookPage id={name} title={name} activeTracker={currentPage}>
