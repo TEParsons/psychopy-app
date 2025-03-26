@@ -39,11 +39,13 @@
         <div class=param-ctrl id={name}>
             <label class=param-label for={name}>{name}</label>
             <div class=param-gap></div>
-            <select class=param-updates id={name}-updates>
+            {#if param.allowedUpdates !== null && param.allowedUpdates.length > 0}
+            <select class=param-updates id={name}-updates disabled={param.allowedUpdates.length == 1}>
                 {#each param.allowedUpdates as ud}
                 <option value={ud}>{ud}</option>
                 {/each}
             </select>
+            {/if}
             <input class=param-value type="text" bind:value={param.val} />
         </div>
         {/each}
@@ -61,7 +63,6 @@
         display: grid;
         grid-auto-flow: row;
         grid-gap: 1rem;
-        margin: auto;
         width: 45rem;
         padding: 1rem;
     }
@@ -80,6 +81,7 @@
     .param-ctrl .param-label {
         grid-column-start: label;
         grid-row-start: label;
+        padding: .5rem 0;
     }
     .param-ctrl .param-updates {
         grid-column-start: updates;
