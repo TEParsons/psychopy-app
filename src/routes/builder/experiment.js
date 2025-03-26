@@ -349,7 +349,6 @@ export class StandaloneRoutine {
         for (let [name, param] of [...this.params]) {
             params.set(name, param.copy())
         }
-        console.log(["COPIED", params])
         return params
     }
 

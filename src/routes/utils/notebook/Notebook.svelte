@@ -18,5 +18,6 @@
         grid-template-rows: [tabs] min-content [page] 1fr;
         grid-template-columns: repeat(var(--n-tabs), min-content) 1fr;
         z-index: 1;
+        margin: auto;
     }
 </style>

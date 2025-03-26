@@ -53,10 +53,14 @@
         box-sizing: border-box;
         background-color: var(--base);
         z-index: 1;
+        border: 1px solid var(--overlay);
     }
     .notebook-tab.active {
         border-bottom: none;
         background-color: var(--base);
         z-index: 2;
+        border: 1px solid var(--overlay);
+        border-bottom: none;
+        margin-bottom: -1px;
     }
 </style>
