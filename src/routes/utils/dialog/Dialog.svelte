@@ -41,10 +41,10 @@
                 class=ok-btn
             >Okay</button>
             {/if}
-            {#if "CLOSE" in buttons}
+            {#if "CANCEL" in buttons}
             <button 
                 on:click={(evt) => {
-                    buttons['CLOSE'](evt); 
+                    buttons['CANCEL'](evt); 
                     handle.close();
                 }} 
                 class=ok-btn
