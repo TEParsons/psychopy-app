@@ -1,5 +1,5 @@
 <script>
-    import { pilot_mode, experiment } from '../globals.js';
+    import { experiment } from '../globals.js';
     
     import { FlowLoop } from "../experiment.js";
     import Flow from './Flow.svelte';

@@ -13566,5 +13566,126 @@
     "plugin": null
    }
   }
- }
+ },
+ "TrialHandler": {
+    "params": {
+        "name": {
+        "val": "trials",
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "code",
+        "inputType": "single",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Name",
+        "hint": "Name of this loop",
+        "plugin": null
+        },
+        "nReps": {
+        "val": 5,
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "num",
+        "inputType": "spin",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Num. repeats",
+        "hint": "Number of repeats (for each condition)",
+        "plugin": null
+        },
+        "conditions": {
+        "val": [],
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "str",
+        "inputType": "single",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Conditions",
+        "hint": "A list of dictionaries describing the parameters in each condition",
+        "plugin": null
+        },
+        "conditionsFile": {
+        "val": "",
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "file",
+        "inputType": "table",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Conditions",
+        "hint": "Name of a file specifying the parameters for each condition (.csv, .xlsx, or .pkl). Browse to select a file. Right-click to preview file contents, or create a new file.",
+        "plugin": null
+        },
+        "endPoints": {
+        "val": [
+        0,
+        1
+        ],
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "num",
+        "inputType": "single",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "End points",
+        "hint": "The start and end of the loop (see flow timeline)",
+        "plugin": null
+        },
+        "Selected rows": {
+        "val": "",
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "str",
+        "inputType": "single",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Selected rows",
+        "hint": "Select just a subset of rows from your condition file (the first is 0 not 1!). Examples: 0, 0:5, 5:-1",
+        "plugin": null
+        },
+        "loopType": {
+        "val": "random",
+        "categ": "Basic",
+        "allowedVals": [
+        "random",
+        "sequential",
+        "fullRandom",
+        "staircase",
+        "interleaved staircases"
+        ],
+        "valType": "str",
+        "inputType": "choice",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Loop type",
+        "hint": "How should the next condition value(s) be chosen?",
+        "plugin": null
+        },
+        "random seed": {
+        "val": "",
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "code",
+        "inputType": "single",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Random seed",
+        "hint": "To have a fixed random sequence provide an integer of your choosing here. Leave blank to have a new random sequence on each run of the experiment.",
+        "plugin": null
+        },
+        "isTrials": {
+        "val": true,
+        "categ": "Basic",
+        "allowedVals": [],
+        "valType": "bool",
+        "inputType": "bool",
+        "updates": null,
+        "allowedUpdates": null,
+        "label": "Is trials",
+        "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
+        "plugin": null
+        }
+    }
+  }
 }

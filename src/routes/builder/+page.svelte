@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js';
-    import { pilot_mode, experiment } from './globals.js';
+    import { experiment } from './globals.js';
     import Panel from '../utils/Panel.svelte';
     import Frame from '../utils/Frame.svelte';
 

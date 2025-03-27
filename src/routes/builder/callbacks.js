@@ -1,4 +1,4 @@
-import { pilot_mode, experiment, modified, currentFile } from './globals.js';
+import { experiment, modified, currentFile } from './globals.js';
 import { Experiment } from "./experiment.js";
 import { writable, get } from 'svelte/store';
 import xmlFormat from 'xml-formatter';
@@ -28,9 +28,11 @@ export async function file_open() {
     // load xml
     let xml_parser = new DOMParser()
     let document = xml_parser.parseFromString(await file.text(), "application/xml");
+    let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    let exp = new Experiment(file.name, document)
-    experiment.set(exp);
+    experiment.set(
+        Experiment.fromXML(file.name, node)
+    )
     // mark as no longer modified
     modified.set(false);
 }
@@ -76,7 +78,8 @@ export async function file_save_as() {
 /* Experiment */
 
 export function toggle_pilot_mode() {
-    pilot_mode.update((val) => {return !val})
+    get(experiment).pilotMode = !get(experiment).pilotMode;
+    experiment.set(get(experiment))
 }
 
 /* Views */

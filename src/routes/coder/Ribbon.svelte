@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { pilot_mode, file, modified } from './globals.js';
+    import { file, modified } from './globals.js';
     import Ribbon from '../utils/ribbon/Ribbon.svelte'
     import RibbonSection from '../utils/ribbon/Section.svelte'
     import RibbonButton from '../utils/ribbon/Button.svelte'
@@ -12,8 +12,8 @@
 
     /* Experiment */
 
-    function toggle_pilot_mode() {
-        pilot_mode.set(!$pilot_mode)
+    function toggle_experiment.pilotMode() {
+        experiment.pilotMode.set(!$experiment.pilotMode)
     }
 
     /* Views */
@@ -47,8 +47,8 @@
 
     <RibbonSection id=experiment label=Script icon="/icons/{$theme}/rbn-experiment.svg">       
         <RibbonButton id="ribbon-btn-colors" icon="/icons/{$theme}/btn-colors.svg" label="Color picker" />        
-        <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={pilot_mode} on:click={toggle_pilot_mode} />        
-        {#if $pilot_mode}
+        <RibbonSwitchButton id="ribbon-btn-pilot-toggle" left=Pilot right=Run state={experiment.pilotMode} on:click={toggle_experiment.pilotMode} />        
+        {#if $experiment.pilotMode}
         <RibbonButton id="ribbon-btn-sendpilot" icon="/icons/{$theme}/btn-sendpilot.svg" label="Send to runner" />
         {:else}
         <RibbonButton id="ribbon-btn-sendrun" icon="/icons/{$theme}/btn-sendrun.svg" label="Send to runner" />
@@ -57,7 +57,7 @@
 
     <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
         <RibbonButton id="ribbon-btn-monitors" icon="/icons/{$theme}/btn-monitors.svg" label="Monitor centre" />
-        {#if $pilot_mode}
+        {#if $experiment.pilotMode}
         <RibbonButton id="ribbon-btn-pilotpy" icon="/icons/{$theme}/btn-pilotpy.svg" label="Pilot in Python" disabled={!$file.endsWith(".py")} />
         {:else}
         <RibbonButton id="ribbon-btn-runpy" icon="/icons/{$theme}/btn-runpy.svg" label="Run in Python" disabled={!$file.endsWith(".py")} />
@@ -65,7 +65,7 @@
     </RibbonSection>
 
     <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
-        {#if $pilot_mode}
+        {#if $experiment.pilotMode}
         <RibbonButton id="ribbon-btn-pilotjs" icon="/icons/{$theme}/btn-pilotjs.svg" label="Pilot in browser" disabled={!$file.endsWith(".js")} />
         {:else}
         <RibbonButton id="ribbon-btn-runjs" icon="/icons/{$theme}/btn-runjs.svg" label="Run in browser" disabled={!$file.endsWith(".js")} />

@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../../globals.js';
-    import { pilot_mode, experiment } from '../globals.js';
+    import { experiment } from '../globals.js';
     
     import ComponentLabel from './Label.svelte';
     import ComponentTimelineBar from './TimelineBar.svelte';

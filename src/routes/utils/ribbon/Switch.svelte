@@ -9,9 +9,9 @@
 </script>
 
 <button id={id} class="switch-ctrl" on:click disabled={disabled}>
-    <span class="{$state ? "active" : "inactive"}">{left}</span>
-    <img src="/icons/{$theme}/ctrl-switch-{$state ? "left" : "right"}.svg" alt="Toggle ({$state ? "left" : "right"})"/>
-    <span class="{$state ? "inactive" : "active"}">{right}</span>
+    <span class="{state ? "active" : "inactive"}">{left}</span>
+    <img src="/icons/{$theme}/ctrl-switch-{state ? "left" : "right"}.svg" alt="Toggle ({state ? "left" : "right"})"/>
+    <span class="{state ? "inactive" : "active"}">{right}</span>
 </button>
 
 <style>

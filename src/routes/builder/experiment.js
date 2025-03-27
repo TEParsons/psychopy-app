@@ -9,161 +9,53 @@ export class Experiment {
      * @param {String} filename Name of the experiment file
      * @param {Document} document XML document to create an Experiment from
      */
-    constructor(filename, document) {
+    constructor(filename) {
         // store filename
         this.filename = filename;
-        // store xml document
-        this.document = document;
-        // get top level nodes
-        let exp_node = this.document.getElementsByTagName("PsychoPy2experiment")[0];
-        let settings_node = this.document.getElementsByTagName("Settings")[0];
-        let routines_node = this.document.getElementsByTagName("Routines")[0];
-        let flow_node = this.document.getElementsByTagName("Flow")[0];
-        // get version
-        this.version = exp_node.getAttribute("version");
-        // get settings
-        this.settings = this.parse_node(settings_node);
-        // get routines
+        // create attributes
+        this.version = undefined;
+        this.settings = new Component("SettingsComponent")
         this.routines = new Map();
-        for (let rt of routines_node.childNodes) {
-            let parsed_rt = this.parse_node(rt);
-            if (parsed_rt === null) {
-                continue;
-            }
-            this.routines.set(parsed_rt.name, parsed_rt);
-        }
-        // get loops
         this.loops = new Map();
-        for (let initiator of flow_node.getElementsByTagName("LoopInitiator")) {
-            let parsed_loop = this.parse_node(initiator);
-            this.loops.set(parsed_loop.name, parsed_loop);
-        }
-        // get loop terminators
-        for (let terminator of flow_node.getElementsByTagName("LoopTerminator")) {
-            let parsed_terminator = this.parse_node(terminator);
-            this.loops.get(parsed_terminator.name).terminator = parsed_terminator;
-        }
-        // construct flow
         this.flow = new Flow();
-        let currentLoop = this.flow;
-        for (let emt of flow_node.childNodes) {
-            let parsed_emt = this.parse_node(emt);
-            if (parsed_emt === null) {
-                continue;
-            }
-            this.flow.flat.push(parsed_emt)
-        }
-        // update dynamic flow
-        this.flow.dynamicize()
     }
 
-    parse_node(node, parent) {
-        let parsed_node;
-        // if a Routine, call parse_node on all Components inside it
-        if (node.nodeName === "Routine") {
-            // make Routine
-            parsed_node = new Routine(
-                node.getAttribute("name"),
-                this
-            );
-            // parse Components
-            for (let comp of node.childNodes) {
-                let obj = this.parse_node(comp, parsed_node);
-                // skip none
-                if (obj === null) {
-                    continue;
-                }
-                // add to either components list or settings attribute
-                if (comp.nodeName === "RoutineSettingsComponent") {
-                    parsed_node.settings = obj;
-                } else {
-                    parsed_node.components.push(obj);
-                }
-            }
-            // return now
-            return parsed_node;
+    /**
+     * Get the current pilot mode from Experiment Settings
+     */
+    get pilotMode() {
+        // make sure there is a runMode param
+        if (!this.settings.params.has("runMode")) {
+            this.settings.params.set(
+                "runMode", 
+                Param.fromTemplate("SettingsComponent", "runMode")
+            )
         }
-        // if a LoopTerminator, make and return
-        if (node.nodeName === "LoopTerminator") {
-            // make LoopTerminator
-            parsed_node = new LoopTerminator(
-                this,
-                node.getAttribute("name")
-            );
-            // return now
-            return parsed_node;
+        // get the relevant param
+        let param = this.settings.params.get("runMode")
+        // if 1, then we are in pilot mode
+        return param.val === "0"
+    }
+
+    /**
+     * Set the pilot mode in Experiment Settings
+     */
+    set pilotMode(val) {
+        // make sure there is a runMode param
+        if (!this.settings.params.has("runMode")) {
+            this.settings.params.set(
+                "runMode", 
+                Param.fromTemplate("SettingsComponent", "runMode")
+            )
         }
-        // if a Component or StandaloneRoutine, parse each param
-        if (node.nodeName === "Settings" || node.nodeName.endsWith("Component")) {
-            // make Component
-            parsed_node = new Component(
-                node.nodeName, node.getAttribute("name"), parent, node.getAttribute("plugin")
-            );
-        } else if (node.nodeName.endsWith("Routine")) {
-            // make StandaloneRoutine
-            parsed_node = new StandaloneRoutine(
-                this, node.nodeName, node.getAttribute("name"), node.getAttribute("plugin")
-            );
-        } else if (node.nodeName === "LoopInitiator") {
-            // make LoopInitiator
-            parsed_node = new LoopInitiator(
-                this, node.getAttribute("loopType"), node.getAttribute("name")
-            );
+        // get the relevant param
+        let param = this.settings.params.get("runMode")
+        // set param value
+        if (val) {
+            param.val = "0";
         } else {
-            return null;
+            param.val = "1";
         }
-        // get template for this object
-        let profile = ComponentProfiles[parsed_node.tag]
-        // create template params first
-        if (profile !== undefined) {
-            for (let key in profile.params) {
-                let obj = new Param(
-                    key, 
-                    profile.params[key].val, 
-                    profile.params[key].categ, 
-                    profile.params[key].allowedVals, 
-                    profile.params[key].valType, 
-                    profile.params[key].inputType, 
-                    profile.params[key].updates, 
-                    profile.params[key].allowedUpdates, 
-                    profile.params[key].label,
-                    profile.params[key].hint,
-                    profile.params[key].plugin,
-                )
-                parsed_node.params.set(key, obj);
-            }
-        }
-        // populate its params
-        for (let param of node.getElementsByTagName("Param")) {
-            let name = param.getAttribute("name")
-            // if param was templated, fill in variable attributes
-            if (parsed_node.params.has(name)) {
-                let template = parsed_node.params.get(name);
-                param.name = param.getAttribute("val") || template.val
-                param.name = param.getAttribute("valType") || template.valType
-                param.name = param.getAttribute("updates") || template.updates
-                param.name = param.getAttribute("plugin") || template.plugin
-            } else {
-                let obj = new Param(
-                    name, 
-                    param.getAttribute("val"), 
-                    "Unknown", 
-                    undefined, 
-                    param.getAttribute("valType"), 
-                    "inv", 
-                    param.getAttribute("updates"), 
-                    [], 
-                    param.getAttribute("name"),
-                    "Parameter not recognised",
-                    param.getAttribute("plugin"),
-                );
-                parsed_node.params.set(name, obj);
-            }
-            
-            
-        }
-        // return it
-        return parsed_node;
     }
 
     /**
@@ -174,21 +66,88 @@ export class Experiment {
     }
 
     /**
-     * Get this experiment as an XML string
+     * Populate this experiment from an XML element
+     */
+    static fromXML(filename, node) {
+        // create blank experiment
+        let exp = new Experiment(filename)
+        // get version
+        exp.version = node.getAttribute("version");
+        // get settings
+        let settingsNode = node.getElementsByTagName("Settings")[0];
+        exp.settings = Component.fromXML(settingsNode);
+        // get routines
+        let routinesNode = node.getElementsByTagName("Routines")[0];
+        for (let routineNode of routinesNode.childNodes) {
+            // skip blank nodes
+            if (routineNode instanceof Text) {
+                continue
+            }
+            // parse node
+            let routine;
+            if (routineNode.nodeName === "Routine") {
+                routine = Routine.fromXML(routineNode);
+            } else {
+                routine = StandaloneRoutine.fromXML(routineNode);
+            }
+            routine.exp = exp;
+            // parse and append node
+            exp.routines.set(
+                routineNode.getAttribute("name"),
+                routine
+            )
+        }
+        // get flow
+        let flowNode = node.getElementsByTagName("Flow")[0];
+        for (let elementNode of flowNode.childNodes) {
+            // skip blank nodes
+            if (elementNode instanceof Text) {
+                continue
+            }
+            // parse node
+            let element;
+            if (elementNode.nodeName === "LoopInitiator") {
+                // create initiator object
+                element = LoopInitiator.fromXML(elementNode)
+                element.exp = exp;
+                // store in loops array
+                exp.loops.set(element.name, element)
+            } else if (elementNode.nodeName === "LoopTerminator") {
+                // create and use a terminator object
+                element = LoopTerminator.fromXML(elementNode)
+                element.exp = exp;
+                // store reference in initiator
+                exp.loops.get(element.name).terminator = element
+            } else {
+                // get from routines
+                element = exp.routines.get(elementNode.getAttribute("name"))
+            }
+            // append node
+            exp.flow.flat.push(element)
+        }
+        // dynamicise flow
+        exp.flow.dynamicize()
+
+        console.log(exp)
+
+        return exp
+    }
+
+    /**
+     * Get this experiment as an XML element
      */
     toXML() {
         // create document
         let doc = document.implementation.createDocument(null, "xml");
-        let main = doc.createElement("PsychoPy2experiment")
-        main.setAttribute("encoding", "utf-8")
-        main.setAttribute("version", this.version)
-        // let flow_node = doc.createElement("Flow");
+        let main = doc.createElement("PsychoPy2experiment");
+        main.setAttribute("encoding", "utf-8");
+        main.setAttribute("version", this.version);
 
         // create settings node
         let settingsNode = this.settings.toXML();
-        settingsNode.removeAttribute("name")
-        settingsNode.removeAttribute("plugin")
-        main.appendChild(settingsNode)
+        settingsNode.removeAttribute("name");
+        settingsNode.removeAttribute("plugin");
+        main.appendChild(settingsNode);
 
         // create routines node
         let routinesNode = doc.createElement("Routines");
@@ -231,10 +190,10 @@ export class Experiment {
     
 }
 export class Routine {
-    constructor(name, exp) {
+    constructor() {
         this.tag = "Routine";
-        this.exp = exp;
-        this.name = name;
+        this.exp = undefined;
+        this.name = undefined;
         this.components = [];
         this.settings = undefined;
     }
@@ -333,14 +292,38 @@ export class Routine {
 
         return node
     }
+
+    static fromXML(node) {
+        let routine = new Routine();
+        // parse details
+        routine.name = node.getAttribute("name")
+        // parse Components
+        for (let compNode of node.childNodes) {
+            // skip blank nodes
+            if (compNode instanceof Text) {
+                continue
+            }
+            // parse node
+            let comp = Component.fromXML(compNode);
+            comp.routine = routine;
+            // add to either components list or settings attribute
+            if (comp.tag === "RoutineSettingsComponent") {
+                routine.settings = comp;
+            } else {
+                routine.components.push(comp);
+            }
+        }
+
+        return routine
+    }
 }
 
 export class StandaloneRoutine {
-    constructor(exp, tag, name, plugin = null) {
-        this.exp = this.exp;
+    constructor(tag) {
         this.tag = tag;
-        this.name = name;
-        this.plugin = plugin;
+        this.name = undefined;
+        this.exp = undefined;
+        this.plugin = undefined;
         this.params = new Map();
     }
 
@@ -367,6 +350,49 @@ export class StandaloneRoutine {
         }
 
         return node
+    }
+
+    static fromXML(node) {
+        // get tag from node
+        let tag = node.nodeName;
+        // create from template
+        let comp = StandaloneRoutine.fromTemplate(tag);
+        // populate info
+        comp.name = node.getAttribute("name");
+        comp.plugin = node.getAttribute("plugin") || comp.plugin;
+        // populate params
+        for (let paramNode of node.getElementsByTagName("Param")) {
+            // get param name
+            let name = paramNode.getAttribute("name")
+            // get param template (from comp or a new template)
+            let paramTemplate;
+            if (comp.params.has(name)) {
+                paramTemplate = comp.params.get(name)
+            } else {
+                paramTemplate = Param.fromTemplate(comp.tag, name)
+            }
+            // create param from xml
+            let param = Param.fromXML(paramNode, paramTemplate)
+            // store param
+            comp.params.set(name, param)
+        }
+        
+        return comp
+    }
+
+    static fromTemplate(tag) {
+        // make a blank Component
+        let comp = new StandaloneRoutine(tag);
+        // get profile template
+        let profile = ComponentProfiles[tag];
+        // set plugin
+        comp.plugin = profile.plugin;
+        // populate params
+        for (let key in profile.params) {
+            comp.params.set(key, Param.fromTemplate(tag, key));
+        }
+
+        return comp
     }
 }
 
@@ -403,21 +429,58 @@ export function unsortParams(sorted) {
 }
 
 export class Component {
-    constructor(tag, name, routine, plugin = null) {
+    constructor(tag) {
         this.tag = tag;
-        this.name = name;
-        this.routine = routine;
-        this.plugin = plugin;
+        this.name = undefined;
+        this.routine = undefined;
+        this.plugin = undefined;
         this.params = new Map();
     }
 
-    new(tag, routine) {
-        comp = new Component(
-            tag,
-            ComponentProfiles[tag].params.name.val,
-            routine,
-            ComponentProfiles[tag].params.plugin.val,
-        )
+    static fromXML(node) {
+        // get tag from node
+        let tag = node.nodeName;
+        if (tag === "Settings") {
+            tag += "Component"
+        }
+        // create from template
+        let comp = Component.fromTemplate(tag);
+        // populate info
+        comp.name = node.getAttribute("name")
+        comp.plugin = node.getAttribute("plugin") || comp.plugin
+        // populate params
+        for (let paramNode of node.getElementsByTagName("Param")) {
+            // get param name
+            let name = paramNode.getAttribute("name")
+            // get param template (from comp or a new template)
+            let paramTemplate;
+            if (comp.params.has(name)) {
+                paramTemplate = comp.params.get(name)
+            } else {
+                paramTemplate = Param.fromTemplate(comp.tag, name)
+            }
+            // create param from xml
+            let param = Param.fromXML(paramNode, paramTemplate)
+            // store param
+            comp.params.set(name, param)
+        }
+        
+        return comp
+    }
+
+    static fromTemplate(tag) {
+        // make a blank Component
+        let comp = new Component(tag);
+        // get profile template
+        let profile = ComponentProfiles[tag];
+        // set plugin
+        comp.plugin = profile.plugin;
+        // populate params
+        for (let key in profile.params) {
+            comp.params.set(key, Param.fromTemplate(tag, key));
+        }
+
+        return comp
     }
 
     copyParams() {
@@ -528,8 +591,15 @@ export class Component {
     toXML() {
         // create document
         let doc = document.implementation.createDocument(null, "xml");
+        // get tag
+        let tag
+        if (this.tag === "SettingsComponent") {
+            tag = "Settings"
+        } else {
+            tag = this.tag
+        }
         // create node
-        let node = doc.createElement(this.tag);
+        let node = doc.createElement(tag);
         node.setAttribute("name", this.name);
         node.setAttribute("plugin", this.plugin);
         // add params
@@ -544,46 +614,82 @@ export class Component {
 }
 
 export class Param {
-    constructor(
-        name, 
-        val, 
-        categ, 
-        allowedVals, 
-        valType, 
-        inputType, 
-        updates, 
-        allowedUpdates, 
-        label,
-        hint,
-        plugin = null,
-    ) {
+    constructor(name) {
         this.name = name;
-        this.val = val;
-        this.categ = categ || "Unknown";
-        this.allowedVals = allowedVals;
-        this.valType = valType;
-        this.inputType = inputType;
-        this.updates = updates;
-        this.allowedUpdates = allowedUpdates;
-        this.label = label || name;
-        this.hint = hint || name;
-        this.plugin = plugin;
+        this.val = undefined;
+        this.categ = undefined;
+        this.allowedVals = undefined;
+        this.valType = undefined;
+        this.inputType = undefined;
+        this.updates = undefined;
+        this.allowedUpdates = undefined;
+        this.label = undefined;
+        this.hint = undefined;
+        this.plugin = undefined;
+    }
+
+    static fromTemplate(comp, name) {
+        // make a blank param
+        let param = new Param(name);
+        // get profile template
+        let profile;
+        if (comp in ComponentProfiles) {
+            if (name in ComponentProfiles[comp].params) {
+                profile = ComponentProfiles[comp].params[name]
+            }
+        }
+        // if not templated, make an unknown param template
+        if (profile === undefined) {
+            profile = {
+                val: undefined,
+                categ: "Unknown",
+                allowedVals: undefined,
+                valType: undefined,
+                inputType: "inv",
+                updates: undefined,
+                allowedUpdates: undefined,
+                label: name,
+                hint: "Parameter not recognised",
+                plugin: undefined
+            }
+        }
+        // set info from template
+        for (let [key, value] of Object.entries(profile)) {
+            param[key] = value;
+        }
+
+        return param
+    }
+
+    static fromXML(node, template) {
+        // copy template as new param
+        let param = template.copy();
+        // populate info from node
+        param.name = node.getAttribute("name") || template.name
+        param.val = node.getAttribute("val") || template.val
+        param.valType = node.getAttribute("valType") || template.valType
+        param.updates = node.getAttribute("updates") || template.updates
+        param.plugin = node.getAttribute("plugin") || template.plugin
+
+        return param
     }
 
     copy() {
-        return new Param(
-            this.name, 
-            this.val, 
-            this.categ, 
-            this.allowedVals, 
-            this.valType, 
-            this.inputType, 
-            this.updates, 
-            this.allowedUpdates, 
-            this.label,
-            this.hint,
-            this.plugin,
-        )
+        // create new param
+        let dupe = new Param(this.name)
+        // set attributes
+        dupe.val = this.val
+        dupe.categ = this.categ
+        dupe.allowedVals = this.allowedVals
+        dupe.valType = this.valType
+        dupe.inputType = this.inputType
+        dupe.updates = this.updates
+        dupe.allowedUpdates = this.allowedUpdates
+        dupe.label = this.label
+        dupe.hint = this.hint
+        dupe.plugin = this.plugin
+
+        return dupe
     }
 
     toXML() {
@@ -596,7 +702,6 @@ export class Param {
         node.setAttribute("valType", this.valType);
         node.setAttribute("updates", this.updates);
         node.setAttribute("name", this.name);
-        node.setAttribute("val", this.val);
         node.setAttribute("plugin", this.plugin);
 
         return node
@@ -742,10 +847,10 @@ export class FlowLoop {
 }
 
 export class LoopInitiator {
-    constructor(exp, loopType, name) {
-        this.exp = exp;
-        this.loopType = loopType;
-        this.name = name;
+    constructor() {
+        this.exp = undefined;
+        this.loopType = undefined;
+        this.name = undefined;
         this.params = new Map();
         this.terminator = undefined;
     }
@@ -774,12 +879,55 @@ export class LoopInitiator {
 
         return node
     }
+
+    static fromXML(node) {
+        // create blank LoopInitiator
+        let initiator = LoopInitiator.fromTemplate(
+            node.getAttribute("loopType")
+        )
+        // populate info
+        initiator.name = node.getAttribute("name")
+        // populate params
+        for (let paramNode of node.getElementsByTagName("Param")) {
+            // get param name
+            let name = paramNode.getAttribute("name")
+            // get param template (from comp or a new template)
+            let paramTemplate;
+            if (initiator.params.has(name)) {
+                paramTemplate = initiator.params.get(name)
+            } else {
+                paramTemplate = Param.fromTemplate(initiator.loopType, name)
+            }
+            // create param from xml
+            let param = Param.fromXML(paramNode, paramTemplate)
+            // store param
+            initiator.params.set(name, param)
+        }
+
+        return initiator
+    }
+
+    static fromTemplate(tag) {
+        // make a blank Component
+        let initiator = new LoopInitiator();
+        initiator.loopType = tag;
+        // get profile template
+        let profile = ComponentProfiles[tag];
+        // set plugin
+        initiator.plugin = profile.plugin;
+        // populate params
+        for (let key in profile.params) {
+            initiator.params.set(key, Param.fromTemplate(tag, key));
+        }
+
+        return initiator
+    }
 }
 
 export class LoopTerminator {
-    constructor(exp, name) {
-        this.exp = exp;
-        this.name = name;
+    constructor() {
+        this.exp = undefined;
+        this.name = undefined;
     }
 
     get index() {
@@ -798,6 +946,15 @@ export class LoopTerminator {
         node.setAttribute("name", this.name);
 
         return node
+    }
+
+    static fromXML(node) {
+        // make blank Loopterminator
+        let terminator = new LoopTerminator();
+        // populate info
+        terminator.name = node.getAttribute("name");
+
+        return terminator
     }
 }
 

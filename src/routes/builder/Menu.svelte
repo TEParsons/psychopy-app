@@ -4,7 +4,7 @@
     import MenuItem from '../utils/menu/Item.svelte';
     
     import { theme } from '../globals.js'
-    import { pilot_mode, experiment, modified } from './globals.js';
+    import { experiment, modified } from './globals.js';
 
     import { 
         // file
@@ -35,7 +35,7 @@
 <Menu id=experiment label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
     <MenuItem icon="/icons/{$theme}/btn-monitors.svg" label="Monitor centre" />        
     <MenuItem icon="/icons/{$theme}/btn-settings.svg" label="Experiment settings" />        
-    {#if $pilot_mode}
+    {#if $experiment.pilotMode}
     <MenuItem icon="/icons/{$theme}/btn-sendpilot.svg" label="Send to runner" />
     {:else}
     <MenuItem icon="/icons/{$theme}/btn-sendrun.svg" label="Send to runner" />
@@ -44,7 +44,7 @@
 
 <Menu id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
     <MenuItem icon="/icons/{$theme}/btn-compilepy.svg" label="Compile to Python" />
-    {#if $pilot_mode}
+    {#if $experiment.pilotMode}
     <MenuItem icon="/icons/{$theme}/btn-pilotpy.svg" label="Pilot in Python" />
     {:else}
     <MenuItem icon="/icons/{$theme}/btn-runpy.svg" label="Run in Python" />
@@ -53,7 +53,7 @@
 
 <Menu id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
     <MenuItem icon="/icons/{$theme}/btn-compilejs.svg" label="Compile to JavaScript" />
-    {#if $pilot_mode}
+    {#if $experiment.pilotMode}
     <MenuItem icon="/icons/{$theme}/btn-pilotjs.svg" label="Pilot in browser" />
     {:else}
     <MenuItem icon="/icons/{$theme}/btn-runjs.svg" label="Run in browser" />

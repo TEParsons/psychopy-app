@@ -30,7 +30,7 @@
     id=id 
     title={component.name} 
     bind:handle={handle} 
-    buttons={{OK: applyChanges, CLOSE: discardChanges, HELP: component.helpLink}}
+    buttons={{OK: applyChanges, CANCEL: discardChanges, HELP: component.helpLink}}
 >
 	<Panel component={component} tempParams={tempParams} />
 </Dialog>

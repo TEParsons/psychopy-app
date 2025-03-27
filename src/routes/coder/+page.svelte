@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js';
-    import { file, pilot_mode } from './globals.js';
+    import { file } from './globals.js';
     import Ribbon from './Ribbon.svelte';
     import Panel from '../utils/Panel.svelte';
     import Frame from '../utils/Frame.svelte';

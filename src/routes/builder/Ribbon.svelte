@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { pilot_mode, currentFile, modified, experiment } from './globals.js';
+    import { currentFile, modified, experiment } from './globals.js';
     import Menu from './Menu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';
@@ -16,7 +16,6 @@
         file_save_as,
         // experiment
         toggle_pilot_mode,
-
         // views
         new_builder_frame,
         new_coder_frame,
@@ -93,20 +92,20 @@
             id="ribbon-btn-pilot-toggle" 
             left=Pilot 
             right=Run 
-            state={pilot_mode} 
+            bind:state={$experiment.pilotMode} 
             on:click={toggle_pilot_mode} 
             disabled={$experiment === null}
         />        
         <!-- <RibbonButton 
-            id="ribbon-btn-{$pilot_mode ? "sendpilot" : "sendrun"}" 
-            icon="/icons/{$theme}/btn-{$pilot_mode ? "sendpilot" : "sendrun"}.svg" 
+            id="ribbon-btn-{$experiment.pilotMode ? "sendpilot" : "sendrun"}" 
+            icon="/icons/{$theme}/btn-{$experiment.pilotMode ? "sendpilot" : "sendrun"}.svg" 
             label="Send to runner" 
         /> -->
     </RibbonSection>
 
     <!-- <RibbonSection id=desktop label=Desktop icon="/icons/{$theme}/rbn-desktop.svg">
         <RibbonButton id="ribbon-btn-compilepy" icon="/icons/{$theme}/btn-compilepy.svg" label="Compile to Python" />
-        <RibbonButton id="ribbon-btn-{$pilot_mode ? "pilotpy" : "runpy"}" icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotpy" : "runpy"}.svg" label="{$pilot_mode ? "Pilot" : "Run"} in Python" />
+        <RibbonButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="/icons/{$theme}/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
     </RibbonSection> -->
 
     <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
@@ -116,9 +115,9 @@
             label="Compile to JavaScript" 
         /> -->
         <RibbonButton 
-            id="ribbon-btn-{$pilot_mode ? "pilotjs" : "runjs"}" 
-            icon="/icons/{$theme}/btn-{$pilot_mode ? "pilotjs" : "runjs"}.svg" 
-            label="{$pilot_mode ? "Pilot" : "Run"} in browser" 
+            id="ribbon-btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}" 
+            icon="/icons/{$theme}/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
+            label="{$experiment.pilotMode ? "Pilot" : "Run"} in browser" 
         />
         <!-- <RibbonButton 
             id="ribbon-btn-sync" 
