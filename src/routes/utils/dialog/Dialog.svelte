@@ -41,13 +41,21 @@
                 class=ok-btn
             >Okay</button>
             {/if}
+            {#if "APPLY" in buttons}
+            <button 
+                on:click={(evt) => {
+                    buttons['APPLY'](evt); 
+                }} 
+                class=apply-btn
+            >Apply</button>
+            {/if}
             {#if "CANCEL" in buttons}
             <button 
                 on:click={(evt) => {
                     buttons['CANCEL'](evt); 
                     handle.close();
                 }} 
-                class=ok-btn
+                class=cancel-btn
             >Cancel</button>
             {/if}
         </div>
