@@ -23,6 +23,6 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
-		"xml-formatter": "^3.6.4"
+		"xml-formatter": "^3.6.5"
 	}
 }
