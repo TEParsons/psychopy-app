@@ -1,19 +1,43 @@
 <script>
     import ComponentButton from './Button.svelte';
     import ComponentSection from './Section.svelte';
+
+    import ComponentProfiles from '$lib/components.json';
+
+    let sortedComponents = new Map();
+    for (let [name, profile] of Object.entries(ComponentProfiles)) {
+        // skip anything that isn't a Component or Routine
+        if (!profile['__class__'].match(/psychopy\.experiment\.(components|routines).*/)) {
+            continue
+        }
+        // mark base components as hidden
+        if ([
+            "BaseComponent", "BaseVisualComponent", "BaseDeviceComponent", "BaseStandaloneRoutine",
+            "BaseValidator"
+        ].includes(profile['__name__'])) {
+            profile.hidden = true
+        }
+        // iterate through categories
+        for (let categ of profile.categories) {
+            // make sure category exists
+            if (!sortedComponents.has(categ)) {
+                sortedComponents.set(categ, [])
+            }
+            // append Component to categ
+            sortedComponents.get(categ).push(profile)
+        }
+    }
 </script>
 
 
 <div id="components">
-    <ComponentSection id=stimuli label="Stimuli">
-        <ComponentButton component=ImageComponent></ComponentButton>
-        <ComponentButton component=SoundComponent></ComponentButton>
-        <ComponentButton component=TextComponent></ComponentButton>
+    {#each [...sortedComponents] as [categ, components]}
+    <ComponentSection id={categ} label={categ}>
+        {#each components as comp}
+        <ComponentButton component={comp}></ComponentButton>
+        {/each}
     </ComponentSection>
-    <ComponentSection id=responses label="Responses">
-        <ComponentButton component=SliderComponent></ComponentButton>
-        <ComponentButton component=MouseComponent></ComponentButton>
-    </ComponentSection>
+    {/each}
 </div>
 
 <style>

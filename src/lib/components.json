@@ -13568,6 +13568,8 @@
   }
  },
  "TrialHandler": {
+    "__class__": "psychopy.experiment.loops:TrialHandler",
+    "__name__": "TrialHandler",
     "params": {
         "name": {
         "val": "trials",

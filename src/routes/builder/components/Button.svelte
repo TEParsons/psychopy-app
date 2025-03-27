@@ -3,12 +3,15 @@
     import { theme } from '../../globals.js';
     import { experiment } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
-    import { StandaloneRoutine, Routine } from '../experiment.js';
+    import { StandaloneRoutine, Routine, Component } from '../experiment.js';
 
     export let component;
 
     function title_case(name) {
-        name = name.replace("Component", "")
+        name = name.replace("Component", "");
+        name = name.replace("Routine", "");
+
+        name = name.replace(/(\w)([A-Z])/g, "$1 $2")
 
         return name;
     }
@@ -36,10 +39,16 @@
     
 </script>
 
-<button class="component-button vertical" id=add-{component}-btn disabled={!$enabled}>
-    <img src="/icons/{$theme}/components/{component}.svg" alt="">
-    <label for=add-{component}-btn>{title_case(component)}</label>
+{#if !component.hidden}
+<button 
+    class="component-button vertical" 
+    id="add-{component['__name__']}-btn" 
+    disabled={!$enabled}
+>
+    <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">
+    <label for="add-{component['__name__']}-btn">{title_case(component['__name__'])}</label>
 </button>
+{/if}
 
 <style>
     button.component-button {
