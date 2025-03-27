@@ -48,7 +48,7 @@
                     handle.close();
                 }} 
                 class=ok-btn
-            >Close</button>
+            >Cancel</button>
             {/if}
         </div>
     </div>
