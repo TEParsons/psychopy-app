@@ -3,6 +3,7 @@
     import ComponentSection from './Section.svelte';
 
     import ComponentProfiles from '$lib/components.json';
+    import RoutineButton from './RoutineButton.svelte';
 
     let sortedComponents = new Map();
     for (let [name, profile] of Object.entries(ComponentProfiles)) {
@@ -49,7 +50,14 @@
     <ComponentSection id={categ} label={categ}>
         {#each sortedComponents.get(categ) as comp}
         {#if comp['__class__'].startsWith("psychopy.experiment.components")}
-        <ComponentButton component={comp}></ComponentButton>
+        <ComponentButton 
+            component={comp}
+            
+        ></ComponentButton>
+        {:else}
+        <RoutineButton 
+            component={comp}
+        ></RoutineButton>
         {/if}
         {/each}
     </ComponentSection>
