@@ -4664,9 +4664,9 @@
    }
   }
  },
- "JoystickComponent": {
-  "__class__": "psychopy.experiment.components.joystick:JoystickComponent",
-  "__name__": "JoystickComponent",
+ "JoyStickComponent": {
+  "__class__": "psychopy.experiment.components.joystick:JoyStickComponent",
+  "__name__": "JoyStickComponent",
   "categories": [
    "Responses"
   ],
@@ -4675,7 +4675,7 @@
   ],
   "plugin": null,
   "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\joystick\\light\\joystick.png",
-  "tooltip": "Joystick: query joystick position and buttons",
+  "tooltip": "JoyStick: query joystick position and buttons",
   "version": "0.0.0",
   "beta": false,
   "validatorClasses": [],

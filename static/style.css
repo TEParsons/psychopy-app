@@ -72,7 +72,7 @@ button.vertical {
     grid-template-rows: [icon] 4rem [label] min-content;
     grid-gap: .5rem 0;
     align-items: center;
-    justify-content: center;
+    justify-items: center;
 }
 button.vertical img {
     grid-column-start: icon;

@@ -30,7 +30,7 @@
         // get the current routine
         let currentRoutine = $experiment.routines.get(value);
         // disable Component buttons when on a StandaloneRoutine
-        if (component.endsWith("Component")) {
+        if (component['__name__'].endsWith("Component")) {
             enabled.set(currentRoutine instanceof Routine);
         } else {
             enabled.set(true);

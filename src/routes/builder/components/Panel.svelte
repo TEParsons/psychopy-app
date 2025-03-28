@@ -27,13 +27,27 @@
             sortedComponents.get(categ).push(profile)
         }
     }
+    // define categ order
+    let firstCategs = [
+        "Stimuli", "Responses"
+    ]
+    let lastCategs = [
+        "I/O", "Custom", "Other"
+    ]
+    let categOrder = firstCategs
+    for (let categ of sortedComponents.keys()) {
+        if (!firstCategs.includes(categ) && !lastCategs.includes(categ)) {
+            categOrder.push(categ)
+        }
+    }
+    categOrder.concat(lastCategs)
 </script>
 
 
 <div id="components">
-    {#each [...sortedComponents] as [categ, components]}
+    {#each categOrder as categ}
     <ComponentSection id={categ} label={categ}>
-        {#each components as comp}
+        {#each sortedComponents.get(categ) as comp}
         <ComponentButton component={comp}></ComponentButton>
         {/each}
     </ComponentSection>
