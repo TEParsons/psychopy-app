@@ -7,11 +7,15 @@
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from '../dialogs/component/Dialog.svelte';
+    import { writable } from 'svelte/store';
 
     export let routine;
 
     // get information about ticks from routine
-    let ticks = routine.visualTicks;
+    let ticks = writable(routine.visualTicks);
+    experiment.subscribe((value) => {
+        ticks.set(routine.visualTicks);
+    })
 
     let settingsDlg;
 </script>
@@ -33,14 +37,14 @@
     ></Dialog>
 
     {#if routine.components}
-    <TimelineHeader ticks={ticks}></TimelineHeader>
+    <TimelineHeader ticks={$ticks}></TimelineHeader>
     {/if}
 
     {#each routine.components as component}
     {#if component !== null}
     <EntryPoint routine={routine} index={component.index}></EntryPoint>
     <ComponentLabel component={component}></ComponentLabel>
-    <ComponentTimelineBar component={component} ticks={ticks}></ComponentTimelineBar>
+    <ComponentTimelineBar component={component} ticks={$ticks}></ComponentTimelineBar>
     {/if}
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>

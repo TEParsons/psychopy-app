@@ -8,6 +8,7 @@
 
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '../../experiment.js';
+    import { experiment } from '../../globals';
 
     let tempParams = writable(sortParams(component.copyParams()))
 
@@ -22,6 +23,8 @@
     function applyChanges(evt) {
         // apply temporary params to component
         component.params = unsortParams($tempParams)
+        // refresh
+        experiment.set($experiment)
     }
 
 </script>

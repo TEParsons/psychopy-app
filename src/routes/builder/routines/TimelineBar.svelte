@@ -1,9 +1,13 @@
 <script>
+    import Dialog from "../dialogs/component/Dialog.svelte";
+
     export let component;
     export let ticks;
 
     // get routine from component
     let routine = component.routine;
+    
+    let dialog;
 </script>
 
 
@@ -16,7 +20,12 @@
 {/if}
 </div>
 
-<div class=comp-timeline id={component.params.get('name').val} style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;">
+<div 
+    class=comp-timeline 
+    id={component.params.get('name').val} 
+    style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
+    on:click={() => dialog.showModal()}
+>
     <div 
         class=comp-timeline-bar 
         style="
@@ -30,6 +39,11 @@
     {/each}
     <div class=comp-timeline-tick id=timeline-label-remainder></div>
 </div>
+<Dialog 
+    id="dlg-{component.name}"
+    component={component} 
+    bind:handle={dialog}
+></Dialog>
 
 <div class=comp-overshoot-timeline>
 {#if component.visualStop === null}
