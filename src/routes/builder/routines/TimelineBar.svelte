@@ -1,4 +1,5 @@
 <script>
+    import { hoveredComponent } from './globals.js';
     import Dialog from "../dialogs/component/Dialog.svelte";
 
     export let component;
@@ -25,6 +26,8 @@
     id={component.params.get('name').val} 
     style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
     on:click={() => dialog.showModal()}
+    on:mouseenter={() => hoveredComponent.set(component.name)}
+    on:mouseleave={() => hoveredComponent.set(null)}
 >
     <div 
         class=comp-timeline-bar 

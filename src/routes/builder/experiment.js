@@ -229,6 +229,17 @@ export class Routine {
         comp.routine = this;
     }
 
+    removeComponent(comp) {
+        // remove from Components array
+        let i = this.components.indexOf(comp)
+        this.components = Array.prototype.concat(
+            this.components.slice(0, i),
+            this.components.slice(i+1)
+        )
+        // remove reference to self
+        comp.routine = undefined;
+    }
+
     get visualStop() {
         let dur = 1;
         for (let comp of this.components) {

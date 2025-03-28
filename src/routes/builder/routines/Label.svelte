@@ -1,5 +1,5 @@
 <script>
-    import { dragging } from './globals.js';
+    import { dragging, hoveredComponent } from './globals.js';
     import { theme } from '../../globals.js';
     import Dialog from '../dialogs/component/Dialog.svelte';
 
@@ -15,6 +15,7 @@
     let dialog;
 </script>
 
+
 <label 
     class=comp-name 
     for={component.params.get('name').val} 
@@ -23,9 +24,10 @@
     on:dragstart={on_dragstart} 
     on:dragend={on_dragend} 
     on:click={() => dialog.showModal()}
+    on:mouseenter={() => hoveredComponent.set(component.name)}
+    on:mouseleave={() => hoveredComponent.set(null)}
     role="none"
->
-    <img class=edit src="/icons/{$theme}/btn-edit.svg" alt=✎ />
+>    
     {component.name}
     <img 
         src="/icons/{$theme}/components/{component.tag}.svg" 
@@ -41,27 +43,14 @@
 <style>
     .comp-name {
         display: grid;
-        grid-template-columns: [edit] 1.5rem [name] min-content [icon] 3rem;
+        grid-template-columns: [name] min-content [icon] 3rem;
         grid-gap: 1rem;
         
         align-items: center;
         justify-items: center;
         grid-column-start: name;
         font-size: 1.2rem;
-        padding: .5rem 1rem;
+        padding: .5rem;
         justify-self: right;
-    }
-    .edit {
-        visibility: hidden;
-        padding: 0;
-        margin: 0;
-        justify-items: center;
-        align-items: center;
-    }
-    .edit img {
-        width: 1.5rem;
-    }
-    .comp-name:hover .edit {
-        visibility: visible;
     }
 </style>

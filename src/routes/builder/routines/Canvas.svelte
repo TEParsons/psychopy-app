@@ -2,6 +2,7 @@
     import { theme } from '../../globals.js';
     import { experiment } from '../globals.js';
     
+    import ComponentControls from './Controls.svelte';
     import ComponentLabel from './Label.svelte';
     import ComponentTimelineBar from './TimelineBar.svelte';
     import TimelineHeader from './Timeline.svelte';
@@ -44,6 +45,7 @@
     {#if component !== null}
     <EntryPoint routine={routine} index={component.index}></EntryPoint>
     <ComponentLabel component={component}></ComponentLabel>
+    <ComponentControls routine={routine} component={component}></ComponentControls>
     <ComponentTimelineBar component={component} ticks={$ticks}></ComponentTimelineBar>
     {/if}
     {/each}
@@ -53,12 +55,13 @@
 <style>
     .routine-canvas {
         display: grid;
-        grid-template-columns: [entrypoints] 1rem [name] min-content [undershoot] 3rem [timeline] 1fr [overshoot] 3rem;
+        grid-template-columns: [entrypoints] 1rem [name] min-content [controls] min-content [undershoot] 3rem [timeline] 1fr [overshoot] 3rem;
         grid-gap: 0;
         padding-bottom: 2rem;
     }
     #routine-settings {
-        grid-column-start: name;
+        grid-column-start: entrypoints;
+        grid-column-end: undershoot;
         justify-self: start;
         z-index: 2;
     }
