@@ -222,6 +222,13 @@ export class Routine {
         this.settings.name = value;
     }
 
+    addComponent(comp) {
+        // add to Components array
+        this.components.push(comp);
+        // add reference to self
+        comp.routine = this;
+    }
+
     get visualStop() {
         let dur = 1;
         for (let comp of this.components) {

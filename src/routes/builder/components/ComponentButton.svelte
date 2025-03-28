@@ -4,8 +4,13 @@
     import { experiment } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '../experiment.js';
+    import Dialog from '../dialogs/component/Dialog.svelte';
 
+    let dialog;
     export let component;
+    let dlgComponent = writable(
+        Component.fromTemplate(component['__name__'])
+    );
 
     function titleCase(name) {
         name = name.replace("Component", "");
@@ -14,6 +19,15 @@
         name = name.replace(/(\w)([A-Z])/g, "$1 $2")
 
         return name;
+    }
+
+    function newComponent() {
+        // create a new Component for the dialog
+        dlgComponent.set(
+            Component.fromTemplate(component['__name__'])
+        )
+        // show dialog
+        dialog.showModal()
     }
     
     let enabled = writable(false);
@@ -29,12 +43,8 @@
         }
         // get the current routine
         let currentRoutine = $experiment.routines.get(value);
-        // disable Component buttons when on a StandaloneRoutine
-        if (component['__name__'].endsWith("Component")) {
-            enabled.set(currentRoutine instanceof Routine);
-        } else {
-            enabled.set(true);
-        }
+        // disable when on a StandaloneRoutine
+        enabled.set(currentRoutine instanceof Routine);
     })
     
 </script>
@@ -44,10 +54,16 @@
     class="component-button vertical" 
     id="add-{component['__name__']}-btn" 
     disabled={!$enabled}
+    on:click={newComponent}
 >
     <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">
     <label for="add-{component['__name__']}-btn">{titleCase(component['__name__'])}</label>
 </button>
+<Dialog 
+    id="dlg-{dlgComponent.name}"
+    component={$dlgComponent} 
+    bind:handle={dialog}
+></Dialog>
 {/if}
 
 <style>

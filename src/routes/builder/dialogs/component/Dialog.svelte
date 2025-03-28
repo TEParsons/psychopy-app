@@ -9,11 +9,11 @@
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '../../experiment.js';
     import { experiment } from '../../globals';
+    import { currentRoutine } from '../../globals.js'
 
     let tempParams = writable(sortParams(component.copyParams()))
 
     function discardChanges(evt) {
-        
         // reset temp params from component to discard any live changes
         tempParams.set(
             sortParams(component.copyParams())
@@ -23,6 +23,10 @@
     function applyChanges(evt) {
         // apply temporary params to component
         component.params = unsortParams($tempParams)
+        // if component is newly created, add it to the current Routine
+        if (!$currentRoutine.components.includes(component)) {
+            $currentRoutine.addComponent(component)
+        }
         // refresh
         experiment.set($experiment)
     }

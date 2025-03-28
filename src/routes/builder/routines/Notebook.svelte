@@ -3,10 +3,14 @@
     import NotebookPage from '../../utils/notebook/Page.svelte';
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
-    import { experiment } from '../globals.js';
+    import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from './globals.js';
     import { onMount, onDestroy } from 'svelte';
     import { StandaloneRoutine, Routine } from '../experiment.js';
+
+    currentPage.subscribe((value) => {
+        currentRoutine.set($experiment.routines.get(value))
+    })
 
 </script>
 

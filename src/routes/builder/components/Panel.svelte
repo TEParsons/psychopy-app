@@ -1,5 +1,5 @@
 <script>
-    import ComponentButton from './Button.svelte';
+    import ComponentButton from './ComponentButton.svelte';
     import ComponentSection from './Section.svelte';
 
     import ComponentProfiles from '$lib/components.json';
@@ -48,7 +48,9 @@
     {#each categOrder as categ}
     <ComponentSection id={categ} label={categ}>
         {#each sortedComponents.get(categ) as comp}
+        {#if comp['__class__'].startsWith("psychopy.experiment.components")}
         <ComponentButton component={comp}></ComponentButton>
+        {/if}
         {/each}
     </ComponentSection>
     {/each}
