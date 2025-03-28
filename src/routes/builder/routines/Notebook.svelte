@@ -13,12 +13,12 @@
 
 <Notebook id=routine-notebook flush>
     {#if $experiment !== null}
-    {#each Array.from($experiment.routines.keys()) as name}
-    <NotebookPage id={name} title={name} activeTracker={currentPage}>
-        {#if $experiment.routines.get(name) instanceof Routine}
-        <RoutineCanvas routine={$experiment.routines.get(name)} />
+    {#each [...$experiment.routines] as [name, routine]}
+    <NotebookPage id={name} title={routine.name} activeTracker={currentPage}>
+        {#if routine instanceof Routine}
+        <RoutineCanvas routine={routine} />
         {:else if $experiment.routines.get(name) instanceof StandaloneRoutine}
-        <StandaloneRoutineCanvas component={$experiment.routines.get(name)} />
+        <StandaloneRoutineCanvas component={routine} />
         {/if}
     </NotebookPage>
     {/each}

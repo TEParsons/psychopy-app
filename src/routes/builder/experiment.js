@@ -80,6 +80,7 @@ export class Experiment {
     static fromXML(filename, node) {
         // create blank experiment
         let exp = new Experiment(filename)
+        exp.flow.flat = [];
         // get version
         exp.version = node.getAttribute("version");
         // get settings
@@ -202,10 +203,23 @@ export class Routine {
     constructor() {
         this.tag = "Routine";
         this.exp = undefined;
-        this.name = undefined;
         this.components = [];
         // placeholder settings
         this.settings = Component.fromTemplate("RoutineSettingsComponent");
+    }
+
+    get name() {
+        return this.settings.name
+    }
+
+    set name(value) {
+        if (this.exp !== undefined) {
+            // relocate in routines map
+            this.exp.routines.delete(this.name)
+            this.exp.routines.set(value, this)
+        }
+        // set in settings
+        this.settings.name = value;
     }
 
     get visualStop() {
@@ -331,10 +345,25 @@ export class Routine {
 export class StandaloneRoutine {
     constructor(tag) {
         this.tag = tag;
-        this.name = undefined;
         this.exp = undefined;
         this.plugin = undefined;
         this.params = new Map();
+    }
+
+    get name() {
+        if (this.params.has("name")) {
+            // if we have a name param, get name from it
+            return this.params.get("name").val
+        }
+    }
+
+    set name(value) {
+        if (!this.params.has("name")) {
+            // if we don't have a name param, make one
+            this.params.set("name", Param.fromTemplate(this.tag, "name"));
+        }
+        // return name param
+        this.params.get("name").val = value;
     }
 
     copyParams() {
@@ -441,10 +470,25 @@ export function unsortParams(sorted) {
 export class Component {
     constructor(tag) {
         this.tag = tag;
-        this.name = undefined;
         this.routine = undefined;
         this.plugin = undefined;
         this.params = new Map();
+    }
+
+    get name() {
+        if (this.params.has("name")) {
+            // if we have a name param, get name from it
+            return this.params.get("name").val
+        }
+    }
+
+    set name(value) {
+        if (!this.params.has("name")) {
+            // if we don't have a name param, make one
+            this.params.set("name", Param.fromTemplate(this.tag, "name"));
+        }
+        // return name param
+        this.params.get("name").val = value;
     }
 
     static fromXML(node) {
