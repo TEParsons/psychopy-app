@@ -38,7 +38,8 @@
     .flowline-arrow {
         position: absolute;
         left: 100%;
-        top: calc(.5rem - 1px);
-        width: .75rem;
+        top: 1rem;
+        transform: translateY(-50%);
+        height: .75rem;
     }
 </style>
