@@ -20,4 +20,7 @@
     .comp-timeline {
         align-content: end;
     }
+    .comp-timeline-tick {
+        overflow-x: hidden;
+    }
 </style>
