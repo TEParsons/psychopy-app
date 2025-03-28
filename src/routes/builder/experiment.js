@@ -137,7 +137,7 @@ export class Experiment {
         // dynamicise flow
         exp.flow.dynamicize()
 
-        console.log(exp)
+        console.log(`Loaded experiment ${filename}:`, exp);
 
         return exp
     }
