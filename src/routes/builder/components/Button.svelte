@@ -7,7 +7,7 @@
 
     export let component;
 
-    function title_case(name) {
+    function titleCase(name) {
         name = name.replace("Component", "");
         name = name.replace("Routine", "");
 
@@ -46,7 +46,7 @@
     disabled={!$enabled}
 >
     <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">
-    <label for="add-{component['__name__']}-btn">{title_case(component['__name__'])}</label>
+    <label for="add-{component['__name__']}-btn">{titleCase(component['__name__'])}</label>
 </button>
 {/if}
 
@@ -66,6 +66,6 @@
         width: 3.5rem;
     }
     button.component-button label {
-        
+        hyphens: auto;
     }
 </style>

@@ -40,7 +40,7 @@
             categOrder.push(categ)
         }
     }
-    categOrder.concat(lastCategs)
+    categOrder = categOrder.concat(lastCategs)
 </script>
 
 
