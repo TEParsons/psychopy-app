@@ -8,7 +8,9 @@ import xmlFormat from 'xml-formatter';
 
 export function file_new() {
     currentFile.set(null);
-    experiment.set(null);
+    experiment.set(
+        new Experiment("untitled.psyexp")
+    );
 }
 
 export async function file_open() {

@@ -18,6 +18,15 @@ export class Experiment {
         this.routines = new Map();
         this.loops = new Map();
         this.flow = new Flow();
+        // placeholder Routine
+        let trial = new Routine();
+        trial.exp = this;
+        trial.name = "trial";
+        this.routines.set(
+            "trial", trial
+        )
+        this.flow.flat.push(trial)
+        this.flow.dynamicize()
     }
 
     /**
@@ -195,7 +204,8 @@ export class Routine {
         this.exp = undefined;
         this.name = undefined;
         this.components = [];
-        this.settings = undefined;
+        // placeholder settings
+        this.settings = Component.fromTemplate("RoutineSettingsComponent");
     }
 
     get visualStop() {
