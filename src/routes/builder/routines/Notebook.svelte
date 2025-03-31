@@ -8,8 +8,13 @@
     import { onMount, onDestroy } from 'svelte';
     import { StandaloneRoutine, Routine } from '../experiment.js';
 
+    // when the page changes, update the current Routine
     currentPage.subscribe((value) => {
         currentRoutine.set($experiment.routines.get(value))
+    })
+    // when the experiment changes, get the current Routine again
+    experiment.subscribe((value) => {
+        currentRoutine.set(value.routines.get($currentPage))
     })
 
 </script>

@@ -1,7 +1,7 @@
 <script>
     import { writable } from 'svelte/store';
     import { theme } from '../../globals.js';
-    import { experiment } from '../globals.js';
+    import { experiment, currentRoutine } from '../globals.js';
     import { updateHistory } from '../history.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '../experiment.js';
@@ -31,28 +31,13 @@
         experiment.set($experiment);
     }
     
-    let enabled = writable(false);
-    currentPage.subscribe((value) => {
-        // if no experiment yet or no routine yet, skip
-        if ($experiment === null) {
-            enabled.set(false);
-            return
-        }
-        if (!$experiment.routines.has(value)) {
-            enabled.set(false);
-            return
-        }
-        // enable otherwise
-        enabled.set(true);
-    })
-    
 </script>
 
 {#if !component.hidden}
 <button 
     class="component-button vertical" 
     id="add-{component['__name__']}-btn" 
-    disabled={!$enabled}
+    disabled={!$currentRoutine}
     on:click={newRoutine}
 >
     <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">

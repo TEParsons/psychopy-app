@@ -1,7 +1,7 @@
 <script>
     import { writable } from 'svelte/store';
     import { theme } from '../../globals.js';
-    import { experiment } from '../globals.js';
+    import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '../experiment.js';
     import Dialog from '../dialogs/component/Dialog.svelte';
@@ -29,31 +29,14 @@
         // show dialog
         dialog.showModal()
     }
-    
-    let enabled = writable(false);
-    currentPage.subscribe((value) => {
-        // if no experiment yet or no routine yet, skip
-        if ($experiment === null) {
-            enabled.set(false);
-            return
-        }
-        if (!$experiment.routines.has(value)) {
-            enabled.set(false);
-            return
-        }
-        // get the current routine
-        let currentRoutine = $experiment.routines.get(value);
-        // disable when on a StandaloneRoutine
-        enabled.set(currentRoutine instanceof Routine);
-    })
-    
+        
 </script>
 
 {#if !component.hidden}
 <button 
     class="component-button vertical" 
     id="add-{component['__name__']}-btn" 
-    disabled={!$enabled}
+    disabled={!($currentRoutine instanceof Routine)}
     on:click={newComponent}
 >
     <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">
