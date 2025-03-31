@@ -1,7 +1,8 @@
 <script>
     import { writable } from 'svelte/store';
     import { theme } from '../../globals.js';
-    import { experiment, updateHistory } from '../globals.js';
+    import { experiment } from '../globals.js';
+    import { updateHistory } from '../history.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '../experiment.js';
 

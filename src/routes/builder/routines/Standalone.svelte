@@ -2,7 +2,8 @@
     import { writable } from "svelte/store";
     import Panel from "../dialogs/component/Panel.svelte";
     import { sortParams, unsortParams } from "../experiment";
-    import { experiment, updateHistory } from '../globals';
+    import { experiment } from '../globals';
+    import { updateHistory } from '../history.js';
 
 
     export let component

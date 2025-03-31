@@ -1,7 +1,8 @@
 <script>
     import { theme } from '../../globals.js';
     import { dragging } from './globals.js';
-    import { experiment, updateHistory } from '../globals.js'
+    import { experiment } from '../globals.js'
+    import { updateHistory } from '../history.js';
     import { writable } from 'svelte/store';
 
     export let routine;

@@ -1,6 +1,7 @@
 <script>
     import { theme } from '../globals.js'
-    import { currentFile, changeHistory, changeFuture, experiment } from './globals.js';
+    import { currentFile, experiment } from './globals.js';
+    import { changeHistory, changeFuture } from './history.js';
     import Menu from './Menu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';

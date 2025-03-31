@@ -1,6 +1,7 @@
 <script>
     import { dragging } from './dragging.js';
-    import { experiment, updateHistory } from '../globals.js'
+    import { experiment } from '../globals.js'
+    import { updateHistory } from '../history.js';
     import { writable } from 'svelte/store';
 
     export let index;

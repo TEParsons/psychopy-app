@@ -1,6 +1,7 @@
 <script>
     import { theme } from '../../globals.js';
-    import { experiment, updateHistory } from '../globals.js';
+    import { experiment } from '../globals.js';
+    import { updateHistory } from '../history.js';
     import { hoveredComponent } from './globals.js';
 
     export let component;

@@ -8,7 +8,8 @@
 
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '../../experiment.js';
-    import { experiment, updateHistory } from '../../globals';
+    import { experiment } from '../../globals';
+    import { updateHistory } from '../../history.js';
     import { currentRoutine } from '../../globals.js'
 
     let tempParams = writable(sortParams(component.copyParams()))
