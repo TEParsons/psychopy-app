@@ -1,4 +1,4 @@
-import { experiment, modified, currentFile } from './globals.js';
+import { experiment, currentFile, changeHistory, changeFuture, clearHistory, updateHistory } from './globals.js';
 import { Experiment } from "./experiment.js";
 import { writable, get } from 'svelte/store';
 import xmlFormat from 'xml-formatter';
@@ -8,9 +8,12 @@ import xmlFormat from 'xml-formatter';
 
 export function file_new() {
     currentFile.set(null);
+    // create blank experiment
     experiment.set(
         new Experiment("untitled.psyexp")
     );
+    // mark as no longer modified
+    clearHistory()
 }
 
 export async function file_open() {
@@ -36,7 +39,9 @@ export async function file_open() {
         Experiment.fromXML(file.name, node)
     )
     // mark as no longer modified
-    modified.set(false);
+    clearHistory()
+
+    console.log(`Loaded experiment ${file.name}:`, get(experiment));
 }
 
 export async function file_save() {
@@ -55,7 +60,7 @@ export async function file_save() {
     file.write(content);
     file.close();
     // mark as no longer modified
-    modified.set(false);
+    clearHistory()
 }
 
 export async function file_save_as() {
@@ -76,10 +81,33 @@ export async function file_save_as() {
 }
 
 /* Edit */
+export function undo() {
+    // get writables
+    let past = get(changeHistory)
+    let present = get(experiment)
+    let future = get(changeFuture)
+    // remove last item from history array
+    let last = past.pop()
+    // prepend current experiment to future array
+    future.unshift(present.toJSON())
+    // set experiment from change history
+    present = Experiment.fromJSON(last)
+    // update writables
+    changeHistory.set(past)
+    experiment.set(present)
+    changeFuture.set(future) 
+
+    console.log("ROLLED BACK TO", past, present, future)
+}
+
+export function redo() {
+
+}
 
 /* Experiment */
 
 export function toggle_pilot_mode() {
+    updateHistory()
     get(experiment).pilotMode = !get(experiment).pilotMode;
     experiment.set(get(experiment))
 }

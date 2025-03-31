@@ -1,12 +1,14 @@
 <script>
     import { theme } from '../../globals.js';
-    import { experiment } from '../globals.js';
+    import { experiment, updateHistory } from '../globals.js';
     import { hoveredComponent } from './globals.js';
 
     export let component;
     export let routine;
 
     function removeComponent() {
+        // update history
+        updateHistory();
         // remove from Routine
         routine.removeComponent(component);
         // refresh

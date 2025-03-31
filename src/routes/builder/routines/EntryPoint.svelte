@@ -1,7 +1,7 @@
 <script>
     import { theme } from '../../globals.js';
     import { dragging } from './globals.js';
-    import { experiment } from '../globals.js'
+    import { experiment, updateHistory } from '../globals.js'
     import { writable } from 'svelte/store';
 
     export let routine;
@@ -21,6 +21,8 @@
 
     function on_drop(evt) {
         evt.preventDefault();
+        // update history
+        updateHistory();
         // we're done dragging
         hovered.set(false);
         // make sure it's a valid element

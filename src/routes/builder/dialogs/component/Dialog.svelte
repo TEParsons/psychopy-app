@@ -8,7 +8,7 @@
 
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '../../experiment.js';
-    import { experiment } from '../../globals';
+    import { experiment, updateHistory } from '../../globals';
     import { currentRoutine } from '../../globals.js'
 
     let tempParams = writable(sortParams(component.copyParams()))
@@ -21,6 +21,8 @@
     }
 
     function applyChanges(evt) {
+        // update history
+        updateHistory()
         // apply temporary params to component
         component.params = unsortParams($tempParams)
         // if component is newly created, add it to the current Routine

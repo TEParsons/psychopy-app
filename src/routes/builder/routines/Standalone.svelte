@@ -2,7 +2,7 @@
     import { writable } from "svelte/store";
     import Panel from "../dialogs/component/Panel.svelte";
     import { sortParams, unsortParams } from "../experiment";
-    import { experiment } from '../globals';
+    import { experiment, updateHistory } from '../globals';
 
 
     export let component
@@ -17,6 +17,8 @@
     }
 
     function applyChanges(evt) {
+        // update history
+        updateHistory();
         // apply temporary params to component
         component.params = unsortParams($tempParams)
         // refresh

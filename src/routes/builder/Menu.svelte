@@ -4,7 +4,7 @@
     import MenuItem from '../utils/menu/Item.svelte';
     
     import { theme } from '../globals.js'
-    import { experiment, modified } from './globals.js';
+    import { experiment } from './globals.js';
 
     import { 
         // file
@@ -27,7 +27,7 @@
     <MenuItem icon="/icons/{$theme}/btn-saveas.svg" label="Save file as"/>   
 </Menu>
 <Menu id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">
-    <MenuItem icon="/icons/{$theme}/btn-undo.svg" label="Undo" disabled={!$modified} />
+    <MenuItem icon="/icons/{$theme}/btn-undo.svg" label="Undo" />
     <MenuItem icon="/icons/{$theme}/btn-redo.svg" label="Redo" />
     <MenuItem icon="/icons/{$theme}/btn-find.svg" label="Find" />
 </Menu>

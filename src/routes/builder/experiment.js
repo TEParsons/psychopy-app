@@ -1,4 +1,3 @@
-import { writable } from "svelte/store";
 // get component profiles from json file
 import ComponentProfiles from "$lib/components.json"
 
@@ -68,14 +67,81 @@ export class Experiment {
     }
 
     /**
-     * Get this experiment as a JSON string.
+     * Get this Experiment as a JSON string.
      */
     toJSON() {
-        return JSON.stringify(this, null, "\t");
+        // create node
+        let node = {
+            filename: this.filename,
+            version: this.version,
+            settings: this.settings.toJSON(),
+            routines: {},
+            flow: this.flow.toJSON(),
+        };
+        // add routines
+        for (let [name, routine] of [...this.routines]) {
+            node.routines[name] = routine.toJSON()
+        }
+        
+        return node
     }
 
     /**
-     * Populate this experiment from an XML element
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank Experiment
+        let exp = new Experiment(node.filename);
+        // get version
+        exp.version = node.version;
+        // get settings
+        exp.settings = Component.fromJSON(node.settings)
+        // get routines
+        for (let [name, rtNode] of [...Object.entries(node.routines)]) {
+            let routine
+            if (rtNode.tag === "Routine") {
+                routine = Routine.fromJSON(rtNode)
+            } else {
+                routine = StandaloneRoutine.fromJSON(rtNode)
+            }
+            
+            routine.exp = exp
+            exp.routines.set(name, routine)
+        }
+        // get flow
+        exp.flow.flat = [];
+        for (let elementNode of node.flow) {
+            let element;
+            if (elementNode.tag === "LoopInitiator") {
+                // create initiator object
+                element = LoopInitiator.fromXML(elementNode)
+                element.exp = exp;
+                // store in loops array
+                exp.loops.set(element.name, element)
+            } else if (elementNode.tag === "LoopTerminator") {
+                // create and use a terminator object
+                element = LoopTerminator.fromXML(elementNode)
+                element.exp = exp;
+                // store reference in initiator
+                exp.loops.get(element.name).terminator = element
+            } else {
+                // get from routines
+                element = exp.routines.get(elementNode.name)
+            }
+            exp.flow.flat.push(element)
+        }
+        exp.flow.dynamicize()
+
+        return exp
+    }
+
+    /**
+     * Create a new Experiment from an XML element
+     * 
+     * @param {String} filename Name of the experiment file
+     * @param {Element} node XML element to create the Experiment from
      */
     static fromXML(filename, node) {
         // create blank experiment
@@ -137,8 +203,6 @@ export class Experiment {
         }
         // dynamicise flow
         exp.flow.dynamicize()
-
-        console.log(`Loaded experiment ${filename}:`, exp);
 
         return exp
     }
@@ -315,6 +379,45 @@ export class Routine {
         )
     }
 
+    /**
+     * Get this Routine as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: this.tag,
+            name: this.name,
+            settings: this.settings.toJSON(),
+            components: [],
+        };
+        // add routines
+        for (let component of this.components) {
+            node.components.push(component.toJSON())
+        }
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank Routine
+        let routine = new Routine();
+        // populate settings
+        routine.settings = Component.fromJSON(node.settings)
+        // populate components
+        for (let compNode of node.components) {
+            let component = Component.fromJSON(compNode)
+            component.routine = routine
+            routine.components.push(component)
+        }
+
+        return routine
+    }
+
     toXML() {
         // create document
         let doc = document.implementation.createDocument(null, "xml");
@@ -390,6 +493,50 @@ export class StandaloneRoutine {
             params.set(name, param.copy())
         }
         return params
+    }
+
+    get index() {
+        for (let i in this.exp.flow.flat) {
+            if (this.exp.flow.flat[i] === this) {
+                return i;
+            }
+        }
+    }
+
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: this.tag,
+            plugin: this.plugin,
+            params: {},
+        };
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.params[name] = param.toJSON();
+        }
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank Routine
+        let routine = new StandaloneRoutine(node.tag);
+        // populate settings
+        routine.plugin = node.plugin;
+        // populate components
+        for (let [name, paramNode] of [...Object.entries(node.params)]) {
+            routine.params.set(name, Param.fromJSON(paramNode))
+        }
+
+        return routine
     }
 
     toXML() {
@@ -507,6 +654,42 @@ export class Component {
         }
         // return name param
         this.params.get("name").val = value;
+    }
+
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: this.tag,
+            plugin: this.plugin,
+            params: {},
+        };
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.params[name] = param.toJSON();
+        }
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank Routine
+        let component = new Component(node.tag);
+        // populate settings
+        component.plugin = node.plugin;
+        // populate components
+        for (let [name, paramNode] of [...Object.entries(node.params)]) {
+            component.params.set(name, Param.fromJSON(paramNode))
+        }
+
+        return component
     }
 
     static fromXML(node) {
@@ -700,6 +883,44 @@ export class Param {
         this.plugin = undefined;
     }
 
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            name: this.name,
+            val: this.val,
+            categ: this.categ,
+            allowedVals: this.allowedVals,
+            valType: this.valType,
+            inputType: this.inputType,
+            updates: this.updates,
+            allowedUpdates: this.allowedUpdates,
+            label: this.label,
+            hint: this.hint,
+            plugin: this.plugin,
+        };
+
+        return node
+    }
+
+    /**
+     * Create a new Param from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank Param
+        let param = new Param();
+        // populate
+        for (let [key, val] of [...Object.entries(node)]) {
+            param[key] = val
+        }
+
+        return param
+    }
+
     static fromTemplate(comp, name) {
         // make a blank param
         let param = new Param(name);
@@ -867,6 +1088,21 @@ export class Flow {
         this.dynamicize();
     }
 
+    toJSON() {
+        let flow = []
+        for (let item of this.flat) {
+            if (item instanceof Routine || item instanceof StandaloneRoutine) {
+                flow.push({
+                    name: item.name
+                })
+            } else {
+                flow.push(item.toJSON())
+            }
+        }
+
+        return flow
+    }
+
     toXML() {
         // create document
         let doc = document.implementation.createDocument(null, "xml");
@@ -933,6 +1169,44 @@ export class LoopInitiator {
                 return i;
             }
         }
+    }
+
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: "LoopInitiator",
+            loopType: this.loopType,
+            name: this.name,
+            params: {},
+        };
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.params[name] = param.toJSON();
+        }
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank LoopInitiator
+        let loop = new LoopInitiator();
+        // populate settings
+        loop.loopType = node.loopType;
+        loop.name = node.name
+        // populate components
+        for (let [name, paramNode] of [...Object.entries(node.params)]) {
+            loop.params.set(name, Param.fromJSON(paramNode))
+        }
+
+        return loop
     }
 
     toXML() {
@@ -1008,6 +1282,33 @@ export class LoopTerminator {
                 return i;
             }
         }
+    }
+
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: "LoopTerminator",
+            name: this.name,
+        };
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank LoopInitiator
+        let loop = new LoopTerminator();
+        // populate settings
+        loop.name = node.name
+
+        return loop
     }
 
     toXML() {

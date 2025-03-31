@@ -1,7 +1,7 @@
 <script>
     import { writable } from 'svelte/store';
     import { theme } from '../../globals.js';
-    import { experiment } from '../globals.js';
+    import { experiment, updateHistory } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '../experiment.js';
 
@@ -17,6 +17,8 @@
     }
 
     function newRoutine() {
+        // update history
+        updateHistory()
         // create a new StandaloneRoutine
         $experiment.routines.set(
             component['__name__'],
@@ -25,7 +27,7 @@
         // navigate to it
         currentPage.set(component['__name__'])
         // refresh
-        experiment.set($experiment)
+        experiment.set($experiment);
     }
     
     let enabled = writable(false);

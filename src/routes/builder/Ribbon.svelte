@@ -1,6 +1,6 @@
 <script>
     import { theme } from '../globals.js'
-    import { currentFile, modified, experiment } from './globals.js';
+    import { currentFile, changeHistory, changeFuture, experiment } from './globals.js';
     import Menu from './Menu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';
@@ -14,6 +14,9 @@
         file_open,
         file_save,
         file_save_as,
+        // edit
+        undo,
+        redo,
         // experiment
         toggle_pilot_mode,
         // views
@@ -50,20 +53,31 @@
             icon="/icons/{$theme}/btn-save.svg" 
             label="Save file" 
             on:click={file_save}
-            disabled={$currentFile === null || !$modified} 
+            disabled={!$changeHistory.length} 
         />
         <RibbonButton 
             id="ribbon-btn-saveas" 
             icon="/icons/{$theme}/btn-saveas.svg" 
-            label="Save file as" 
+            label="Save file as"
             on:click={file_save_as} 
-            disabled={$currentFile === null} 
-        />        
+        />
     </RibbonSection>
 
     <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">
-        <RibbonButton id="ribbon-btn-undo" icon="/icons/{$theme}/btn-undo.svg" label="Undo" disabled={!$modified} />
-        <RibbonButton id="ribbon-btn-redo" icon="/icons/{$theme}/btn-redo.svg" label="Redo" />
+        <RibbonButton 
+            id="ribbon-btn-undo" 
+            icon="/icons/{$theme}/btn-undo.svg" 
+            label="Undo" 
+            on:click={undo} 
+            disabled={$currentFile === null || !$changeHistory.length} 
+        />
+        <RibbonButton 
+            id="ribbon-btn-redo" 
+            icon="/icons/{$theme}/btn-redo.svg" 
+            label="Redo" 
+            on:click={redo} 
+            disabled={$currentFile === null || !$changeFuture.length} 
+        />
         <RibbonButton id="ribbon-btn-find" icon="/icons/{$theme}/btn-find.svg" label="Find" />
     </RibbonSection>
     
