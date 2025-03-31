@@ -96,8 +96,6 @@ export function undo() {
     changeHistory.set(past)
     experiment.set(present)
     changeFuture.set(future) 
-
-    console.log("ROLLED BACK TO", past, present, future)
 }
 
 export function redo() {
