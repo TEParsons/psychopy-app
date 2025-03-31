@@ -84,7 +84,6 @@
         <Dialog 
             id="dlg-exp-settings"
             component={$experiment.settings} 
-            helpLink="" 
             bind:handle={settingsDlg}
         ></Dialog>
         {/if}
@@ -108,23 +107,23 @@
         <RibbonButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="/icons/{$theme}/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
     </RibbonSection> -->
 
-    <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
-        <!-- <RibbonButton 
+    <!-- <RibbonSection id=browser label=Browser icon="/icons/{$theme}/rbn-browser.svg">
+        <RibbonButton 
             id="ribbon-btn-compilejs" 
             icon="/icons/{$theme}/btn-compilejs.svg" 
             label="Compile to JavaScript" 
-        /> -->
+        />
         <RibbonButton 
             id="ribbon-btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}" 
             icon="/icons/{$theme}/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
             label="{$experiment.pilotMode ? "Pilot" : "Run"} in browser" 
         />
-        <!-- <RibbonButton 
+        <RibbonButton 
             id="ribbon-btn-sync" 
             icon="/icons/{$theme}/btn-sync.svg" 
             label="Sync to Pavlovia" 
-        /> -->
-    </RibbonSection>
+        />
+    </RibbonSection> -->
 
     <RibbonSection id=pavlovia label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.svg">
         ToddOST
