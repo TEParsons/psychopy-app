@@ -99,7 +99,20 @@ export function undo() {
 }
 
 export function redo() {
-
+    // get writables
+    let past = get(changeHistory)
+    let present = get(experiment)
+    let future = get(changeFuture)
+    // remove first item from history array
+    let next = future.shift()
+    // append current experiment to past array
+    past.push(present.toJSON())
+    // set experiment from change history
+    present = Experiment.fromJSON(next)
+    // update writables
+    changeHistory.set(past)
+    experiment.set(present)
+    changeFuture.set(future) 
 }
 
 /* Experiment */
