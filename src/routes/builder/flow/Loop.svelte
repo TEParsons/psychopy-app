@@ -1,7 +1,7 @@
 <script>
     import { theme } from '../../globals.js';
     
-    import { FlowLoop } from "../experiment.js";
+    import { FlowLoop } from "$lib/experiment.js";
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte'
 

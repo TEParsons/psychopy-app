@@ -3,7 +3,7 @@
     import { theme } from '../../globals.js';
     import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
-    import { StandaloneRoutine, Routine, Component } from '../experiment.js';
+    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
     import Dialog from '../dialogs/component/Dialog.svelte';
 
     let dialog;

@@ -1,7 +1,7 @@
 <script>
     import { experiment } from '../globals.js';
     
-    import { FlowLoop } from "../experiment.js";
+    import { FlowLoop } from "$lib/experiment.js";
     import Flow from './Flow.svelte';
     import LoopNode from './Loop.svelte';
     import RoutineNode from './Routine.svelte';

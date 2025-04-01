@@ -4,7 +4,7 @@
     import { experiment, currentRoutine } from '../globals.js';
     import { updateHistory } from '../history.js';
     import { currentPage } from '../routines/globals.js';
-    import { StandaloneRoutine, Routine, Component } from '../experiment.js';
+    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
 
     export let component;
 

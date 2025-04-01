@@ -1,11 +1,11 @@
 <script>
     import { theme } from '../../../globals.js';
-    import { StandaloneRoutine, Routine } from '../../experiment.js';
+    import { StandaloneRoutine, Routine } from '$lib/experiment.js';
     import { experiment } from '../../globals.js';
     import Notebook from '../../../utils/notebook/Notebook.svelte';
     import NotebookPage from '../../../utils/notebook/Page.svelte';
     import { currentPage } from './globals.js';
-    import { sortParams } from '../../experiment.js';
+    import { sortParams } from '$lib/experiment.js';
     import { writable } from 'svelte/store';
 
     export let component;

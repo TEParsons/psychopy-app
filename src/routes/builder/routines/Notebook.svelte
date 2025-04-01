@@ -6,7 +6,7 @@
     import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from './globals.js';
     import { onMount, onDestroy } from 'svelte';
-    import { StandaloneRoutine, Routine } from '../experiment.js';
+    import { StandaloneRoutine, Routine } from '$lib/experiment.js';
 
     // when the page changes, update the current Routine
     currentPage.subscribe((value) => {
