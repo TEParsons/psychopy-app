@@ -1088,6 +1088,23 @@ export class Flow {
         this.dynamicize();
     }
 
+    insertElement(element, index) {
+        // convert index to int
+        index = parseInt(index)
+        // if toIndex was -1, move to end
+        if (index < 0) {
+            index = this.flat.length;
+        }
+        // insert
+        this.flat = Array.prototype.concat(
+            this.flat.slice(0, index),
+            element,
+            this.flat.slice(index),
+        )
+        // update dynamic array
+        this.dynamicize();
+    }
+
     toJSON() {
         let flow = []
         for (let item of this.flat) {

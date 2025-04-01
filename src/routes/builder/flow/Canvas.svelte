@@ -27,6 +27,7 @@
         padding-top: 3rem;
         display: flex;
         align-items: start;
+        overflow: auto;
     }
     
 </style>

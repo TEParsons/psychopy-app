@@ -1,7 +1,7 @@
 <script>
     export let element;
     import EntryPoint from './EntryPoint.svelte'   
-    import { dragging } from './dragging.js';
+    import { dragging } from './globals.js';
     import { currentPage as currentRoutine } from '../routines/globals.js';
     import { json } from '@sveltejs/kit';
 

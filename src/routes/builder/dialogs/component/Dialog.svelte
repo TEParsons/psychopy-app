@@ -37,7 +37,7 @@
 </script>
 
 <Dialog 
-    id=id 
+    id={id} 
     title={component.name} 
     bind:handle={handle} 
     buttons={{
