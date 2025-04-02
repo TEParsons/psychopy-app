@@ -5,12 +5,14 @@
 
 </script>
 
-<div class=menu-outer>
-    <Menu bind:this={menu}>
-        <div class=menu-inner>
-            <slot></slot>
-        </div>
-    </Menu>
+<div class=menu-container>
+    <div class=menu-outer>
+        <Menu bind:this={menu}>
+            <div class=menu-inner>
+                <slot></slot>
+            </div>
+        </Menu>
+    </div>
 </div>
 
 <style>
@@ -26,6 +28,9 @@
     z-index: 100;
     left: 100%;
     top: -1px;
+}
+.menu-container {
+    position: relative;
 }
 :global(.mdc-menu-surface) {
     display: none;

@@ -6,8 +6,11 @@
     import Dialog from '../../utils/dialog/Dialog.svelte';
     import Panel from '../dialogs/component/Panel.svelte';
     import { updateHistory } from '../history.js';
+    import Menu from '../../utils/menu/Menu.svelte';
+    import MenuItem from '../../utils/menu/Item.svelte';
 
-    let dialog;
+    let newRoutineDialog;
+    let addRoutineMenu;
     let newRoutine = writable(new Routine())
     let tempParams = writable(sortParams($newRoutine.settings.copyParams()))
 
@@ -35,21 +38,33 @@
         newRoutine.set(new Routine())
         
         // show dialog
-        dialog.showModal()
+        newRoutineDialog.showModal()
     }
 
 </script>
 
 <div class=flow-buttons>
-    <!-- New Routine button & dialog -->
-    <button class=horizontal id=add-routine on:click={createRoutine}>
-        <img src="/icons/light/btn-routine.svg" alt="" />
-        <label for=add-routine>Add Routine</label>
-    </button>
+    <!-- menu for adding a Routine -->
+    <Menu bind:menu={addRoutineMenu}>
+        <MenuItem 
+            label="New Routine..."
+            action={createRoutine}
+            closemenu={addRoutineMenu}
+        />
+        {#each [...$experiment.routines] as [name, routine]}
+        <MenuItem 
+            label={name}
+            action={() => {inserting.set(routine)}}
+            closemenu={addRoutineMenu}
+        />
+        {/each}
+    </Menu>
+
+    <!-- dialog for creating a new Routine -->
     <Dialog 
         id=new-routine 
         title="New Routine" 
-        bind:handle={dialog} 
+        bind:handle={newRoutineDialog} 
         buttons={{
             OK: insertRoutine, 
             CANCEL: discardChanges, 
@@ -57,6 +72,13 @@
     >
         <Panel component={$newRoutine.settings} tempParams={tempParams} />
     </Dialog>
+
+    <!-- button to open add Routine menu -->
+    <button class=horizontal id=add-routine on:click={() => addRoutineMenu.setOpen(true)}>
+        <img src="/icons/light/btn-routine.svg" alt="" />
+        <label for=add-routine>Add Routine</label>
+    </button>
+
     <!-- New Loop button & dialog -->
     <button class=horizontal id=add-loop>
         <img src="/icons/light/btn-loop.svg" alt="" />

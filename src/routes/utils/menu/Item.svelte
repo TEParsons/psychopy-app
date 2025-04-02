@@ -3,7 +3,7 @@
     import { theme } from "../../globals";
 
     export let id = undefined;
-    export let icon;
+    export let icon = null;
     export let label;
     export let submenu = false;
     export let action = () => {};
@@ -23,8 +23,10 @@
     }}
     disabled={disabled}
 >
+    {#if icon !== null}
     <img src={icon} alt="-" class=menu-item-icon />
-    {label}
+    {/if}
+    <label for={id}>{label}</label>
     {#if submenu}
     <img class=menu-item-chevron src="/icons/{$theme}/sym-arrow-right.svg" alt=">" />
     {/if}
@@ -37,12 +39,15 @@
         /* own attributes */
         display: grid;
         grid-template-columns: [icon] 1.5rem [label] 1fr [chevron] 1rem;
-        gap: .5rem;
+        gap: 0 .5rem;
         width: 100%;
         white-space: nowrap;
         margin: 0;
         background-color: transparent;
         border-radius: 0;
+    }
+    .menu-item label {
+        grid-column-start: label;
     }
     .menu-item:enabled:hover {
         background-color: var(--mantle);
