@@ -2,7 +2,9 @@
     import { theme } from '../globals.js'
     import { currentFile, experiment } from './globals.js';
     import { changeHistory, changeFuture } from './history.js';
-    import Menu from './Menu.svelte';
+    import Menu from '../utils/menu/Menu.svelte';
+    import Item from '../utils/menu/Item.svelte';
+    import SubMenu from '../utils/menu/SubMenu.svelte';
     import Ribbon from '../utils/ribbon/Ribbon.svelte';
     import RibbonSection from '../utils/ribbon/Section.svelte';
     import RibbonButton from '../utils/ribbon/Button.svelte';
@@ -33,7 +35,47 @@
 
 <Ribbon>
     <RibbonSection id=ribbon-menu>
-        <Menu></Menu>
+        <RibbonButton 
+            id=ribbon-menu 
+            icon="/icons/{$theme}/btn-hamburger.svg"
+            label="Menu"
+            on:click={() => menu.setOpen(true)} 
+        />
+        <Menu 
+            bind:menu={menu}
+        >
+            <SubMenu label="File" icon="/icons/{$theme}/rbn-file.svg">
+                <Item 
+                    id="ribbon-btn-new" 
+                    icon="/icons/{$theme}/btn-new.svg" 
+                    label="New file" 
+                    action={file_new}
+                    closemenu={menu} 
+                />
+                <Item 
+                    id="ribbon-btn-open" 
+                    icon="/icons/{$theme}/btn-open.svg" 
+                    label="Open file" 
+                    action={file_open} 
+                    closemenu={menu} 
+                />
+                <Item 
+                    id="ribbon-btn-save" 
+                    icon="/icons/{$theme}/btn-save.svg" 
+                    label="Save file" 
+                    action={file_save} 
+                    closemenu={menu} 
+                    disabled={!$changeHistory.length} 
+                />
+                <Item 
+                    id="ribbon-btn-saveas" 
+                    icon="/icons/{$theme}/btn-saveas.svg" 
+                    label="Save file as"
+                    action={file_save_as} 
+                    closemenu={menu} 
+                />
+            </SubMenu>
+        </Menu>
     </RibbonSection>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton 
