@@ -1,10 +1,7 @@
 <script>
     import { theme } from '../../globals.js';
     import { experiment } from '../globals.js';
-    
-    import ComponentControls from './Controls.svelte';
-    import ComponentLabel from './Label.svelte';
-    import ComponentTimelineBar from './TimelineBar.svelte';
+    import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from '../dialogs/component/Dialog.svelte';
@@ -43,10 +40,7 @@
 
     {#each routine.components as component}
     {#if component !== null}
-    <EntryPoint routine={routine} index={component.index}></EntryPoint>
-    <ComponentLabel component={component}></ComponentLabel>
-    <ComponentControls routine={routine} component={component}></ComponentControls>
-    <ComponentTimelineBar component={component} ticks={$ticks}></ComponentTimelineBar>
+    <Component component={component} ticks={$ticks}></Component>
     {/if}
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>

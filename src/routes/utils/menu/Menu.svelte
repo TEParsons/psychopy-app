@@ -2,10 +2,11 @@
     import Menu from '@smui/menu';
 
     export let menu = undefined;
+    export let style = "";
 
 </script>
 
-<div class=menu-container>
+<div class=menu-container style={style}>
     <div class=menu-outer>
         <Menu bind:this={menu}>
             <div class=menu-inner>
@@ -31,6 +32,7 @@
 }
 .menu-container {
     position: relative;
+    z-index: 100;
 }
 :global(.mdc-menu-surface) {
     display: none;
