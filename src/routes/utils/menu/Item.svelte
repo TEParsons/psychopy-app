@@ -1,5 +1,4 @@
 <script>
-    import { emptyMeltElement } from "@melt-ui/svelte";
     import { theme } from "../../globals";
 
     export let id = undefined;
