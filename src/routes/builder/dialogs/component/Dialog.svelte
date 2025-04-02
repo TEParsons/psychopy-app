@@ -27,7 +27,7 @@
         // apply temporary params to component
         component.params = unsortParams($tempParams)
         // if component is newly created, add it to the current Routine
-        if (!$currentRoutine.components.includes(component)) {
+        if (!$currentRoutine.components.includes(component) && component.tag !== "RoutineSettingsComponent") {
             $currentRoutine.addComponent(component)
         }
         // refresh
