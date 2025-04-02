@@ -7,7 +7,6 @@
     import RibbonSection from '../utils/ribbon/Section.svelte';
     import RibbonButton from '../utils/ribbon/Button.svelte';
     import RibbonSwitchButton from '../utils/ribbon/Switch.svelte';
-    import RibbonMenu from '../utils/ribbon/Menu.svelte';
 
     import {
         // file
@@ -33,9 +32,9 @@
 </script>
 
 <Ribbon>
-    <RibbonMenu menu={menu}>
+    <RibbonSection id=ribbon-menu>
         <Menu></Menu>
-    </RibbonMenu>
+    </RibbonSection>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton 
             id="ribbon-btn-new" 
