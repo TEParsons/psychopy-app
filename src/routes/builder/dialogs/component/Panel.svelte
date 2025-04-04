@@ -7,6 +7,7 @@
     import { currentPage } from './globals.js';
     import { sortParams } from '$lib/experiment.js';
     import { writable } from 'svelte/store';
+    import ParamCtrl from './ParamCtrl.svelte';
 
     export let component;
     export let tempParams;
@@ -19,18 +20,7 @@
     <NotebookPage id="{categ}" title={categ} activeTracker={currentPage}>
     <div class=params-panel>
         {#each [...params] as [name, param]}
-        <div class=param-ctrl id={name}>
-            <label class=param-label for={name}>{name}</label>
-            <div class=param-gap></div>
-            {#if param.allowedUpdates !== null && param.allowedUpdates.length > 0}
-            <select class=param-updates id={name}-updates disabled={param.allowedUpdates.length == 1}>
-                {#each param.allowedUpdates as ud}
-                <option value={ud}>{ud}</option>
-                {/each}
-            </select>
-            {/if}
-            <input class=param-value type="text" bind:value={param.val} />
-        </div>
+        <ParamCtrl name={name} param={param}></ParamCtrl>
         {/each}
     </div>
     </NotebookPage>
@@ -46,32 +36,7 @@
         width: 45rem;
         padding: 1rem;
     }
-    .param-ctrl {
-        display: grid;
-        grid-template-columns: [label] max-content [gap] auto [updates] min-content;
-        grid-template-rows: [label] min-content [ctrl] auto;
-        grid-gap: .5rem;
-        align-items: end;
-        min-width: 20rem;
-    }
-    .param-ctrl .param-gap {
-        grid-column-start: gap;
-        grid-row-start: label;
-    }
-    .param-ctrl .param-label {
-        grid-column-start: label;
-        grid-row-start: label;
-        padding: .5rem 0;
-    }
-    .param-ctrl .param-updates {
-        grid-column-start: updates;
-        grid-row-start: label;
-    }
-    .param-ctrl .param-value {
-        grid-column-start: 0;
-        grid-column-end: span 3;
-        grid-row-start: ctrl;
-    }
+    
     button.help-btn:enabled:hover {
         background-color: var(--crust);
     }

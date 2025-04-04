@@ -90,7 +90,8 @@ button:enabled:hover {
 
 select, 
 option,
-input {
+input,
+textarea {
     font-family: var(--body);
     border: 1px solid var(--overlay);
     outline: none;
