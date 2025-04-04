@@ -27,7 +27,7 @@
         new_runner_frame,
     } from './callbacks.js'
 
-    import Dialog from './dialogs/component/Dialog.svelte';
+    import Dialog from '../dialogs/component/Dialog.svelte';
 
     let settingsDlg;
     let menu;

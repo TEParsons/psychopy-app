@@ -1,6 +1,6 @@
 <script>
     import { writable } from 'svelte/store';
-    import Dialog from '../../../utils/dialog/Dialog.svelte';
+    import Dialog from '../../utils/dialog/Dialog.svelte';
     export let component;
 
     export let handle;
@@ -8,9 +8,8 @@
 
     import Panel from './Panel.svelte';
     import { sortParams, unsortParams } from '$lib/experiment.js';
-    import { experiment } from '../../globals';
-    import { updateHistory } from '../../history.js';
-    import { currentRoutine } from '../../globals.js'
+    import { experiment, currentRoutine } from '../../builder/globals.js';
+    import { updateHistory } from '../../builder/history.js';
 
     let tempParams = writable(sortParams(component.copyParams()))
 

@@ -4,7 +4,7 @@
     import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
-    import Dialog from '../dialogs/component/Dialog.svelte';
+    import Dialog from '../../dialogs/component/Dialog.svelte';
 
     let dialog;
     export let component;

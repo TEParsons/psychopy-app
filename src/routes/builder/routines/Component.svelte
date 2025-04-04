@@ -4,7 +4,7 @@
     import { dragging, hoveredComponent } from './globals.js';
     import { updateHistory } from '../history.js';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from "../dialogs/component/Dialog.svelte";
+    import Dialog from "../../dialogs/component/Dialog.svelte";
     import Menu from '../../utils/menu/Menu.svelte';
     import MenuItem from '../../utils/menu/Item.svelte';
     import { writable } from 'svelte/store';

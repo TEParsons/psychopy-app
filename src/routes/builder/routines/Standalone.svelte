@@ -1,6 +1,6 @@
 <script>
     import { writable } from "svelte/store";
-    import Panel from "../dialogs/component/Panel.svelte";
+    import Panel from "../../dialogs/component/Panel.svelte";
     import { sortParams, unsortParams } from "$lib/experiment";
     import { experiment } from '../globals';
     import { updateHistory } from '../history.js';

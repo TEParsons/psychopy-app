@@ -4,7 +4,7 @@
     import { experiment } from '../globals.js';
     import { writable } from 'svelte/store';
     import Dialog from '../../utils/dialog/Dialog.svelte';
-    import Panel from '../dialogs/component/Panel.svelte';
+    import Panel from '../../dialogs/component/Panel.svelte';
     import { updateHistory } from '../history.js';
     import Menu from '../../utils/menu/Menu.svelte';
     import MenuItem from '../../utils/menu/Item.svelte';

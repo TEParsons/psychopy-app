@@ -5,7 +5,7 @@
     export let id;
 
     export let handle;
-    export let flush;
+    export let flush = false;
 
 </script>
 
