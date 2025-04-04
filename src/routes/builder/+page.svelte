@@ -5,7 +5,6 @@
     import Frame from '../utils/Frame.svelte';
 
     import Ribbon from './Ribbon.svelte';
-    import Menu from './Menu.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
