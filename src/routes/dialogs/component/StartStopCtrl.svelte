@@ -45,7 +45,7 @@
 <style>
     .start-stop-ctrl {
         display: grid;
-        grid-template-columns: [label] min-content [ctrl] auto [end];
+        grid-template-columns: [before] min-content [label] min-content [ctrl] auto [end];
         grid-template-rows: [label] min-content [ctrl] auto [estim] auto;
         grid-gap: .5rem;
         align-items: end;
