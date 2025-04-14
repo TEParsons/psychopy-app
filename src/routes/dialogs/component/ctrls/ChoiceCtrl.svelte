@@ -11,7 +11,6 @@
         }
         valLabelMap.push([val, label])
     })
-    console.log(valLabelMap)
 </script>
 
 <select class=param-value disabled={param.allowedVals.length == 1} bind:value={param.val}>

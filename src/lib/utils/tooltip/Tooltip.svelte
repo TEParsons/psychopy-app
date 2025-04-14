@@ -13,6 +13,7 @@
         color: var(--text-on-outline);
         border-radius: .5rem;
         padding: .5rem 1rem;
+        z-index: 2;
         /* hidden until hovered */
         visibility: hidden;
     }

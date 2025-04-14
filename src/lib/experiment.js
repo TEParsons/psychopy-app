@@ -799,9 +799,9 @@ export class Component {
         if (this.disabled) {
             return "overlay";
         } else if (this.forceEnd) {
-            return "quaternary";
+            return "orange";
         } else {
-            return "secondary";
+            return "blue";
         }
     }
 

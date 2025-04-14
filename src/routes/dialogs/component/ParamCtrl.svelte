@@ -23,7 +23,6 @@
         </Tooltip>
         {/if}
     </label>
-    
     <div class=param-gap></div>
     {#if param.allowedUpdates !== null && param.allowedUpdates.length > 0}
     <select class=param-updates id={name}-updates disabled={param.allowedUpdates.length == 1} bind:value={param.updates}>
