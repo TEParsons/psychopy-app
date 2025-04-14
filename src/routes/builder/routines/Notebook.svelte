@@ -1,6 +1,6 @@
 <script>
-    import Notebook from '../../utils/notebook/Notebook.svelte';
-    import NotebookPage from '../../utils/notebook/Page.svelte';
+    import Notebook from '$lib/utils/notebook/Notebook.svelte';
+    import NotebookPage from '$lib/utils/notebook/Page.svelte';
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
     import { experiment, currentRoutine } from '../globals.js';

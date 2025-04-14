@@ -1,10 +1,10 @@
 <script>
-    import { theme } from '../globals.js'
+    import { theme } from "$lib/globals.js"
     import { file, modified } from './globals.js';
-    import Ribbon from '../utils/ribbon/Ribbon.svelte'
-    import RibbonSection from '../utils/ribbon/Section.svelte'
-    import RibbonButton from '../utils/ribbon/Button.svelte'
-    import RibbonSwitchButton from '../utils/ribbon/Switch.svelte'
+    import Ribbon from '$lib/utils/ribbon/Ribbon.svelte'
+    import RibbonSection from '$lib/utils/ribbon/Section.svelte'
+    import RibbonButton from '$lib/utils/ribbon/Button.svelte'
+    import RibbonSwitchButton from '$lib/utils/ribbon/Switch.svelte'
 
     /* File */
 

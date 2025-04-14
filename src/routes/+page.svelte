@@ -1,5 +1,5 @@
 <script>
-    import { theme } from './globals.js'
+    import { theme } from "$lib/globals.js"
 
     function new_builder_frame() {
         window.open("../builder");

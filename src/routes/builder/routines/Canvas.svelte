@@ -1,5 +1,5 @@
 <script>
-    import { theme } from '../../globals.js';
+    import { theme } from "$lib/globals.js";
     import { experiment } from '../globals.js';
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';

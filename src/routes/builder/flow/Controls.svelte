@@ -3,11 +3,11 @@
     import { inserting } from './globals.js';
     import { experiment } from '../globals.js';
     import { writable } from 'svelte/store';
-    import Dialog from '../../utils/dialog/Dialog.svelte';
+    import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import Panel from '../../dialogs/component/Panel.svelte';
     import { updateHistory } from '../history.js';
-    import Menu from '../../utils/menu/Menu.svelte';
-    import MenuItem from '../../utils/menu/Item.svelte';
+    import Menu from '$lib/utils/menu/Menu.svelte';
+    import MenuItem from '$lib/utils/menu/Item.svelte';
 
     let newRoutineDialog;
     let addRoutineMenu;

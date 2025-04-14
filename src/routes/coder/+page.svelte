@@ -1,10 +1,10 @@
 <script>
-    import { theme } from '../globals.js';
+    import { theme } from "$lib/globals.js";
     import { file } from './globals.js';
     import Ribbon from './Ribbon.svelte';
-    import Panel from '../utils/Panel.svelte';
-    import Frame from '../utils/Frame.svelte';
-    import CodeCtrl from '../utils/ctrls/Code.svelte';
+    import Panel from '$lib/utils/Panel.svelte';
+    import Frame from '$lib/utils/Frame.svelte';
+    import CodeCtrl from '$lib/utils/ctrls/Code.svelte';
 </script>
 
 <Frame rows=3 cols=4>

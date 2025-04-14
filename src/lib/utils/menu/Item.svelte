@@ -1,5 +1,5 @@
 <script>
-    import { theme } from "../../globals";
+    import { theme } from "$lib/globals.js";
 
     export let id = undefined;
     export let icon = null;

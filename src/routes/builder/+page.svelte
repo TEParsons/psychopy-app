@@ -1,8 +1,8 @@
 <script>
-    import { theme } from '../globals.js';
+    import { theme } from "$lib/globals.js";
     import { experiment } from './globals.js';
-    import Panel from '../utils/Panel.svelte';
-    import Frame from '../utils/Frame.svelte';
+    import Panel from '$lib/utils/Panel.svelte';
+    import Frame from '$lib/utils/Frame.svelte';
 
     import Ribbon from './Ribbon.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';

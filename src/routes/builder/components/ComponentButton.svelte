@@ -1,6 +1,6 @@
 <script>
     import { writable } from 'svelte/store';
-    import { theme } from '../../globals.js';
+    import { theme } from "$lib/globals.js";
     import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';

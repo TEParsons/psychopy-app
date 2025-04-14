@@ -1,5 +1,5 @@
 <script>
-    import { theme } from '../../globals.js';
+    import { theme } from "$lib/globals.js";
     import EntryPoint from './EntryPoint.svelte'
 
 </script>

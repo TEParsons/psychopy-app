@@ -1,14 +1,14 @@
 <script>
-    import { theme } from '../globals.js'
+    import { theme } from "$lib/globals.js"
     import { currentFile, experiment } from './globals.js';
     import { changeHistory, changeFuture } from './history.js';
-    import Menu from '../utils/menu/Menu.svelte';
-    import Item from '../utils/menu/Item.svelte';
-    import SubMenu from '../utils/menu/SubMenu.svelte';
-    import Ribbon from '../utils/ribbon/Ribbon.svelte';
-    import RibbonSection from '../utils/ribbon/Section.svelte';
-    import RibbonButton from '../utils/ribbon/Button.svelte';
-    import RibbonSwitchButton from '../utils/ribbon/Switch.svelte';
+    import Menu from '$lib/utils/menu/Menu.svelte';
+    import Item from '$lib/utils/menu/Item.svelte';
+    import SubMenu from '$lib/utils/menu/SubMenu.svelte';
+    import Ribbon from '$lib/utils/ribbon/Ribbon.svelte';
+    import RibbonSection from '$lib/utils/ribbon/Section.svelte';
+    import RibbonButton from '$lib/utils/ribbon/Button.svelte';
+    import RibbonSwitchButton from '$lib/utils/ribbon/Switch.svelte';
 
     import {
         // file

@@ -1,6 +1,6 @@
 <script>
     import { writable } from 'svelte/store';
-    import Dialog from '../../utils/dialog/Dialog.svelte';
+    import Dialog from '$lib/utils/dialog/Dialog.svelte';
     export let component;
 
     export let handle;

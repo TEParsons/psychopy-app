@@ -1,12 +1,12 @@
 <script>
-    import { theme } from '../../globals.js';
+    import { theme } from "$lib/globals.js";
     import { experiment } from '../globals.js';
     import { dragging, hoveredComponent } from './globals.js';
     import { updateHistory } from '../history.js';
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from "../../dialogs/component/Dialog.svelte";
-    import Menu from '../../utils/menu/Menu.svelte';
-    import MenuItem from '../../utils/menu/Item.svelte';
+    import Menu from '$lib/utils/menu/Menu.svelte';
+    import MenuItem from '$lib/utils/menu/Item.svelte';
     import { writable } from 'svelte/store';
 
     export let component;

@@ -1,5 +1,5 @@
 <script>
-    import { theme } from '../../globals.js';
+    import { theme } from "$lib/globals.js";
     
     import { FlowLoop } from "$lib/experiment.js";
     import RoutineNode from './Routine.svelte';
