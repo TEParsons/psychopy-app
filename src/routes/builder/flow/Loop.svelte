@@ -46,7 +46,7 @@
         transform: translateX(-50%);
         padding: .5rem 1rem;
         background-color: var(--outline);
-        color: var(--outline-text);
+        color: var(--text-on-outline);
         border-radius: 1rem;
     }
     .loop-arrow {

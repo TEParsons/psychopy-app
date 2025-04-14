@@ -88,7 +88,7 @@
     .entry-point.active:hover,
     .entry-point.hovered {
         opacity: 1;
-        background-color: var(--primary);
+        background-color: var(--red);
     }
 
     .entry-point .hitbox {

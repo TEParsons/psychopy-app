@@ -31,8 +31,8 @@
 
 <style>
     .routine {
-        background-color: var(--secondary);
-        color: var(--secondary-text);
+        background-color: var(--blue);
+        color: var(--text-on-blue);
         padding: 1rem;
         line-height: 1rem;
         border-radius: 1rem;

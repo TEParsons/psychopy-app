@@ -112,8 +112,8 @@
         color: var(--text);
     }
     .title-btns button#close:enabled:hover {
-        background-color: var(--primary);
-        color: var(--primary-text);
+        background-color: var(--red);
+        color: var(--text-on-red);
     }
 
     .buttons {
