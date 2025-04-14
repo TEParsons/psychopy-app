@@ -1,5 +1,7 @@
 <script>
     import { mapping } from "./ctrls/inputTypes.js";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
+    import { theme } from "$lib/globals.js";
     export let name
     export let param
 
@@ -11,8 +13,17 @@
     }
 </script>
 
+
 <div class=param-ctrl id={name}>
-    <label class=param-label for={name}>{name}</label>
+    <label class=param-label for={name}>
+        {param.label ? param.label : name}
+        {#if param.hint}
+        <Tooltip>
+            {param.hint}
+        </Tooltip>
+        {/if}
+    </label>
+    
     <div class=param-gap></div>
     {#if param.allowedUpdates !== null && param.allowedUpdates.length > 0}
     <select class=param-updates id={name}-updates disabled={param.allowedUpdates.length == 1} bind:value={param.updates}>
@@ -22,7 +33,6 @@
     </select>
     {/if}
     <ValueCtrl param={param}></ValueCtrl>
-    
 </div>
 
 <style>
@@ -39,6 +49,7 @@
         grid-row-start: label;
     }
     .param-ctrl .param-label {
+        position: relative;
         grid-column-start: label;
         grid-row-start: label;
         align-content: end;
