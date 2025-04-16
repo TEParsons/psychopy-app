@@ -37,7 +37,7 @@
 
 <Dialog 
     id={id} 
-    title={component.name} 
+    title="Editing: {component.name}"
     bind:handle={handle} 
     buttons={{
         OK: applyChanges, 

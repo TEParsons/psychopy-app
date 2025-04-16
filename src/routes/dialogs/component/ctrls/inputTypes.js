@@ -3,6 +3,7 @@ import MultiLineCtrl from "./MultiLineCtrl.svelte";
 import ChoiceCtrl from "./ChoiceCtrl.svelte";
 import CheckboxCtrl from "./CheckboxCtrl.svelte";
 import FileCtrl from "./FileCtrl.svelte";
+import ColorCtrl from "./ColorCtrl.svelte";
 
 
 export var mapping = {
@@ -17,7 +18,7 @@ export var mapping = {
     // "survey": SurveyCtrl,
     // "fileList": FileListCtrl,
     // "table": TableCtrl,
-    // "color": ColorCtrl,
+    "color": ColorCtrl,
     // "dict": DictCtrl,
     // "inv": InvalidCtrl
 }
