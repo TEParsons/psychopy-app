@@ -18,7 +18,7 @@
 <div class="file-ctrl param-value">
     <input type="text" bind:value={param.val} />
     <Button 
-        icon="/icons/{$theme}/btn-edit.svg" 
+        icon="/icons/{$theme}/btn-color.svg" 
         on:click={() => {
             // reset dialog value
             dlgCurrent.set(param.val);
