@@ -5,8 +5,7 @@
     import { experiment } from '../globals.js';
     import { currentPage as currentRoutine } from '../routines/globals.js';
     import { json } from '@sveltejs/kit';
-    import Menu from '$lib/utils/menu/Menu.svelte';
-    import MenuItem from '$lib/utils/menu/Item.svelte';
+    import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals';
     import { writable } from 'svelte/store';
     import { updateHistory } from '../history';

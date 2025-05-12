@@ -2,13 +2,8 @@
     import { theme } from "$lib/globals.js"
     import { currentFile, experiment } from './globals.js';
     import { changeHistory, changeFuture } from './history.js';
-    import Menu from '$lib/utils/menu/Menu.svelte';
-    import Item from '$lib/utils/menu/Item.svelte';
-    import SubMenu from '$lib/utils/menu/SubMenu.svelte';
-    import Ribbon from '$lib/utils/ribbon/Ribbon.svelte';
-    import RibbonSection from '$lib/utils/ribbon/Section.svelte';
-    import RibbonButton from '$lib/utils/ribbon/Button.svelte';
-    import RibbonSwitchButton from '$lib/utils/ribbon/Switch.svelte';
+    import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
+    import { Ribbon, RibbonSection, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
 
     import {
         // file
@@ -45,21 +40,21 @@
             bind:menu={menu}
         >
             <SubMenu label="File" icon="/icons/{$theme}/rbn-file.svg">
-                <Item 
+                <MenuItem 
                     id="ribbon-btn-new" 
                     icon="/icons/{$theme}/btn-new.svg" 
                     label="New file" 
                     action={file_new}
                     closemenu={menu} 
                 />
-                <Item 
+                <MenuItem 
                     id="ribbon-btn-open" 
                     icon="/icons/{$theme}/btn-open.svg" 
                     label="Open file" 
                     action={file_open} 
                     closemenu={menu} 
                 />
-                <Item 
+                <MenuItem 
                     id="ribbon-btn-save" 
                     icon="/icons/{$theme}/btn-save.svg" 
                     label="Save file" 
@@ -67,7 +62,7 @@
                     closemenu={menu} 
                     disabled={!$changeHistory.length} 
                 />
-                <Item 
+                <MenuItem 
                     id="ribbon-btn-saveas" 
                     icon="/icons/{$theme}/btn-saveas.svg" 
                     label="Save file as"

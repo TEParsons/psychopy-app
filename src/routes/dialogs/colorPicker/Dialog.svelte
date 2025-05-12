@@ -1,7 +1,6 @@
 <script>
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import Notebook from "$lib/utils/notebook/Notebook.svelte";
-    import NotebookPage from "$lib/utils/notebook/Page.svelte";
+    import { Notebook, NotebookPage } from '$lib/utils/notebook';
     import { get, writable } from "svelte/store";
 
     import NamedPage from "./Named.svelte";

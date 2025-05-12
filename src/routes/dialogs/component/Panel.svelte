@@ -2,8 +2,7 @@
     import { theme } from "$lib/globals.js";
     import { StandaloneRoutine, Routine } from '$lib/experiment.js';
     import { experiment } from '../../builder/globals.js';
-    import Notebook from '$lib/utils/notebook/Notebook.svelte';
-    import NotebookPage from '$lib/utils/notebook/Page.svelte';
+    import { Notebook, NotebookPage } from '$lib/utils/notebook';
     import { currentPage } from './globals.js';
     import { sortParams } from '$lib/experiment.js';
     import { writable } from 'svelte/store';

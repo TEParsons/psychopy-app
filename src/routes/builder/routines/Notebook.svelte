@@ -1,12 +1,11 @@
 <script>
-    import Notebook from '$lib/utils/notebook/Notebook.svelte';
-    import NotebookPage from '$lib/utils/notebook/Page.svelte';
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
     import { experiment, currentRoutine } from '../globals.js';
     import { currentPage } from './globals.js';
     import { onMount, onDestroy } from 'svelte';
     import { StandaloneRoutine, Routine } from '$lib/experiment.js';
+    import { Notebook, NotebookPage } from '$lib/utils/notebook';
 
     // when the page changes, update the current Routine
     currentPage.subscribe((value) => {
