@@ -1,7 +1,7 @@
 import SingleLineCtrl from "./SingleLineCtrl.svelte";
 import MultiLineCtrl from "./MultiLineCtrl.svelte";
 import ChoiceCtrl from "./ChoiceCtrl.svelte";
-import CheckboxCtrl from "./CheckboxCtrl.svelte";
+import BoolCtrl from "./BoolCtrl.svelte";
 import FileCtrl from "./FileCtrl.svelte";
 import ColorCtrl from "./ColorCtrl.svelte";
 
@@ -12,7 +12,7 @@ export var mapping = {
     "choice": ChoiceCtrl,
     // "multiChoice": MultipleChoiceCtrl,
     // "richChoice": RichChoiceCtrl,
-    "bool": CheckboxCtrl,
+    "bool": BoolCtrl,
     "file": FileCtrl,
     // "font": FontCtrl,
     // "survey": SurveyCtrl,

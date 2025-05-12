@@ -1,6 +1,6 @@
 <script>
-    import ChoiceCtrl from "./ctrls/ChoiceCtrl.svelte";
-    import SingleLineCtrl from "./ctrls/SingleLineCtrl.svelte";
+    import ChoiceCtrl from "$lib/utils/ctrls/ChoiceCtrl.svelte";
+    import SingleLineCtrl from "$lib/utils/ctrls/SingleLineCtrl.svelte";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     export let name;

@@ -1,5 +1,5 @@
 <script>
-    import { mapping } from "./ctrls/inputTypes.js";
+    import { mapping } from "$lib/utils/ctrls/inputTypes.js";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
     import { theme } from "$lib/globals.js";
     export let name

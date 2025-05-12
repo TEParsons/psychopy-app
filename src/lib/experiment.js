@@ -999,6 +999,23 @@ export class Param {
 
         return node
     }
+
+    isCode() {
+        // is valType is code, always true
+        if (this.valType === "code") {
+            return true;
+        }
+        // if starts with a $, true
+        if (String(this.val).startsWith("$")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    isValid() {
+        return true
+    }
 }
 
 export class Flow {

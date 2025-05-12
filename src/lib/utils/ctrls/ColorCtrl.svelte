@@ -1,7 +1,7 @@
 <script>
     import { theme } from "$lib/globals";
     import Button from "./elements/Button.svelte";
-    import Dialog from "../../colorPicker/Dialog.svelte";
+    import Dialog from "$lib/utils/colorPicker/Dialog.svelte";
     import { writable } from "svelte/store";
     export let param;
 
