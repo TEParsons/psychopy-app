@@ -2,8 +2,14 @@
     export let element;
     import EntryPoint from './EntryPoint.svelte'   
     import { dragging } from './globals.js';
+    import { experiment } from '../globals.js';
     import { currentPage as currentRoutine } from '../routines/globals.js';
     import { json } from '@sveltejs/kit';
+    import Menu from '$lib/utils/menu/Menu.svelte';
+    import MenuItem from '$lib/utils/menu/Item.svelte';
+    import { theme } from '$lib/globals';
+    import { writable } from 'svelte/store';
+    import { updateHistory } from '../history';
 
     function on_dragstart(evt) {
         dragging.set(element.index)
@@ -13,6 +19,33 @@
     }
     function on_click(evt) {
         currentRoutine.set(element.name)
+    }
+
+    let menu;
+    let menuPos = writable({
+        position: "absolute", 
+        left: "0px",
+        top: "0px", 
+    });
+
+    function showContextMenu(evt) {
+        // set pos to click location
+        menuPos.set({
+            position: "fixed", 
+            left: evt.pageX + "px", 
+            top: evt.pageY + "px",
+        })
+        // show menu
+        menu.setOpen(true);
+    }
+
+    function removeRoutine(evt) {
+        // update history
+        updateHistory();
+        // move dragged routine to new position in the flow
+        $experiment.flow.removeElement(element.index)
+        // update experiment so subscribed views update
+        experiment.set($experiment)
     }
 
 </script>
@@ -27,7 +60,20 @@
     on:click={on_click}
     class:active={$currentRoutine === element.name}
     role="none"
->{element.name}</div>
+    on:contextmenu|preventDefault={showContextMenu}
+>{element.name}
+</div>
+<Menu 
+    bind:menu={menu} 
+    style="position: {$menuPos.position}; left: {$menuPos.left}; top: {$menuPos.top};"
+>
+    <MenuItem 
+        icon="/icons/{$theme}/btn-delete.svg"
+        label="Remove"
+        action={removeRoutine}
+        closemenu={menu}
+    />
+</Menu>
 
 <style>
     .routine {

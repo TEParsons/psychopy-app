@@ -1060,6 +1060,18 @@ export class Flow {
         }
     }
 
+    removeElement(index) {
+        // convert index to int
+        index = parseInt(index)
+        // pop from flat array
+        this.flat = Array.prototype.concat(
+            this.flat.slice(0, index),
+            this.flat.slice(index+1)
+        )
+        // update dynamic array
+        this.dynamicize();
+    }
+
     relocateElement(fromIndex, toIndex) {
         // convert indices to int
         fromIndex = parseInt(fromIndex)

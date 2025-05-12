@@ -28,7 +28,6 @@
             left: evt.pageX + "px", 
             top: evt.pageY + "px",
         })
-        console.log(evt, $menuPos)
         // show menu
         menu.setOpen(true);
     }
