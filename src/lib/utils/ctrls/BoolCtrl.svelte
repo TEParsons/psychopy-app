@@ -1,8 +1,10 @@
 <script>
     export let param;
+
+    import { Checkbox } from "./elements";
 </script>
 
-<input class=param-value type="checkbox" bind:checked={param.val} />
+<Checkbox param={param}></Checkbox>
 
 <style>
     @import url("paramCtrl.css");

@@ -1014,7 +1014,7 @@ export class Param {
     }
 
     isValid() {
-        return true
+        return !String(this.val).includes(" ")
     }
 }
 
