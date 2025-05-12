@@ -37,13 +37,14 @@
         grid-column-start: items;
         /* own attributes */
         display: grid;
-        grid-template-columns: [icon] 1.5rem [label] 1fr [chevron] 1rem;
+        grid-template-columns: [icon] 1rem [label] 1fr [chevron] 1rem;
         gap: 0 .5rem;
         width: 100%;
         white-space: nowrap;
         margin: 0;
         background-color: transparent;
         border-radius: 0;
+        padding: 0.5rem 1rem;
     }
     .menu-item label {
         grid-column-start: label;
