@@ -9,7 +9,7 @@
 
 <dialog id={id} bind:this={handle} on:close>
     <div class="title">
-        <label for={id}>Editing: {title}</label>
+        <label for={id}>{title}</label>
         <div class=gap></div>
         <div class=title-btns>
             <button id=close on:click={() => { handle.close() }}>x</button>
