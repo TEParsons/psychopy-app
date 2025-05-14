@@ -3,7 +3,7 @@
     import { experiment } from '../globals.js'
     import { updateHistory } from '../history.js';
     import { writable } from 'svelte/store';
-    import { Routine } from '$lib/experiment.js';
+    import { LoopTerminator, Routine } from '$lib/experiment.js';
 
     export let index;
 
@@ -41,16 +41,20 @@
             return;
         }
         // store state
-        updateHistory()
-        // if inserting a Routine, insert it at index
-        if ($inserting instanceof Routine) {
-            // insert
-            $experiment.flow.insertElement($inserting, index)
+        updateHistory();
+        // insert at index
+        $experiment.flow.insertElement($inserting, index);
+        // next steps depend on type of element inserted
+        if ($inserting instanceof LoopInitiator) {
+            // ready to insert terminator
+            $inserting.addTerminator();
+            inserting.set($inserting.terminator);
+        } else {
             // done inserting
-            inserting.set(null)
+            inserting.set(null);
         }
         // update experiment so subscribed views update
-        experiment.set($experiment)
+        experiment.set($experiment);
     }
 
     let hovered = writable(false);

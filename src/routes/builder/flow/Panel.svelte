@@ -1,6 +1,6 @@
 <script>
     import FlowCanvas from './Canvas.svelte';
-    import FlowControls from './Controls.svelte';
+    import FlowControls from './controls/Panel.svelte';
 
 </script>
 

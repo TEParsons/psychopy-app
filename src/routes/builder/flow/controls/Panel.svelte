@@ -1,0 +1,18 @@
+<script>
+    import AddRoutineButton from './AddRoutine.svelte';
+    import AddLoopButton from './AddLoop.svelte';
+</script>
+
+<div class=flow-buttons>
+    <AddRoutineButton></AddRoutineButton>
+    <AddLoopButton></AddLoopButton>
+</div>
+
+<style>
+    .flow-buttons {
+        padding: 1rem;
+        display: grid;
+        grid-auto-flow: row;
+    }
+    
+</style>

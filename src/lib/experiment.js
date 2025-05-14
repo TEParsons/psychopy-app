@@ -1217,6 +1217,21 @@ export class LoopInitiator {
         }
     }
 
+    addTerminator() {
+        this.terminator = new LoopTerminator();
+        this.terminator.name = this.name;
+        this.terminator.exp = this.exp;
+    }
+
+    copyParams() {
+        let params = new Map();
+        for (let [name, param] of [...this.params]) {
+            params.set(name, param.copy())
+        }
+
+        return params
+    }
+
     /**
      * Get this Component as a JSON string.
      */
@@ -1311,6 +1326,8 @@ export class LoopInitiator {
         for (let key in profile.params) {
             initiator.params.set(key, Param.fromTemplate(tag, key));
         }
+
+        console.log(profile.params)
 
         return initiator
     }
