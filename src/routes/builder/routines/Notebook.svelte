@@ -7,22 +7,50 @@
     import { StandaloneRoutine, Routine } from '$lib/experiment.js';
     import { Notebook, NotebookPage } from '$lib/utils/notebook';
 
-    // when the page changes, update the current Routine
-    currentPage.subscribe((value) => {
-        currentRoutine.set($experiment.routines.get(value))
-    })
-    // when the experiment changes, get the current Routine again
-    experiment.subscribe((value) => {
-        currentRoutine.set(value.routines.get($currentPage))
-    })
+    let activeTab;
+    let tabs;
 
+    onMount(() => {
+        // link current page to overall active Routine
+        activeTab.subscribe((value) => {
+            currentRoutine.set(
+                $experiment.routines.get(value.textContent.trim())
+            )
+        })
+        // // link overall active Routine to current page
+        // currentRoutine.subscribe((value) => {
+        //     if (value === undefined) {
+        //         activeTab.set(undefined)
+        //         return
+        //     }
+        //     let matchingTab;
+        //     for (let tab of $tabs) {
+        //         if (tab.textContent.trim() === value.name) {
+        //             activeTab.set(tab)
+        //         }
+        //     }
+        // })
+        // when the experiment changes, get the current Routine again
+        experiment.subscribe((value) => {
+            console.log($currentRoutine)
+            currentRoutine.set(
+                value.routines.get(
+                    $activeTab.textContent.trim()
+                )
+            )
+        })
+    })
 </script>
 
 
-<Notebook id=routine-notebook flush>
+<Notebook 
+    bind:activeTab={activeTab} 
+    bind:tabs={tabs}
+    flush
+>
     {#if $experiment !== null}
     {#each [...$experiment.routines] as [name, routine]}
-    <NotebookPage id={name} title={routine.name} activeTracker={currentPage}>
+    <NotebookPage title={routine.name}>
         {#if routine instanceof Routine}
         <RoutineCanvas routine={routine} />
         {:else if $experiment.routines.get(name) instanceof StandaloneRoutine}

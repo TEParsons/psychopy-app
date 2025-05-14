@@ -33,12 +33,8 @@
         CANCEL: discardChanges
     }}
 >
-    <Notebook
-        id={id}-notebook 
-        bind:handle={notebook} 
-    >
+    <Notebook>
         <NotebookPage
-            id={id}-space-named 
             activeTracker={currentPage} 
             title="Named"
         >

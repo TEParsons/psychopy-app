@@ -3,7 +3,7 @@
     import EntryPoint from './EntryPoint.svelte'   
     import { dragging } from './globals.js';
     import { experiment } from '../globals.js';
-    import { currentPage as currentRoutine } from '../routines/globals.js';
+    import { currentRoutine } from '../globals.js';
     import { json } from '@sveltejs/kit';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals';
@@ -17,7 +17,7 @@
         dragging.set(null)
     }
     function on_click(evt) {
-        currentRoutine.set(element.name)
+        currentRoutine.set(element)
     }
 
     let menu;

@@ -1,48 +1,73 @@
 <script>
-    import { n_tabs } from './globals.js';
-    import { onMount, onDestroy } from 'svelte';
+    import { derived, readable } from 'svelte/store';
+    import { onMount, onDestroy, getContext } from 'svelte';
 
-    export let id;
     export let title;
     export let icon = undefined;
-    export let activeTracker;
+
+    let tab;
+
+    // for working out if this tab is active
+    let activeTab = getContext("activeTab")
+    let active = derived(activeTab, (value) => {return value === tab && value !== undefined})
+    // for counting number of tabs (necessary for spacing on parent)
+    let tabs = getContext("tabs")
 
     function onClick() {
-        activeTracker.set(id)
+        activeTab.set(tab)
     }
 
     onMount(() => {
-        $n_tabs += 1;
+        // add to tabs array
+        tabs.update((value) => {
+            value.push(tab);
+            return value
+        })
         // if no current page yet, make this current
-        if ($activeTracker === undefined) {
-            activeTracker.set(id);
+        if ($activeTab === undefined) {
+            activeTab.set(tab);
         }
     })
-    onDestroy(() => {$n_tabs -= 1})
+    onDestroy(() => {
+        tabs.update((value) => {
+            value.splice(
+                value.indexOf(tab), 1
+            );
+            return value
+        })
+    })
 </script>
 
-<label for={id} class="notebook-tab" class:active={$activeTracker === id} on:click={onClick}>
+<button 
+    bind:this={tab}
+    class="notebook-tab" 
+    class:active={$active} 
+    on:click={onClick}
+>
     {#if icon}
     <img src={icon} alt="" />
     {/if}
     {title}
-</label>
-{#if $activeTracker === id}
-<div class=notebook-page id={id}>
+</button>
+
+{#if $active}
+<div class=notebook-page>
     <slot></slot>
 </div>
 {/if}
 
 <style>
-    .notebook-tab {
+    button.notebook-tab {
         grid-row-start: tabs;
         background-color: var(--crust);
         border: none;
+        border-radius: 0;
         padding: .25rem 1rem;
+        margin: 0;
         text-align: center;
         z-index: 0;
     }
-    .notebook-tab:hover {
+    button.notebook-tab:hover {
         background-color: var(--mantle);
     }
     .notebook-page {
@@ -60,7 +85,7 @@
         z-index: 1;
         border: 1px solid var(--overlay);
     }
-    .notebook-tab.active {
+    button.notebook-tab.active {
         border-bottom: none;
         background-color: var(--base);
         z-index: 2;

@@ -11,13 +11,11 @@
 
     export let component;
     export let tempParams;
-
-    let notebook;
 </script>
 
-<Notebook id="{component.name}-params" handle={notebook}>
+<Notebook>
 {#each [...$tempParams] as [categ, params]}
-    <NotebookPage id="{categ}" title={categ} activeTracker={currentPage}>
+    <NotebookPage title={categ}>
     <div class=params-panel>
         {#if params.has("startVal") | params.has("startType") | params.has("startEstim")} 
         <StartStopCtrl 

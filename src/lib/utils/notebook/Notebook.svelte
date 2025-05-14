@@ -1,15 +1,15 @@
 <script>
-    import { onMount } from 'svelte';
-    import { n_tabs } from './globals.js';
+    import { onMount, setContext } from 'svelte';
+    import { writable } from 'svelte/store';
 
-    export let id;
-
-    export let handle;
     export let flush = false;
-
+    export let activeTab = writable()
+    setContext("activeTab", activeTab)
+    export let tabs = writable([])
+    setContext("tabs", tabs)
 </script>
 
-<div id={id} class=notebook style="--n-tabs: {$n_tabs}" class:flush={flush} bind:this={handle}>
+<div class=notebook style="--n-tabs: {$tabs.length}" class:flush={flush}>
     <slot></slot>
 </div>
 
