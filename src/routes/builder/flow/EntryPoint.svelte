@@ -3,7 +3,7 @@
     import { experiment } from '../globals.js'
     import { updateHistory } from '../history.js';
     import { writable } from 'svelte/store';
-    import { LoopTerminator, Routine } from '$lib/experiment.js';
+    import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.js';
 
     export let index;
 

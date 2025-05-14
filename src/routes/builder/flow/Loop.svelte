@@ -7,9 +7,10 @@
 
     export let element;
 </script>
-
-<EntryPoint index={element.initiator.index}></EntryPoint>
-<div class=loop id=loop-{element.name}>
+{#if element.complete}
+    <EntryPoint index={element.initiator.index}></EntryPoint>
+{/if}
+<div class=loop id=loop-{element.name} class:incomplete={!element.complete}>
     {#if element}
     <label for=loop-{element.name}>{element.name}</label>
     {/if}
@@ -23,7 +24,9 @@
     {/if}
     {/each}
     {/if}
+    {#if element.complete}
     <EntryPoint index={element.terminator.index}></EntryPoint>
+    {/if}
 </div>
 
 <style>
@@ -41,9 +44,9 @@
     .loop label {
         position: absolute;
         line-height: 1rem;
-        bottom: calc(-1em - 2px);
+        bottom: 0;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, 50%);
         padding: .5rem 1rem;
         background-color: var(--outline);
         color: var(--text-on-outline);
@@ -57,10 +60,17 @@
         transform: translateX(calc(50% - .5px)) translateY(-50%);
     }
 
-    .loop.flow {
-        border: none;
+    .loop.incomplete {
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        padding: 4rem 1rem;
     }
-    .loop.flow > .loop-arrow {
-        display: none;
+    .loop.incomplete label {
+        left: 0;
+        bottom: 50%;
+    }
+    .loop.incomplete .loop-arrow {
+        top: calc(50% - 2rem);
     }
 </style>

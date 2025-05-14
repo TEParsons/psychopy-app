@@ -1033,7 +1033,9 @@ export class Flow {
                 for (let subrt of rt.flatten()) {
                     this.flat.push(subrt);
                 }
-                this.flat.push(rt.terminator);
+                if (rt.terminator !== undefined) {
+                    this.flat.push(rt.terminator);
+                }
             } else {
                 this.flat.push(rt);
             }
@@ -1058,7 +1060,10 @@ export class Flow {
                 } else {
                     currentLoop.routines.push(loop)
                 }
-                currentLoop = loop;
+                // set as the current loop (only if terminated)
+                if (rt.complete) {
+                    currentLoop = loop;
+                }
             } else if (rt instanceof LoopTerminator) {
                 // close current loop, if any
                 if (currentLoop instanceof Flow) {
@@ -1182,6 +1187,10 @@ export class FlowLoop {
         this.routines = [];
     }
 
+    get complete() {
+        return this.terminator !== undefined
+    }
+
     flatten() {
         let flat = [];
         for (let rt of this.routines) {
@@ -1190,7 +1199,9 @@ export class FlowLoop {
                 for (let subrt of rt.flatten()) {
                     flat.push(subrt);
                 }
-                flat.push(rt.terminator);
+                if (this.terminator !== undefined) {
+                    flat.push(rt.terminator);
+                }
             } else {
                 flat.push(rt);
             }
@@ -1204,8 +1215,8 @@ export class LoopInitiator {
     constructor() {
         this.exp = undefined;
         this.loopType = undefined;
-        this.name = undefined;
         this.params = new Map();
+        this.name = undefined;
         this.terminator = undefined;
     }
 
@@ -1217,10 +1228,31 @@ export class LoopInitiator {
         }
     }
 
+    get complete() {
+        return this.terminator !== undefined;
+    }
+
+    get name() {
+        if (this.params.has("name")) {
+            // if we have a name param, get name from it
+            return this.params.get("name").val
+        }
+    }
+
+    set name(value) {
+        if (!this.params.has("name")) {
+            // if we don't have a name param, make one
+            this.params.set("name", Param.fromTemplate("TrialHandler", "name"));
+        }
+        // return name param
+        this.params.get("name").val = value;
+    }
+
     addTerminator() {
         this.terminator = new LoopTerminator();
         this.terminator.name = this.name;
         this.terminator.exp = this.exp;
+        this.terminator.initiator = this;
     }
 
     copyParams() {
@@ -1327,8 +1359,6 @@ export class LoopInitiator {
             initiator.params.set(key, Param.fromTemplate(tag, key));
         }
 
-        console.log(profile.params)
-
         return initiator
     }
 }
@@ -1337,6 +1367,7 @@ export class LoopTerminator {
     constructor() {
         this.exp = undefined;
         this.name = undefined;
+        this.initiator = undefined;
     }
 
     get index() {
