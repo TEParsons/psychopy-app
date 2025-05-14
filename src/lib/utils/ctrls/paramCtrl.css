@@ -6,4 +6,8 @@
     grid-row-start: ctrl;
     grid-column-start: label;
     grid-column-end: end;
+
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: auto;
 }

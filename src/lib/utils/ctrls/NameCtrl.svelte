@@ -5,25 +5,24 @@
     export let param;
     let ctrl;
 
-    let isCode = writable(param.valType === "code");
     let isValid = writable(true);
+    let isCode = writable(false);
+
+    function validate() {
+        isValid.set(true);
+        isCode.set(false);
+        return true;
+    }
 
 </script>
 
-<input 
-    class=param-value 
-    type="text" 
-    bind:value={param.val} 
-    on:input={onChange}
-    class:valid={$isValid} 
-    class:code={$isCode} 
-/>
-<div class="single-line-ctrl param-value">
+<div class="name-ctrl param-value">
     <TextInput
         param={param}
         bind:ctrl={ctrl}
         bind:isValid={isValid}
         bind:isCode={isCode}
+        on:input={validate}
     ></TextInput>
 </div>
 

@@ -1,14 +1,18 @@
-import SingleLineCtrl from "./SingleLineCtrl.svelte";
-import MultiLineCtrl from "./MultiLineCtrl.svelte";
-import ChoiceCtrl from "./ChoiceCtrl.svelte";
-import BoolCtrl from "./BoolCtrl.svelte";
-import FileCtrl from "./FileCtrl.svelte";
-import ColorCtrl from "./ColorCtrl.svelte";
+import {
+    SingleLineCtrl,
+    MultiLineCtrl,
+    NameCtrl,
+    ChoiceCtrl,
+    BoolCtrl,
+    FileCtrl,
+    ColorCtrl,
+} from ".";
 
 
 export var mapping = {
     "single": SingleLineCtrl,
     "multi": MultiLineCtrl,
+    "name": NameCtrl,
     "choice": ChoiceCtrl,
     // "multiChoice": MultipleChoiceCtrl,
     // "richChoice": RichChoiceCtrl,

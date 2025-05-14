@@ -8,7 +8,6 @@
     let isValid = writable(true);
 
     function getFile() {
-        console.log(ctrl)
         // todo: add functionality to get file
         return
     }
@@ -34,8 +33,6 @@
     @import url("paramCtrl.css");
 
     .file-ctrl {
-        display: grid;
-        gap: .5rem;
         grid-template-columns: auto min-content;
     }
 
