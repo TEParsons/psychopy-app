@@ -10,6 +10,7 @@
 
     import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
+    import { handlers } from 'svelte/legacy';
     
     let dialog;
     let menu;
@@ -49,7 +50,9 @@
 </button>
 
 <!-- menu for adding a Routine -->
-<Menu bind:menu={menu}>
+<Menu 
+    bind:this={menu}
+>
     <MenuItem 
         label="New Routine..."
         action={() => {
@@ -58,7 +61,6 @@
             // show dialog
             dialog.showModal()
         }}
-        closemenu={menu}
     />
     {#each [...$experiment.routines] as [name, routine]}
     <MenuItem 
@@ -67,7 +69,6 @@
             // set this Routine as the one to insert
             inserting.set(routine)
         }}
-        closemenu={menu}
     />
     {/each}
 </Menu>

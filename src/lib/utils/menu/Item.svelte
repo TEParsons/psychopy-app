@@ -1,34 +1,52 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    
+    import { getContext } from "svelte";
 
-    export let id = undefined;
-    export let icon = null;
+    /** @prop @type {string} Label for this menu item */
     export let label;
-    export let submenu = false;
-    export let action = () => {};
-    export let closemenu = null;
+    /** @prop @type {String|undefined} Path to an icon for this page's tab */
+    export let icon = undefined;
+    /** 
+     * @prop @type {function} Function to call when this item is clicked, given 3 params:
+     * 
+     * @param evt {MouseEvent} Event triggered on click
+     * @param handle {HTMLButtonElement} HTML element for this menu item
+     * @param data {any} Arbitrary data associated with this menu item 
+     */
+    export let action = (evt, handle, data) => {};
+    /** @prop @type {boolean} Is this item able to be clicked on? */
     export let disabled = false;
+    /** @prop @type {boolean} Close menu on click? */
+    export let close = true;
+    /** @prop @type {any} Arbitrary data associated with this menu item  */
+    export let data = {};
+
+    /** @public @type {{button: HTMLButtonElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
+    export let handles = {
+        button: undefined
+    }
+
+    /** @private @type {{container: HTMLDivElement|undefined, menu: import("@smui/menu")|undefined, setOpen: function}} HTML elements of the parent menu */
+    let parent = getContext("handles");
 </script>
 
 
 <button 
-    id={id}
+    bind:this={handles.button}
     class=menu-item 
-    on:click={() => {
-        action();
-        if (closemenu !== null) {
-            closemenu.setOpen(false);
+    on:click={(evt) => {
+        action(evt, handles.button, data);
+        if (close) {
+            parent.setOpen(false);
         }
     }}
     disabled={disabled}
 >
-    {#if icon !== null}
+    {#if icon}
     <img src={icon} alt="-" class=menu-item-icon />
     {/if}
-    <label for={id}>{label}</label>
-    {#if submenu}
-    <img class=menu-item-chevron src="/icons/{$theme}/sym-arrow-right.svg" alt=">" />
-    {/if}
+    <span>{label}</span>
+    <slot name=chevron></slot>
 </button>
 
 <style>
@@ -46,16 +64,11 @@
         border-radius: 0;
         padding: 0.5rem 1rem;
     }
-    .menu-item label {
+    .menu-item span {
         grid-column-start: label;
     }
     .menu-item:enabled:hover {
         background-color: var(--mantle);
-    }
-
-    .menu-item-chevron {
-        width: .4rem;
-        margin-left: auto;
     }
 
 </style>

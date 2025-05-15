@@ -37,37 +37,29 @@
             on:click={() => menu.setOpen(true)} 
         />
         <Menu 
-            bind:menu={menu}
+            bind:this={menu}
         >
             <SubMenu label="File" icon="/icons/{$theme}/rbn-file.svg">
                 <MenuItem 
-                    id="ribbon-btn-new" 
                     icon="/icons/{$theme}/btn-new.svg" 
                     label="New file" 
                     action={file_new}
-                    closemenu={menu} 
                 />
                 <MenuItem 
-                    id="ribbon-btn-open" 
                     icon="/icons/{$theme}/btn-open.svg" 
                     label="Open file" 
                     action={file_open} 
-                    closemenu={menu} 
                 />
                 <MenuItem 
-                    id="ribbon-btn-save" 
                     icon="/icons/{$theme}/btn-save.svg" 
                     label="Save file" 
                     action={file_save} 
-                    closemenu={menu} 
                     disabled={!$changeHistory.length} 
                 />
                 <MenuItem 
-                    id="ribbon-btn-saveas" 
                     icon="/icons/{$theme}/btn-saveas.svg" 
                     label="Save file as"
                     action={file_save_as} 
-                    closemenu={menu} 
                 />
             </SubMenu>
         </Menu>

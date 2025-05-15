@@ -7,7 +7,7 @@
     /** @prop @type {String|undefined} Path to an icon for this page's tab */
     export let icon = undefined;
     /** @prop @type {any} Arbitrary data relating to this page */
-    export let data = {};
+    export const data = {};
 
     /** @public @type {{tab: HTMLButtonElement|undefined, page: HTMLDivElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
     export const handles = {

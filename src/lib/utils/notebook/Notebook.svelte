@@ -5,6 +5,7 @@
     /** @prop @type {boolean} Should this notebook be flush within its container? */
     export let flush = false;
     /** @prop @type {any} Arbitrary data associated with this notebook */
+    export const data = {};
 
     /** @public @type {import("svelte/store").Writable<HTMLButtonElement|undefined>} The current tab's handle, store can be supplied or bound */
     export let activeTab = writable()
