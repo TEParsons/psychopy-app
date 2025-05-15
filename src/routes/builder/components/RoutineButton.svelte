@@ -3,7 +3,6 @@
     import { theme } from "$lib/globals.js";
     import { experiment, currentRoutine } from '../globals.js';
     import { updateHistory } from '../history.js';
-    import { currentPage } from '../routines/globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
 
     export let component;
@@ -21,12 +20,14 @@
         // update history
         updateHistory()
         // create a new StandaloneRoutine
+        let rt = StandaloneRoutine.fromTemplate(component['__name__'])
+        // add it to the experiment
         $experiment.routines.set(
-            component['__name__'],
-            StandaloneRoutine.fromTemplate(component['__name__'])
+            rt.name,
+            rt
         )
         // navigate to it
-        currentPage.set(component['__name__'])
+        currentRoutine.set(rt)
         // refresh
         experiment.set($experiment);
     }

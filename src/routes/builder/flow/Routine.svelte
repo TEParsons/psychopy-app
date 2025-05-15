@@ -57,7 +57,7 @@
     on:dragstart={on_dragstart} 
     on:dragend={on_dragend} 
     on:click={on_click}
-    class:active={$currentRoutine === element.name}
+    class:active={$currentRoutine ? $currentRoutine.name === element.name : false}
     role="none"
     on:contextmenu|preventDefault={showContextMenu}
 >{element.name}

@@ -1,60 +1,95 @@
 <script>
-    import { derived, readable } from 'svelte/store';
+    import { derived } from 'svelte/store';
     import { onMount, onDestroy, getContext } from 'svelte';
 
-    export let title;
+    /** @prop @type {String} Label for this page's tab */
+    export let label;
+    /** @prop @type {String|undefined} Path to an icon for this page's tab */
     export let icon = undefined;
+    /** @prop @type {any} Arbitrary data relating to this page */
+    export let data = {};
 
-    let tab;
+    /** @public @type {{tab: HTMLButtonElement|undefined, page: HTMLDivElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
+    export const handles = {
+        tab: undefined, 
+        page: undefined,
+    };
 
-    // for working out if this tab is active
-    let activeTab = getContext("activeTab")
-    let active = derived(activeTab, (value) => {return value === tab && value !== undefined})
-    // for counting number of tabs (necessary for spacing on parent)
-    let tabs = getContext("tabs")
+    /** @private @type {import("svelte/store").Writable<HTMLButtonElement|undefined>} Whichever tab within a notebook is currently active */
+    let activeTab = getContext("activeTab");
+    /** @private @type {import("svelte/store").Readable<boolean>}  Is this page's tab the active tab? */
+    let active = derived(activeTab, (value) => {
+        return value !== undefined && value === handles.tab
+    });
+    /** @private @type {import("svelte/store").Writable<Array<HTMLButtonElement|undefined>>} All tabs within a notebook */
+    let allTabs = getContext("tabs");
+    /** @private @type {Array<any>} All data within a notebook, by tab */
+    let allData = getContext("tabData");
 
-    function onClick() {
-        activeTab.set(tab)
-    }
-
+    /**
+     * On mount, register this page's tab and data with its parent notebook.
+     */
     onMount(() => {
-        // add to tabs array
-        tabs.update((value) => {
-            value.push(tab);
+        // add this page to parent notebook's tabs array
+        allTabs.update((value) => {
+            value.push(handles.tab);
             return value
         })
-        // if no current page yet, make this current
+        // add this page's data to parent notebook's data array
+        allData.push(data)
+        // if there's no current page yet, make this the current page
         if ($activeTab === undefined) {
-            activeTab.set(tab);
+            activeTab.set(handles.tab);
         }
     })
+    /**
+     * On unmount, remove this page's tab and data from its parent notebook.
+     */
     onDestroy(() => {
-        tabs.update((value) => {
-            value.splice(
-                value.indexOf(tab), 1
-            );
+        // get index for this tab
+        let i = $allTabs.indexOf(handles.tab)
+        // remove tab from tabs array
+        allTabs.update((value) => {
+            value.splice(i, 1);
             return value
         })
+        // remove data from data array
+        allData.splice(i, 1)
     })
 </script>
 
+
+<!-- tab button for this page -->
 <button 
-    bind:this={tab}
+    bind:this={handles.tab}
     class="notebook-tab" 
     class:active={$active} 
-    on:click={onClick}
+    on:click={
+        /** @param evt {MouseEvent} */
+        (evt) => {
+            activeTab.set(handles.tab)
+        }
+    }
 >
     {#if icon}
-    <img src={icon} alt="" />
+    <img 
+        src={icon} 
+        alt="" 
+    />
     {/if}
-    {title}
+    {label}
 </button>
 
+<!-- page container for this page -->
 {#if $active}
-<div class=notebook-page>
+<div 
+    bind:this={handles.page}
+    class=notebook-page
+>
     <slot></slot>
 </div>
 {/if}
+
 
 <style>
     button.notebook-tab {
