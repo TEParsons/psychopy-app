@@ -51,7 +51,6 @@
 <style>
     button.component-button {
         background-color: var(--mantle);
-        width: 4rem;
         box-sizing: content-box;
         margin: 0;
         padding: 1rem;
@@ -62,6 +61,7 @@
     }
     button.component-button img {
         width: 3.5rem;
+        padding: .5rem;
     }
     button.component-button label {
         hyphens: auto;
