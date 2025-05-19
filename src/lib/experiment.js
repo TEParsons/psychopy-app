@@ -468,7 +468,7 @@ export class StandaloneRoutine {
         this.tag = tag;
         this.exp = undefined;
         this.plugin = undefined;
-        this.params = new Map();
+        this.params = new ParamsArray();
     }
 
     get name() {
@@ -632,12 +632,146 @@ export function unsortParams(sorted) {
     return unsorted;
 }
 
+
+export class ParamsArray extends Map {
+    /** @attribute @type { boolean } Is this array sorted by category? */
+    isSorted = false;
+
+    /**
+     * @returns {ParamsArray} A copy of this array, with params copied too
+     */
+    copy() {
+        // create new array
+        let params = new ParamsArray();
+        params.isSorted = this.isSorted;
+        // copy each param to it
+        for (let [name, param] of [...this]) {
+            params.set(name, param.copy())
+        }
+
+        return params
+    }
+
+    /**
+     * @returns {ParamsArray} A sorted copy of this array, containing the same param objects
+     */
+    get sorted() {
+        // if already sorted by category, return as is
+        if (this.isSorted) {
+            return this;
+        }
+        // if not sorted by category, return a sorted copy
+        let sorted = new ParamsArray();
+        sorted.isSorted = true;
+        // iterate through params
+        for (let [name, param] of [...this]) {
+            // make sure we have an entry for this categ
+            if (!sorted.has(param.categ)) {
+                sorted.set(param.categ, new ParamsArray())
+            }
+            // add param
+            sorted.get(param.categ).set(name, param)
+        }
+
+        return sorted
+    }
+    /**
+     * @returns {ParamsArray} A non-sorted copy of this array, containing the same param objects
+     */
+    get unsorted() {
+        // if already not sorted, return as is
+        if (!this.isSorted) {
+            return this;
+        }
+        // if sorted by category, return an unsorted copy
+        let unsorted = new ParamsArray();
+        unsorted.isSorted = true;
+        // iterate through categories
+        for (let [categ, params] of [...this]) {
+            // iterate through params in category
+            for (let [name, param] of [...params]) {
+                // add param to flat array
+                unsorted.set(name, param);
+            }
+        }
+
+        return unsorted;
+    }
+
+    /**
+     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing start parameters
+     */
+    get startParams() {
+        // start off with no params
+        let found = {
+            valueParam: null,
+            typeParam: null,
+            expectedParam: null,
+        }
+        // use different array according to sorted status
+        let params;
+        if (this.isSorted && this.has("Basic")) {
+            params = this.get("Basic");
+        } else if (this.isSorted) {
+            params = new ParamsArray();
+        } else {
+            params = this;
+        }
+        // get whatever params we can
+        if (params.has("startVal")) {
+            found.valueParam = params.get("startVal")
+        }
+        if (params.has("startType")) {
+            found.typeParam = params.get("startType")
+        }
+        if (params.has("startEstim")) {
+            found.expectedParam = params.get("startEstim")
+        }
+
+        return found
+    }
+
+    /**
+     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing stop parameters
+     */
+    get stopParams() {
+        // start off with no params
+        let found = {
+            valueParam: null,
+            typeParam: null,
+            expectedParam: null,
+        }
+        // use different array according to sorted status
+        let params;
+        if (this.isSorted && this.has("Basic")) {
+            params = this.get("Basic");
+        } else if (this.isSorted) {
+            params = new ParamsArray();
+        } else {
+            params = this;
+        }
+        // get whatever params we can
+        if (params.has("stopVal")) {
+            found.valueParam = params.get("stopVal")
+        }
+        if (params.has("stopType")) {
+            found.typeParam = params.get("stopType")
+        }
+        if (params.has("durationEstim")) {
+            found.expectedParam = params.get("durationEstim")
+        }
+
+        return found
+    }
+}
+
+
 export class Component {
     constructor(tag) {
         this.tag = tag;
         this.routine = undefined;
         this.plugin = undefined;
-        this.params = new Map();
+        this.params = new ParamsArray();
     }
 
     get name() {
@@ -654,6 +788,13 @@ export class Component {
         }
         // return name param
         this.params.get("name").val = value;
+    }
+
+    /**
+     * Get params sorted by category
+     */
+    getSortedParams() {
+        return sortParams(this.params)
     }
 
     /**
@@ -1215,7 +1356,7 @@ export class LoopInitiator {
     constructor() {
         this.exp = undefined;
         this.loopType = undefined;
-        this.params = new Map();
+        this.params = new ParamsArray();
         this.name = undefined;
         this.terminator = undefined;
     }

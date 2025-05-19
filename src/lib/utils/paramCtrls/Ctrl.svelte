@@ -1,7 +1,6 @@
 <script>
-    import { mapping } from "$lib/utils/ctrls/inputTypes.js";
+    import { mapping } from "./ctrls";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
-    import { theme } from "$lib/globals.js";
     export let name
     export let param
 
@@ -42,6 +41,8 @@
         grid-gap: .5rem;
         align-items: end;
         min-width: 20rem;
+        box-sizing: border-box;
+        
     }
     .param-ctrl .param-gap {
         grid-column-start: gap;

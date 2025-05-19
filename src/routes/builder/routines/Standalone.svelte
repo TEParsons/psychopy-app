@@ -1,34 +1,32 @@
 <script>
-    import { writable } from "svelte/store";
-    import Panel from "../../dialogs/component/Panel.svelte";
-    import { sortParams, unsortParams } from "$lib/experiment";
     import { experiment } from '../globals';
     import { updateHistory } from '../history.js';
+    import { ParamsNotebook } from "$lib/utils/paramCtrls";
 
+    export let component;
 
-    export let component
+    let notebook;
     
-    let tempParams = writable(sortParams(component.copyParams()))
-
     function discardChanges(evt) {
         // reset temp params from component to discard any live changes
-        tempParams.set(
-            sortParams(component.copyParams())
-        )
+        notebook.discardChanges(evt)
     }
 
     function applyChanges(evt) {
         // update history
         updateHistory();
         // apply temporary params to component
-        component.params = unsortParams($tempParams)
+        notebook.applyChanges(evt)
         // refresh
         experiment.set($experiment)
     }
 </script>
 
 <div class=standalone-routine-canvas>
-	<Panel component={component} tempParams={tempParams} />
+    <ParamsNotebook 
+        bind:this={notebook}
+        element={component}
+    ></ParamsNotebook>
     <button
         on:click={applyChanges} 
     >Apply</button>

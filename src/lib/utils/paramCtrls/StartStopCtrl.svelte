@@ -3,42 +3,42 @@
     import SingleLineCtrl from "$lib/utils/ctrls/SingleLineCtrl.svelte";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
+    /** @prop @type {string} Name (Start or Stop)*/
     export let name;
-    export let valueParam = null;
-    export let typeParam = null;
-    export let expectedParam = null;
+    /** @prop @type {{valueParam: import("$lib/experiment.js").Param|null, typeParam: import("$lib/experiment.js").Param|null, expectedParam: import("$lib/experiment.js").Param|null}}*/
+    export let params;
 </script>
 
 <div class=start-stop-ctrl id={name}>
     <label class=param-label for={name}>
         {name}
-        {#if valueParam !== null && valueParam.hint}
+        {#if params.valueParam !== null && params.valueParam.hint}
         <Tooltip>
-            {valueParam.hint}
+            {params.valueParam.hint}
         </Tooltip>
         {/if}
     </label>
     <div class=param-gap></div>
-    {#if typeParam !== null}
+    {#if params.typeParam !== null}
     <div class=param-type>
-        {#if typeParam.hint}
+        {#if params.typeParam.hint}
         <Tooltip>
-            {typeParam.hint}
+            {params.typeParam.hint}
         </Tooltip>
         {/if}
-        <select disabled={typeParam.allowedVals.length == 1} bind:value={typeParam.val}>
-            {#each typeParam.allowedVals as val}
-            <option value={val} selected={typeParam.val === val}>{val}</option>
+        <select disabled={params.typeParam.allowedVals.length == 1} bind:value={params.typeParam.val}>
+            {#each params.typeParam.allowedVals as val}
+            <option value={val} selected={params.typeParam.val === val}>{val}</option>
             {/each}
         </select>
     </div>
     {/if}
-    {#if valueParam !== null}
-    <input class=param-value type="text" bind:value={valueParam.val} />
+    {#if params.valueParam !== null}
+    <input class=param-value type="text" bind:value={params.valueParam.val} />
     {/if}
-    {#if expectedParam !== null}
-    <label class=param-estim-label for="{name}-type">{expectedParam.label}</label>
-    <input class=param-estim type="text" bind:value={expectedParam.val} id="{name}-type" />
+    {#if params.expectedParam !== null}
+    <label class=param-estim-label for="{name}-type">{params.expectedParam.label}</label>
+    <input class=param-estim type="text" bind:value={params.expectedParam.val} id="{name}-type" />
     {/if}
 </div>
 
