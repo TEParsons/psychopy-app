@@ -17,7 +17,7 @@
     --overlay: #D6D6D6;
     --outline: #66666E;
     /* text colors */
-    --text: #161616;
+    --text: #1A1A1C;
     --hltext: #FFFFFF;
     --text-on-red: var(--hltext);
     --text-on-purple: var(--text);
