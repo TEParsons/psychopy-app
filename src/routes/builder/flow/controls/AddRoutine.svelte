@@ -6,23 +6,22 @@
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-    import ParamsPanel from '../../../dialogs/component/Panel.svelte';
 
     import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
-    import { handlers } from 'svelte/legacy';
+    import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     
     let dialog;
+    let notebook;
     let menu;
     
     let element = writable(new Routine());
-    let tempParams = writable(sortParams($element.settings.copyParams()));
 
     function insertRoutine(evt) {
         // update history
         updateHistory()
         // apply temporary params to Routine settings
-        $element.settings.params = unsortParams($tempParams)
+        notebook.applyChanges()
         // add to experiment
         $element.exp = $experiment
         $experiment.routines.set($element.name, $element)
@@ -32,9 +31,7 @@
 
     function discardChanges(evt) {
         // reset temp params from component to discard any live changes
-        tempParams.set(
-            sortParams($element.settings.copyParams())
-        )
+        notebook.discardChanges()
     }
 
 </script>
@@ -83,7 +80,7 @@
         CANCEL: discardChanges, 
     }}
 >
-    <ParamsPanel component={$element.settings} tempParams={tempParams} />
+    <ParamsNotebook element={$element.settings} bind:this={notebook} />
 </Dialog>
 
 <style>
