@@ -1,15 +1,15 @@
 <script>
     import { theme } from "$lib/globals";
     import { writable } from "svelte/store";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
+    /** @prop @type {string} Label for this button */
     export var label;
-    export var icon = undefined;
+    /** @prop @type {string|undefined} Hover text for this button, if any */
+    export let tooltip = undefined;
 
+    /** @public @type {import("svelte/store").Writable<boolean|undefined>} Whether this panel is open, store can be supplied or bound */
     export var open = writable(false)
-
-    function toggle_shown() {
-        open.set(!$open)
-    }
 </script>
 
 <button
@@ -17,6 +17,11 @@
     class:active={open}
     on:click={() => open.set(!$open)}
 >
+    {#if tooltip}
+    <Tooltip>
+        {tooltip}
+    </Tooltip>
+    {/if}
     {label}
     {#if $open}
     <img 

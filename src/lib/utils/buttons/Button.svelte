@@ -1,11 +1,17 @@
 <script>
     import Tooltip from "../tooltip/Tooltip.svelte";
 
+    /** @prop @type {string} Label for this button */
     export let label;
+    /** @prop @type {string|undefined} Path to icon for this button, if any */
     export let icon = undefined;
+    /** @prop @type {string|undefined} Hover text for this button, if any */
     export let tooltip = undefined;
+    /** @prop @type {boolean} Set the layout of this button to horizontal */
     export let horizontal = false;
+    /** @prop @type {boolean} Set the layout of this button to vertical */
     export let vertical = false;
+    /** @prop @type {boolean} Disable this button */
     export let disabled = false;
 </script>
 
@@ -38,15 +44,12 @@
         position: relative;
         align-items: center;
         padding: 1em;
-        
         font-family: var(--body);
         background-color: transparent;
         border: 1px solid var(--overlay);
         border-radius: .5rem;
-
         max-width: 100%;
         max-height: 100%;
-
         transition: border-color .2s;
     }
 
