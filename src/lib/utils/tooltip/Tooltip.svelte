@@ -13,7 +13,8 @@
         color: var(--text-on-outline);
         border-radius: .5rem;
         padding: .5rem 1rem;
-        z-index: 2;
+        z-index: 10;
+        font-weight: normal;
         /* hidden until hovered */
         visibility: hidden;
     }

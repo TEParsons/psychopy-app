@@ -9,6 +9,7 @@
     import { theme } from '$lib/globals';
     import { writable } from 'svelte/store';
     import { updateHistory } from '../history';
+    import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
 
     function on_dragstart(evt) {
         dragging.set(element.index)
@@ -60,7 +61,13 @@
     class:active={$currentRoutine ? $currentRoutine.name === element.name : false}
     role="none"
     on:contextmenu|preventDefault={showContextMenu}
->{element.name}
+>
+{#if element.settings && element.settings.params.has("desc") && element.settings.params.get('desc').val}
+<Tooltip>
+    {element.settings.params.get('desc').val}
+</Tooltip>
+{/if}
+{element.name}
 </div>
 <Menu 
     bind:menu={menu} 
@@ -76,13 +83,13 @@
 
 <style>
     .routine {
+        position: relative;
         background-color: var(--blue);
         color: var(--text-on-blue);
         padding: 1rem;
         line-height: 1rem;
         border-radius: 1rem;
         margin-top: -1.5rem;
-        z-index: 1;
     }
     .active {
         font-weight: bold;
