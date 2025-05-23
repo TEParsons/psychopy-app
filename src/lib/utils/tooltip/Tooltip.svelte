@@ -18,7 +18,8 @@
         visibility: hidden;
     }
 
-    :global(*:hover > .tooltip) {
+    :global(*:hover) > .tooltip,
+    :global(*:focus) > .tooltip {
         visibility: visible;
     }
 </style>

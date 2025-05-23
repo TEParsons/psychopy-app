@@ -4,6 +4,7 @@
     import { experiment, currentRoutine } from '../globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
     import Dialog from '../../dialogs/component/Dialog.svelte';
+    import { Button } from '$lib/utils/buttons';
 
     let dialog;
     export let component;
@@ -32,38 +33,16 @@
 </script>
 
 {#if !component.hidden}
-<button 
-    class="component-button vertical" 
-    id="add-{component['__name__']}-btn" 
+<Button 
+    label={titleCase(component['__name__'])}
+    icon="/icons/{$theme}/components/{component['__name__']}.svg"
+    vertical
     disabled={!($currentRoutine instanceof Routine)}
     on:click={newComponent}
->
-    <img src="/icons/{$theme}/components/{component['__name__']}.svg" alt="">
-    <label for="add-{component['__name__']}-btn">{titleCase(component['__name__'])}</label>
-</button>
+></Button>
 <Dialog 
     id="dlg-{dlgComponent.name}"
     component={$dlgComponent} 
     bind:handle={dialog}
 ></Dialog>
 {/if}
-
-<style>
-    button.component-button {
-        background-color: var(--mantle);
-        box-sizing: content-box;
-        margin: 0;
-        padding: 1rem;
-    }
-    button.component-button:enabled:hover {
-        background-color: var(--base);
-        color: var(--text);
-    }
-    button.component-button img {
-        width: 3.5rem;
-        padding: .5rem;
-    }
-    button.component-button label {
-        hyphens: auto;
-    }
-</style>

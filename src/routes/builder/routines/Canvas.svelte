@@ -1,6 +1,7 @@
 <script>
     import { theme } from "$lib/globals.js";
     import { experiment } from '../globals.js';
+    import { Button } from "$lib/utils/buttons";
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
@@ -19,14 +20,15 @@
 </script>
 
 <div class=routine-canvas>
-    <button 
-        class=horizontal 
-        id=routine-settings
-        on:click={() => settingsDlg.showModal()}
-    >
-        <img src="icons/{$theme}/btn-settings.svg" alt="" />
-        <label for=routine-settings>Routine settings</label>
-    </button>
+    <div class=button-container>
+        <Button 
+            label="Routine settings"
+            icon="icons/{$theme}/btn-settings.svg"
+            tooltip="Edit settings for this Routine"
+            on:click={() => settingsDlg.showModal()}
+            horizontal 
+        ></Button>
+    </div>
     <Dialog 
         id="dlg-{routine.name}"
         component={routine.settings} 
@@ -53,13 +55,11 @@
         grid-gap: 0;
         padding-bottom: 2rem;
     }
-    #routine-settings {
+    .button-container {
         grid-column-start: entrypoints;
         grid-column-end: undershoot;
         justify-self: start;
+        margin: .5rem;
         z-index: 2;
-    }
-    button#routine-settings:enabled:hover {
-        background-color: var(--crust);
     }
 </style>

@@ -1,4 +1,6 @@
 <script>
+    import { Button } from "$lib/utils/buttons";
+
     export let title;
 
     export let id;
@@ -21,42 +23,46 @@
     <div class="buttons">
         <div class="btn-array extra">
                 {#if "HELP" in buttons}
-                <button 
+                <Button 
+                    label=Help
                     on:click={() => {
                         window.open(buttons['HELP'], '_blank').focus();
                     }} 
-                    class=help-btn 
+                    horizontal
                     disabled={buttons['HELP'] ? true : false}
-                >Help</button>
+                ></Button>
                 {/if}
         </div>
         <div class=gap></div>
         <div class="btn-array standard">
             {#if "OK" in buttons}
-            <button 
+            <Button 
+                label="Okay"
                 on:click={(evt) => {
                     buttons['OK'](evt); 
                     handle.close();
                 }} 
-                class=ok-btn
-            >Okay</button>
+                horizontal
+            ></Button>
             {/if}
             {#if "APPLY" in buttons}
-            <button 
+            <Button 
+                label="Apply"
                 on:click={(evt) => {
                     buttons['APPLY'](evt); 
                 }} 
-                class=apply-btn
-            >Apply</button>
+                horizontal
+            ></Button>
             {/if}
             {#if "CANCEL" in buttons}
-            <button 
+            <Button 
+                label="Cancel"
                 on:click={(evt) => {
                     buttons['CANCEL'](evt); 
                     handle.close();
                 }} 
-                class=cancel-btn
-            >Cancel</button>
+                horizontal
+            ></Button>
             {/if}
         </div>
     </div>
@@ -126,13 +132,5 @@
         display: flex;
         flex-direction: row;
         gap: 1rem;
-    }
-    
-    .buttons button {
-        background-color: var(--crust);
-        margin: 0;
-    }
-    .buttons button:enabled:hover {
-        background-color: var(--base);
     }
 </style>

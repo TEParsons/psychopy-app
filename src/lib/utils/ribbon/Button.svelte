@@ -17,6 +17,12 @@
         padding-bottom: 0.5rem;
         margin: 0;
         grid-row-start: buttons;
+        outline: none;
+        border: none;
+        transition: background-color .2s;
+    }
+    button:disabled {
+        opacity: .5;
     }
     button:enabled:hover {
         background-color: var(--mantle);

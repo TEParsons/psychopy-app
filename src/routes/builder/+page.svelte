@@ -43,9 +43,11 @@
     :global(#components-pnl) {
         grid-column-end: span 1;
         grid-row-end: span 2;
+        background-color: var(--mantle);
     }
     :global(#flow-pnl) {
         grid-column-end: span 3;
         grid-row-end: span 1;
+        background-color: var(--mantle);
     }
 </style>

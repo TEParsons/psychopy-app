@@ -9,11 +9,13 @@
 
 <style>
     .param-ctrl-btn {
+        display: grid;
         height: 100%;
         margin: 0;
         padding: .25rem;
         border-radius: .25rem;
         border: 1px solid var(--overlay);
+        outline: none;
         background-color: var(--base);
     }
     .param-ctrl-btn:hover {

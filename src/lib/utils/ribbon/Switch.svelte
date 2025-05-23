@@ -21,6 +21,11 @@
         margin: 0;
         grid-row-start: buttons;
         padding-bottom: 0.5rem;
+        border: none;
+        outline: none;
+    }
+    button:disabled {
+        opacity: .5;
     }
     button img {
         width: 32px;

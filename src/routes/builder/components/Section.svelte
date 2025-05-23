@@ -1,5 +1,6 @@
 <script>
-    import { writable } from 'svelte/store';
+    import PanelButton from '$lib/utils/buttons/PanelButton.svelte';
+import { writable } from 'svelte/store';
 
     export let id;
     export let label;
@@ -11,18 +12,13 @@
     }
 </script>
 
-<section id={id}>
-    <button 
-        class=component-section-btn 
-        on:click={toggle_shown}
-        class:active={$shown}
-    >{label}</button>
+<PanelButton
+    label={label}
+>
     <div class=component-section-buttons>
-    {#if $shown}
-    <slot></slot>
-    {/if}
+        <slot></slot>
     </div>
-</section>
+</PanelButton>
 
 <style>
     section {
@@ -40,5 +36,7 @@
     .component-section-buttons {
         display: flex;
         flex-wrap: wrap;
+        padding: 1rem;
+        gap: .5rem;
     }
 </style>

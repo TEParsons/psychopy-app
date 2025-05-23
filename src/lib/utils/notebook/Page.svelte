@@ -114,7 +114,7 @@
 
         grid-row-start: page;
         grid-column-end: span calc(var(--n-tabs) + 1);
-        padding: .5rem;
+        padding: .5rem .5rem 3rem .5rem;
         box-sizing: border-box;
         background-color: var(--base);
         z-index: 1;

@@ -10,6 +10,7 @@
     import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
+    import { Button } from '$lib/utils/buttons';
     
     let dialog;
     let notebook;
@@ -38,13 +39,17 @@
 
 
 <!-- button to open add Routine menu -->
-<button class=horizontal id=add-routine on:click={() => {
-    // open the "add routine" menu
-    menu.setOpen(true)
-}}>
-    <img src="/icons/light/btn-routine.svg" alt="" />
-    <label for=add-routine>Add Routine</label>
-</button>
+<Button 
+    label="Add Routine"
+    icon="/icons/light/btn-routine.svg"
+    tooltip="Add a Routine to the experiment flow"
+    on:click={() => {
+        // open the "add routine" menu
+        menu.setOpen(true)
+    }}
+    horizontal
+>
+</Button>
 
 <!-- menu for adding a Routine -->
 <Menu 

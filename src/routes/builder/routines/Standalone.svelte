@@ -2,6 +2,7 @@
     import { experiment } from '../globals';
     import { updateHistory } from '../history.js';
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { Button } from '$lib/utils/buttons';
 
     export let component;
 
@@ -27,7 +28,9 @@
         bind:this={notebook}
         element={component}
     ></ParamsNotebook>
-    <button
+    <Button
+        label=Apply
+        horizontal
         on:click={applyChanges} 
-    >Apply</button>
+    ></Button>
 </div>

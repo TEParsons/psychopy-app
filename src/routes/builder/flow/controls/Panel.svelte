@@ -13,6 +13,7 @@
         padding: 1rem;
         display: grid;
         grid-auto-flow: row;
+        grid-gap: .5rem;
     }
     
 </style>

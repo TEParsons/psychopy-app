@@ -52,7 +52,6 @@
         {#if comp['__class__'].startsWith("psychopy.experiment.components")}
         <ComponentButton 
             component={comp}
-            
         ></ComponentButton>
         {:else}
         <RoutineButton 

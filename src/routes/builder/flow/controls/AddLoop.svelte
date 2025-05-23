@@ -10,6 +10,7 @@
     import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
+    import { Button } from '$lib/utils/buttons';
     
     let dialog;
     let notebook;
@@ -38,15 +39,18 @@
 
 
 <!-- button to open add Routine menu -->
-<button class=horizontal id=add-loop on:click={() => {
-    // create blank Loop
-    element.set(LoopInitiator.fromTemplate("TrialHandler"))
-    // show dialog
-    dialog.showModal()
-}}>
-    <img src="/icons/light/btn-loop.svg" alt="" />
-    <label for=add-loop>Add Loop</label>
-</button>
+<Button 
+    label="Add Loop"
+    icon="/icons/light/btn-loop.svg"
+    tooltip="Add a loop to the experiment flow"
+    horizontal 
+    on:click={() => {
+        // create blank Loop
+        element.set(LoopInitiator.fromTemplate("TrialHandler"))
+        // show dialog
+        dialog.showModal()
+    }}
+></Button>
 
 <!-- dialog for creating a new Routine -->
 <Dialog 
