@@ -51,6 +51,14 @@
         background-color: var(--outline);
         color: var(--text-on-outline);
         border-radius: 1rem;
+        box-shadow: 
+            inset -1px -1px 2px rgba(0, 0, 0, 0.05)
+        ;
+    }
+    .loop label:hover {
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.25)
+        ;
     }
     .loop-arrow {
         width: .75rem;

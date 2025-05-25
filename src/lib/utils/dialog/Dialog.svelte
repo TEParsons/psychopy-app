@@ -42,6 +42,7 @@
                     buttons['OK'](evt); 
                     handle.close();
                 }} 
+                primary
                 horizontal
             ></Button>
             {/if}

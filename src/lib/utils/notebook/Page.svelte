@@ -94,16 +94,18 @@
 <style>
     button.notebook-tab {
         grid-row-start: tabs;
-        background-color: var(--crust);
+        background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         border: none;
         border-radius: 0;
         padding: .25rem 1rem;
         margin: 0;
         text-align: center;
         z-index: 0;
+        transition: background .2s;
     }
     button.notebook-tab:hover {
         background-color: var(--mantle);
+        background: var(--mantle) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.01) 100%);
     }
     .notebook-page {
         position: relative;
@@ -122,7 +124,7 @@
     }
     button.notebook-tab.active {
         border-bottom: none;
-        background-color: var(--base);
+        background: var(--base);
         z-index: 2;
         border: 1px solid var(--overlay);
         border-bottom: none;

@@ -49,17 +49,18 @@
     button {
         position: relative;
         width: 100%;
-        background-color: transparent;
+        background: linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         margin: .5rem 0;
         margin-bottom: .5rem;
         outline: none;
         border: none;
         padding: .5rem;
         border-bottom: 1px solid var(--overlay);
-        transition: border-color .2s;
+        transition: border-color .2s, background .2s;
     }
     button:hover {
-        border-color: var(--blue)
+        border-color: var(--blue);
+        background: linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.05) 100%);
     }
     .panel-indicator {
         position: absolute;

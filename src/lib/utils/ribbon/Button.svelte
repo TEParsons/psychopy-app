@@ -14,21 +14,24 @@
     button {
         background-color: transparent;
         padding: 0.25rem;
-        padding-bottom: 0.5rem;
         margin: 0;
         grid-row-start: buttons;
         outline: none;
-        border: none;
-        transition: background-color .2s;
+        border: 1px solid transparent;
+        transition: border-color .2s, box-shadow .2s;
+        border-radius: .5rem;
     }
     button:disabled {
         opacity: .5;
     }
     button:enabled:hover {
-        background-color: var(--mantle);
+        border-color: var(--overlay);
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.05)
+        ;
     }
 
     button img {
-        height: 32px;
+        height: 2.25rem;
     }
 </style>

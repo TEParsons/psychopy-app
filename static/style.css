@@ -89,9 +89,30 @@ textarea {
     background-color: var(--base);
     border-radius: .25rem;
 }
-select:hover,
+input{
+    transition: border-color .2s, box-shadow .2s;
+}
+input:active, 
+input:focus {
+    border-color: var(--blue);
+}
+input:hover, 
+input:active, 
+input:focus {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+}
+
+select {
+    transition: border-color .2s, box-shadow .2s;
+}
+select:active, 
 select:focus {
-    background-color: var(--mantle);
+    border-color: var(--blue);
+}
+select:hover, 
+select:active, 
+select:focus {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
 }
 
 option img {

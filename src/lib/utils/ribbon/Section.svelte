@@ -5,9 +5,9 @@
     export let gap = false;
 </script>
 
-<section id={id} class={gap ? "gap" : ""}>
+<section id=ribbon-section-{id} class={gap ? "gap" : ""}>
     {#if label || icon}
-    <label for={id}>
+    <label for=ribbon-section-{id}>
         <img alt="" src={icon} />
         {label}
     </label>

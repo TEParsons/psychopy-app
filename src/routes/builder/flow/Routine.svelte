@@ -70,14 +70,12 @@
 {element.name}
 </div>
 <Menu 
-    bind:menu={menu} 
-    style="position: {$menuPos.position}; left: {$menuPos.left}; top: {$menuPos.top};"
+    bind:this={menu} 
 >
     <MenuItem 
         icon="/icons/{$theme}/btn-delete.svg"
         label="Remove"
         action={removeRoutine}
-        closemenu={menu}
     />
 </Menu>
 
@@ -90,6 +88,14 @@
         line-height: 1rem;
         border-radius: 1rem;
         margin-top: -1.5rem;
+        box-shadow: 
+            inset -1px -1px 2px rgba(0, 0, 0, 0.05)
+        ;
+    }
+    .routine:hover {
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.1)
+        ;
     }
     .active {
         font-weight: bold;
