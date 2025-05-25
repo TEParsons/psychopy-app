@@ -7,6 +7,8 @@
     export let icon = undefined;
     /** @prop @type {string|undefined} Hover text for this button, if any */
     export let tooltip = undefined;
+    /** @prop @type {boolean} Is this button the primary action? */
+    export let primary = false;
     /** @prop @type {boolean} Set the layout of this button to horizontal */
     export let horizontal = false;
     /** @prop @type {boolean} Set the layout of this button to vertical */
@@ -19,6 +21,7 @@
     on:click
     class:vertical
     class:horizontal
+    class:primary
     disabled={disabled}
 >
     {#if tooltip}
@@ -43,14 +46,17 @@
         display: grid;
         position: relative;
         align-items: center;
-        padding: 1em;
+        padding: .75em 1em;
         font-family: var(--body);
         background-color: transparent;
         border: 1px solid var(--overlay);
         border-radius: .5rem;
         max-width: 100%;
         max-height: 100%;
-        transition: border-color .2s;
+        transition: border-color .2s, box-shadow .2s;
+        box-shadow: 
+            inset -1px -1px 2px rgba(0, 0, 0, 0.025)
+        ;
     }
 
     button.horizontal {
@@ -80,6 +86,19 @@
         hyphens: auto;
     }
 
+    button.primary {
+        color: var(--text-on-blue);
+        background-color: var(--blue);
+        border-width: 0;
+    }
+    button:enabled:hover.primary,
+    button:enabled:focus.primary {
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.1)
+        ;
+    }
+
+
     button:disabled {
         opacity: 50%;
     }
@@ -87,5 +106,8 @@
     button:enabled:focus {
         outline: none;
         border-color: var(--blue);
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.05)
+        ;
     }    
 </style>
