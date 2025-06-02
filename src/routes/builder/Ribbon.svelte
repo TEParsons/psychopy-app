@@ -31,7 +31,6 @@
 <Ribbon>
     <RibbonSection id=ribbon-menu>
         <RibbonButton 
-            id=ribbon-menu 
             icon="/icons/{$theme}/btn-hamburger.svg"
             label="Menu"
             on:click={() => menu.setOpen(true)} 
@@ -66,26 +65,22 @@
     </RibbonSection>
     <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton 
-            id="ribbon-btn-new" 
             icon="/icons/{$theme}/btn-new.svg" 
             label="New file" 
             on:click={file_new}
         />
         <RibbonButton 
-            id="ribbon-btn-open" 
             icon="/icons/{$theme}/btn-open.svg" 
             label="Open file" 
             on:click={file_open} 
         />
         <RibbonButton 
-            id="ribbon-btn-save" 
             icon="/icons/{$theme}/btn-save.svg" 
             label="Save file" 
             on:click={file_save}
             disabled={!$changeHistory.length} 
         />
         <RibbonButton 
-            id="ribbon-btn-saveas" 
             icon="/icons/{$theme}/btn-saveas.svg" 
             label="Save file as"
             on:click={file_save_as} 
@@ -94,20 +89,21 @@
 
     <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">
         <RibbonButton 
-            id="ribbon-btn-undo" 
             icon="/icons/{$theme}/btn-undo.svg" 
             label="Undo" 
             on:click={undo} 
             disabled={$currentFile === null || !$changeHistory.length} 
         />
         <RibbonButton 
-            id="ribbon-btn-redo" 
             icon="/icons/{$theme}/btn-redo.svg" 
             label="Redo" 
             on:click={redo} 
             disabled={$currentFile === null || !$changeFuture.length} 
         />
-        <RibbonButton id="ribbon-btn-find" icon="/icons/{$theme}/btn-find.svg" label="Find" />
+        <RibbonButton 
+            icon="/icons/{$theme}/btn-find.svg" 
+            label="Find" 
+        />
     </RibbonSection>
     
     <RibbonSection id=experiment label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
@@ -117,7 +113,6 @@
             label="Monitor centre" 
         />         -->
         <RibbonButton 
-            id="ribbon-btn-settings" 
             icon="/icons/{$theme}/btn-settings.svg" 
             label="Experiment settings" 
             on:click={() => {settingsDlg.showModal()}}
@@ -177,19 +172,16 @@
 
     <RibbonSection id=views label=Views icon="/icons/{$theme}/rbn-windows.svg">
         <RibbonButton 
-            id="ribbon-btn-builder" 
             icon="/icons/{$theme}/btn-builder.svg" 
             label="Builder view" 
             on:click={new_builder_frame} 
         />
         <RibbonButton 
-            id="ribbon-btn-coder"  
             icon="/icons/{$theme}/btn-coder.svg" 
             label="Coder view" 
             on:click={new_coder_frame} 
         />
         <RibbonButton 
-            id="ribbon-btn-runner" 
             icon="/icons/{$theme}/btn-runner.svg" 
             label="Runner view" 
             on:click={new_runner_frame} 

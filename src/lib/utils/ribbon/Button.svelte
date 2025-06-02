@@ -1,11 +1,13 @@
 <script>
-    export let id;
     export let icon;
     export let label;
     export let disabled = false;
 </script>
 
-<button id={id} disabled={disabled} on:click>
+<button 
+    disabled={disabled} 
+    on:click
+>
     <img src={icon} alt={label} />
     <slot></slot>
 </button>
@@ -24,11 +26,15 @@
     button:disabled {
         opacity: .5;
     }
-    button:enabled:hover {
+    button:enabled:hover,
+    button:enabled:focus {
         border-color: var(--overlay);
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.05)
         ;
+    }
+    button:enabled:focus {
+        border-color: var(--blue);
     }
 
     button img {
