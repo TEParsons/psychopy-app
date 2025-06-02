@@ -33,14 +33,16 @@
     data={data}
 >
 <img class=menu-item-chevron src="/icons/{$theme}/sym-arrow-right.svg" alt=">" slot=chevron/>
-</Item>
 <Menu 
+    slot=submenu
     bind:this={handles.menu}
 >
     <div class=menu>
         <slot></slot>
     </div>
 </Menu>
+</Item>
+
 
 <style>
     .menu {

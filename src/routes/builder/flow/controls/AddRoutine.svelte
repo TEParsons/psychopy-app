@@ -37,43 +37,45 @@
 
 </script>
 
-
-<!-- button to open add Routine menu -->
-<Button 
-    label="Add Routine"
-    icon="/icons/light/btn-routine.svg"
-    tooltip="Add a Routine to the experiment flow"
-    on:click={() => {
-        // open the "add routine" menu
-        menu.setOpen(true)
-    }}
-    horizontal
+<div
+    class=container
 >
-</Button>
-
-<!-- menu for adding a Routine -->
-<Menu 
-    bind:this={menu}
->
-    <MenuItem 
-        label="New Routine..."
-        action={() => {
-            // create blank Routine
-            element.set(new Routine())
-            // show dialog
-            dialog.showModal()
+    <!-- button to open add Routine menu -->
+    <Button 
+        label="Add Routine"
+        icon="/icons/light/btn-routine.svg"
+        tooltip="Add a Routine to the experiment flow"
+        on:click={() => {
+            // open the "add routine" menu
+            menu.setOpen(true)
         }}
-    />
-    {#each [...$experiment.routines] as [name, routine]}
-    <MenuItem 
-        label={name}
-        action={() => {
-            // set this Routine as the one to insert
-            inserting.set(routine)
-        }}
-    />
-    {/each}
-</Menu>
+        horizontal
+    ></Button>
+    
+    <!-- menu for adding a Routine -->
+    <Menu 
+        bind:this={menu}
+    >
+        <MenuItem 
+            label="New Routine..."
+            action={() => {
+                // create blank Routine
+                element.set(new Routine())
+                // show dialog
+                dialog.showModal()
+            }}
+        />
+        {#each [...$experiment.routines] as [name, routine]}
+        <MenuItem 
+            label={name}
+            action={() => {
+                // set this Routine as the one to insert
+                inserting.set(routine)
+            }}
+        />
+        {/each}
+    </Menu>
+</div>
 
 <!-- dialog for creating a new Routine -->
 <Dialog 
@@ -89,7 +91,7 @@
 </Dialog>
 
 <style>
-    button {
-        background-color: var(--crust);
+    .container {
+        position: relative;
     }
 </style>

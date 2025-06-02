@@ -14,6 +14,7 @@
 
 <style>
     button {
+        position: relative;
         background-color: transparent;
         padding: 0.25rem;
         margin: 0;

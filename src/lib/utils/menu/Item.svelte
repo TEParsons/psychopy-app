@@ -26,7 +26,7 @@
         button: undefined
     }
 
-    /** @private @type {{container: HTMLDivElement|undefined, menu: import("@smui/menu")|undefined, setOpen: function}} HTML elements of the parent menu */
+    /** @private @type {{menu: import("@smui/menu").default|undefined, setOpen: function}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
     let parent = getContext("handles");
 </script>
 
@@ -47,6 +47,7 @@
     {/if}
     <span>{label}</span>
     <slot name=chevron></slot>
+    <slot name=submenu></slot>
 </button>
 
 <style>
@@ -56,6 +57,7 @@
         /* own attributes */
         display: grid;
         grid-template-columns: [icon] 1rem [label] 1fr [chevron] 1rem;
+        align-items: center;
         gap: 0 .5rem;
         width: 100%;
         white-space: nowrap;
@@ -67,8 +69,12 @@
     .menu-item span {
         grid-column-start: label;
     }
-    .menu-item:enabled:hover {
+    .menu-item:enabled:hover,
+    .menu-item:enabled:focus {
         background-color: var(--mantle);
+    }
+    .menu-item:enabled:focus {
+        border: 1px solid var(--blue);
     }
 
 </style>
