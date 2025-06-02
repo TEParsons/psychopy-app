@@ -15,7 +15,7 @@
         grid-auto-flow: row;
         grid-gap: .5rem;
         align-items: start;
-        justify-content: start;
+        align-content: start;
     }
     
 </style>
