@@ -1,0 +1,155 @@
+{
+    "$id": "/Param",
+    "$defs": {
+        "param": {
+            "title": "Parameter",
+            "description": "A PsychoPy parameter",
+            "type": "object",
+            "properties": {
+                "val": {
+                    "title": "Value",
+                    "description": "The value of this parameter"
+                },
+                "valType": {
+                    "title": "Value type",
+                    "description": "Value type for this parameter, i.e. how to write it as code",
+                    "type": "string",
+                    "anyOf": [
+                        {
+                            "title": "String",
+                            "description": "A string, will be compiled with \" around it",
+                            "const": "str"
+                        },
+                        {
+                            "title": "Extended string",
+                            "description": "A long string, will be compiled with \" around it and linebreaks will be preserved",
+                            "const": "extendedStr"
+                        },
+                        {
+                            "title": "Code",
+                            "description": "Some code, will be compiled verbatim or translated to JS (no \")",
+                            "const": "code"
+                        },
+                        {
+                            "title": "Extended code",
+                            "description": "A block of code, will be compiled verbatim or translated to JS and linebreaks will be preserved",
+                            "const": "extendedCode"
+                        },
+                        {
+                            "title": "File",
+                            "description": "A file path, will be compiled like str but will replace unescaped \\ with /",
+                            "const": "file"
+                        },
+                        {
+                            "title": "List",
+                            "description": "A list of values, will be compiled like code but if there's no [] or () then these are added",
+                            "const": "list"
+                        }
+                    ],
+                    "default": "code"
+                },
+                "inputType": {
+                    "title": "Input type",
+                    "description": "Type of input control to display for this parameter",
+                    "type": "string",
+                    "anyof": [
+                        {
+                            "title": "Single-line",
+                            "description": "A single-line text control",
+                            "const": "single"
+                        },
+                        {
+                            "title": "Multi-line",
+                            "description": "A multi-line text control",
+                            "const": "multi"
+                        },
+                        {
+                            "title": "Color",
+                            "description": "A single-line text control with a button to open the color picker",
+                            "const": "color"
+                        },
+                        {
+                            "title": "Survey",
+                            "description": "A single-line text control with a button to open Pavlovia surveys list",
+                            "const": "survey"
+                        },
+                        {
+                            "title": "File",
+                            "description": "A single-line text control with a button to open a file browser",
+                            "const": "file"
+                        },
+                        {
+                            "title": "File list",
+                            "description": "Several file controls with buttons to add/remove",
+                            "const": "fileList"
+                        },
+                        {
+                            "title": "Table",
+                            "description": "A file control with an additional button to open in Excel",
+                            "const": "table"
+                        },
+                        {
+                            "title": "Choice",
+                            "description": "A single-choice control (dropdown)",
+                            "const": "choice"
+                        },
+                        {
+                            "title": "Multiple Choice",
+                            "description": "A multi-choice control (tickboxes)",
+                            "const": "multiChoice"
+                        },
+                        {
+                            "title": "Rich choice",
+                            "description": "A single-choice control (dropdown) with rich text for each option",
+                            "const": "richChoice"
+                        },
+                        {
+                            "title": "Boolean (checkbox)",
+                            "description": "A single checkbox control",
+                            "const": "bool"
+                        },
+                        {
+                            "title": "Dictionary",
+                            "description": "Several key:value pair controls with buttons to add/remove fields",
+                            "const": "dict"
+                        }
+                    ]
+                },
+                "categ": {
+                    "type": "string"
+                },
+                "updates": {
+                    "type": "string",
+                    "oneOf": [
+                        {
+                            "title": "Constant",
+                            "description": "Value is set just the once",
+                            "const": "constant"
+                        },
+                        {
+                            "title": "Set every repeat",
+                            "description":"Value is set at the start of each Routine",
+                            "const": "set every repeat"
+                        },
+                        {
+                            "title": "Set every frame",
+                            "description": "Value is set each frame",
+                            "const": "set every frame"
+                        },
+                        {
+                            "title": "Set during...",
+                            "description": "Set at another point, e.g. during a Static Component",
+                            "pattern": "set during \\w*"
+                        }
+                    ],
+                    "default": "constant"
+                },
+                "plugin": {
+                    "default": null
+                }
+            },
+            "additionalProperties": false,
+            "required": ["val", "valType", "updates", "plugin"]
+        }
+    }
+}
