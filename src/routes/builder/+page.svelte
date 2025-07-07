@@ -21,18 +21,31 @@
     })
 </script>
 
-<Frame rows=3 cols=4>
+<Frame 
+    rows={3} 
+    cols={4}
+>
     {#snippet ribbon()}
     <Ribbon></Ribbon>
     {/snippet}
 
-    <Panel id=routine-pnl title=Routines hspan=3 vspan=2>
+    <Panel 
+        title=Routines 
+        hspan={3} 
+        vspan={2}
+    >
         <RoutinesNotebook></RoutinesNotebook>
     </Panel>
-    <Panel id=components-pnl title=Components vspan=2>
+    <Panel 
+        title=Components 
+        vspan={2}
+    >
         <ComponentsPanel></ComponentsPanel>
     </Panel>
-    <Panel id=flow-pnl title=Flow hspan=4>
+    <Panel 
+        title=Flow 
+        hspan={4}
+    >
         <FlowPanel></FlowPanel>
     </Panel>
 </Frame>
