@@ -1,6 +1,10 @@
 <script>
-    /** @prop @type {number} Delay before showing this tooltip */
-    export let delay = 0.5;
+    let {
+        /** @prop @type {number} Delay before showing this tooltip */
+        delay = 0.5,
+        /** @interface */
+        children
+    } = $props()
 </script>
 
 
@@ -8,7 +12,7 @@
     class=tooltip
     style="--tooltip-delay: {delay}s"
 >
-    <slot></slot>
+    {@render children()}
 </div>
 
 <style>

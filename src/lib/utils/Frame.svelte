@@ -1,15 +1,25 @@
 <script>
-    export let rows = 4;
-    export let cols = 4;
+    let {
+        /** @prop @type {integer} Number of rows in this frame's layout */
+        rows=4,
+        /** @prop @type {integer} Number of columns in this frame's layout */
+        cols=4,
+        /** @prop @type {import("svelte").Snippet} Number of rows in this frame's layout */
+        ribbon=undefined,
+        /** @interface */
+        children
+    } = $props()
 
     var dragging_panel;
 </script>
 
 <div id=frame>
-    <slot name=ribbon></slot>
+    {#if ribbon}
+        {@render ribbon()}
+    {/if}
     <div id=content>
         <div id=panel-sizer style="--frame-rows: {rows}; --frame-cols: {cols}">
-            <slot></slot>
+            {@render children()}
         </div>
     </div>
 </div>

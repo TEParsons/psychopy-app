@@ -1,44 +1,57 @@
 <script>
     import { Button } from "$lib/utils/buttons";
 
-    export let title;
-
-    export let id;
-    export let handle;
-    export let buttons = {};
+    let {
+        id,
+        /** @prop @type {string} Text to display in the title bar of this dialog */
+        title,
+        /** @prop @type {OK: function|undefined, APPLY: function|undefined, CANCEL: function|undefined, HELP: string|undefined} Standard dialog buttons to display, with additional callback functions (or navigation link, in the case of HELP) */
+        buttons={
+            OK: undefined,
+            APPLY: undefined,
+            CANCEL: undefined,
+            HELP: undefined
+        },
+        /** @prop @type {function} Function to call when dialog is closed */
+        onclose=() => {},
+        /** @returns @type {HTMLElement} Handle of this dialog's HTML Element */
+        handle=$bindable(),
+        /** @interface */
+        children
+    } = $props();
 
 </script>
 
-<dialog id={id} bind:this={handle} on:close>
+<dialog id={id} bind:this={handle} onclose={onclose}>
     <div class="title">
         <label for={id}>{title}</label>
         <div class=gap></div>
         <div class=title-btns>
-            <button id=close on:click={() => { handle.close() }}>x</button>
+            <button id=close onclick={() => { handle.close() }}>x</button>
         </div>
     </div>
     <div class="content">
-        <slot></slot>
+        {@render children()}
     </div>
     <div class="buttons">
         <div class="btn-array extra">
-                {#if "HELP" in buttons}
+                {#if buttons.HELP}
                 <Button 
                     label=Help
-                    on:click={() => {
-                        window.open(buttons['HELP'], '_blank').focus();
+                    onclick={() => {
+                        window.open(buttons.HELP, '_blank').focus();
                     }} 
                     horizontal
-                    disabled={buttons['HELP'] ? true : false}
+                    disabled={buttons.HELP ? true : false}
                 ></Button>
                 {/if}
         </div>
         <div class=gap></div>
         <div class="btn-array standard">
-            {#if "OK" in buttons}
+            {#if buttons.OK}
             <Button 
                 label="Okay"
-                on:click={(evt) => {
+                onclick={(evt) => {
                     buttons['OK'](evt); 
                     handle.close();
                 }} 
@@ -46,19 +59,19 @@
                 horizontal
             ></Button>
             {/if}
-            {#if "APPLY" in buttons}
+            {#if buttons.APPLY}
             <Button 
                 label="Apply"
-                on:click={(evt) => {
+                onclick={(evt) => {
                     buttons['APPLY'](evt); 
                 }} 
                 horizontal
             ></Button>
             {/if}
-            {#if "CANCEL" in buttons}
+            {#if buttons.CANCEL}
             <Button 
                 label="Cancel"
-                on:click={(evt) => {
+                onclick={(evt) => {
                     buttons['CANCEL'](evt); 
                     handle.close();
                 }} 

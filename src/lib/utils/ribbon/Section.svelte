@@ -1,54 +1,55 @@
 <script>
-    export let id = undefined;
-    export let label = undefined;
-    export let icon = undefined;
-    export let gap = false;
+    let {
+        /** @prop @type {string} Label for this section */
+        label="",
+        /** @prop @type {string|undefined} Icon for this section, if any */
+        icon=undefined,
+        /** @interface */
+        children
+    } = $props()
+    
 </script>
 
-<section id=ribbon-section-{id} class={gap ? "gap" : ""}>
-    {#if label || icon}
-    <label for=ribbon-section-{id}>
-        <img alt="" src={icon} />
+<div
+    class=ribbon-section
+>
+    {@render children()}
+    <div
+        class=ribbon-section-label
+    >
+        {#if icon}
+            <img alt={label} src={icon} />
+        {:else}
+            <div></div>
+        {/if}
         {label}
-    </label>
-    {/if}
-    <slot></slot>
-</section>
+    </div>
+</div>
 
 <style>
-    section {
+    .ribbon-section {
+        display: grid;
         position: relative;
-        display: grid;
-        grid-template-rows: [buttons] auto [labels] auto;
-        padding: 0 1rem 1.5rem 1rem;
-        border-left: 1px solid var(--overlay);
-        border-right: 1px solid var(--overlay);
-    }
-    section:first-of-type {
-        border-left: none;
-        padding-left: 0;
-    }
-    section:last-of-type {
-        border-right: none;
-        padding-right: 0;
-    }
-    section.gap {
-        flex-grow: 1;
-    }
-
-    section label {
-        grid-row-start: labels;
-        display: grid;
-        position: absolute;
-        left: 0; right: 0; bottom: 0;
-        grid-template-columns: [icon] min-content [label] auto;
-        align-items: center;
+        grid-auto-flow: column;
+        grid-template-rows: [top] 1fr [divide] 1rem [bottom];
+        justify-items: center;
         justify-content: center;
-        grid-gap: .5em;
-        font-size: 1rem;
+        align-items: center;
+        gap: .5rem 0;
+        padding: 0 1rem;
     }
-
-    section label img {
-        height: 16px;
+    .ribbon-section>:global(*):not(.ribbon-section-label) {
+        grid-row-start: top;
+    }
+    .ribbon-section-label {
+        display: grid;
+        grid-template-columns: [icon] 1rem [label] min-content;
+        gap: .5rem;
+        align-items: center;
+        position: absolute;
+        bottom: 0;
+    }
+    .ribbon-section:not(:first-child) {
+        border-left: 1px solid var(--overlay)
     }
 </style>

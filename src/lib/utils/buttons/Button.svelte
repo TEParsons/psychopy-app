@@ -1,24 +1,28 @@
 <script>
     import Tooltip from "../tooltip/Tooltip.svelte";
 
-    /** @prop @type {string} Label for this button */
-    export let label;
-    /** @prop @type {string|undefined} Path to icon for this button, if any */
-    export let icon = undefined;
-    /** @prop @type {string|undefined} Hover text for this button, if any */
-    export let tooltip = undefined;
-    /** @prop @type {boolean} Is this button the primary action? */
-    export let primary = false;
-    /** @prop @type {boolean} Set the layout of this button to horizontal */
-    export let horizontal = false;
-    /** @prop @type {boolean} Set the layout of this button to vertical */
-    export let vertical = false;
-    /** @prop @type {boolean} Disable this button */
-    export let disabled = false;
+    let {
+        /** @prop @type {string} Label for this button */
+        label,
+        /** @prop @type {string|undefined} Path to icon for this button, if any */
+        icon = undefined,
+        /** @prop @type {(evt: PointerEvent) => undefined} Function to call when this button is pressed */
+        onclick,
+        /** @prop @type {string|undefined} Hover text for this button, if any */
+        tooltip = undefined,
+        /** @prop @type {boolean} Is this button the primary action? */
+        primary = false,
+        /** @prop @type {boolean} Set the layout of this button to horizontal */
+        horizontal = false,
+        /** @prop @type {boolean} Set the layout of this button to vertical */
+        vertical = false,
+        /** @prop @type {boolean} Disable this button */
+        disabled = false
+    } = $props()
 </script>
 
 <button
-    on:click
+    onclick={onclick}
     class:vertical
     class:horizontal
     class:primary

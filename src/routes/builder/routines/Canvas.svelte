@@ -25,7 +25,7 @@
             label="Routine settings"
             icon="icons/{$theme}/btn-settings.svg"
             tooltip="Edit settings for this Routine"
-            on:click={() => settingsDlg.showModal()}
+            onclick={() => settingsDlg.showModal()}
             horizontal 
         ></Button>
     </div>

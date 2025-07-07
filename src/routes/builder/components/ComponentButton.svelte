@@ -38,7 +38,7 @@
     icon="/icons/{$theme}/components/{component['__name__']}.svg"
     vertical
     disabled={!($currentRoutine instanceof Routine)}
-    on:click={newComponent}
+    onclick={newComponent}
 ></Button>
 <Dialog 
     id="dlg-{dlgComponent.name}"

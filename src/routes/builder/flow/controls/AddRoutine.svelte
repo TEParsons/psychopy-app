@@ -45,7 +45,7 @@
         label="Add Routine"
         icon="/icons/light/btn-routine.svg"
         tooltip="Add a Routine to the experiment flow"
-        on:click={() => {
+        onclick={() => {
             // open the "add routine" menu
             menu.setOpen(true)
         }}

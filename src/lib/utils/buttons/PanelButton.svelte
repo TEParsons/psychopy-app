@@ -1,21 +1,24 @@
 <script>
     import { theme } from "$lib/globals";
-    import { writable } from "svelte/store";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
-    /** @prop @type {string} Label for this button */
-    export var label;
-    /** @prop @type {string|undefined} Hover text for this button, if any */
-    export let tooltip = undefined;
+    let {
+        /** @prop @type {string} Label for this button */
+        label,
+        /** @prop @type {string|undefined} Hover text for this button, if any */
+        tooltip,
+        /** @interface */
+        children
+    } = $props()
 
-    /** @public @type {import("svelte/store").Writable<boolean|undefined>} Whether this panel is open, store can be supplied or bound */
-    export var open = writable(false)
+    /** @state @type {boolean} Whether this panel is open */
+    let open = $state(false)
 </script>
 
 <button
     class=panel-button
     class:active={open}
-    on:click={() => open.set(!$open)}
+    onclick={() => open = !open}
 >
     {#if tooltip}
     <Tooltip>
@@ -23,7 +26,7 @@
     </Tooltip>
     {/if}
     {label}
-    {#if $open}
+    {#if open}
     <img 
         class="panel-indicator open"
         src="/icons/{$theme}/sym-arrow-down.svg"
@@ -37,11 +40,11 @@
     />
     {/if}
 </button>
-{#if $open}
+{#if open}
 <div 
     class="toggled-panel"
 >
-    <slot></slot>
+    {@render children()}
 </div>
 {/if}
 

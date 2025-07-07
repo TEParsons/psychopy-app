@@ -1,8 +1,14 @@
 <script>
-    export let title;
-    export let id;
-    export let hspan=1;
-    export let vspan=1;
+    let {
+        /** @prop @type {string} Text to display in this panel's sash */
+        title,
+        /** @prop @type {integer} Number of columns to span within the frame */
+        hspan=1,
+        /** @prop @type {integer} Number of rows to span within the frame */
+        vspan=1,
+        /** @interface */
+        children
+    } = $props()
     
     function ondrag(evt) {
         let panel = this.parentElement
@@ -17,12 +23,12 @@
     }
 </script>
 
-<div class="panel" id={id} style="grid-column-end: span {hspan}; grid-row-end: span {vspan}">
+<div class="panel" style="grid-column-end: span {hspan}; grid-row-end: span {vspan}">
     <div class="pnl-title" draggable=true>
         {title}
     </div>
     <div class="pnl-content">
-        <slot></slot>
+        {@render children()}
     </div>
 </div>
 

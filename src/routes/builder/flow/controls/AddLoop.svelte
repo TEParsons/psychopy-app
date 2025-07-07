@@ -44,7 +44,7 @@
     icon="/icons/light/btn-loop.svg"
     tooltip="Add a loop to the experiment flow"
     horizontal 
-    on:click={() => {
+    onclick={() => {
         // create blank Loop
         element.set(LoopInitiator.fromTemplate("TrialHandler"))
         // show dialog

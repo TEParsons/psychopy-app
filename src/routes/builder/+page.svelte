@@ -22,7 +22,9 @@
 </script>
 
 <Frame rows=3 cols=4>
-    <Ribbon slot=ribbon></Ribbon>
+    {#snippet ribbon()}
+    <Ribbon></Ribbon>
+    {/snippet}
 
     <Panel id=routine-pnl title=Routines hspan=3 vspan=2>
         <RoutinesNotebook></RoutinesNotebook>

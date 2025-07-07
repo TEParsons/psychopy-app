@@ -31,6 +31,6 @@
     <Button
         label=Apply
         horizontal
-        on:click={applyChanges} 
+        onclick={applyChanges} 
     ></Button>
 </div>

@@ -41,6 +41,6 @@
     icon="/icons/{$theme}/components/{component['__name__']}.svg"
     vertical
     disabled={!$currentRoutine}
-    on:click={newRoutine}
+    onclick={newRoutine}
 ></Button>
 {/if}

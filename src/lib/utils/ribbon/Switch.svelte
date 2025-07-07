@@ -1,17 +1,30 @@
 <script>
-    import { theme } from "$lib/globals.js"
+    import { theme } from "$lib/globals.svelte.js"
 
-    export let id;
-    export let state;
-    export let left;
-    export let right;
-    export let disabled;
+    let {
+        /** @prop @type {string} Text label for this button, if any */
+        labels=["", ""],
+        /** @prop @type {string} Starting  */
+        state=$bindable(false),
+        /** @prop @type {function} Function to call when this switch is toggled */
+        onclick=() => {},
+        /** @prop @type {boolean} Disable this button */
+        disabled=false
+    } = $props()
+
 </script>
 
-<button id={id} class="switch-ctrl" on:click disabled={disabled}>
-    <span class="{state ? "active" : "inactive"}">{left}</span>
-    <img src="/icons/{$theme}/ctrl-switch-{state ? "left" : "right"}.svg" alt="Toggle ({state ? "left" : "right"})"/>
-    <span class="{state ? "inactive" : "active"}">{right}</span>
+<button 
+    class="switch-ctrl" 
+    onclick={(evt) => {
+        state = !state;
+        onclick(evt)
+    }}
+    disabled={disabled}
+>
+    <span class="{state ? "active" : "inactive"}">{labels[0]}</span>
+    <img src="/icons/{theme}/ctrl-switch-{state ? "left" : "right"}.svg" alt="Toggle ({state ? "left" : "right"})"/>
+    <span class="{state ? "inactive" : "active"}">{labels[1]}</span>
 </button>
 
 <style>
@@ -42,10 +55,10 @@
         color: var(--text);
         background-color: transparent;
     }
-    button.switch-ctrl .active:enabled {
+    button.switch-ctrl:enabled .active {
         opacity: 100%;
     }
-    button.switch-ctrl .inactive:enabled {
+    button.switch-ctrl:enabled .inactive {
         opacity: 50%;
     }
 </style>

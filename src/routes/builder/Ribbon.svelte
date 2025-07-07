@@ -3,7 +3,7 @@
     import { currentFile, experiment } from './globals.js';
     import { changeHistory, changeFuture } from './history.js';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
-    import { Ribbon, RibbonSection, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
+    import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
 
     import {
         // file
@@ -29,11 +29,11 @@
 </script>
 
 <Ribbon>
-    <RibbonSection id=ribbon-menu>
+    <RibbonSection>
         <RibbonButton 
             icon="/icons/{$theme}/btn-hamburger.svg"
             label="Menu"
-            on:click={() => menu.setOpen(true)} 
+            onclick={() => menu.setOpen(true)} 
         />
         <Menu 
             bind:this={menu}
@@ -63,41 +63,41 @@
             </SubMenu>
         </Menu>
     </RibbonSection>
-    <RibbonSection id=file label=File icon="/icons/{$theme}/rbn-file.svg">
+    <RibbonSection label=File icon="/icons/{$theme}/rbn-file.svg">
         <RibbonButton 
             icon="/icons/{$theme}/btn-new.svg" 
             label="New file" 
-            on:click={file_new}
+            onclick={file_new}
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-open.svg" 
             label="Open file" 
-            on:click={file_open} 
+            onclick={file_open} 
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-save.svg" 
             label="Save file" 
-            on:click={file_save}
+            onclick={file_save}
             disabled={!$changeHistory.length} 
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-saveas.svg" 
             label="Save file as"
-            on:click={file_save_as} 
+            onclick={file_save_as} 
         />
     </RibbonSection>
 
-    <RibbonSection id=edit label=Edit icon="/icons/{$theme}/rbn-edit.svg">
+    <RibbonSection label=Edit icon="/icons/{$theme}/rbn-edit.svg">
         <RibbonButton 
             icon="/icons/{$theme}/btn-undo.svg" 
             label="Undo" 
-            on:click={undo} 
+            onclick={undo} 
             disabled={$currentFile === null || !$changeHistory.length} 
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-redo.svg" 
             label="Redo" 
-            on:click={redo} 
+            onclick={redo} 
             disabled={$currentFile === null || !$changeFuture.length} 
         />
         <RibbonButton 
@@ -106,7 +106,7 @@
         />
     </RibbonSection>
     
-    <RibbonSection id=experiment label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
+    <RibbonSection label=Experiment icon="/icons/{$theme}/rbn-experiment.svg">
         <!-- <RibbonButton 
             id="ribbon-btn-monitors" 
             icon="/icons/{$theme}/btn-monitors.svg" 
@@ -115,7 +115,7 @@
         <RibbonButton 
             icon="/icons/{$theme}/btn-settings.svg" 
             label="Experiment settings" 
-            on:click={() => {settingsDlg.showModal()}}
+            onclick={() => {settingsDlg.showModal()}}
             disabled={$experiment === null}
         />
         {#if $experiment !== null }
@@ -126,11 +126,8 @@
         ></Dialog>
         {/if}
         <RibbonSwitchButton 
-            id="ribbon-btn-pilot-toggle" 
-            left=Pilot 
-            right=Run 
+            labels={["Pilot", "Run"]} 
             bind:state={$experiment.pilotMode} 
-            on:click={toggle_pilot_mode} 
             disabled={$experiment === null}
         />        
         <!-- <RibbonButton 
@@ -163,28 +160,28 @@
         />
     </RibbonSection> -->
 
-    <RibbonSection id=pavlovia label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.svg">
+    <RibbonSection label=Pavlovia icon="/icons/{$theme}/rbn-pavlovia.svg">
         ToddOST
         No project
     </RibbonSection>
 
-    <RibbonSection gap></RibbonSection>
+    <RibbonGap></RibbonGap>
 
-    <RibbonSection id=views label=Views icon="/icons/{$theme}/rbn-windows.svg">
+    <RibbonSection label=Views icon="/icons/{$theme}/rbn-windows.svg">
         <RibbonButton 
             icon="/icons/{$theme}/btn-builder.svg" 
             label="Builder view" 
-            on:click={new_builder_frame} 
+            onclick={new_builder_frame} 
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-coder.svg" 
             label="Coder view" 
-            on:click={new_coder_frame} 
+            onclick={new_coder_frame} 
         />
         <RibbonButton 
             icon="/icons/{$theme}/btn-runner.svg" 
             label="Runner view" 
-            on:click={new_runner_frame} 
+            onclick={new_runner_frame} 
         />
     </RibbonSection>
 </Ribbon>
