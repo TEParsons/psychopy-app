@@ -19,6 +19,8 @@
         /** @prop @type {boolean} Disable this button */
         disabled = false
     } = $props()
+
+    let showTooltip = $state(false)
 </script>
 
 <button
@@ -27,9 +29,16 @@
     class:horizontal
     class:primary
     disabled={disabled}
+    onmouseenter={() => {showTooltip = true}}
+    onmouseleave={() => {showTooltip = false}}
+    onfocusin={() => {showTooltip = true}}
+    onfocusout={() => {showTooltip = false}}
 >
     {#if tooltip}
-    <Tooltip>
+    <Tooltip
+        bind:shown={showTooltip}
+        position="right"
+    >
         {tooltip}
     </Tooltip>
     {/if}

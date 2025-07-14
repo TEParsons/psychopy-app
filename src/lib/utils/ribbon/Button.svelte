@@ -1,5 +1,6 @@
 <script>
     import { slide } from 'svelte/transition';
+    import Tooltip from '../tooltip/Tooltip.svelte';
 
     let {
         /** @prop @type {string} Text label for this button, if any */
@@ -12,30 +13,25 @@
         disabled=false
     } = $props()
 
-    let showLabel = $state(false)
+    let showTooltip = $state(false)
 </script>       
 
 <button
     disabled={disabled} 
     onclick={onclick}
-    onmouseenter={() => {showLabel = true}}
-    onmouseleave={() => {showLabel = false}}
-    onfocusin={() => {showLabel = true}}
-    onfocusout={() => {showLabel = false}}
+    onmouseenter={() => {showTooltip = true}}
+    onmouseleave={() => {showTooltip = false}}
+    onfocusin={() => {showTooltip = true}}
+    onfocusout={() => {showTooltip = false}}
 >
     <img src={icon} alt={label} />
-    {#if showLabel}
-        <span 
-            class=btn-label
-            transition:slide={{axis: 1}}
-        >
-            {label}
-        </span>
-    {/if}
+    <Tooltip
+        bind:shown={showTooltip}
+        position="bottom"
+    >
+        {label}
+    </Tooltip>
 </button>
-
-
-
 
 
 <style>
@@ -53,6 +49,7 @@
         grid-auto-flow: column;
         align-items: center;
         gap: .2rem;
+        z-index: 1;
     }
     button:disabled {
         opacity: .5;
@@ -72,7 +69,12 @@
         height: 2.25rem;
     }
     .btn-label {
-        padding-right: .5rem;
+        position: absolute;
+        top: calc(100% + .5rem);
+        padding: .25rem .5rem;
+        border-radius: .5rem;
+        background-color: var(--outline);
+        color: var(--text-on-outline);
         text-wrap: nowrap;
     }
 
