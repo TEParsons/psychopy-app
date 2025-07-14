@@ -1,7 +1,6 @@
 <script>
     import { slide } from 'svelte/transition';
-
-
+    
     let {
         /** State to use to show/hide the tooltip */
         shown=$bindable(false),
@@ -18,29 +17,11 @@
     <div 
         class=tooltip
         transition:slide={{axis: "x", delay: delay}}
-        style:top={{
-            "top": "auto",
-            "bottom": "calc(100% + .5rem)",
-            "left": "auto",
-            "right": "auto",
-        }[position]}
-        style:bottom={{
-            "top": "calc(100% + .5rem)",
-            "bottom": "auto",
-            "left": "auto",
-            "right": "auto",
-        }[position]}
-        style:left={{
-            "top": "auto",
-            "bottom": "auto",
-            "left": "auto",
-            "right": "calc(100% + .5rem)",
-        }[position]}
-        style:right={{
-            "top": "auto",
-            "bottom": "auto",
-            "left": "calc(100% + .5rem)",
-            "right": "auto",
+        style:inset={{
+            "top": "auto auto calc(100% + .5rem) auto",
+            "bottom": "calc(100% + .5rem) auto auto auto",
+            "left": "auto calc(100% + .5rem) auto auto",
+            "right": "auto auto auto calc(100% + .5rem)",
         }[position]}
     >
         {@render children()}
@@ -55,18 +36,6 @@
         background-color: var(--outline);
         color: var(--text-on-outline);
         text-wrap: nowrap;
-/*         
-        position: absolute;
-        left: calc(100% + 1rem); top: 0;
-        min-width: 20rem;
-        opacity: 95%;
-        background-color: var(--outline);
-        border: 1px solid var(--base);
-        color: var(--text-on-outline);
-        border-radius: .5rem;
-        padding: .5rem 1rem;
-        z-index: 10;
-        font-weight: normal; */
     }
 
     :global(*:hover) > .tooltip,
