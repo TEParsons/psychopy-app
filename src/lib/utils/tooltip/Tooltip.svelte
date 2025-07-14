@@ -37,10 +37,4 @@
         color: var(--text-on-outline);
         text-wrap: nowrap;
     }
-
-    :global(*:hover) > .tooltip,
-    :global(*:focus) > .tooltip {
-        transition: visibility linear 0s var(--tooltip-delay);
-        visibility: visible;
-    }
 </style>
