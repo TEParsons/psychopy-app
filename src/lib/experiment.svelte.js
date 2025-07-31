@@ -860,7 +860,7 @@ export class StandaloneRoutine extends HasParams {
         comp.plugin = profile.plugin;
         // populate params
         for (let key in profile.params) {
-            comp.params.set(key, Param.fromTemplate(tag, key));
+            comp.params[key] = Param.fromTemplate(tag, key);
         }
 
         return comp

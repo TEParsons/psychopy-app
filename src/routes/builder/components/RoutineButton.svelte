@@ -31,8 +31,6 @@
         )
         // navigate to it
         currentRoutine.set(rt)
-        // refresh
-        experiment.set($experiment);
     }
     
 </script>

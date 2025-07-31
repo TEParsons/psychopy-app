@@ -18,8 +18,6 @@
         updateHistory();
         // apply temporary params to component
         notebook.applyChanges(evt)
-        // refresh
-        experiment.set($experiment)
     }
 </script>
 
