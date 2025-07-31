@@ -1,13 +1,12 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     import { experiment } from '../globals.js';
     import { dragging, hoveredComponent } from './globals.js';
-    import { updateHistory } from '../history.js';
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from "../../dialogs/component/Dialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
-    import { writable } from 'svelte/store';
+    import { getContext } from "svelte";
 
     let {
         component,
@@ -33,13 +32,14 @@
 
     let showDialog = $state(false);
 
+    let current = getContext("current")
+    let history = getContext("history")
+
     function removeComponent() {
         // update history
-        updateHistory();
+        history.update();
         // remove from Routine
         routine.removeComponent(component);
-        // refresh
-        experiment.set($experiment)
     }
 </script>
 
@@ -52,7 +52,7 @@
     for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
     draggable="true" 
-    ondragstart={() => dragging.set(component.index)} 
+    ondragstart={() => current.dragging = component.index} 
     ondragend={() => dragging.set(null)} 
     onclick={() => {showDialog = true}}
     onmouseenter={() => hoveredComponent.set(component.name)}
@@ -62,7 +62,7 @@
 >    
     {component.name}
     <img 
-        src="/icons/{$theme}/components/{component.tag}.svg" 
+        src="/icons/{theme}/components/{component.tag}.svg" 
         alt="" 
     />
 </label>

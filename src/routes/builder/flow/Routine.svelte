@@ -3,7 +3,6 @@
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals';
     import { writable } from 'svelte/store';
-    import { updateHistory } from '../history';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
     import { getContext } from "svelte";
 
@@ -12,6 +11,7 @@
     } = $props()
 
     let current = getContext("current")
+    let history = getContext("history")
 
     let showContextMenu = $state(false)
     let contextMenuPos = $state({
@@ -21,7 +21,7 @@
 
     function removeRoutine(evt) {
         // update history
-        updateHistory();
+        history.update();
         // move dragged routine to new position in the flow
         current.experiment.flow.removeElement(element.index)
     }

@@ -553,9 +553,7 @@ export class Component extends HasParams {
      * Numeric index within this Component's Routine
      */
     index = $derived(
-        this.routine.components.findIndex((element) => {
-            element === this
-        })
+        this.routine.components.findIndex((element) => element === this)
     )
 
     /**

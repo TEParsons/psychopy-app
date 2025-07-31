@@ -1,5 +1,5 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     import Menu from "./Menu.svelte";
     import Item from "./Item.svelte";
 

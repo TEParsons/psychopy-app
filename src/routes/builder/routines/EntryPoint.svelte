@@ -1,53 +1,42 @@
 <script>
-    import { theme } from "$lib/globals.js";
-    import { dragging } from './globals.js';
-    import { experiment } from '../globals.js'
-    import { updateHistory } from '../history.js';
-    import { writable } from 'svelte/store';
+    import { theme } from "$lib/globals.svelte.js";
+    import { getContext } from "svelte";
 
-    export let routine;
-    export let index;
+    let {
+        routine,
+        index
+    } = $props()
 
-    function on_dragover(evt) {
-        evt.preventDefault();
-    }
-
-    function on_dragenter(evt) {
-        hovered.set($dragging !== null);
-    }
-
-    function on_dragleave(evt) {
-        hovered.set(false);
-    }
+    let history = getContext("history")
+    let current = getContext("current")
 
     function on_drop(evt) {
         evt.preventDefault();
         // update history
-        updateHistory();
-        // we're done dragging
-        hovered.set(false);
+        history.update();
         // make sure it's a valid element
-        if ($dragging === null) {
+        if (current.dragging === undefined) {
             return;
         }
         // move dragged component to new position in the routine
-        routine.relocateComponent($dragging, index)
-        // update experiment so subscribed views update
-        experiment.set($experiment)
+        routine.relocateComponent(current.dragging, index)
+        // we're done dragging
+        hovered = false;
+        current.dragging = undefined;
     }
 
-    let hovered = writable(false);
+    let hovered = $state(false);
 
 </script>
 
-<div class="entry-point" class:active={$dragging !== null} class:hovered={$hovered}>
-    <img src="icons/{$theme}/sym-arrow-right{$hovered ? "-hl" : ""}.svg" alt=">" />
+<div class="entry-point" class:active={current.dragging !== undefined} class:hovered={hovered}>
+    <img src="icons/{theme}/sym-arrow-right{hovered ? "-hl" : ""}.svg" alt=">" />
     <button 
         class="hitbox" 
-        on:dragenter={on_dragenter} 
-        on:dragover={on_dragover} 
-        on:dragleave={on_dragleave} 
-        on:drop={on_drop} 
+        ondragenter={(evt) => {hovered = true}} 
+        ondragover={(evt) => {evt.preventDefault()}} 
+        ondragleave={(evt) => {hovered = false}} 
+        ondrop={on_drop} 
         aria-label="Entry point"
     >
     </button>

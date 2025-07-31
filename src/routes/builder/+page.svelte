@@ -1,6 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.js";
-    import { experiment } from './globals.js';
     import Panel from '$lib/utils/Panel.svelte';
     import Frame from '$lib/utils/Frame.svelte';
 
@@ -8,8 +6,7 @@
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
-    import { browser } from '$app/environment';
-    import { onMount, setContext } from "svelte";
+    import { setContext } from "svelte";
     import { Experiment } from "$lib/experiment.svelte.js";
 
     let current = $state({
@@ -20,6 +17,52 @@
         inserting: undefined
     })
     setContext("current", current)
+    let history = $state({
+        past: [],
+        future: [],
+        update: () => {
+            // store experiment state
+            history.past.push(
+                current.experiment.toJSON()
+            )
+            // limit to 16 items to save memory
+            while (history.past.length >= 16) {
+                delete history.past[0]
+                history.past = history.past.slice(1);
+            }
+            // clear future
+            history.future = []
+        },
+        undo: () => {
+            // do nothing if we have no past
+            if (!history.past) {
+                return
+            }
+            // store present as future
+            history.future.push(
+                current.experiment.toJSON()
+            )
+            // restore last state
+            current.experiment = Experiment.fromJSON(
+                history.past.pop()
+            )
+        },
+        redo: () => {
+            // do nothin if we have no future
+            if (!history.future) {
+                return
+            }
+            // restore next state
+            current.experiment = Experiment.fromJSON(
+                history.future.shift()
+            )
+        },
+        clear: () => {
+            history.past = []
+            history.future = []
+        }
+    })
+    setContext("history", history)
 </script>
 
 <title>PsychoPy Builder: {current.experiment.filename}</title>

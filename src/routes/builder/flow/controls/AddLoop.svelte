@@ -1,26 +1,23 @@
 <script>
     import { writable } from 'svelte/store';
 
-    import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
-    import { updateHistory } from '../../history.js';
-    import Menu from '$lib/utils/menu/Menu.svelte';
-    import MenuItem from '$lib/utils/menu/Item.svelte';
+    import { LoopInitiator } from '$lib/experiment.svelte.js';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
 
     import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
+    import { getContext } from 'svelte';
     
-    let dialog;
     let notebook;
-    let menu;
+    let history = getContext("history")
     
     let element = writable(LoopInitiator.fromTemplate("TrialHandler"));
 
     function insertLoopInitiator(evt) {
         // update history
-        updateHistory()
+        history.update()
         // apply temporary params to loop
         notebook.applyChanges()
         // add to experiment

@@ -1,6 +1,7 @@
 <script>
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { getContext } from 'svelte';
 
     let {
         component,
@@ -8,17 +9,19 @@
     } = $props()
 
     let notebook;
-    import { experiment, currentRoutine } from '../../builder/globals.js';
-    import { updateHistory } from '../../builder/history.js';
+    import { currentRoutine } from '../../builder/globals.js';
 
     function discardChanges(evt) {
         // discard changes to params
         notebook.discardChanges(evt)
     }
 
+    let history = getContext("history")
+    let current = getContext("current")
+
     function applyChanges(evt) {
         // update history
-        updateHistory()
+        history.update()
         // apply changes to params
         notebook.applyChanges(evt)
         // if component is newly created, add it to the current Routine

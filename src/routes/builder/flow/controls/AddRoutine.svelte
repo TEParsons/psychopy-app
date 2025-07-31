@@ -1,6 +1,5 @@
 <script>
     import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
-    import { updateHistory } from '../../history.js';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
@@ -8,15 +7,14 @@
     import { Button } from '$lib/utils/buttons';
     import { getContext } from 'svelte';
     
-    let dialog;
     let notebook;
-    let menu;
     
     let current = getContext("current")
+    let history = getContext("history")
 
     function insertRoutine(evt) {
         // update history
-        updateHistory()
+        history.update()
         // add to experiment
         current.inserting.exp = current.experiment
         current.experiment.routines.set(current.inserting.name, current.inserting)
@@ -48,7 +46,7 @@
     >
         <MenuItem 
             label="New Routine..."
-            action={() => {
+            onclick={() => {
                 // create blank Routine
                 current.inserting = new Routine()
                 // show dialog
@@ -58,7 +56,7 @@
         {#each [...current.experiment.routines] as [name, routine]}
         <MenuItem 
             label={name}
-            action={() => {
+            onclick={() => {
                 // set this Routine as the one to insert
                 current.inserting = routine
             }}

@@ -1,6 +1,5 @@
 <script>
     import { experiment } from '../globals.svelte.js'
-    import { updateHistory } from '../history.js';
     import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.svelte.js';
     import { getContext } from "svelte";
 
@@ -11,9 +10,11 @@
     let current = getContext("current")
     let hovered = $state(false)
 
+    let history = getContext("history")
+
     function insertHere(evt) {
         // update history
-        updateHistory();
+        history.update();
         // if dragging, move dragged element here
         if (current.moving) {
             // relocate it

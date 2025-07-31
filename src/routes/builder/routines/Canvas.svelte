@@ -36,7 +36,7 @@
 
     {#each routine.components as component}
     {#if component !== null}
-    <Component component={component} bind:ticks={routine.visualTicks}></Component>
+    <Component component={component} ticks={routine.visualTicks}></Component>
     {/if}
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>
