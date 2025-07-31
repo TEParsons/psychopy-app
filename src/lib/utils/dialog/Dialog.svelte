@@ -16,7 +16,7 @@
         /** @prop @type {function} Function to call when dialog is closed */
         onclose=(evt) => {},
         /** @returns @type {HTMLElement} Handle of this dialog's HTML Element */
-        shown=$bindable(false),
+        shown=$bindable(),
         /** @interface */
         children
     } = $props();
@@ -33,7 +33,7 @@
 
 </script>
 
-<dialog id={id} bind:this={handle} onclose={onclose}>
+<dialog id={id} bind:this={handle} onclose={() => {shown = false}}>
     <div class="title">
         <label for={id}>{title}</label>
         <div class=gap></div>

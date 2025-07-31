@@ -313,7 +313,7 @@ export class Routine {
     }
 
     get name() {
-        return this.settings.name
+        return this.settings.params['name'].val
     }
 
     set name(value) {
@@ -323,7 +323,7 @@ export class Routine {
             this.exp.routines.set(value, this)
         }
         // set in settings
-        this.settings.params.name = value;
+        this.settings.params['name'].val = value;
     }
 
     addComponent(comp) {
@@ -462,179 +462,18 @@ export class Routine {
     }
 }
 
-/**
- * 
- * @param {Map<string, Param>} params Parameters to sort
- * @returns Parameters sorted into categories
- */
-export function sortParams(params) {
-    let sorted = new Map();
-    for (let [name, param] of [...params]) {
-        // make sure we have an entry for this categ
-        if (!sorted.has(param.categ)) {
-            sorted.set(param.categ, new Map())
-        }
-        // add param
-        sorted.get(param.categ).set(name, param)
-    }
 
-    return sorted
-}
-export function unsortParams(sorted) {
-    let unsorted = new Map();
-    // iterate through categories
-    for (let [categ, params] of [...sorted]) {
-        // iterate through params in category
-        for (let [name, param] of [...params]) {
-            // add param to flat array
-            unsorted.set(name, param);
-        }
-    }
-
-    return unsorted;
-}
-
-
-export class ParamsArray extends Map {
-    /** @attribute @type { boolean } Is this array sorted by category? */
-    isSorted = false;
-
-    /**
-     * @returns {ParamsArray} A copy of this array, with params copied too
-     */
-    copy() {
-        // create new array
-        let params = new ParamsArray();
-        params.isSorted = this.isSorted;
-        // copy each param to it
-        for (let [name, param] of [...this]) {
-            params.set(name, param.copy())
-        }
-
-        return params
-    }
-
-    /**
-     * @returns {ParamsArray} A sorted copy of this array, containing the same param objects
-     */
-    get sorted() {
-        // if already sorted by category, return as is
-        if (this.isSorted) {
-            return this;
-        }
-        // if not sorted by category, return a sorted copy
-        let sorted = new ParamsArray();
-        sorted.isSorted = true;
-        // iterate through params
-        for (let [name, param] of [...this]) {
-            // make sure we have an entry for this categ
-            if (!sorted.has(param.categ)) {
-                sorted.set(param.categ, new ParamsArray())
-            }
-            // add param
-            sorted.get(param.categ).set(name, param)
-        }
-
-        return sorted
-    }
-    /**
-     * @returns {ParamsArray} A non-sorted copy of this array, containing the same param objects
-     */
-    get unsorted() {
-        // if already not sorted, return as is
-        if (!this.isSorted) {
-            return this;
-        }
-        // if sorted by category, return an unsorted copy
-        let unsorted = new ParamsArray();
-        unsorted.isSorted = true;
-        // iterate through categories
-        for (let [categ, params] of [...this]) {
-            // iterate through params in category
-            for (let [name, param] of [...params]) {
-                // add param to flat array
-                unsorted.set(name, param);
-            }
-        }
-
-        return unsorted;
-    }
-
-    /**
-     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing start parameters
-     */
-    get startParams() {
-        // start off with no params
-        let found = {
-            valueParam: null,
-            typeParam: null,
-            expectedParam: null,
-        }
-        // use different array according to sorted status
-        let params;
-        if (this.isSorted && this.has("Basic")) {
-            params = this.get("Basic");
-        } else if (this.isSorted) {
-            params = new ParamsArray();
-        } else {
-            params = this;
-        }
-        // get whatever params we can
-        if (params.has("startVal")) {
-            found.valueParam = params.get("startVal")
-        }
-        if (params.has("startType")) {
-            found.typeParam = params.get("startType")
-        }
-        if (params.has("startEstim")) {
-            found.expectedParam = params.get("startEstim")
-        }
-
-        return found
-    }
-
-    /**
-     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing stop parameters
-     */
-    get stopParams() {
-        // start off with no params
-        let found = {
-            valueParam: null,
-            typeParam: null,
-            expectedParam: null,
-        }
-        // use different array according to sorted status
-        let params;
-        if (this.isSorted && this.has("Basic")) {
-            params = this.get("Basic");
-        } else if (this.isSorted) {
-            params = new ParamsArray();
-        } else {
-            params = this;
-        }
-        // get whatever params we can
-        if (params.has("stopVal")) {
-            found.valueParam = params.get("stopVal")
-        }
-        if (params.has("stopType")) {
-            found.typeParam = params.get("stopType")
-        }
-        if (params.has("durationEstim")) {
-            found.expectedParam = params.get("durationEstim")
-        }
-
-        return found
-    }
-}
-
-
-class HasParams {
+export class HasParams {
     params = $state({})
 
     /**
      * Name of this element
      */
-    name = $derived(this.params['name'])
+    name = $derived.by(() => {
+        if ("name" in this.params) {
+            return this.params['name'].val
+        }
+    })
 
     /**
      * Whether this element is disabled
@@ -730,8 +569,8 @@ export class Component extends HasParams {
             return null;
         }
         // get start val and type
-        let startType = this.params.startType.val;
-        let startVal = parseFloat(this.params.startVal.val);
+        let startType = this.params['startType'].val;
+        let startVal = parseFloat(this.params['startVal'].val);
         // work out seconds from start type and val
         let start_secs = null;
         if (startType === "time (s)") {
@@ -754,8 +593,8 @@ export class Component extends HasParams {
             return null;
         }
         // get stop type and val
-        let stopType = this.params.stopType.val;
-        let stopVal = parseFloat(this.params.stopVal.val);
+        let stopType = this.params['stopType'].val;
+        let stopVal = parseFloat(this.params['stopVal'].val);
         // work out seconds from stop type and val
         let stop_secs = null;
         if (stopType === "time (s)") {
@@ -793,12 +632,12 @@ export class Component extends HasParams {
         let force_end = false;
 
         for (let attr of ["forceEndRoutine", "endRoutineOn", "forceEndRoutineOnPress"]) {
-            if (this.params.has(attr)) {
+            if (attr in this.params) {
                 if ([
                     true, "true", "True", // alias of true
                     "any click", "correct click", "valid click", // mouse
                     "look at", "look away", // roi
-                ].includes(this.params.get(attr).val)) {
+                ].includes(this.params['attr'].val)) {
                     force_end = true;
                 }
             }
@@ -1030,14 +869,16 @@ export class StandaloneRoutine extends HasParams {
 
 
 export class Param {
+
+    val = $state()
+    updates = $state()
+
     constructor(name) {
         this.name = name;
-        this.val = undefined;
         this.categ = undefined;
         this.allowedVals = undefined;
         this.valType = undefined;
         this.inputType = undefined;
-        this.updates = undefined;
         this.allowedUpdates = undefined;
         this.label = undefined;
         this.hint = undefined;
@@ -1159,23 +1000,6 @@ export class Param {
         node.setAttribute("plugin", this.plugin);
 
         return node
-    }
-
-    isCode() {
-        // is valType is code, always true
-        if (this.valType === "code") {
-            return true;
-        }
-        // if starts with a $, true
-        if (String(this.val).startsWith("$")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    isValid() {
-        return !String(this.val).includes(" ")
     }
 }
 

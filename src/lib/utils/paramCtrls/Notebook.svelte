@@ -2,34 +2,45 @@
     import ParamCtrl from "./Ctrl.svelte";
     import StartStopCtrl from "./StartStopCtrl.svelte";
     import { Notebook, NotebookPage } from "$lib/utils/notebook"
+    import { HasParams } from "$lib/experiment.svelte.js";
+    import { onMount } from "svelte";
 
     let {
         element,
     } = $props();
 
-    let tempParams = $state(
-        $state.snapshot(element.sortedParams)
-    );
+    let temp = $state(new HasParams());
 
     export function discardChanges(evt) {
-        // reset params from component to discard any live changes
-        tempParams = $state.snapshot(element.sortedParams);
+        // reset temp params from component to discard any live changes
+        for (let key of Object.keys(element.params)) {
+            // make sure temp array has this param
+            if (!(key in temp.params)) {
+                temp.params[key] = element.params[key].copy()
+            }
+            // assign values
+            temp.params[key].val = element.params[key].val
+            temp.params[key].updates = element.params[key].updates
+        }
     }
 
     export function applyChanges(evt) {
-        for (let categ in tempParams) {
-            for (let [name, param] of Object.entries(tempParams[categ])) {
-                element.params[name] = param
-            }
+        // set component params from temp to apply any live changes
+        for (let key of Object.keys(temp.params)) {
+            // assign values
+            element.params[key].val = temp.params[key].val
+            element.params[key].updates = temp.params[key].updates
         }
     }
+
+    onMount(discardChanges)
 
 </script>
 
 <Notebook
     data={element}
 >
-    {#each [...Object.entries(tempParams)] as [categ, params]}
+    {#each [...Object.entries(temp.sortedParams)] as [categ, params]}
         <NotebookPage
             label={categ}
             data={element}

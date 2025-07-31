@@ -50,16 +50,16 @@
 <!-- icon & name -->
 <label 
     class=comp-name 
-    for={component.params.get('name').val} 
+    for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
     draggable="true" 
-    on:dragstart={() => dragging.set(component.index)} 
-    on:dragend={() => dragging.set(null)} 
-    on:click={() => dialog.showModal()}
-    on:mouseenter={() => hoveredComponent.set(component.name)}
-    on:mouseleave={() => hoveredComponent.set(null)}
+    ondragstart={() => dragging.set(component.index)} 
+    ondragend={() => dragging.set(null)} 
+    onclick={() => {console.log($state.snapshot(showDialog)); showDialog = true}}
+    onmouseenter={() => hoveredComponent.set(component.name)}
+    onmouseleave={() => hoveredComponent.set(null)}
     role="none"
-    on:contextmenu|preventDefault={showContextMenu}
+    oncontextmenu={showContextMenu}
 >    
     {component.name}
     <img 
@@ -93,15 +93,15 @@
 
 <div 
     class=comp-timeline 
-    id={component.params.get('name').val} 
+    id={component.params['name'].val} 
     style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
     draggable={true} 
-    on:click={() => dialog.showModal()}
-    on:contextmenu|preventDefault={showContextMenu}
-    on:mouseenter={() => hoveredComponent.set(component.name)}
-    on:mouseleave={() => hoveredComponent.set(null)}
-    on:dragstart={() => dragging.set(component.index)} 
-    on:dragend={() => dragging.set(null)} 
+    onclick={() => {showDialog = true}}
+    oncontextmenu={showContextMenu}
+    onmouseenter={() => hoveredComponent.set(component.name)}
+    onmouseleave={() => hoveredComponent.set(null)}
+    ondragstart={() => dragging.set(component.index)} 
+    ondragend={() => dragging.set(null)} 
     role="none"
 >
     <div 
@@ -117,10 +117,6 @@
     {/each}
     <div class=comp-timeline-tick id=timeline-label-remainder></div>
 </div>
-<Dialog 
-    component={component} 
-    bind:shown={showDialog}
-></Dialog>
 
 <div class=comp-overshoot-timeline>
 {#if component.visualStop === null}

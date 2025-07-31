@@ -1,7 +1,7 @@
 <script>
     import { writable } from 'svelte/store';
 
-    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment.svelte.js';
+    import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
     import { updateHistory } from '../../history.js';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
@@ -67,7 +67,4 @@
 </Dialog>
 
 <style>
-    button {
-        background-color: var(--crust);
-    }
 </style>

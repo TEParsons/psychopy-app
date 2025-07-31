@@ -1,29 +1,20 @@
 <script>
-    import { writable } from "svelte/store";
-    import { TextInput } from "./elements";
+    import TextInput from "./elements/TextInput.svelte";
 
-    export let param;
-    let ctrl;
+    let {
+        param
+    } = $props()
 
-    let isCode = writable(param.valType === "code");
-    let isValid = writable(true);
+    export function validate(param) {
+        return true
+    }
 
 </script>
 
-<input 
-    class=param-value 
-    type="text" 
-    bind:value={param.val} 
-    on:input={onChange}
-    class:valid={$isValid} 
-    class:code={$isCode} 
-/>
 <div class="single-line-ctrl param-value">
     <TextInput
         param={param}
-        bind:ctrl={ctrl}
-        bind:isValid={isValid}
-        bind:isCode={isCode}
+        validate={validate}
     ></TextInput>
 </div>
 

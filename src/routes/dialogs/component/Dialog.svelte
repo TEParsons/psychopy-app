@@ -25,8 +25,6 @@
         if (!$currentRoutine.components.includes(component) && component.tag !== "RoutineSettingsComponent") {
             $currentRoutine.addComponent(component)
         }
-        // refresh
-        experiment.set($experiment)
     }
 
 </script>
@@ -34,7 +32,7 @@
 <Dialog 
     id="{component.name}-parameters"
     title="Editing: {component.name}"
-    shown={shown} 
+    bind:shown={shown} 
     buttons={{
         OK: applyChanges, 
         APPLY: applyChanges,
