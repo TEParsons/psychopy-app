@@ -24,7 +24,7 @@
 
     import Dialog from '../dialogs/component/Dialog.svelte';
 
-    let menu;
+    let showMenu = $state(false);
 
     let showSettingsDlg = $state(false);
 </script>
@@ -34,32 +34,32 @@
         <RibbonButton 
             icon="/icons/{$theme}/btn-hamburger.svg"
             label="Menu"
-            onclick={() => menu.setOpen(true)} 
+            onclick={() => showMenu = true} 
         />
         <Menu 
-            bind:this={menu}
+            bind:shown={showMenu}
         >
             <SubMenu label="File" icon="/icons/{$theme}/rbn-file.svg">
                 <MenuItem 
                     icon="/icons/{$theme}/btn-new.svg" 
                     label="New file" 
-                    action={file_new}
+                    onclick={file_new}
                 />
                 <MenuItem 
                     icon="/icons/{$theme}/btn-open.svg" 
                     label="Open file" 
-                    action={file_open} 
+                    onclick={file_open} 
                 />
                 <MenuItem 
                     icon="/icons/{$theme}/btn-save.svg" 
                     label="Save file" 
-                    action={file_save} 
+                    onclick={file_save} 
                     disabled={!$changeHistory.length} 
                 />
                 <MenuItem 
                     icon="/icons/{$theme}/btn-saveas.svg" 
                     label="Save file as"
-                    action={file_save_as} 
+                    onclick={file_save_as} 
                 />
             </SubMenu>
         </Menu>

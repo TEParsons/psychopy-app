@@ -15,24 +15,23 @@
     } = $props()
 
     let routine = component.routine;
-    let menu;
-    let menuPos = writable({
-        position: "absolute", 
-        left: "0px",
-        top: "0px", 
-    });
-    let showDialog = $state(false);
 
-    function showContextMenu(evt) {
-        // set pos to click location
-        menuPos.set({
-            position: "fixed", 
-            left: evt.pageX + "px", 
-            top: evt.pageY + "px",
-        })
+    let showContextMenu = $state(false);
+    let contextMenuPos = $state({
+        x: undefined,
+        y: undefined
+    });
+
+    function oncontextmenu(evt) {
+        evt.preventDefault();
         // show menu
-        menu.setOpen(true);
+        showContextMenu = true;
+        // set its position to the mouse pos
+        contextMenuPos.x = evt.pageX;
+        contextMenuPos.y = evt.pageY;
     }
+
+    let showDialog = $state(false);
 
     function removeComponent() {
         // update history
@@ -55,11 +54,11 @@
     draggable="true" 
     ondragstart={() => dragging.set(component.index)} 
     ondragend={() => dragging.set(null)} 
-    onclick={() => {console.log($state.snapshot(showDialog)); showDialog = true}}
+    onclick={() => {showDialog = true}}
     onmouseenter={() => hoveredComponent.set(component.name)}
     onmouseleave={() => hoveredComponent.set(null)}
     role="none"
-    oncontextmenu={showContextMenu}
+    oncontextmenu={oncontextmenu}
 >    
     {component.name}
     <img 
@@ -67,18 +66,6 @@
         alt="" 
     />
 </label>
-
-<Menu 
-    bind:menu={menu} 
-    style="position: {$menuPos.position}; left: {$menuPos.left}; top: {$menuPos.top};"
->
-    <MenuItem 
-        icon="/icons/{$theme}/btn-delete.svg"
-        label="Delete Component"
-        action={removeComponent}
-        closemenu={menu}
-    />
-</Menu>
 
 <!-- bars representing this on the timeline -->
 
@@ -97,7 +84,7 @@
     style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
     draggable={true} 
     onclick={() => {showDialog = true}}
-    oncontextmenu={showContextMenu}
+    oncontextmenu={oncontextmenu}
     onmouseenter={() => hoveredComponent.set(component.name)}
     onmouseleave={() => hoveredComponent.set(null)}
     ondragstart={() => dragging.set(component.index)} 
@@ -127,6 +114,18 @@
     {/if}
 </div>
 
+<!-- menu to open when right clicked on -->
+<Menu 
+    bind:shown={showContextMenu} 
+    bind:position={contextMenuPos}
+>
+    <MenuItem 
+        icon="/icons/{$theme}/btn-delete.svg"
+        label="Delete Component"
+        onclick={removeComponent}
+    />
+</Menu>
+
 <!-- dialog to open when clicked on -->
 <Dialog 
     component={component} 
@@ -135,6 +134,11 @@
 
 <style>
     @import url("./timeline.css");
+
+    .context-menu {
+        position: fixed;
+        z-index: 10;
+    }
 
     .comp-name {
         display: grid;

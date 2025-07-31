@@ -23,6 +23,7 @@
     }
 
     let showNewRoutineDialog = $state(false)
+    let showMenu = $state(false)
 
 </script>
 
@@ -36,14 +37,14 @@
         tooltip="Add a Routine to the experiment flow"
         onclick={() => {
             // open the "add routine" menu
-            menu.setOpen(true)
+            showMenu = true
         }}
         horizontal
     ></Button>
     
     <!-- menu for adding a Routine -->
     <Menu 
-        bind:this={menu}
+        bind:shown={showMenu}
     >
         <MenuItem 
             label="New Routine..."

@@ -1,5 +1,4 @@
 <script>
-    export let element;
     import EntryPoint from './EntryPoint.svelte'   
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals';
@@ -8,25 +7,17 @@
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
     import { getContext } from "svelte";
 
+    let {
+        element
+    } = $props()
+
     let current = getContext("current")
 
-    let menu;
-    let menuPos = writable({
-        position: "absolute", 
-        left: "0px",
-        top: "0px", 
+    let showContextMenu = $state(false)
+    let contextMenuPos = $state({
+        x: undefined,
+        y: undefined
     });
-
-    function showContextMenu(evt) {
-        // set pos to click location
-        menuPos.set({
-            position: "fixed", 
-            left: evt.pageX + "px", 
-            top: evt.pageY + "px",
-        })
-        // show menu
-        menu.setOpen(true);
-    }
 
     function removeRoutine(evt) {
         // update history
@@ -40,14 +31,20 @@
 <EntryPoint index={element.index}></EntryPoint>
 <div 
     class=routine 
-    id=flow-{element.name} 
     draggable=true
-    on:dragstart={() => current.moving = element} 
-    on:dragend={() => current.moving = undefined} 
-    on:click={() => current.routine = element}
+    ondragstart={() => current.moving = element} 
+    ondragend={() => current.moving = undefined} 
+    onclick={() => current.routine = element}
     class:active={current.routine ? current.routine.name === element.name : false}
     role="none"
-    on:contextmenu|preventDefault={showContextMenu}
+    oncontextmenu={(evt) => {
+        evt.preventDefault();
+        // show menu
+        showContextMenu = true;
+        // set its position to the mouse pos
+        contextMenuPos.x = evt.pageX;
+        contextMenuPos.y = evt.pageY;
+    }}
 >
 {#if element.settings && "desc" in element.settings.params && element.settings.params['desc'].val}
 <Tooltip>
@@ -55,16 +52,18 @@
 </Tooltip>
 {/if}
 {element.name}
-</div>
+<!-- context menu -->
 <Menu 
-    bind:this={menu} 
+    bind:shown={showContextMenu} 
+    bind:position={contextMenuPos}
 >
     <MenuItem 
         icon="/icons/{$theme}/btn-delete.svg"
         label="Remove"
-        action={removeRoutine}
+        onclick={removeRoutine}
     />
 </Menu>
+</div>
 
 <style>
     .routine {
