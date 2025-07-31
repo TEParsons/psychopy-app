@@ -35,6 +35,8 @@
         notebook.discardChanges()
     }
 
+    let showDialog = $state(false)
+
 </script>
 
 
@@ -48,15 +50,14 @@
         // create blank Loop
         element.set(LoopInitiator.fromTemplate("TrialHandler"))
         // show dialog
-        dialog.showModal()
+        showDialog = true
     }}
 ></Button>
-
 <!-- dialog for creating a new Routine -->
 <Dialog 
     id=new-loop 
     title="New Loop" 
-    bind:handle={dialog} 
+    bind:shown={showDialog} 
     buttons={{
         OK: insertLoopInitiator, 
         CANCEL: discardChanges, 

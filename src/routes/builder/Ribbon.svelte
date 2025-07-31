@@ -24,8 +24,9 @@
 
     import Dialog from '../dialogs/component/Dialog.svelte';
 
-    let settingsDlg;
     let menu;
+
+    let showSettingsDlg = $state(false);
 </script>
 
 <Ribbon>
@@ -115,14 +116,13 @@
         <RibbonButton 
             icon="/icons/{$theme}/btn-settings.svg" 
             label="Experiment settings" 
-            onclick={() => {settingsDlg.showModal()}}
+            onclick={() => {showSettingsDlg = true}}
             disabled={$experiment === null}
         />
         {#if $experiment !== null }
         <Dialog 
-            id="dlg-exp-settings"
             component={$experiment.settings} 
-            bind:handle={settingsDlg}
+            bind:shown={showSettingsDlg}
         ></Dialog>
         {/if}
         <RibbonSwitchButton 

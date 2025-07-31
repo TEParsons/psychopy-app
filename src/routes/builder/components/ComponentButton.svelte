@@ -1,16 +1,19 @@
 <script>
     import { writable } from 'svelte/store';
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     import { experiment, currentRoutine } from '../globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import Dialog from '../../dialogs/component/Dialog.svelte';
     import { Button } from '$lib/utils/buttons';
 
-    let dialog;
-    export let component;
-    let dlgComponent = writable(
+    let {
+        component
+    } = $props()
+
+    let dlgComponent = $state(
         Component.fromTemplate(component['__name__'])
     );
+    let showDialog = $state()
 
     function titleCase(name) {
         name = name.replace("Component", "");
@@ -23,11 +26,9 @@
 
     function newComponent() {
         // create a new Component for the dialog
-        dlgComponent.set(
-            Component.fromTemplate(component['__name__'])
-        )
+        dlgComponent = Component.fromTemplate(component['__name__'])
         // show dialog
-        dialog.showModal()
+        showDialog = true
     }
         
 </script>
@@ -35,14 +36,13 @@
 {#if !component.hidden}
 <Button 
     label={titleCase(component['__name__'])}
-    icon="/icons/{$theme}/components/{component['__name__']}.svg"
+    icon="/icons/{theme}/components/{component['__name__']}.svg"
     vertical
     disabled={!($currentRoutine instanceof Routine)}
     onclick={newComponent}
 ></Button>
 <Dialog 
-    id="dlg-{dlgComponent.name}"
-    component={$dlgComponent} 
-    bind:handle={dialog}
+    component={dlgComponent} 
+    bind:shown={showDialog}
 ></Dialog>
 {/if}

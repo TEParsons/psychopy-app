@@ -22,6 +22,8 @@
         current.experiment.routines.set(current.inserting.name, current.inserting)
     }
 
+    let showNewRoutineDialog = $state(false)
+
 </script>
 
 <div
@@ -49,7 +51,7 @@
                 // create blank Routine
                 current.inserting = new Routine()
                 // show dialog
-                dialog.showModal()
+                showNewRoutineDialog = true
             }}
         />
         {#each [...current.experiment.routines] as [name, routine]}
@@ -69,7 +71,7 @@
 <Dialog 
     id=new-routine 
     title="New Routine" 
-    bind:handle={dialog} 
+    bind:shown={showNewRoutineDialog} 
     buttons={{
         OK: insertRoutine, 
         CANCEL: () => current.inserting = undefined, 

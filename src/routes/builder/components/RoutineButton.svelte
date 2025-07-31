@@ -6,7 +6,9 @@
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
 
-    export let component;
+    let {
+        component
+    } = $props()
 
     function titleCase(name) {
         name = name.replace("Component", "");

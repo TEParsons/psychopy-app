@@ -25,13 +25,10 @@
             horizontal 
         ></Button>
     </div>
-    {#if showDialog}
     <Dialog 
-        id="dlg-{routine.name}"
+        bind:shown={showDialog}
         component={routine.settings} 
-        helpLink="" 
     ></Dialog>
-    {/if}
 
     {#if routine.components}
     <TimelineHeader bind:ticks={routine.visualTicks}></TimelineHeader>

@@ -1,10 +1,11 @@
 <script>
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-    import { ParamsNotebook } from "$lib/utils/paramCtrls"
-    export let component;
+    import { ParamsNotebook } from "$lib/utils/paramCtrls";
 
-    export let handle;
-    export let id;
+    let {
+        component,
+        shown=$bindable()
+    } = $props()
 
     let notebook;
     import { experiment, currentRoutine } from '../../builder/globals.js';
@@ -31,9 +32,9 @@
 </script>
 
 <Dialog 
-    id={id} 
+    id="{component.name}-parameters"
     title="Editing: {component.name}"
-    bind:handle={handle} 
+    shown={shown} 
     buttons={{
         OK: applyChanges, 
         APPLY: applyChanges,

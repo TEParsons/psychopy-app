@@ -9,17 +9,19 @@
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { writable } from 'svelte/store';
 
-    export let component;
-    export let ticks;
+    let {
+        component,
+        ticks
+    } = $props()
 
     let routine = component.routine;
-    let dialog;
     let menu;
     let menuPos = writable({
         position: "absolute", 
         left: "0px",
         top: "0px", 
     });
+    let showDialog = $state(false);
 
     function showContextMenu(evt) {
         // set pos to click location
@@ -116,9 +118,8 @@
     <div class=comp-timeline-tick id=timeline-label-remainder></div>
 </div>
 <Dialog 
-    id="dlg-{component.name}"
     component={component} 
-    bind:handle={dialog}
+    bind:shown={showDialog}
 ></Dialog>
 
 <div class=comp-overshoot-timeline>
@@ -132,9 +133,8 @@
 
 <!-- dialog to open when clicked on -->
 <Dialog 
-    id="dlg-{component.name}"
     component={component} 
-    bind:handle={dialog}
+    bind:shown={showDialog}
 ></Dialog>
 
 <style>
