@@ -1,5 +1,6 @@
 <script>
     import { getContext, setContext } from "svelte";
+    import { slide } from "svelte/transition";
 
     let {
         /** @public @type {import("svelte").store<boolean|undefined>} Whether this menu is shown */
@@ -34,6 +35,7 @@
         style:left={ position.x ? `${position.x}px` : "100%" }
         style:top={ position.y ? `${position.y}px` : "0" }
         class=menu
+        transition:slide
     >
         {@render children()}
     </div>
