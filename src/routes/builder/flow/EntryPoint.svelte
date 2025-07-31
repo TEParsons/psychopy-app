@@ -1,74 +1,55 @@
 <script>
-    import { dragging, inserting } from './globals.js';
-    import { experiment } from '../globals.js'
+    import { experiment } from '../globals.svelte.js'
     import { updateHistory } from '../history.js';
-    import { writable } from 'svelte/store';
-    import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.js';
+    import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.svelte.js';
+    import { getContext } from "svelte";
 
-    export let index;
+    let {
+        index=undefined
+    } = $props()
 
-    function onDragOver(evt) {
-        evt.preventDefault();
-    }
+    let current = getContext("current")
+    let hovered = $state(false)
 
-    function onDragEnter(evt) {
-        hovered.set($dragging !== null || $inserting !== null);
-    }
-
-    function onDragLeave(evt) {
-        hovered.set(false);
-    }
-
-    function onDrop(evt) {
-        evt.preventDefault();
+    function insertHere(evt) {
         // update history
         updateHistory();
-        // we're done dragging
-        hovered.set(false);
-        // make sure it's a valid element
-        if ($dragging === null) {
-            return;
+        // if dragging, move dragged element here
+        if (current.moving) {
+            // relocate it
+            experiment.flow.relocateElement(current.moving, index)
+            // done dragging
+            current.moving = undefined
         }
-        // move dragged routine to new position in the flow
-        $experiment.flow.relocateElement($dragging, index)
-        // update experiment so subscribed views update
-        experiment.set($experiment)
+        // if inserting, insert element here
+        if (current.inserting) {
+            // insert
+            experiment.flow.insertElement(current.inserting, index);
+            // next steps depend on type of element inserted
+            if (current.inserting instanceof LoopInitiator) {
+                // ready to insert terminator
+                current.inserting.addTerminator();
+                current.inserting = current.inserting.terminator;
+            } else {
+                // done inserting
+                current.inserting = null;
+            }
+        }
     }
-
-    function onClick(evt) {
-        // if not inserting anything, do nothing
-        if ($inserting === null) {
-            return;
-        }
-        // store state
-        updateHistory();
-        // insert at index
-        $experiment.flow.insertElement($inserting, index);
-        // next steps depend on type of element inserted
-        if ($inserting instanceof LoopInitiator) {
-            // ready to insert terminator
-            $inserting.addTerminator();
-            inserting.set($inserting.terminator);
-        } else {
-            // done inserting
-            inserting.set(null);
-        }
-        // update experiment so subscribed views update
-        experiment.set($experiment);
-    }
-
-    let hovered = writable(false);
-
 </script>
 
-<div class="entry-point" class:active={$dragging !== null || $inserting !== null} class:hovered={$hovered}>
+<div 
+    class="entry-point" 
+    class:active={current.moving || current.inserting} 
+    class:hovered={hovered}
+>
     <button 
         class="hitbox" 
-        on:dragenter={onDragEnter} 
-        on:dragover={onDragOver} 
-        on:dragleave={onDragLeave} 
-        on:drop={onDrop} 
-        on:click={onClick}
+        ondragenter={(evt) => evt.preventDefault()} 
+        ondragover={(evt) => evt.preventDefault()} 
+        ondragleave={() => hovered=false} 
+        ondrop={insertHere} 
+        onclick={insertHere}
         aria-label="Entry point"
     >
     </button>

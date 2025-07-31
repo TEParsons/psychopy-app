@@ -1,8 +1,11 @@
 <script>
     import { mapping } from "./ctrls";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
-    export let name
-    export let param
+
+    let {
+        name,
+        param
+    } = $props();
 
     let ValueCtrl;
     if (param.inputType in mapping) {
@@ -17,19 +20,24 @@
     <label class=param-label for={name}>
         {param.label ? param.label : name}
         {#if param.hint}
-        <Tooltip>
-            {param.hint}
-        </Tooltip>
+            <Tooltip>
+                {param.hint}
+            </Tooltip>
         {/if}
     </label>
     <div class=param-gap></div>
-    {#if param.allowedUpdates !== null && param.allowedUpdates.length > 0}
-    <select class=param-updates id={name}-updates disabled={param.allowedUpdates.length == 1} bind:value={param.updates}>
-        {#each param.allowedUpdates as ud}
-        <option value={ud}>{ud}</option>
-        {/each}
-    </select>
-    {/if}
+        {#if param.allowedUpdates}
+            <select 
+                class=param-updates 
+                id="{name}-updates" 
+                disabled={param.allowedUpdates.length == 1} 
+                bind:value={param.updates}
+            >
+                {#each param.allowedUpdates as ud}
+                    <option value={ud}>{ud}</option>
+                {/each}
+            </select>
+        {/if}
     <ValueCtrl param={param}></ValueCtrl>
 </div>
 
@@ -42,7 +50,6 @@
         align-items: end;
         min-width: 20rem;
         box-sizing: border-box;
-        
     }
     .param-ctrl .param-gap {
         grid-column-start: gap;

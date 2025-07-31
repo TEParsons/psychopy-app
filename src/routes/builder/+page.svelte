@@ -9,18 +9,20 @@
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
     import { browser } from '$app/environment';
+    import { onMount, setContext } from "svelte";
+    import { Experiment } from "$lib/experiment.svelte.js";
 
-    experiment.subscribe((value) => {
-        if (browser) {
-            if (value) {
-                document.title = "PsychoPy Builder: " + value.filename;
-            } else {
-                document.title = "PsychoPy Builder";
-            }
-        }
+    let current = $state({
+        file: undefined,
+        experiment: new Experiment("untitled.psyexp"),
+        routine: undefined,
+        moving: undefined,
+        inserting: undefined
     })
+    setContext("current", current)
 </script>
 
+<title>PsychoPy Builder: {current.experiment.filename}</title>
 <Frame 
     rows={3} 
     cols={4}

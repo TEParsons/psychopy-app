@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { Experiment } from '$lib/experiment.js';
+import { Experiment } from '$lib/experiment.svelte.js';
 
 
 export let currentFile = writable(null)

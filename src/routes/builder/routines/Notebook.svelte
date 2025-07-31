@@ -3,7 +3,7 @@
     import StandaloneRoutineCanvas from './Standalone.svelte'
     import { experiment, currentRoutine } from '../globals.js';
     import { onMount } from 'svelte';
-    import { StandaloneRoutine, Routine } from '$lib/experiment.js';
+    import { StandaloneRoutine, Routine } from '$lib/experiment.svelte.js';
     import { Notebook, NotebookPage } from '$lib/utils/notebook';
 
     /** @private @type {import("svelte/store").Writable<HTMLButtonElement|undefined>} Handle of the currently active tab*/

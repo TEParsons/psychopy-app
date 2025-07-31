@@ -1,7 +1,7 @@
 <script>
     import { writable } from 'svelte/store';
 
-    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment';
+    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment.svelte.js';
     import { updateHistory } from '../../history.js';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';

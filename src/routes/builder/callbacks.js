@@ -1,6 +1,6 @@
 import { experiment, currentFile } from './globals.js';
 import { changeHistory, changeFuture, clearHistory, updateHistory } from './history.js';
-import { Experiment } from "$lib/experiment.js";
+import { Experiment } from "$lib/experiment.svelte.js";
 import { writable, get } from 'svelte/store';
 import xmlFormat from 'xml-formatter';
 

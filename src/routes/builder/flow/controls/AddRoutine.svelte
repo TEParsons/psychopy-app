@@ -1,38 +1,25 @@
 <script>
-    import { writable } from 'svelte/store';
-
-    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment';
+    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment.svelte.js';
     import { updateHistory } from '../../history.js';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-
-    import { experiment } from '../../globals.js';
-    import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
+    import { getContext } from 'svelte';
     
     let dialog;
     let notebook;
     let menu;
     
-    let element = writable(new Routine());
+    let current = getContext("current")
 
     function insertRoutine(evt) {
         // update history
         updateHistory()
-        // apply temporary params to Routine settings
-        notebook.applyChanges()
         // add to experiment
-        $element.exp = $experiment
-        $experiment.routines.set($element.name, $element)
-        // prepare to insert the new Routine into the Flow
-        inserting.set($element)
-    }
-
-    function discardChanges(evt) {
-        // reset temp params from component to discard any live changes
-        notebook.discardChanges()
+        current.inserting.exp = current.experiment
+        current.experiment.routines.set(current.inserting.name, current.inserting)
     }
 
 </script>
@@ -60,17 +47,17 @@
             label="New Routine..."
             action={() => {
                 // create blank Routine
-                element.set(new Routine())
+                current.inserting = new Routine()
                 // show dialog
                 dialog.showModal()
             }}
         />
-        {#each [...$experiment.routines] as [name, routine]}
+        {#each [...current.experiment.routines] as [name, routine]}
         <MenuItem 
             label={name}
             action={() => {
                 // set this Routine as the one to insert
-                inserting.set(routine)
+                current.inserting = routine
             }}
         />
         {/each}
@@ -78,17 +65,21 @@
 </div>
 
 <!-- dialog for creating a new Routine -->
+
 <Dialog 
     id=new-routine 
     title="New Routine" 
     bind:handle={dialog} 
     buttons={{
         OK: insertRoutine, 
-        CANCEL: discardChanges, 
+        CANCEL: () => current.inserting = undefined, 
     }}
 >
-    <ParamsNotebook element={$element.settings} bind:this={notebook} />
+    {#if current.inserting}
+        <ParamsNotebook element={current.inserting.settings} bind:this={notebook} />
+    {/if}
 </Dialog>
+
 
 <style>
     .container {

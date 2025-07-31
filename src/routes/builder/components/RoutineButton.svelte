@@ -3,7 +3,7 @@
     import { theme } from "$lib/globals.js";
     import { experiment, currentRoutine } from '../globals.js';
     import { updateHistory } from '../history.js';
-    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
+    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
 
     export let component;

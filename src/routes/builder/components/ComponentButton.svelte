@@ -2,7 +2,7 @@
     import { writable } from 'svelte/store';
     import { theme } from "$lib/globals.js";
     import { experiment, currentRoutine } from '../globals.js';
-    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.js';
+    import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import Dialog from '../../dialogs/component/Dialog.svelte';
     import { Button } from '$lib/utils/buttons';
 

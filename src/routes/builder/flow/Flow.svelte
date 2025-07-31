@@ -1,16 +1,31 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { experiment } from '../globals.svelte.js';
+    import { FlowLoop } from "$lib/experiment.svelte.js";
+    import Flow from './Flow.svelte';
+    import LoopNode from './Loop.svelte';
+    import RoutineNode from './Routine.svelte';
+    import { theme } from "$lib/globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte'
 
 </script>
 
-<div class="flow">
-    <div class=flowline-container>
-        <div class=flowline></div>
-        <img class=flowline-arrow src="/icons/{$theme}/sym-arrow-right.svg" alt="<"/>
+<div class=flow-canvas>
+    <div class="flow">
+        <div class=flowline-container>
+            <div class=flowline></div>
+            <img class=flowline-arrow src="/icons/{theme}/sym-arrow-right.svg" alt="<"/>
+        </div>
+        {#if experiment}
+            {#each experiment.flow.dynamic as emt}
+                {#if emt instanceof FlowLoop}
+                    <LoopNode element={emt}></LoopNode>
+                {:else}
+                    <RoutineNode element={emt}></RoutineNode>
+                {/if}
+            {/each}
+        {/if}
+        <EntryPoint index=-1></EntryPoint>
     </div>
-    <slot></slot>
-    <EntryPoint index=-1></EntryPoint>
 </div>
 
 <style>
@@ -41,5 +56,12 @@
         top: 1rem;
         transform: translateY(-50%);
         height: .75rem;
+    }
+    .flow-canvas {
+        padding: 1rem;
+        padding-top: 3rem;
+        display: flex;
+        align-items: start;
+        overflow: auto;
     }
 </style>

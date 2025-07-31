@@ -1,48 +1,45 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     import { experiment } from '../globals.js';
     import { Button } from "$lib/utils/buttons";
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from '../../dialogs/component/Dialog.svelte';
-    import { writable } from 'svelte/store';
 
-    export let routine;
+    let {
+        routine=undefined
+    } = $props()
 
-    // get information about ticks from routine
-    let ticks = writable(routine.visualTicks);
-    experiment.subscribe((value) => {
-        ticks.set(routine.visualTicks);
-    })
+    let showDialog = $state(false)
 
-    let settingsDlg;
 </script>
 
 <div class=routine-canvas>
     <div class=button-container>
         <Button 
             label="Routine settings"
-            icon="icons/{$theme}/btn-settings.svg"
+            icon="icons/{theme}/btn-settings.svg"
             tooltip="Edit settings for this Routine"
-            onclick={() => settingsDlg.showModal()}
+            onclick={() => showDialog = true}
             horizontal 
         ></Button>
     </div>
+    {#if showDialog}
     <Dialog 
         id="dlg-{routine.name}"
         component={routine.settings} 
         helpLink="" 
-        bind:handle={settingsDlg}
     ></Dialog>
+    {/if}
 
     {#if routine.components}
-    <TimelineHeader ticks={$ticks}></TimelineHeader>
+    <TimelineHeader bind:ticks={routine.visualTicks}></TimelineHeader>
     {/if}
 
     {#each routine.components as component}
     {#if component !== null}
-    <Component component={component} ticks={$ticks}></Component>
+    <Component component={component} bind:ticks={routine.visualTicks}></Component>
     {/if}
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>

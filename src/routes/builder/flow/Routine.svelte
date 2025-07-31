@@ -1,25 +1,14 @@
 <script>
     export let element;
     import EntryPoint from './EntryPoint.svelte'   
-    import { dragging } from './globals.js';
-    import { experiment } from '../globals.js';
-    import { currentRoutine } from '../globals.js';
-    import { json } from '@sveltejs/kit';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals';
     import { writable } from 'svelte/store';
     import { updateHistory } from '../history';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
+    import { getContext } from "svelte";
 
-    function on_dragstart(evt) {
-        dragging.set(element.index)
-    }
-    function on_dragend(evt) {
-        dragging.set(null)
-    }
-    function on_click(evt) {
-        currentRoutine.set(element)
-    }
+    let current = getContext("current")
 
     let menu;
     let menuPos = writable({
@@ -43,9 +32,7 @@
         // update history
         updateHistory();
         // move dragged routine to new position in the flow
-        $experiment.flow.removeElement(element.index)
-        // update experiment so subscribed views update
-        experiment.set($experiment)
+        current.experiment.flow.removeElement(element.index)
     }
 
 </script>
@@ -54,15 +41,15 @@
 <div 
     class=routine 
     id=flow-{element.name} 
-    draggable="true" 
-    on:dragstart={on_dragstart} 
-    on:dragend={on_dragend} 
-    on:click={on_click}
-    class:active={$currentRoutine ? $currentRoutine.name === element.name : false}
+    draggable=true
+    on:dragstart={() => current.moving = element} 
+    on:dragend={() => current.moving = undefined} 
+    on:click={() => current.routine = element}
+    class:active={current.routine ? current.routine.name === element.name : false}
     role="none"
     on:contextmenu|preventDefault={showContextMenu}
 >
-{#if element.settings && element.settings.params.has("desc") && element.settings.params.get('desc').val}
+{#if element.settings && "desc" in element.settings.params && element.settings.params['desc'].val}
 <Tooltip>
     {element.settings.params.get('desc').val}
 </Tooltip>
