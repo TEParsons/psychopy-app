@@ -1,75 +1,63 @@
 <script>
-    import { derived } from 'svelte/store';
     import { onMount, onDestroy, getContext } from 'svelte';
 
-    /** @prop @type {String} Label for this page's tab */
-    export let label;
-    /** @prop @type {String|undefined} Path to an icon for this page's tab */
-    export let icon = undefined;
-    /** @prop @type {any} Arbitrary data relating to this page */
-    export let data = {};
+    let {
+        /** @prop @type {String} Label for this page's tab */
+        label,
+        /** @prop @type {String|undefined} Path to an icon for this page's tab */
+        icon=undefined,
+        /** @binding Control whether this page is selected */
+        selected=$bindable(),
+        /** @prop @type {any} Arbitrary data relating to this page */
+        data={},
+        /** @interface @type {Array<HTMLElement>} Contents of this page */
+        children
+    } = $props()
 
-    /** @public @type {{tab: HTMLButtonElement|undefined, page: HTMLDivElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    export const handles = {
-        tab: undefined, 
-        page: undefined,
-    };
+    // get context
+    let siblings = getContext("siblings")
+    // get own handle
+    let handle;
+    // get own index
+    let index = $derived(siblings.all.indexOf(handle))
 
-    /** @private @type {import("svelte/store").Writable<HTMLButtonElement|undefined>} Whichever tab within a notebook is currently active */
-    let activeTab = getContext("activeTab");
-    /** @private @type {import("svelte/store").Readable<boolean>}  Is this page's tab the active tab? */
-    let active = derived(activeTab, (value) => {
-        return value !== undefined && value === handles.tab
-    });
-    /** @private @type {import("svelte/store").Writable<Array<HTMLButtonElement|undefined>>} All tabs within a notebook */
-    let allTabs = getContext("tabs");
-    /** @private @type {Array<any>} All data within a notebook, by tab */
-    let allData = getContext("tabData");
-
-    /**
-     * On mount, register this page's tab and data with its parent notebook.
-     */
-    onMount(() => {
-        // add this page to parent notebook's tabs array
-        allTabs.update((value) => {
-            value.push(handles.tab);
-            return value
-        })
-        // add this page's data to parent notebook's data array
-        allData.push(data)
-        // if there's no current page yet, make this the current page
-        if ($activeTab === undefined) {
-            activeTab.set(handles.tab);
+    // update parent on selection
+    $effect(() => {
+        if (selected) {
+            siblings.current = index;
         }
     })
-    /**
-     * On unmount, remove this page's tab and data from its parent notebook.
-     */
+    
+    // register self with notebook on mount
+    onMount(() => {
+        siblings.all.push(handle)
+        siblings.data.push(data)
+        // show self if no page is shown
+        if (siblings.current === undefined) {
+            siblings.current = index;
+            selected = true;
+        }
+    })
+    // unregister on destroy
     onDestroy(() => {
-        // get index for this tab
-        let i = $allTabs.indexOf(handles.tab)
-        // remove tab from tabs array
-        allTabs.update((value) => {
-            value.splice(i, 1);
-            return value
-        })
-        // remove data from data array
-        allData.splice(i, 1)
+        if (siblings.all[index] !== undefined) {
+            delete siblings.all[index]
+        }
+        if (siblings.data[index] !== undefined) {
+            delete siblings.data[index]
+        }
     })
 </script>
 
 
 <!-- tab button for this page -->
-<button 
-    bind:this={handles.tab}
-    class="notebook-tab" 
-    class:active={$active} 
-    on:click={
-        /** @param evt {MouseEvent} */
-        (evt) => {
-            activeTab.set(handles.tab)
-        }
-    }
+<button
+    class="notebook-tab"
+    class:current={selected}
+    onclick={() => {
+        selected = true;
+    }}
+    bind:this={handle}
 >
     {#if icon}
     <img 
@@ -79,20 +67,18 @@
     {/if}
     {label}
 </button>
-
-<!-- page container for this page -->
-{#if $active}
-<div 
-    bind:this={handles.page}
-    class=notebook-page
->
-    <slot></slot>
-</div>
+{#if selected}
+    <div 
+        class="notebook-page"
+        style:grid-column-end="span {siblings.all.length + 1}"
+    >
+        {@render children?.()}
+    </div>
 {/if}
 
 
 <style>
-    button.notebook-tab {
+    .notebook-tab {
         grid-row-start: tabs;
         background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         border: none;
@@ -100,8 +86,9 @@
         padding: .25rem 1rem;
         margin: 0;
         text-align: center;
-        z-index: 0;
         transition: background .2s;
+        /* position within notebook */
+        grid-row-start: tabs;
     }
     button.notebook-tab:hover {
         background-color: var(--mantle);
@@ -111,18 +98,17 @@
         position: relative;
         height: auto;
         overflow-y: auto;
-        width: auto;
+        width: 100%;
         overflow-x: auto;
-
-        grid-row-start: page;
-        grid-column-end: span calc(var(--n-tabs) + 1);
         padding: .5rem .5rem 3rem .5rem;
         box-sizing: border-box;
         background-color: var(--base);
         z-index: 1;
         border: 1px solid var(--overlay);
+        /* position within notebook */
+        grid-row-start: pages;
     }
-    button.notebook-tab.active {
+    .notebook-tab.current {
         border-bottom: none;
         background: var(--base);
         z-index: 2;

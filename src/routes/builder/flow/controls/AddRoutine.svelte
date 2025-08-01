@@ -1,39 +1,24 @@
 <script>
-    import { writable } from 'svelte/store';
-
-    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment';
-    import { updateHistory } from '../../history.js';
+    import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-
-    import { experiment } from '../../globals.js';
-    import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
+    import { current, actions } from "../../globals.svelte.js";
     
-    let dialog;
     let notebook;
-    let menu;
-    
-    let element = writable(new Routine());
 
     function insertRoutine(evt) {
         // update history
-        updateHistory()
-        // apply temporary params to Routine settings
-        notebook.applyChanges()
+        actions.update()
         // add to experiment
-        $element.exp = $experiment
-        $experiment.routines.set($element.name, $element)
-        // prepare to insert the new Routine into the Flow
-        inserting.set($element)
+        current.inserting.exp = current.experiment
+        current.experiment.routines[current.inserting.name] = current.inserting
     }
 
-    function discardChanges(evt) {
-        // reset temp params from component to discard any live changes
-        notebook.discardChanges()
-    }
+    let showNewRoutineDialog = $state(false)
+    let showMenu = $state(false)
 
 </script>
 
@@ -47,30 +32,30 @@
         tooltip="Add a Routine to the experiment flow"
         onclick={() => {
             // open the "add routine" menu
-            menu.setOpen(true)
+            showMenu = true
         }}
         horizontal
     ></Button>
     
     <!-- menu for adding a Routine -->
     <Menu 
-        bind:this={menu}
+        bind:shown={showMenu}
     >
         <MenuItem 
             label="New Routine..."
-            action={() => {
+            onclick={() => {
                 // create blank Routine
-                element.set(new Routine())
+                current.inserting = new Routine()
                 // show dialog
-                dialog.showModal()
+                showNewRoutineDialog = true
             }}
         />
-        {#each [...$experiment.routines] as [name, routine]}
+        {#each Object.entries(current.experiment.routines) as [name, routine]}
         <MenuItem 
             label={name}
-            action={() => {
+            onclick={() => {
                 // set this Routine as the one to insert
-                inserting.set(routine)
+                current.inserting = routine
             }}
         />
         {/each}
@@ -78,17 +63,21 @@
 </div>
 
 <!-- dialog for creating a new Routine -->
+
 <Dialog 
     id=new-routine 
     title="New Routine" 
-    bind:handle={dialog} 
+    bind:shown={showNewRoutineDialog} 
     buttons={{
         OK: insertRoutine, 
-        CANCEL: discardChanges, 
+        CANCEL: () => current.inserting = undefined, 
     }}
 >
-    <ParamsNotebook element={$element.settings} bind:this={notebook} />
+    {#if current.inserting}
+        <ParamsNotebook element={current.inserting.settings} bind:this={notebook} />
+    {/if}
 </Dialog>
+
 
 <style>
     .container {

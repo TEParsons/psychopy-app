@@ -1,44 +1,42 @@
 <script>
-    import { theme } from "$lib/globals.js";
-    import { experiment } from '../globals.js';
+    import { theme } from "$lib/globals.svelte.js";
     import { dragging, hoveredComponent } from './globals.js';
-    import { updateHistory } from '../history.js';
+    import { current, actions } from "../globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from "../../dialogs/component/Dialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
-    import { writable } from 'svelte/store';
+    import { getContext } from "svelte";
 
-    export let component;
-    export let ticks;
+    let {
+        component,
+        ticks
+    } = $props()
 
     let routine = component.routine;
-    let dialog;
-    let menu;
-    let menuPos = writable({
-        position: "absolute", 
-        left: "0px",
-        top: "0px", 
+
+    let showContextMenu = $state(false);
+    let contextMenuPos = $state({
+        x: undefined,
+        y: undefined
     });
 
-    function showContextMenu(evt) {
-        // set pos to click location
-        menuPos.set({
-            position: "fixed", 
-            left: evt.pageX + "px", 
-            top: evt.pageY + "px",
-        })
+    function oncontextmenu(evt) {
+        evt.preventDefault();
         // show menu
-        menu.setOpen(true);
+        showContextMenu = true;
+        // set its position to the mouse pos
+        contextMenuPos.x = evt.pageX;
+        contextMenuPos.y = evt.pageY;
     }
+
+    let showDialog = $state(false);
 
     function removeComponent() {
         // update history
-        updateHistory();
+        actions.update();
         // remove from Routine
         routine.removeComponent(component);
-        // refresh
-        experiment.set($experiment)
     }
 </script>
 
@@ -48,35 +46,23 @@
 <!-- icon & name -->
 <label 
     class=comp-name 
-    for={component.params.get('name').val} 
+    for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
     draggable="true" 
-    on:dragstart={() => dragging.set(component.index)} 
-    on:dragend={() => dragging.set(null)} 
-    on:click={() => dialog.showModal()}
-    on:mouseenter={() => hoveredComponent.set(component.name)}
-    on:mouseleave={() => hoveredComponent.set(null)}
+    ondragstart={() => dragging.set(component.index)} 
+    ondragend={() => dragging.set(null)} 
+    onclick={() => {showDialog = true}}
+    onmouseenter={() => hoveredComponent.set(component.name)}
+    onmouseleave={() => hoveredComponent.set(null)}
     role="none"
-    on:contextmenu|preventDefault={showContextMenu}
+    oncontextmenu={oncontextmenu}
 >    
     {component.name}
     <img 
-        src="/icons/{$theme}/components/{component.tag}.svg" 
+        src="/icons/{theme}/components/{component.tag}.svg" 
         alt="" 
     />
 </label>
-
-<Menu 
-    bind:menu={menu} 
-    style="position: {$menuPos.position}; left: {$menuPos.left}; top: {$menuPos.top};"
->
-    <MenuItem 
-        icon="/icons/{$theme}/btn-delete.svg"
-        label="Delete Component"
-        action={removeComponent}
-        closemenu={menu}
-    />
-</Menu>
 
 <!-- bars representing this on the timeline -->
 
@@ -91,15 +77,15 @@
 
 <div 
     class=comp-timeline 
-    id={component.params.get('name').val} 
+    id={component.params['name'].val} 
     style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
     draggable={true} 
-    on:click={() => dialog.showModal()}
-    on:contextmenu|preventDefault={showContextMenu}
-    on:mouseenter={() => hoveredComponent.set(component.name)}
-    on:mouseleave={() => hoveredComponent.set(null)}
-    on:dragstart={() => dragging.set(component.index)} 
-    on:dragend={() => dragging.set(null)} 
+    onclick={() => {showDialog = true}}
+    oncontextmenu={oncontextmenu}
+    onmouseenter={() => hoveredComponent.set(component.name)}
+    onmouseleave={() => hoveredComponent.set(null)}
+    ondragstart={() => dragging.set(component.index)} 
+    ondragend={() => dragging.set(null)} 
     role="none"
 >
     <div 
@@ -115,11 +101,6 @@
     {/each}
     <div class=comp-timeline-tick id=timeline-label-remainder></div>
 </div>
-<Dialog 
-    id="dlg-{component.name}"
-    component={component} 
-    bind:handle={dialog}
-></Dialog>
 
 <div class=comp-overshoot-timeline>
 {#if component.visualStop === null}
@@ -130,15 +111,31 @@
     {/if}
 </div>
 
+<!-- menu to open when right clicked on -->
+<Menu 
+    bind:shown={showContextMenu} 
+    bind:position={contextMenuPos}
+>
+    <MenuItem 
+        icon="/icons/{theme}/btn-delete.svg"
+        label="Delete Component"
+        onclick={removeComponent}
+    />
+</Menu>
+
 <!-- dialog to open when clicked on -->
 <Dialog 
-    id="dlg-{component.name}"
     component={component} 
-    bind:handle={dialog}
+    bind:shown={showDialog}
 ></Dialog>
 
 <style>
     @import url("./timeline.css");
+
+    .context-menu {
+        position: fixed;
+        z-index: 10;
+    }
 
     .comp-name {
         display: grid;

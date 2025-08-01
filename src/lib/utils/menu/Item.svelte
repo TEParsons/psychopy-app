@@ -1,43 +1,41 @@
 <script>
-    
     import { getContext } from "svelte";
 
-    /** @prop @type {string} Label for this menu item */
-    export let label;
-    /** @prop @type {String|undefined} Path to an icon for this page's tab */
-    export let icon = undefined;
-    /** 
-     * @prop @type {function} Function to call when this item is clicked, given 3 params:
-     * 
-     * @param evt {MouseEvent} Event triggered on click
-     * @param handle {HTMLButtonElement} HTML element for this menu item
-     * @param data {any} Arbitrary data associated with this menu item 
-     */
-    export let action = (evt, handle, data) => {};
-    /** @prop @type {boolean} Is this item able to be clicked on? */
-    export let disabled = false;
-    /** @prop @type {boolean} Close menu on click? */
-    export let close = true;
-    /** @prop @type {any} Arbitrary data associated with this menu item  */
-    export let data = {};
+    let {
+        /** @prop @type {string} Label for this menu item */
+        label,
+        /** @prop @type {String|undefined} Path to an icon for this page's tab */
+        icon=undefined,
+        /** 
+         * @prop @type {function} Function to call when this item is clicked, given 3 params:
+         * 
+         * @param evt {MouseEvent} Event triggered on click
+         * @param data {any} Arbitrary data associated with this menu item 
+         */
+        onclick=(evt, data) => {},
+        /** @prop @type {any} Arbitrary data associated with this menu item  */
+        data={},
+        /** @prop @type {boolean} Close menu on click? */
+        close=true,
+        /** @prop @type {boolean} Is this item able to be clicked on? */
+        disabled=$bindable(),
+        /** @slot Render an optional submenu on this item */
+        submenu=undefined
+    } = $props()
 
-    /** @public @type {{button: HTMLButtonElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    export let handles = {
-        button: undefined
-    }
-
-    /** @private @type {{menu: import("@smui/menu").default|undefined, setOpen: function}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    let parent = getContext("handles");
+    // function to close parent
+    let closeMenu = getContext("closeMenu")
 </script>
 
 
-<button 
-    bind:this={handles.button}
+<button  
     class=menu-item 
-    on:click={(evt) => {
-        action(evt, handles.button, data);
+    onclick={(evt) => {
+        // execute the given function, with arbitrary data given on init
+        onclick(evt, data);
+        // close menu if requested
         if (close) {
-            parent.setOpen(false);
+            closeMenu()
         }
     }}
     disabled={disabled}
@@ -46,8 +44,7 @@
     <img src={icon} alt="-" class=menu-item-icon />
     {/if}
     <span>{label}</span>
-    <slot name=chevron></slot>
-    <slot name=submenu></slot>
+    {@render submenu?.()}
 </button>
 
 <style>
@@ -56,6 +53,7 @@
         grid-column-start: items;
         /* own attributes */
         display: grid;
+        position: relative;
         grid-template-columns: [icon] 1rem [label] 1fr [chevron] 1rem;
         align-items: center;
         gap: 0 .5rem;

@@ -1,54 +1,59 @@
 <script>
-    import { getContext, setContext } from 'svelte';
-    import { writable } from 'svelte/store';
+    import { getContext, setContext } from "svelte";
+    import { slide } from "svelte/transition";
 
-    /** @prop @type {any} Arbitrary data associated with this menu */
-    export const data = {};
+    let {
+        /** @public @type {import("svelte").store<boolean|undefined>} Whether this menu is shown */
+        shown=$bindable(),
+        position=$bindable({
+            x: undefined,
+            y: undefined
+        }),
+        children
+    } = $props()
 
-    /** @public @type {import("svelte/store").Writable<boolean|undefined>} Whether this menu is open, store can be supplied or bound */
-    export let open = writable(false)
-    /**
-     * @public 
-     * Open this menu
-     * 
-     * @param value {boolean} Whether or not this menu should be open (default is true)
-    */
-    export function setOpen(value=true) {
-        // open/close this menu
-        open.set(value)
-        // open/close parent menu
-        if (parent) {
-            parent.setOpen(value)
+    // handle of this menu's div element (for checking clicks)
+    let handle = $state();
+    // get function to close parent, if there is one
+    let closeParent = getContext("closeMenu")
+    // define function for closing this menu and pass it to children
+    export function close() {
+        // close this menu
+        shown = false;
+        // close parent menu, if any
+        if (closeParent) {
+            closeParent()
         }
     }
-
-    /** @public @type {Array<object>} Arbitrary data to associated with each item, array can be supplied or bound */
-    export let itemData = [];
-    setContext("itemData", itemData)
-    /** @private @type {{container: HTMLDivElement|undefined, menu: import("@smui/menu").default|undefined, setOpen: function}} If this menu has a parent menu, its handles will appear here */
-    let parent = getContext("handles")
-    /** @public @type {{menu: import("@smui/menu").default|undefined, setOpen: function}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    export let handles = {
-        menu: undefined,
-        setOpen: setOpen,
-    };
-    setContext("handles", handles)
+    setContext("closeMenu", close)
 </script>
 
-<div 
-    class=menu
-    style:display={$open ? "block" : "none"}
-    bind:this={handles.menu}
-    on:focusout={(evt) => setOpen(handles.menu.contains(evt.relatedTarget))}
->
-    <slot></slot>
-</div>
+{#if shown}
+    <div 
+        bind:this={handle}
+        style:position={ position.x || position.y ? "fixed" : "absolute" }
+        style:left={ position.x ? `${position.x}px` : "100%" }
+        style:top={ position.y ? `${position.y}px` : "0" }
+        class=menu
+        transition:slide
+    >
+        {@render children()}
+    </div>
+{/if}
+
+<svelte:window onmousedown={(evt) => {
+    // ignore clicks when element is not shown
+    if (!handle) {
+        return
+    }
+    // if clicked outside of itself, close
+    if (!handle.contains(evt.target)) {
+        shown = false
+    }
+}} />
 
 <style>
     div {
-        position: absolute;
-        top: 0;
-        left: 100%;
         background: var(--base);
         border: 1px solid var(--overlay);
         border-radius: .1rem;

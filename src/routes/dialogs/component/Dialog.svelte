@@ -1,14 +1,14 @@
 <script>
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-    import { ParamsNotebook } from "$lib/utils/paramCtrls"
-    export let component;
+    import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { current, actions } from '../../builder/globals.svelte.js';
 
-    export let handle;
-    export let id;
+    let {
+        component,
+        shown=$bindable()
+    } = $props()
 
     let notebook;
-    import { experiment, currentRoutine } from '../../builder/globals.js';
-    import { updateHistory } from '../../builder/history.js';
 
     function discardChanges(evt) {
         // discard changes to params
@@ -17,23 +17,21 @@
 
     function applyChanges(evt) {
         // update history
-        updateHistory()
+        actions.update()
         // apply changes to params
         notebook.applyChanges(evt)
         // if component is newly created, add it to the current Routine
-        if (!$currentRoutine.components.includes(component) && component.tag !== "RoutineSettingsComponent") {
-            $currentRoutine.addComponent(component)
+        if (!current.routine.components.includes(component) && component.tag !== "RoutineSettingsComponent") {
+            current.routine.addComponent(component)
         }
-        // refresh
-        experiment.set($experiment)
     }
 
 </script>
 
 <Dialog 
-    id={id} 
+    id="{component.name}-parameters"
     title="Editing: {component.name}"
-    bind:handle={handle} 
+    bind:shown={shown} 
     buttons={{
         OK: applyChanges, 
         APPLY: applyChanges,

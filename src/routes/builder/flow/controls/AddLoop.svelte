@@ -1,39 +1,35 @@
 <script>
-    import { writable } from 'svelte/store';
-
-    import { Routine, LoopInitiator, LoopTerminator, sortParams, unsortParams } from '$lib/experiment';
-    import { updateHistory } from '../../history.js';
-    import Menu from '$lib/utils/menu/Menu.svelte';
-    import MenuItem from '$lib/utils/menu/Item.svelte';
+    import { LoopInitiator } from '$lib/experiment.svelte.js';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-
-    import { experiment } from '../../globals.js';
     import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
+    import { current, actions } from '../../globals.svelte.js';
     
-    let dialog;
     let notebook;
-    let menu;
-    
-    let element = writable(LoopInitiator.fromTemplate("TrialHandler"));
+
+    let element = $state(
+        LoopInitiator.fromTemplate("TrialHandler")
+    )
 
     function insertLoopInitiator(evt) {
         // update history
-        updateHistory()
+        actions.update()
         // apply temporary params to loop
         notebook.applyChanges()
         // add to experiment
-        $element.exp = $experiment
-        $experiment.routines.set($element.name, $element)
+        element.exp = current.experiment
+        current.experiment.routines[element.name] = element
         // prepare to insert the new Routine into the Flow
-        inserting.set($element)
+        inserting.set(element)
     }
 
     function discardChanges(evt) {
         // reset temp params from component to discard any live changes
         notebook.discardChanges()
     }
+
+    let showDialog = $state(false)
 
 </script>
 
@@ -46,27 +42,23 @@
     horizontal 
     onclick={() => {
         // create blank Loop
-        element.set(LoopInitiator.fromTemplate("TrialHandler"))
+        element = LoopInitiator.fromTemplate("TrialHandler")
         // show dialog
-        dialog.showModal()
+        showDialog = true
     }}
 ></Button>
-
 <!-- dialog for creating a new Routine -->
 <Dialog 
     id=new-loop 
     title="New Loop" 
-    bind:handle={dialog} 
+    bind:shown={showDialog} 
     buttons={{
         OK: insertLoopInitiator, 
         CANCEL: discardChanges, 
     }}
 >
-    <ParamsNotebook element={$element} bind:this={notebook}/>
+    <ParamsNotebook element={element} bind:this={notebook}/>
 </Dialog>
 
 <style>
-    button {
-        background-color: var(--crust);
-    }
 </style>

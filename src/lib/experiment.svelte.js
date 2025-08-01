@@ -3,6 +3,10 @@ import ComponentProfiles from "$lib/components.json"
 
 
 export class Experiment {
+
+    routines = $state({})
+    loops = $state({})
+
     /**
      *
      * @param {String} filename Name of the experiment file
@@ -14,16 +18,12 @@ export class Experiment {
         // create attributes
         this.version = undefined;
         this.settings = new Component("SettingsComponent")
-        this.routines = new Map();
-        this.loops = new Map();
         this.flow = new Flow();
         // placeholder Routine
         let trial = new Routine();
         trial.exp = this;
         trial.name = "trial";
-        this.routines.set(
-            "trial", trial
-        )
+        this.routines['trial'] = trial
         this.flow.flat.push(trial)
         this.flow.dynamicize()
     }
@@ -33,14 +33,11 @@ export class Experiment {
      */
     get pilotMode() {
         // make sure there is a runMode param
-        if (!this.settings.params.has("runMode")) {
-            this.settings.params.set(
-                "runMode", 
-                Param.fromTemplate("SettingsComponent", "runMode")
-            )
+        if (!("runMode" in this.settings.params)) {
+            this.settings.params.runMode = Param.fromTemplate("SettingsComponent", "runMode")
         }
         // get the relevant param
-        let param = this.settings.params.get("runMode")
+        let param = this.settings.params.runMode
         // if 1, then we are in pilot mode
         return param.val === "0"
     }
@@ -79,7 +76,7 @@ export class Experiment {
             flow: this.flow.toJSON(),
         };
         // add routines
-        for (let [name, routine] of [...this.routines]) {
+        for (let [name, routine] of Object.entries(this.routines)) {
             node.routines[name] = routine.toJSON()
         }
         
@@ -168,10 +165,7 @@ export class Experiment {
             }
             routine.exp = exp;
             // parse and append node
-            exp.routines.set(
-                routineNode.getAttribute("name"),
-                routine
-            )
+            exp.routines[routineNode.getAttribute("name")] = routine
         }
         // get flow
         let flowNode = node.getElementsByTagName("Flow")[0];
@@ -187,16 +181,16 @@ export class Experiment {
                 element = LoopInitiator.fromXML(elementNode)
                 element.exp = exp;
                 // store in loops array
-                exp.loops.set(element.name, element)
+                exp.loops[element.name] = element
             } else if (elementNode.nodeName === "LoopTerminator") {
                 // create and use a terminator object
                 element = LoopTerminator.fromXML(elementNode)
                 element.exp = exp;
                 // store reference in initiator
-                exp.loops.get(element.name).terminator = element
+                exp.loops[element.name].terminator = element
             } else {
                 // get from routines
-                element = exp.routines.get(elementNode.getAttribute("name"))
+                element = exp.routines[elementNode.getAttribute("name")]
             }
             // append node
             exp.flow.flat.push(element)
@@ -264,57 +258,20 @@ export class Experiment {
     
 }
 export class Routine {
-    constructor() {
-        this.tag = "Routine";
-        this.exp = undefined;
-        this.components = [];
-        // placeholder settings
-        this.settings = Component.fromTemplate("RoutineSettingsComponent");
-    }
+    components = $state([])
 
-    get name() {
-        return this.settings.name
-    }
-
-    set name(value) {
-        if (this.exp !== undefined) {
-            // relocate in routines map
-            this.exp.routines.delete(this.name)
-            this.exp.routines.set(value, this)
-        }
-        // set in settings
-        this.settings.name = value;
-    }
-
-    addComponent(comp) {
-        // add to Components array
-        this.components.push(comp);
-        // add reference to self
-        comp.routine = this;
-    }
-
-    removeComponent(comp) {
-        // remove from Components array
-        let i = this.components.indexOf(comp)
-        this.components = Array.prototype.concat(
-            this.components.slice(0, i),
-            this.components.slice(i+1)
-        )
-        // remove reference to self
-        comp.routine = undefined;
-    }
-
-    get visualStop() {
+    visualStop = $derived.by(() => {
         let dur = 1;
         for (let comp of this.components) {
             if (comp.visualStop > dur) {
                 dur = comp.visualStop;
             }
         }
+        
         return dur;
-    }
+    })
 
-    get visualTicks() {
+    visualTicks = $derived.by(() => {
         // work out timeline increments based on routine duration
         let increment;
         if (this.visualStop < 2) {
@@ -343,6 +300,45 @@ export class Routine {
             labels: ticks,
             remainder: remainder
         }
+    })
+
+    constructor() {
+        this.tag = "Routine";
+        this.exp = undefined;
+        // placeholder settings
+        this.settings = Component.fromTemplate("RoutineSettingsComponent");
+    }
+
+    get name() {
+        return this.settings.params['name'].val
+    }
+
+    set name(value) {
+        if (this.exp !== undefined) {
+            // relocate in routines map
+            delete this.exp.routines[this.name]
+            this.exp.routines[value] = this
+        }
+        // set in settings
+        this.settings.params['name'].val = value;
+    }
+
+    addComponent(comp) {
+        // add to Components array
+        this.components.push(comp);
+        // add reference to self
+        comp.routine = this;
+    }
+
+    removeComponent(comp) {
+        // remove from Components array
+        let i = this.components.indexOf(comp)
+        this.components = Array.prototype.concat(
+            this.components.slice(0, i),
+            this.components.slice(i+1)
+        )
+        // remove reference to self
+        comp.routine = undefined;
     }
 
     get index() {
@@ -463,36 +459,301 @@ export class Routine {
     }
 }
 
-export class StandaloneRoutine {
+
+export class HasParams {
+    params = $state({})
+
+    /**
+     * Name of this element
+     */
+    name = $derived.by(() => {
+        if ("name" in this.params) {
+            return this.params['name'].val
+        }
+    })
+
+    /**
+     * Whether this element is disabled
+     */
+    disabled = $derived(this.params['disabled'] && [true, "true", "True"].includes(this.params['disabled'].val))
+
+    /**
+     * This object's parameters, sorted by category
+     */
+    sortedParams = $derived.by(() => {
+        // blank object
+        let sorted = {};
+        // iterate through params
+        for (let [name, param] of Object.entries(this.params)) {
+            // make sure we have an entry for this categ
+            if (!(param.categ in sorted)) {
+                sorted[param.categ] = {}
+            }
+            // add param
+            sorted[param.categ][name] = param
+        }
+
+        return sorted
+    })
+
+    /**
+     * Parameters relating to this element's start time
+     */
+    startParams = $derived({
+        valueParam: this.params["startVal"],
+        typeParam: this.params["startType"],
+        expectedParam: this.params["startEstim"],
+    })
+
+    /**
+     * Parameters relating to this element's stop time
+     */
+    stopParams = $derived.by(() => {
+        // start off with no params
+        let found = {
+            valueParam: null,
+            typeParam: null,
+            expectedParam: null,
+        }
+        // get whatever params we can
+        if ("stopVal" in this.params) {
+            found.valueParam = this.params["stopVal"]
+        }
+        if ("stopType" in this.params) {
+            found.typeParam = this.params["stopType"]
+        }
+        if ("durationEstim" in this.params) {
+            found.expectedParam = this.params["durationEstim"]
+        }
+
+        return found
+    })
+
+    /**
+     * Make a copy of this element's parameters
+     */
+    copyParams() {
+        return $inspect(this.params)
+    }
+}
+
+
+export class Component extends HasParams {
     constructor(tag) {
+        super()
+        this.tag = tag;
+        this.routine = undefined;
+        this.plugin = undefined;
+    }
+
+    /**
+     * Numeric index within this Component's Routine
+     */
+    index = $derived(
+        this.routine.components.findIndex((element) => element === this)
+    )
+
+    /**
+     * Start time to display on the Routine canvas
+     */
+    visualStart = $derived.by(() => {
+        // todo: get frame rate from exp
+        let fr = 60;
+        // if we don't have the necessary params, return null
+        if (!("startType" in this.params) || !("startVal" in this.params)) {
+            return null;
+        }
+        // get start val and type
+        let startType = this.params['startType'].val;
+        let startVal = parseFloat(this.params['startVal'].val);
+        // work out seconds from start type and val
+        let start_secs = null;
+        if (startType === "time (s)") {
+            start_secs = startVal;
+        } else if (startType === "frames") {
+            start_secs = startVal / fr;
+        }
+
+        return start_secs;
+    })
+
+    /**
+     * Stop time to display on the Routine canvas
+     */
+    visualStop = $derived.by(() => {
+        // todo: get frame rate from exp
+        let fr = 60;
+        // if we don't have the necessary params, return null
+        if (!("stopType" in this.params) || !("stopVal" in this.params)) {
+            return null;
+        }
+        // get stop type and val
+        let stopType = this.params['stopType'].val;
+        let stopVal = parseFloat(this.params['stopVal'].val);
+        // work out seconds from stop type and val
+        let stop_secs = null;
+        if (stopType === "time (s)") {
+            stop_secs = stopVal;
+        } else if (stopType === "duration (s)") {
+            stop_secs = this.visualStart + stopVal;
+        } else if (stopType === "frames") {
+            stop_secs = stopVal / fr;
+        }
+        // sub in null for NaN
+        if (isNaN(stop_secs)) {
+            stop_secs = null;
+        }
+
+        return stop_secs;
+    })
+
+    /**
+     * Color of this Component on the Routine canvas
+     */
+    visualColor = $derived.by(() => {
+        if (this.disabled) {
+            return "overlay";
+        } else if (this.forceEnd) {
+            return "orange";
+        } else {
+            return "blue";
+        }
+    })
+
+    /**
+     * Can this Component end the Routine?
+     */
+    forceEnd = $derived.by(() => {
+        let force_end = false;
+
+        for (let attr of ["forceEndRoutine", "endRoutineOn", "forceEndRoutineOnPress"]) {
+            if (attr in this.params) {
+                if ([
+                    true, "true", "True", // alias of true
+                    "any click", "correct click", "valid click", // mouse
+                    "look at", "look away", // roi
+                ].includes(this.params[attr].val)) {
+                    force_end = true;
+                }
+            }
+        }
+
+        return force_end;
+    })
+
+    /**
+     * Get this Component as a JSON string.
+     */
+    toJSON() {
+        // create node
+        let node = {
+            tag: this.tag,
+            plugin: this.plugin,
+            params: {},
+        };
+        // add params
+        for (let [name, param] of [...Object.entries(this.params)]) {
+            node.params[name] = param.toJSON();
+        }
+
+        return node
+    }
+
+    /**
+     * Create a new Experiment from a JSON object
+     * 
+     * @param {Object} node 
+     */
+    static fromJSON(node) {
+        // create a blank object
+        let component = new Component(node.tag);
+        // populate settings
+        component.plugin = node.plugin;
+        // populate components
+        for (let [name, paramNode] of [...Object.entries(node.params)]) {
+            component.params[name] = Param.fromJSON(paramNode)
+        }
+
+        return component
+    }
+
+    static fromXML(node) {
+        // get tag from node
+        let tag = node.nodeName;
+        if (tag === "Settings") {
+            tag += "Component"
+        }
+        // create from template
+        let comp = Component.fromTemplate(tag);
+        // populate info
+        comp.plugin = node.getAttribute("plugin") || comp.plugin
+        // populate params
+        for (let paramNode of node.getElementsByTagName("Param")) {
+            // get param name
+            let name = paramNode.getAttribute("name")
+            // get param template (from comp or a new template)
+            let paramTemplate;
+            if (name in comp.params) {
+                paramTemplate = comp.params[name]
+            } else {
+                paramTemplate = Param.fromTemplate(comp.tag, name)
+            }
+            // create param from xml
+            let param = Param.fromXML(paramNode, paramTemplate)
+            // store param
+            comp.params[name] = param
+        }
+        
+        return comp
+    }
+
+    static fromTemplate(tag) {
+        // make a blank Component
+        let comp = new Component(tag);
+        // get profile template
+        let profile = ComponentProfiles[tag];
+        // set plugin
+        comp.plugin = profile.plugin;
+        // populate params
+        for (let key in profile.params) {
+            comp.params[key] = Param.fromTemplate(tag, key);
+        }
+
+        return comp
+    }
+
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // get tag
+        let tag
+        if (this.tag === "SettingsComponent") {
+            tag = "Settings"
+        } else {
+            tag = this.tag
+        }
+        // create node
+        let node = doc.createElement(tag);
+        node.setAttribute("name", this.name);
+        node.setAttribute("plugin", this.plugin);
+        // add params
+        for (let [name, param] of [...this.params]) {
+            node.appendChild(
+                param.toXML()
+            )
+        }
+
+        return node
+    }
+}
+
+
+export class StandaloneRoutine extends HasParams {
+    constructor(tag) {
+        super()
         this.tag = tag;
         this.exp = undefined;
         this.plugin = undefined;
-        this.params = new ParamsArray();
-    }
-
-    get name() {
-        if (this.params.has("name")) {
-            // if we have a name param, get name from it
-            return this.params.get("name").val
-        }
-    }
-
-    set name(value) {
-        if (!this.params.has("name")) {
-            // if we don't have a name param, make one
-            this.params.set("name", Param.fromTemplate(this.tag, "name"));
-        }
-        // return name param
-        this.params.get("name").val = value;
-    }
-
-    copyParams() {
-        let params = new Map();
-        for (let [name, param] of [...this.params]) {
-            params.set(name, param.copy())
-        }
-        return params
     }
 
     get index() {
@@ -514,7 +775,7 @@ export class StandaloneRoutine {
             params: {},
         };
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.params[name] = param.toJSON();
         }
 
@@ -593,431 +854,25 @@ export class StandaloneRoutine {
         comp.plugin = profile.plugin;
         // populate params
         for (let key in profile.params) {
-            comp.params.set(key, Param.fromTemplate(tag, key));
+            comp.params[key] = Param.fromTemplate(tag, key);
         }
 
         return comp
     }
 }
 
-/**
- * 
- * @param {Map<string, Param>} params Parameters to sort
- * @returns Parameters sorted into categories
- */
-export function sortParams(params) {
-    let sorted = new Map();
-    for (let [name, param] of [...params]) {
-        // make sure we have an entry for this categ
-        if (!sorted.has(param.categ)) {
-            sorted.set(param.categ, new Map())
-        }
-        // add param
-        sorted.get(param.categ).set(name, param)
-    }
-
-    return sorted
-}
-export function unsortParams(sorted) {
-    let unsorted = new Map();
-    // iterate through categories
-    for (let [categ, params] of [...sorted]) {
-        // iterate through params in category
-        for (let [name, param] of [...params]) {
-            // add param to flat array
-            unsorted.set(name, param);
-        }
-    }
-
-    return unsorted;
-}
-
-
-export class ParamsArray extends Map {
-    /** @attribute @type { boolean } Is this array sorted by category? */
-    isSorted = false;
-
-    /**
-     * @returns {ParamsArray} A copy of this array, with params copied too
-     */
-    copy() {
-        // create new array
-        let params = new ParamsArray();
-        params.isSorted = this.isSorted;
-        // copy each param to it
-        for (let [name, param] of [...this]) {
-            params.set(name, param.copy())
-        }
-
-        return params
-    }
-
-    /**
-     * @returns {ParamsArray} A sorted copy of this array, containing the same param objects
-     */
-    get sorted() {
-        // if already sorted by category, return as is
-        if (this.isSorted) {
-            return this;
-        }
-        // if not sorted by category, return a sorted copy
-        let sorted = new ParamsArray();
-        sorted.isSorted = true;
-        // iterate through params
-        for (let [name, param] of [...this]) {
-            // make sure we have an entry for this categ
-            if (!sorted.has(param.categ)) {
-                sorted.set(param.categ, new ParamsArray())
-            }
-            // add param
-            sorted.get(param.categ).set(name, param)
-        }
-
-        return sorted
-    }
-    /**
-     * @returns {ParamsArray} A non-sorted copy of this array, containing the same param objects
-     */
-    get unsorted() {
-        // if already not sorted, return as is
-        if (!this.isSorted) {
-            return this;
-        }
-        // if sorted by category, return an unsorted copy
-        let unsorted = new ParamsArray();
-        unsorted.isSorted = true;
-        // iterate through categories
-        for (let [categ, params] of [...this]) {
-            // iterate through params in category
-            for (let [name, param] of [...params]) {
-                // add param to flat array
-                unsorted.set(name, param);
-            }
-        }
-
-        return unsorted;
-    }
-
-    /**
-     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing start parameters
-     */
-    get startParams() {
-        // start off with no params
-        let found = {
-            valueParam: null,
-            typeParam: null,
-            expectedParam: null,
-        }
-        // use different array according to sorted status
-        let params;
-        if (this.isSorted && this.has("Basic")) {
-            params = this.get("Basic");
-        } else if (this.isSorted) {
-            params = new ParamsArray();
-        } else {
-            params = this;
-        }
-        // get whatever params we can
-        if (params.has("startVal")) {
-            found.valueParam = params.get("startVal")
-        }
-        if (params.has("startType")) {
-            found.typeParam = params.get("startType")
-        }
-        if (params.has("startEstim")) {
-            found.expectedParam = params.get("startEstim")
-        }
-
-        return found
-    }
-
-    /**
-     * @returns {{valueParam: Param|null, typeParam: Param|null, expectedParam: Param|null}} Object containing stop parameters
-     */
-    get stopParams() {
-        // start off with no params
-        let found = {
-            valueParam: null,
-            typeParam: null,
-            expectedParam: null,
-        }
-        // use different array according to sorted status
-        let params;
-        if (this.isSorted && this.has("Basic")) {
-            params = this.get("Basic");
-        } else if (this.isSorted) {
-            params = new ParamsArray();
-        } else {
-            params = this;
-        }
-        // get whatever params we can
-        if (params.has("stopVal")) {
-            found.valueParam = params.get("stopVal")
-        }
-        if (params.has("stopType")) {
-            found.typeParam = params.get("stopType")
-        }
-        if (params.has("durationEstim")) {
-            found.expectedParam = params.get("durationEstim")
-        }
-
-        return found
-    }
-}
-
-
-export class Component {
-    constructor(tag) {
-        this.tag = tag;
-        this.routine = undefined;
-        this.plugin = undefined;
-        this.params = new ParamsArray();
-    }
-
-    get name() {
-        if (this.params.has("name")) {
-            // if we have a name param, get name from it
-            return this.params.get("name").val
-        }
-    }
-
-    set name(value) {
-        if (!this.params.has("name")) {
-            // if we don't have a name param, make one
-            this.params.set("name", Param.fromTemplate(this.tag, "name"));
-        }
-        // return name param
-        this.params.get("name").val = value;
-    }
-
-    /**
-     * Get params sorted by category
-     */
-    getSortedParams() {
-        return sortParams(this.params)
-    }
-
-    /**
-     * Get this Component as a JSON string.
-     */
-    toJSON() {
-        // create node
-        let node = {
-            tag: this.tag,
-            plugin: this.plugin,
-            params: {},
-        };
-        // add params
-        for (let [name, param] of [...this.params]) {
-            node.params[name] = param.toJSON();
-        }
-
-        return node
-    }
-
-    /**
-     * Create a new Experiment from a JSON object
-     * 
-     * @param {Object} node 
-     */
-    static fromJSON(node) {
-        // create a blank Routine
-        let component = new Component(node.tag);
-        // populate settings
-        component.plugin = node.plugin;
-        // populate components
-        for (let [name, paramNode] of [...Object.entries(node.params)]) {
-            component.params.set(name, Param.fromJSON(paramNode))
-        }
-
-        return component
-    }
-
-    static fromXML(node) {
-        // get tag from node
-        let tag = node.nodeName;
-        if (tag === "Settings") {
-            tag += "Component"
-        }
-        // create from template
-        let comp = Component.fromTemplate(tag);
-        // populate info
-        comp.name = node.getAttribute("name")
-        comp.plugin = node.getAttribute("plugin") || comp.plugin
-        // populate params
-        for (let paramNode of node.getElementsByTagName("Param")) {
-            // get param name
-            let name = paramNode.getAttribute("name")
-            // get param template (from comp or a new template)
-            let paramTemplate;
-            if (comp.params.has(name)) {
-                paramTemplate = comp.params.get(name)
-            } else {
-                paramTemplate = Param.fromTemplate(comp.tag, name)
-            }
-            // create param from xml
-            let param = Param.fromXML(paramNode, paramTemplate)
-            // store param
-            comp.params.set(name, param)
-        }
-        
-        return comp
-    }
-
-    static fromTemplate(tag) {
-        // make a blank Component
-        let comp = new Component(tag);
-        // get profile template
-        let profile = ComponentProfiles[tag];
-        // set plugin
-        comp.plugin = profile.plugin;
-        // populate params
-        for (let key in profile.params) {
-            comp.params.set(key, Param.fromTemplate(tag, key));
-        }
-
-        return comp
-    }
-
-    copyParams() {
-        let params = new Map();
-        for (let [name, param] of [...this.params]) {
-            params.set(name, param.copy())
-        }
-
-        return params
-    }
-
-    get visualStart() {
-        // todo: get frame rate from exp
-        let fr = 60;
-
-
-        let start_secs = null;
-        if (!this.params.has("startType") || !this.params.has("startVal")) {
-            return start_secs;
-        }
-        let startType = this.params.get("startType").val;
-        let startVal = parseFloat(this.params.get("startVal").val);
-
-        if (startType === "time (s)") {
-            start_secs = startVal;
-        } else if (startType === "frames") {
-            start_secs = startVal / fr;
-        }
-
-        return start_secs;
-    }
-
-    get visualStop() {
-        // todo: get frame rate from exp
-        let fr = 60;
-
-
-        let stop_secs = null;
-        if (!this.params.has("stopType") || !this.params.has("stopVal")) {
-            return stop_secs;
-        }
-        let stopType = this.params.get("stopType").val;
-        let stopVal = parseFloat(this.params.get("stopVal").val);
-
-        if (stopType === "time (s)") {
-            stop_secs = stopVal;
-        } else if (stopType === "duration (s)") {
-            stop_secs = this.visualStart + stopVal;
-        } else if (stopType === "frames") {
-            stop_secs = stopVal / fr;
-        }
-        // sub in null for NaN
-        if (isNaN(stop_secs)) {
-            stop_secs = null;
-        }
-
-        return stop_secs;
-    }
-
-    get visualColor() {
-        if (this.disabled) {
-            return "overlay";
-        } else if (this.forceEnd) {
-            return "orange";
-        } else {
-            return "blue";
-        }
-    }
-
-    get forceEnd() {
-        let force_end = false;
-
-        for (let attr of ["forceEndRoutine", "endRoutineOn", "forceEndRoutineOnPress"]) {
-            if (this.params.has(attr)) {
-                if ([
-                    true, "true", "True", // alias of true
-                    "any click", "correct click", "valid click", // mouse
-                    "look at", "look away", // roi
-                ].includes(this.params.get(attr).val)) {
-                    force_end = true;
-                }
-            }
-        }
-
-        return force_end;
-    }
-
-    get index() {
-        for (let i in this.routine.components) {
-            if (this.routine.components[i] === this) {
-                return i;
-            }
-        }
-    }
-
-    get disabled() {
-        let disabled = false;
-
-        if (this.params.has("disabled")) {
-            if ([true, "true", "True"].includes(this.params.get("disabled").val)) {
-                disabled = true;
-            }
-        }
-
-        return disabled;
-    }
-
-    toXML() {
-        // create document
-        let doc = document.implementation.createDocument(null, "xml");
-        // get tag
-        let tag
-        if (this.tag === "SettingsComponent") {
-            tag = "Settings"
-        } else {
-            tag = this.tag
-        }
-        // create node
-        let node = doc.createElement(tag);
-        node.setAttribute("name", this.name);
-        node.setAttribute("plugin", this.plugin);
-        // add params
-        for (let [name, param] of [...this.params]) {
-            node.appendChild(
-                param.toXML()
-            )
-        }
-
-        return node
-    }
-}
 
 export class Param {
+
+    val = $state()
+    updates = $state()
+
     constructor(name) {
         this.name = name;
-        this.val = undefined;
         this.categ = undefined;
         this.allowedVals = undefined;
         this.valType = undefined;
         this.inputType = undefined;
-        this.updates = undefined;
         this.allowedUpdates = undefined;
         this.label = undefined;
         this.hint = undefined;
@@ -1140,30 +995,55 @@ export class Param {
 
         return node
     }
-
-    isCode() {
-        // is valType is code, always true
-        if (this.valType === "code") {
-            return true;
-        }
-        // if starts with a $, true
-        if (String(this.val).startsWith("$")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    isValid() {
-        return !String(this.val).includes(" ")
-    }
 }
 
 export class Flow {
+
+    flat = $state([])
+    dynamic = $derived.by(() => {
+        // construct flow
+        let dynamic = [];
+        let currentLoop = this;
+        for (let rt of this.flat) {
+            // iterate through a flattened flow
+            if (rt instanceof LoopInitiator) {
+                // create a loop when we get to an initiator
+                let loop = new FlowLoop(
+                    rt,
+                    currentLoop
+                );
+                // add to the current loop
+                if (currentLoop instanceof Flow) {
+                    dynamic.push(loop)
+                } else {
+                    currentLoop.routines.push(loop)
+                }
+                // set as the current loop (only if terminated)
+                if (rt.complete) {
+                    currentLoop = loop;
+                }
+            } else if (rt instanceof LoopTerminator) {
+                // close current loop, if any
+                if (currentLoop instanceof Flow) {
+                    throw "Loop Terminator found with no matching Loop Initiator"
+                } else {
+                    currentLoop.terminator = rt;
+                    currentLoop = currentLoop.parent;
+                }
+            } else {
+                if (currentLoop instanceof Flow) {
+                    dynamic.push(rt);
+                } else {
+                    currentLoop.routines.push(rt);
+                }
+            }
+        }
+
+        return dynamic;
+    })
+    
     constructor(exp) {
-        this.exp;
-        this.flat = [];
-        this.dynamic = [];
+        this.exp = exp;
     }
 
     flatten() {
@@ -1184,43 +1064,7 @@ export class Flow {
     }
 
     dynamicize() {
-        // construct flow
-        let currentLoop = this;
-        this.dynamic = [];
-        for (let rt of this.flat) {
-            // iterate through a flattened flow
-            if (rt instanceof LoopInitiator) {
-                // create a loop when we get to an initiator
-                let loop = new FlowLoop(
-                    rt,
-                    currentLoop
-                );
-                // add to the current loop
-                if (currentLoop instanceof Flow) {
-                    currentLoop.dynamic.push(loop)
-                } else {
-                    currentLoop.routines.push(loop)
-                }
-                // set as the current loop (only if terminated)
-                if (rt.complete) {
-                    currentLoop = loop;
-                }
-            } else if (rt instanceof LoopTerminator) {
-                // close current loop, if any
-                if (currentLoop instanceof Flow) {
-                    throw "Loop Terminator found with no matching Loop Initiator"
-                } else {
-                    currentLoop.terminator = rt;
-                    currentLoop = currentLoop.parent;
-                }
-            } else {
-                if (currentLoop instanceof Flow) {
-                    currentLoop.dynamic.push(rt);
-                } else {
-                    currentLoop.routines.push(rt);
-                }
-            }
-        }
+        
     }
 
     removeElement(index) {
@@ -1235,9 +1079,10 @@ export class Flow {
         this.dynamicize();
     }
 
-    relocateElement(fromIndex, toIndex) {
+    relocateElement(element, toIndex) {
+        // get element index
+        let fromIndex = this.flat.indexOf(element)
         // convert indices to int
-        fromIndex = parseInt(fromIndex)
         toIndex = parseInt(toIndex)
         // if this changes the indices, adjust
         if (toIndex > fromIndex) {
@@ -1248,7 +1093,6 @@ export class Flow {
             toIndex = this.flat.length;
         }
         // pop element from flat array
-        let emt = this.flat[fromIndex]
         this.flat = Array.prototype.concat(
             this.flat.slice(0, fromIndex),
             this.flat.slice(fromIndex+1)
@@ -1256,11 +1100,9 @@ export class Flow {
         // insert back in at new position
         this.flat = Array.prototype.concat(
             this.flat.slice(0, toIndex),
-            emt,
+            element,
             this.flat.slice(toIndex),
         )
-        // update dynamic array
-        this.dynamicize();
     }
 
     insertElement(element, index) {
@@ -1352,12 +1194,11 @@ export class FlowLoop {
     }
 }
 
-export class LoopInitiator {
+export class LoopInitiator extends HasParams {
     constructor() {
+        super()
         this.exp = undefined;
         this.loopType = undefined;
-        this.params = new ParamsArray();
-        this.name = undefined;
         this.terminator = undefined;
     }
 
@@ -1373,36 +1214,11 @@ export class LoopInitiator {
         return this.terminator !== undefined;
     }
 
-    get name() {
-        if (this.params.has("name")) {
-            // if we have a name param, get name from it
-            return this.params.get("name").val
-        }
-    }
-
-    set name(value) {
-        if (!this.params.has("name")) {
-            // if we don't have a name param, make one
-            this.params.set("name", Param.fromTemplate("TrialHandler", "name"));
-        }
-        // return name param
-        this.params.get("name").val = value;
-    }
-
     addTerminator() {
         this.terminator = new LoopTerminator();
         this.terminator.name = this.name;
         this.terminator.exp = this.exp;
         this.terminator.initiator = this;
-    }
-
-    copyParams() {
-        let params = new Map();
-        for (let [name, param] of [...this.params]) {
-            params.set(name, param.copy())
-        }
-
-        return params
     }
 
     /**
@@ -1417,7 +1233,7 @@ export class LoopInitiator {
             params: {},
         };
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.params[name] = param.toJSON();
         }
 
@@ -1451,7 +1267,7 @@ export class LoopInitiator {
         node.setAttribute("loopType", this.loopType);
         node.setAttribute("name", this.name);
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.appendChild(
                 param.toXML()
             )
@@ -1465,23 +1281,21 @@ export class LoopInitiator {
         let initiator = LoopInitiator.fromTemplate(
             node.getAttribute("loopType")
         )
-        // populate info
-        initiator.name = node.getAttribute("name")
         // populate params
         for (let paramNode of node.getElementsByTagName("Param")) {
             // get param name
             let name = paramNode.getAttribute("name")
             // get param template (from comp or a new template)
             let paramTemplate;
-            if (initiator.params.has(name)) {
-                paramTemplate = initiator.params.get(name)
+            if (name in initiator.params) {
+                paramTemplate = initiator.params[name]
             } else {
                 paramTemplate = Param.fromTemplate(initiator.loopType, name)
             }
             // create param from xml
             let param = Param.fromXML(paramNode, paramTemplate)
             // store param
-            initiator.params.set(name, param)
+            initiator.params[name] = param
         }
 
         return initiator
@@ -1497,7 +1311,7 @@ export class LoopInitiator {
         initiator.plugin = profile.plugin;
         // populate params
         for (let key in profile.params) {
-            initiator.params.set(key, Param.fromTemplate(tag, key));
+            initiator.params['key'] = Param.fromTemplate(tag, key);
         }
 
         return initiator

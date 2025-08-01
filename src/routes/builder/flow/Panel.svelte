@@ -1,12 +1,11 @@
 <script>
-    import FlowCanvas from './Canvas.svelte';
+    import Flow from './Flow.svelte';
     import FlowControls from './controls/Panel.svelte';
-
 </script>
 
 <div class=flow-panel>
     <FlowControls></FlowControls>
-    <FlowCanvas></FlowCanvas>
+    <Flow></Flow>
 </div>
 
 <style>

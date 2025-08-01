@@ -1,33 +1,32 @@
 <script>
-    import { writable } from "svelte/store";
+    let {
+        param,
+        validate = (param) => true
+    } = $props()
 
-    export let param;
-    export let ctrl;
+    function checkCode(param) {
+        // is valType is code, always true
+        if (param.valType === "code") {
+            return true;
+        }
+        // if starts with a $, true
+        if (String(param.val).startsWith("$")) {
+            return true;
+        }
 
-
-    export let isCode = writable(param.valType === "code");
-    export let isValid = writable(true);
-
-    function validate(evt) {
-        isValid.set(param.isValid())
+        return false;
     }
 
-    function checkCode(evt) {
-        isCode.set(param.isCode())
-    }
-
+    let isCode = $derived(checkCode(param));
+    let isValid = $derived(validate(param));
 </script>
 
 <input 
     class=param-text-input 
     type="text" 
     bind:value={param.val} 
-    bind:this={ctrl} 
-    on:input={validate}
-    on:input={checkCode}
-    on:input
-    class:error={!$isValid} 
-    class:code={$isCode} 
+    class:valid={isValid} 
+    class:code={isCode} 
 />
 
 <style>
@@ -37,7 +36,7 @@
         font-weight: inherit;
         color: inherit;
     }
-    .error {
+    :not(.valid) {
         color: var(--red);
     }
     .code {

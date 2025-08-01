@@ -1,51 +1,25 @@
 <script>
-    export let element;
     import EntryPoint from './EntryPoint.svelte'   
-    import { dragging } from './globals.js';
-    import { experiment } from '../globals.js';
-    import { currentRoutine } from '../globals.js';
-    import { json } from '@sveltejs/kit';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
-    import { theme } from '$lib/globals';
-    import { writable } from 'svelte/store';
-    import { updateHistory } from '../history';
+    import { theme } from '$lib/globals.svelte.js';
+    import { current, actions } from '../globals.svelte.js';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
 
-    function on_dragstart(evt) {
-        dragging.set(element.index)
-    }
-    function on_dragend(evt) {
-        dragging.set(null)
-    }
-    function on_click(evt) {
-        currentRoutine.set(element)
-    }
+    let {
+        element
+    } = $props()
 
-    let menu;
-    let menuPos = writable({
-        position: "absolute", 
-        left: "0px",
-        top: "0px", 
+    let showContextMenu = $state(false)
+    let contextMenuPos = $state({
+        x: undefined,
+        y: undefined
     });
-
-    function showContextMenu(evt) {
-        // set pos to click location
-        menuPos.set({
-            position: "fixed", 
-            left: evt.pageX + "px", 
-            top: evt.pageY + "px",
-        })
-        // show menu
-        menu.setOpen(true);
-    }
 
     function removeRoutine(evt) {
         // update history
-        updateHistory();
+        actions.update();
         // move dragged routine to new position in the flow
-        $experiment.flow.removeElement(element.index)
-        // update experiment so subscribed views update
-        experiment.set($experiment)
+        current.experiment.flow.removeElement(element.index)
     }
 
 </script>
@@ -53,31 +27,39 @@
 <EntryPoint index={element.index}></EntryPoint>
 <div 
     class=routine 
-    id=flow-{element.name} 
-    draggable="true" 
-    on:dragstart={on_dragstart} 
-    on:dragend={on_dragend} 
-    on:click={on_click}
-    class:active={$currentRoutine ? $currentRoutine.name === element.name : false}
+    draggable=true
+    ondragstart={() => current.moving = element} 
+    ondragend={() => current.moving = undefined} 
+    onclick={() => current.routine = element}
+    class:active={current.routine ? current.routine.name === element.name : false}
     role="none"
-    on:contextmenu|preventDefault={showContextMenu}
+    oncontextmenu={(evt) => {
+        evt.preventDefault();
+        // show menu
+        showContextMenu = true;
+        // set its position to the mouse pos
+        contextMenuPos.x = evt.pageX;
+        contextMenuPos.y = evt.pageY;
+    }}
 >
-{#if element.settings && element.settings.params.has("desc") && element.settings.params.get('desc').val}
+{#if element.settings && "desc" in element.settings.params && element.settings.params['desc'].val}
 <Tooltip>
     {element.settings.params.get('desc').val}
 </Tooltip>
 {/if}
 {element.name}
-</div>
+<!-- context menu -->
 <Menu 
-    bind:this={menu} 
+    bind:shown={showContextMenu} 
+    bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/{$theme}/btn-delete.svg"
+        icon="/icons/{theme}/btn-delete.svg"
         label="Remove"
-        action={removeRoutine}
+        onclick={removeRoutine}
     />
 </Menu>
+</div>
 
 <style>
     .routine {

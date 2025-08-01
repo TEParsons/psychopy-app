@@ -1,6 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.js";
-    import { experiment } from './globals.js';
     import Panel from '$lib/utils/Panel.svelte';
     import Frame from '$lib/utils/Frame.svelte';
 
@@ -8,19 +6,10 @@
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
-    import { browser } from '$app/environment';
-
-    experiment.subscribe((value) => {
-        if (browser) {
-            if (value) {
-                document.title = "PsychoPy Builder: " + value.filename;
-            } else {
-                document.title = "PsychoPy Builder";
-            }
-        }
-    })
+    import { current } from "./globals.svelte.js";
 </script>
 
+<title>PsychoPy Builder: {current.experiment.filename}</title>
 <Frame 
     rows={3} 
     cols={4}

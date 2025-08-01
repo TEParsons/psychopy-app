@@ -1,46 +1,43 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     import Menu from "./Menu.svelte";
     import Item from "./Item.svelte";
 
-    /** @prop @type {string} Label for this menu item */
-    export let label;
-    /** @prop @type {String|undefined} Path to an icon for this page's tab */
-    export let icon = undefined;
-    /** @prop @type {boolean} Is this item able to be clicked on? */
-    export let disabled = false;
-    /** @prop @type {any} Arbitrary data associated with this menu item  */
-    export let data = {};
+    let {
+        /** @prop @type {string} Label for this menu item */
+        label,
+        /** @prop @type {String|undefined} Path to an icon for this page's tab */
+        icon=undefined,
+        /** @prop @type {any} Arbitrary data associated with this menu item  */
+        data={},
+        /** @prop @type {boolean} Is this item able to be clicked on? */
+        disabled=$bindable(),
+        children
+    } = $props()
 
-    /** @public @type {{item: import('./Item.svelte').default|undefined, menu: import('./Menu.svelte').default|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    export let handles = {
-        item: undefined, 
-        menu: undefined,
-    };
+    let shown = $state()
 </script>
 
 <Item 
-    bind:this={handles.item}
-    icon={icon} 
     label={label} 
-    action={() => {
-        if (handles.menu) {
-            handles.menu.setOpen(true);
-        }
+    icon={icon} 
+    onclick={() => {
+        shown = true
     }}
-    disabled={disabled}
-    close={false}
     data={data}
+    close={false}
+    disabled={disabled}
 >
-<img class=menu-item-chevron src="/icons/{$theme}/sym-arrow-right.svg" alt=">" slot=chevron/>
-<Menu 
-    slot=submenu
-    bind:this={handles.menu}
->
-    <div class=menu>
-        <slot></slot>
-    </div>
-</Menu>
+    {#snippet submenu()}
+        <img class=menu-item-chevron src="/icons/{theme}/sym-arrow-right.svg" alt=">" />
+        <Menu 
+            bind:shown={shown}
+        >
+            <div class=menu>
+                {@render children()}
+            </div>
+        </Menu>
+    {/snippet}
 </Item>
 
 

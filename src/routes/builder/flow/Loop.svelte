@@ -1,31 +1,35 @@
 <script>
-    import { theme } from "$lib/globals.js";
+    import { theme } from "$lib/globals.svelte.js";
     
-    import { FlowLoop } from "$lib/experiment.js";
+    import { FlowLoop } from "$lib/experiment.svelte.js";
+    import Loop from "./Loop.svelte"
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte'
 
-    export let element;
+    let {
+        element=undefined
+    } = $props()
 </script>
+
 {#if element.complete}
     <EntryPoint index={element.initiator.index}></EntryPoint>
 {/if}
-<div class=loop id=loop-{element.name} class:incomplete={!element.complete}>
+<div class=loop class:incomplete={!element.complete}>
     {#if element}
-    <label for=loop-{element.name}>{element.name}</label>
+        <span>{element.name}</span>
     {/if}
-    <img class=loop-arrow src="/icons/{$theme}/sym-arrow-up.svg" alt="<"/>
+    <img class=loop-arrow src="/icons/{theme}/sym-arrow-up.svg" alt="<"/>
     {#if element}
-    {#each element.routines as rt}
-    {#if rt instanceof FlowLoop}
-    <svelte:self element={rt}></svelte:self>
-    {:else}
-    <RoutineNode element={rt}></RoutineNode>
-    {/if}
-    {/each}
+        {#each element.routines as rt}
+            {#if rt instanceof FlowLoop}
+                <Loop element={rt}></Loop>
+            {:else}
+                <RoutineNode element={rt}></RoutineNode>
+            {/if}
+        {/each}
     {/if}
     {#if element.complete}
-    <EntryPoint index={element.terminator.index}></EntryPoint>
+        <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}
 </div>
 
@@ -41,7 +45,7 @@
         padding: 2rem 1rem;
         padding-top: 0;
     }
-    .loop label {
+    .loop span {
         position: absolute;
         line-height: 1rem;
         bottom: 0;
@@ -55,7 +59,7 @@
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
         ;
     }
-    .loop label:hover {
+    .loop span:hover {
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.25)
         ;
@@ -74,7 +78,7 @@
         border-bottom: none;
         padding: 4rem 1rem;
     }
-    .loop.incomplete label {
+    .loop.incomplete span {
         left: 0;
         bottom: 50%;
     }
