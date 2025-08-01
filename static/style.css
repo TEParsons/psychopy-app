@@ -92,8 +92,8 @@ textarea {
 input{
     transition: border-color .2s, box-shadow .2s;
 }
-input:active, 
-input:focus {
+input:enabled:active, 
+input:enabled:focus {
     border-color: var(--blue);
 }
 input:hover, 
@@ -105,8 +105,8 @@ input:focus {
 select {
     transition: border-color .2s, box-shadow .2s;
 }
-select:active, 
-select:focus {
+select:enabled:active, 
+select:enabled:focus {
     border-color: var(--blue);
 }
 select:hover, 
