@@ -1,5 +1,5 @@
 <script>
-    import { theme } from "$lib/globals";
+    import { theme } from "$lib/globals.svelte.js";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
@@ -29,13 +29,13 @@
     {#if open}
     <img 
         class="panel-indicator open"
-        src="/icons/{$theme}/sym-arrow-down.svg"
+        src="/icons/{theme}/sym-arrow-down.svg"
         alt="^"
     />
     {:else}
     <img 
         class="panel-indicator closed"
-        src="/icons/{$theme}/sym-arrow-right.svg"
+        src="/icons/{theme}/sym-arrow-right.svg"
         alt="v"
     />
     {/if}

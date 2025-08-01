@@ -1,5 +1,5 @@
 <script>
-    import { theme } from "$lib/globals";
+    import { theme } from "$lib/globals.svelte.js";
     import Button from "./elements/Button.svelte";
     import Dialog from "$lib/utils/colorPicker/Dialog.svelte";
     import { writable } from "svelte/store";
@@ -18,7 +18,7 @@
 <div class="file-ctrl param-value">
     <input type="text" bind:value={param.val} />
     <Button 
-        icon="/icons/{$theme}/btn-color.svg" 
+        icon="/icons/{theme}/btn-color.svg" 
         on:click={() => {
             // reset dialog value
             dlgCurrent.set(param.val);

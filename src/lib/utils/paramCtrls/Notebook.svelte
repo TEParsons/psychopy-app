@@ -35,15 +35,19 @@
 
     onMount(discardChanges)
 
+    let pageIndex = $state()
+
 </script>
 
-<Notebook
-    data={element}
->
-    {#each [...Object.entries(temp.sortedParams)] as [categ, params]}
+<Notebook>
+    {#each Object.entries(temp.sortedParams) as [categ, params]}
         <NotebookPage
             label={categ}
             data={element}
+            bind:selected={
+                () => {return pageIndex === categ},
+                (value) => {pageIndex = categ}
+            }
         >
             <div class=params-panel>
                 <!-- start ctrl, if needed -->

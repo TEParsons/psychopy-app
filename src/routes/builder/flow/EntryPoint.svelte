@@ -1,31 +1,27 @@
 <script>
-    import { experiment } from '../globals.svelte.js'
     import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.svelte.js';
-    import { getContext } from "svelte";
+    import { current, actions } from "../globals.svelte.js";
 
     let {
         index=undefined
     } = $props()
 
-    let current = getContext("current")
     let hovered = $state(false)
-
-    let history = getContext("history")
 
     function insertHere(evt) {
         // update history
-        history.update();
+        actions.update();
         // if dragging, move dragged element here
         if (current.moving) {
             // relocate it
-            experiment.flow.relocateElement(current.moving, index)
+            current.experiment.flow.relocateElement(current.moving, index)
             // done dragging
             current.moving = undefined
         }
         // if inserting, insert element here
         if (current.inserting) {
             // insert
-            experiment.flow.insertElement(current.inserting, index);
+            current.experiment.flow.insertElement(current.inserting, index);
             // next steps depend on type of element inserted
             if (current.inserting instanceof LoopInitiator) {
                 // ready to insert terminator

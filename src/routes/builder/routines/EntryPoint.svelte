@@ -1,19 +1,16 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { getContext } from "svelte";
+    import { current, actions } from "../globals.svelte.js";
 
     let {
         routine,
         index
     } = $props()
 
-    let history = getContext("history")
-    let current = getContext("current")
-
     function on_drop(evt) {
         evt.preventDefault();
         // update history
-        history.update();
+        actions.update();
         // make sure it's a valid element
         if (current.dragging === undefined) {
             return;

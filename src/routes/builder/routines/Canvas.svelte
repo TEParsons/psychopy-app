@@ -1,6 +1,5 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { experiment } from '../globals.js';
     import { Button } from "$lib/utils/buttons";
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';

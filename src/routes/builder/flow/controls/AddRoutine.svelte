@@ -5,19 +5,16 @@
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
-    import { getContext } from 'svelte';
+    import { current, actions } from "../../globals.svelte.js";
     
     let notebook;
-    
-    let current = getContext("current")
-    let history = getContext("history")
 
     function insertRoutine(evt) {
         // update history
-        history.update()
+        actions.update()
         // add to experiment
         current.inserting.exp = current.experiment
-        current.experiment.routines.set(current.inserting.name, current.inserting)
+        current.experiment.routines[current.inserting.name] = current.inserting
     }
 
     let showNewRoutineDialog = $state(false)
@@ -53,7 +50,7 @@
                 showNewRoutineDialog = true
             }}
         />
-        {#each [...current.experiment.routines] as [name, routine]}
+        {#each Object.entries(current.experiment.routines) as [name, routine]}
         <MenuItem 
             label={name}
             onclick={() => {

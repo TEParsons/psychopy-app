@@ -1,16 +1,12 @@
 <script>
-    import { writable } from 'svelte/store';
-    import { theme } from "$lib/globals.js";
-    import { experiment, currentRoutine } from '../globals.js';
+    import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
-    import { getContext } from 'svelte';
+    import { current, actions } from "../globals.svelte.js";
 
     let {
         component
     } = $props()
-
-    let history = getContext("history")
 
     function titleCase(name) {
         name = name.replace("Component", "");
@@ -23,16 +19,13 @@
 
     function newRoutine() {
         // update history
-        history.update()
+        actions.update()
         // create a new StandaloneRoutine
         let rt = StandaloneRoutine.fromTemplate(component['__name__'])
         // add it to the experiment
-        $experiment.routines.set(
-            rt.name,
-            rt
-        )
+        current.experiment.routines[rt.name] = rt
         // navigate to it
-        currentRoutine.set(rt)
+        current.routine = rt
     }
     
 </script>
@@ -40,9 +33,8 @@
 {#if !component.hidden}
 <Button 
     label={titleCase(component['__name__'])}
-    icon="/icons/{$theme}/components/{component['__name__']}.svg"
+    icon="/icons/{theme}/components/{component['__name__']}.svg"
     vertical
-    disabled={!$currentRoutine}
     onclick={newRoutine}
 ></Button>
 {/if}

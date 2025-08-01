@@ -1,17 +1,13 @@
 <script>
     import EntryPoint from './EntryPoint.svelte'   
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
-    import { theme } from '$lib/globals';
-    import { writable } from 'svelte/store';
+    import { theme } from '$lib/globals.svelte.js';
+    import { current, actions } from '../globals.svelte.js';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
-    import { getContext } from "svelte";
 
     let {
         element
     } = $props()
-
-    let current = getContext("current")
-    let history = getContext("history")
 
     let showContextMenu = $state(false)
     let contextMenuPos = $state({
@@ -21,7 +17,7 @@
 
     function removeRoutine(evt) {
         // update history
-        history.update();
+        actions.update();
         // move dragged routine to new position in the flow
         current.experiment.flow.removeElement(element.index)
     }
@@ -58,7 +54,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/{$theme}/btn-delete.svg"
+        icon="/icons/{theme}/btn-delete.svg"
         label="Remove"
         onclick={removeRoutine}
     />

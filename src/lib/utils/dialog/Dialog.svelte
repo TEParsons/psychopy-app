@@ -1,6 +1,5 @@
 <script>
     import { Button } from "$lib/utils/buttons";
-    import { onMount } from "svelte";
 
     let {
         id,

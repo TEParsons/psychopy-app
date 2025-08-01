@@ -1,5 +1,5 @@
 <script>
-    import { experiment } from '../globals.svelte.js';
+    import { current } from '../globals.svelte.js';
     import { FlowLoop } from "$lib/experiment.svelte.js";
     import Flow from './Flow.svelte';
     import LoopNode from './Loop.svelte';
@@ -15,8 +15,8 @@
             <div class=flowline></div>
             <img class=flowline-arrow src="/icons/{theme}/sym-arrow-right.svg" alt="<"/>
         </div>
-        {#if experiment}
-            {#each experiment.flow.dynamic as emt}
+        {#if current.experiment}
+            {#each current.experiment.flow.dynamic as emt}
                 {#if emt instanceof FlowLoop}
                     <LoopNode element={emt}></LoopNode>
                 {:else}

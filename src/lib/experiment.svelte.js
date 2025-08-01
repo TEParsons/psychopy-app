@@ -3,6 +3,10 @@ import ComponentProfiles from "$lib/components.json"
 
 
 export class Experiment {
+
+    routines = $state({})
+    loops = $state({})
+
     /**
      *
      * @param {String} filename Name of the experiment file
@@ -14,16 +18,12 @@ export class Experiment {
         // create attributes
         this.version = undefined;
         this.settings = new Component("SettingsComponent")
-        this.routines = new Map();
-        this.loops = new Map();
         this.flow = new Flow();
         // placeholder Routine
         let trial = new Routine();
         trial.exp = this;
         trial.name = "trial";
-        this.routines.set(
-            "trial", trial
-        )
+        this.routines['trial'] = trial
         this.flow.flat.push(trial)
         this.flow.dynamicize()
     }
@@ -76,7 +76,7 @@ export class Experiment {
             flow: this.flow.toJSON(),
         };
         // add routines
-        for (let [name, routine] of [...this.routines]) {
+        for (let [name, routine] of Object.entries(this.routines)) {
             node.routines[name] = routine.toJSON()
         }
         
@@ -319,8 +319,8 @@ export class Routine {
     set name(value) {
         if (this.exp !== undefined) {
             // relocate in routines map
-            this.exp.routines.delete(this.name)
-            this.exp.routines.set(value, this)
+            delete this.exp.routines[this.name]
+            this.exp.routines[value] = this
         }
         // set in settings
         this.settings.params['name'].val = value;
@@ -779,7 +779,7 @@ export class StandaloneRoutine extends HasParams {
             params: {},
         };
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.params[name] = param.toJSON();
         }
 
@@ -1237,7 +1237,7 @@ export class LoopInitiator extends HasParams {
             params: {},
         };
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.params[name] = param.toJSON();
         }
 

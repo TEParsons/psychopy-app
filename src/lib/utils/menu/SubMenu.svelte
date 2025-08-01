@@ -29,7 +29,7 @@
     disabled={disabled}
 >
     {#snippet submenu()}
-        <img class=menu-item-chevron src="/icons/{$theme}/sym-arrow-right.svg" alt=">" />
+        <img class=menu-item-chevron src="/icons/{theme}/sym-arrow-right.svg" alt=">" />
         <Menu 
             bind:shown={shown}
         >

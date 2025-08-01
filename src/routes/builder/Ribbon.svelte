@@ -1,7 +1,6 @@
 <script>
     import { theme } from "$lib/globals.svelte.js"
-    import { currentFile, experiment } from './globals.js';
-    import { changeHistory, changeFuture } from './history.js';
+    import { current, actions } from './globals.svelte.js';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
 
@@ -54,7 +53,7 @@
                     icon="/icons/{theme}/btn-save.svg" 
                     label="Save file" 
                     onclick={file_save} 
-                    disabled={!$changeHistory.length} 
+                    disabled={!actions.past.length} 
                 />
                 <MenuItem 
                     icon="/icons/{theme}/btn-saveas.svg" 
@@ -79,7 +78,7 @@
             icon="/icons/{theme}/btn-save.svg" 
             label="Save file" 
             onclick={file_save}
-            disabled={!$changeHistory.length} 
+            disabled={!actions.past.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-saveas.svg" 
@@ -93,13 +92,13 @@
             icon="/icons/{theme}/btn-undo.svg" 
             label="Undo" 
             onclick={undo} 
-            disabled={$currentFile === null || !$changeHistory.length} 
+            disabled={current.file === null || !actions.past.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-redo.svg" 
             label="Redo" 
             onclick={redo} 
-            disabled={$currentFile === null || !$changeFuture.length} 
+            disabled={current.file === null || !actions.future.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-find.svg" 
@@ -117,24 +116,19 @@
             icon="/icons/{theme}/btn-settings.svg" 
             label="Experiment settings" 
             onclick={() => {showSettingsDlg = true}}
-            disabled={$experiment === null}
+            disabled={current.experiment === null}
         />
-        {#if $experiment !== null }
+        {#if current.experiment !== null }
         <Dialog 
-            component={$experiment.settings} 
+            component={current.experiment.settings} 
             bind:shown={showSettingsDlg}
         ></Dialog>
         {/if}
         <RibbonSwitchButton 
             labels={["Pilot", "Run"]} 
-            bind:state={$experiment.pilotMode} 
-            disabled={$experiment === null}
+            bind:state={current.experiment.pilotMode} 
+            disabled={current.experiment === null}
         />        
-        <!-- <RibbonButton 
-            id="ribbon-btn-{$experiment.pilotMode ? "sendpilot" : "sendrun"}" 
-            icon="/icons/{theme}/btn-{$experiment.pilotMode ? "sendpilot" : "sendrun"}.svg" 
-            label="Send to runner" 
-        /> -->
     </RibbonSection>
 
     <!-- <RibbonSection id=desktop label=Desktop icon="/icons/{theme}/rbn-desktop.svg">

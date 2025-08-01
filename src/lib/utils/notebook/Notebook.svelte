@@ -1,49 +1,49 @@
 <script>
     import { setContext } from 'svelte';
-    import { writable } from 'svelte/store';
 
-    /** @prop @type {boolean} Should this notebook be flush within its container? */
-    export let flush = false;
-    /** @prop @type {any} Arbitrary data associated with this notebook */
-    export const data = {};
+    let {
+        /** @prop @type {function} Function to execute when the page is changed */
+        onselect=(index, data) => {},
+        /** @prop @type {boolean} Should this notebook be flush within its container? */
+        flush=false,
+        /** @interface @type {Array<HTMLElement>} Child elements of this notebook */
+        children
+    } = $props()
 
-    /** @public @type {import("svelte/store").Writable<HTMLButtonElement|undefined>} The current tab's handle, store can be supplied or bound */
-    export let activeTab = writable()
-    setContext("activeTab", activeTab)
-    /** @public @type {import("svelte/store").Writable<Array<HTMLButtonElement|undefined>>} This notebook's tab elements, array can be supplied or bound */
-    export let tabs = writable([])
-    setContext("tabs", tabs)
-    /** @public @type {Array<object>} Arbitrary data to associated with each tab, array can be supplied or bound */
-    export let tabData = [];
-    setContext("tabData", tabData)
-    /** @public @type {{notebook: HTMLButtonElement|undefined}} Handles of the HTML elements corresponding to this component, object can be supplied or bound */
-    export const handles = {
-        notebook: undefined, 
-    };
+    let pages = $state({
+        current: undefined,
+        all: [],
+        data: []
+    })
+
+    setContext("siblings", pages)
+    $effect(() => {
+        onselect(pages.current, pages.data[pages.current])
+    })
 
 </script>
 
 <div 
-    class=notebook 
-    style:--n-tabs={$tabs.length} 
+    class=notebook
     class:flush={flush}
+    style:grid-template-columns="repeat({pages.all.length}, min-content) 1fr"
 >
-    <slot></slot>
+    {@render children?.()}
+    <div class=notebook-tab-filler></div>
 </div>
 
 <style>
     .notebook {
         display: grid;
-        grid-template-rows: [tabs] min-content [page] 1fr;
-        grid-template-columns: repeat(var(--n-tabs), min-content) 1fr;
-        z-index: 1;
+        grid-template-rows: [tabs] max-content [pages] auto;
+        gap: 0;
+        justify-items: start;
+        align-items: stretch;
         margin: auto;
-        padding: 1rem;
-        box-sizing: border-box;
-        position: relative;
-        height: stretch;
-        width: fit-content;
-        max-height: 100%;
+        padding: 2rem;
+    }
+    .notebook-tab-filler {
+        grid-row-start: tabs;
     }
     .notebook.flush {
         width: 100%;

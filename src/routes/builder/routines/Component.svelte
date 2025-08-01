@@ -1,7 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { experiment } from '../globals.js';
     import { dragging, hoveredComponent } from './globals.js';
+    import { current, actions } from "../globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from "../../dialogs/component/Dialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
@@ -32,12 +32,9 @@
 
     let showDialog = $state(false);
 
-    let current = getContext("current")
-    let history = getContext("history")
-
     function removeComponent() {
         // update history
-        history.update();
+        actions.update();
         // remove from Routine
         routine.removeComponent(component);
     }
@@ -52,7 +49,7 @@
     for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
     draggable="true" 
-    ondragstart={() => current.dragging = component.index} 
+    ondragstart={() => dragging.set(component.index)} 
     ondragend={() => dragging.set(null)} 
     onclick={() => {showDialog = true}}
     onmouseenter={() => hoveredComponent.set(component.name)}
@@ -120,7 +117,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/{$theme}/btn-delete.svg"
+        icon="/icons/{theme}/btn-delete.svg"
         label="Delete Component"
         onclick={removeComponent}
     />

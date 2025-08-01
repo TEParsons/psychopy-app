@@ -1,10 +1,10 @@
 <script>
-    import { writable } from 'svelte/store';
     import { theme } from "$lib/globals.svelte.js";
-    import { experiment, currentRoutine } from '../globals.js';
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
+    import { current } from "../globals.svelte.js"
     import Dialog from '../../dialogs/component/Dialog.svelte';
     import { Button } from '$lib/utils/buttons';
+    import { getContext } from 'svelte';
 
     let {
         component
@@ -38,7 +38,7 @@
     label={titleCase(component['__name__'])}
     icon="/icons/{theme}/components/{component['__name__']}.svg"
     vertical
-    disabled={!($currentRoutine instanceof Routine)}
+    disabled={!(current.routine instanceof Routine)}
     onclick={newComponent}
 ></Button>
 <Dialog 

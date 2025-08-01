@@ -1,5 +1,5 @@
 <script>
-    import { theme } from "$lib/globals";
+    import { theme } from "$lib/globals.svelte.js";
     import { writable } from "svelte/store";
     import { Button, TextInput } from "./elements";
     export let param;
@@ -26,7 +26,7 @@
         bind:isValid={isValid}
         on:input={validate}
     />
-    <Button icon="/icons/{$theme}/btn-open.svg" on:click={getFile}/>
+    <Button icon="/icons/{theme}/btn-open.svg" on:click={getFile}/>
 </div>
 
 <style>
