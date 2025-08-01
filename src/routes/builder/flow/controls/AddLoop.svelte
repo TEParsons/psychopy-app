@@ -1,7 +1,6 @@
 <script>
     import { LoopInitiator } from '$lib/experiment.svelte.js';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-    import { inserting } from '../globals.js';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
     import { current, actions } from '../../globals.svelte.js';

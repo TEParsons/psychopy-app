@@ -1,6 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    
+    import Dialog from '$lib/utils/dialog/Dialog.svelte';
+    import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { FlowLoop } from "$lib/experiment.svelte.js";
     import Loop from "./Loop.svelte"
     import RoutineNode from './Routine.svelte';
@@ -9,6 +10,9 @@
     let {
         element=undefined
     } = $props()
+
+    let showDialog = $state(false);
+    let notebook;
 </script>
 
 {#if element.complete}
@@ -16,7 +20,13 @@
 {/if}
 <div class=loop class:incomplete={!element.complete}>
     {#if element}
-        <span>{element.name}</span>
+        <button
+            class=loop-name
+            onclick={(evt) => showDialog = true}
+        >
+            {element.name}
+        </button>
+        
     {/if}
     <img class=loop-arrow src="/icons/{theme}/sym-arrow-up.svg" alt="<"/>
     {#if element}
@@ -33,6 +43,22 @@
     {/if}
 </div>
 
+<Dialog 
+    id="loop-{element.name}" 
+    title={element.name}
+    bind:shown={showDialog} 
+    buttons={{
+        OK: () => notebook.applyChanges(), 
+        APPLY: () => notebook.applyChanges(), 
+        CANCEL: () => notebook.discardChanges(), 
+    }}
+>
+    <ParamsNotebook 
+        element={element} 
+        bind:this={notebook}
+    />
+</Dialog>
+
 <style>
     .loop {
         position: relative;
@@ -45,7 +71,7 @@
         padding: 2rem 1rem;
         padding-top: 0;
     }
-    .loop span {
+    .loop .loop-name {
         position: absolute;
         line-height: 1rem;
         bottom: 0;
@@ -59,7 +85,7 @@
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
         ;
     }
-    .loop span:hover {
+    .loop .loop-name:hover {
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.25)
         ;
@@ -78,7 +104,7 @@
         border-bottom: none;
         padding: 4rem 1rem;
     }
-    .loop.incomplete span {
+    .loop.incomplete .loop-name {
         left: 0;
         bottom: 50%;
     }
