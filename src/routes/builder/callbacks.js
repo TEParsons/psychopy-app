@@ -33,7 +33,12 @@ export async function file_open() {
     let document = xml_parser.parseFromString(await file.text(), "application/xml");
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment = Experiment.fromXML(file.name, node)
+    current.experiment = Experiment.fromXML(file.name, node);
+    if (current.experiment.routines) {
+        current.routine = Object.values(current.experiment.routines)[0];
+    } else {
+        current.routine = undefined;
+    }
     // mark as no longer modified
     actions.clear()
 

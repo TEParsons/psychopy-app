@@ -165,10 +165,7 @@ export class Experiment {
             }
             routine.exp = exp;
             // parse and append node
-            exp.routines.set(
-                routineNode.getAttribute("name"),
-                routine
-            )
+            exp.routines[routineNode.getAttribute("name")] = routine
         }
         // get flow
         let flowNode = node.getElementsByTagName("Flow")[0];
@@ -184,16 +181,16 @@ export class Experiment {
                 element = LoopInitiator.fromXML(elementNode)
                 element.exp = exp;
                 // store in loops array
-                exp.loops.set(element.name, element)
+                exp.loops[element.name] = element
             } else if (elementNode.nodeName === "LoopTerminator") {
                 // create and use a terminator object
                 element = LoopTerminator.fromXML(elementNode)
                 element.exp = exp;
                 // store reference in initiator
-                exp.loops.get(element.name).terminator = element
+                exp.loops[element.name].terminator = element
             } else {
                 // get from routines
-                element = exp.routines.get(elementNode.getAttribute("name"))
+                element = exp.routines[elementNode.getAttribute("name")]
             }
             // append node
             exp.flow.flat.push(element)
@@ -635,7 +632,7 @@ export class Component extends HasParams {
                     true, "true", "True", // alias of true
                     "any click", "correct click", "valid click", // mouse
                     "look at", "look away", // roi
-                ].includes(this.params['attr'].val)) {
+                ].includes(this.params[attr].val)) {
                     force_end = true;
                 }
             }
@@ -689,7 +686,6 @@ export class Component extends HasParams {
         // create from template
         let comp = Component.fromTemplate(tag);
         // populate info
-        comp.name = node.getAttribute("name")
         comp.plugin = node.getAttribute("plugin") || comp.plugin
         // populate params
         for (let paramNode of node.getElementsByTagName("Param")) {
@@ -1271,7 +1267,7 @@ export class LoopInitiator extends HasParams {
         node.setAttribute("loopType", this.loopType);
         node.setAttribute("name", this.name);
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.appendChild(
                 param.toXML()
             )
@@ -1285,23 +1281,21 @@ export class LoopInitiator extends HasParams {
         let initiator = LoopInitiator.fromTemplate(
             node.getAttribute("loopType")
         )
-        // populate info
-        initiator.name = node.getAttribute("name")
         // populate params
         for (let paramNode of node.getElementsByTagName("Param")) {
             // get param name
             let name = paramNode.getAttribute("name")
             // get param template (from comp or a new template)
             let paramTemplate;
-            if (initiator.params.has(name)) {
-                paramTemplate = initiator.params.get(name)
+            if (name in initiator.params) {
+                paramTemplate = initiator.params[name]
             } else {
                 paramTemplate = Param.fromTemplate(initiator.loopType, name)
             }
             // create param from xml
             let param = Param.fromXML(paramNode, paramTemplate)
             // store param
-            initiator.params.set(name, param)
+            initiator.params[name] = param
         }
 
         return initiator
