@@ -32,7 +32,7 @@
 
 </script>
 
-<dialog id={id} bind:this={handle} onclose={() => {shown = false}}>
+<dialog id={id} bind:this={handle} onclose={onclose}>
     <div class="title">
         <label for={id}>{title}</label>
         <div class=gap></div>

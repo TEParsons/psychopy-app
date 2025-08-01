@@ -1311,7 +1311,7 @@ export class LoopInitiator extends HasParams {
         initiator.plugin = profile.plugin;
         // populate params
         for (let key in profile.params) {
-            initiator.params['key'] = Param.fromTemplate(tag, key);
+            initiator.params[key] = Param.fromTemplate(tag, key);
         }
 
         return initiator

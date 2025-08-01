@@ -13,15 +13,15 @@
     )
 
     function insertLoopInitiator(evt) {
-        // update history
-        actions.update()
         // apply temporary params to loop
         notebook.applyChanges()
+        // update history
+        actions.update()
         // add to experiment
         element.exp = current.experiment
-        current.experiment.routines[element.name] = element
+        current.experiment.loops[element.name] = element
         // prepare to insert the new Routine into the Flow
-        inserting.set(element)
+        current.inserting = element;
     }
 
     function discardChanges(evt) {
@@ -57,8 +57,8 @@
         CANCEL: discardChanges, 
     }}
 >
-    <ParamsNotebook element={element} bind:this={notebook}/>
+    <ParamsNotebook 
+        element={element} 
+        bind:this={notebook}
+    />
 </Dialog>
-
-<style>
-</style>

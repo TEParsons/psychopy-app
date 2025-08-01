@@ -9,14 +9,6 @@
     
     let notebook;
 
-    function insertRoutine(evt) {
-        // update history
-        actions.update()
-        // add to experiment
-        current.inserting.exp = current.experiment
-        current.experiment.routines[current.inserting.name] = current.inserting
-    }
-
     let showNewRoutineDialog = $state(false)
     let showMenu = $state(false)
 
@@ -69,12 +61,28 @@
     title="New Routine" 
     bind:shown={showNewRoutineDialog} 
     buttons={{
-        OK: insertRoutine, 
-        CANCEL: () => current.inserting = undefined, 
+        OK: () => {
+            // apply changes
+            notebook.discardChanges()
+            // update history
+            actions.update()
+            // add to experiment
+            current.inserting.exp = current.experiment
+            current.experiment.routines[current.inserting.name] = current.inserting
+        }, 
+        CANCEL: () => {
+            // discard changes
+            notebook.discardChanges()
+            // stop inserting
+            current.inserting = undefined;
+        }, 
     }}
 >
-    {#if current.inserting}
-        <ParamsNotebook element={current.inserting.settings} bind:this={notebook} />
+    {#if current.inserting instanceof Routine }
+        <ParamsNotebook 
+            element={current.inserting.settings} 
+            bind:this={notebook} 
+        />
     {/if}
 </Dialog>
 
