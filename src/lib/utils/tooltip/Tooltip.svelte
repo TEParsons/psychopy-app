@@ -24,7 +24,7 @@
             "right": "auto auto auto calc(100% + .5rem)",
         }[position]}
     >
-        {@render children()}
+        {@render children?.()}
     </div>
 {/if}
 

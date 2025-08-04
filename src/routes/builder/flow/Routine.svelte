@@ -56,7 +56,11 @@
             bind:shown={showTooltip}
             position="bottom"
         >
-            {element.settings.params['desc'].val}
+            {#if element.settings.params['desc'].val.length > 64}
+                {element.settings.params['desc'].val.slice(0, 64)}...
+            {:else}
+                {element.settings.params['desc'].val}
+            {/if}
         </Tooltip>
     {/if}
     {element.name}
