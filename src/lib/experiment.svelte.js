@@ -794,7 +794,7 @@ export class StandaloneRoutine extends HasParams {
         routine.plugin = node.plugin;
         // populate components
         for (let [name, paramNode] of [...Object.entries(node.params)]) {
-            routine.params.set(name, Param.fromJSON(paramNode))
+            routine.params[name] = Param.fromJSON(paramNode)
         }
 
         return routine
@@ -808,7 +808,7 @@ export class StandaloneRoutine extends HasParams {
         node.setAttribute("name", this.name);
         node.setAttribute("plugin", this.plugin);
         // add params
-        for (let [name, param] of [...this.params]) {
+        for (let [name, param] of Object.entries(this.params)) {
             node.appendChild(
                 param.toXML()
             )

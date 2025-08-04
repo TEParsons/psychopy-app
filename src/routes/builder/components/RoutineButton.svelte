@@ -3,7 +3,7 @@
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
-    
+
     let current = getContext("current");
     let actions = getContext("actions");
 
@@ -25,6 +25,7 @@
         actions.update()
         // create a new StandaloneRoutine
         let rt = StandaloneRoutine.fromTemplate(component['__name__'])
+        rt.exp = current.experiment;
         // add it to the experiment
         current.experiment.routines[rt.name] = rt
         // navigate to it

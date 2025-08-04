@@ -42,5 +42,15 @@
         HELP: component.helpLink,
     }}
 >
-    <ParamsNotebook bind:this={notebook} element={component}></ParamsNotebook>
+    <div class=component-canvas>
+        <ParamsNotebook bind:this={notebook} element={component}></ParamsNotebook>
+    </div>
 </Dialog>
+
+<style>
+    .component-canvas {
+        padding: 1rem;
+        height: 100%;
+        box-sizing: border-box;
+    }
+</style>

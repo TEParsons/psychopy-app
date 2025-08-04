@@ -25,7 +25,6 @@
 
 <div 
     class=notebook
-    class:flush={flush}
     style:grid-template-columns="repeat({pages.all.length}, min-content) 1fr"
 >
     {@render children?.()}
@@ -40,15 +39,9 @@
         justify-items: start;
         align-items: stretch;
         margin: auto;
-        padding: 2rem;
+        height: 100%;
     }
     .notebook-tab-filler {
         grid-row-start: tabs;
-    }
-    .notebook.flush {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
     }
 </style>

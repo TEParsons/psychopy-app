@@ -3,7 +3,11 @@
     import { Button } from '$lib/utils/buttons';
     import { getContext } from 'svelte';
 
-    export let component;
+    let actions = getContext("actions");
+
+    let {
+        component
+    } = $props();
 
     let notebook;
     
@@ -12,11 +16,10 @@
         notebook.discardChanges(evt)
     }
 
-    let history = getContext("history")
 
     function applyChanges(evt) {
         // update history
-        history.update();
+        actions.update();
         // apply temporary params to component
         notebook.applyChanges(evt)
     }
@@ -27,9 +30,40 @@
         bind:this={notebook}
         element={component}
     ></ParamsNotebook>
-    <Button
-        label=Apply
-        horizontal
-        onclick={applyChanges} 
-    ></Button>
+    <div class=standalone-routine-ctrls>
+        <div class=ctrl-gap></div>
+        <Button
+            label=Apply
+            primary
+            horizontal
+            onclick={applyChanges} 
+        ></Button>
+        <Button
+            label=Discard
+            horizontal
+            onclick={discardChanges} 
+        ></Button>
+    </div>
 </div>
+
+<style>
+    .standalone-routine-canvas {
+        display: grid;
+        gap: 1rem;
+        grid-template-rows: [canvas] 1fr [ctrls] min-content;
+        justify-content: center;
+        padding: 1rem;
+        height: 100%;
+        box-sizing: border-box;
+    }
+    .standalone-routine-ctrls {
+        display: flex;
+        flex-direction: row;
+        grid-row-start: ctrls;
+        gap: 1rem;
+        align-items: end;
+    }
+    .ctrl-gap {
+        flex-grow: 1;
+    }
+</style>
