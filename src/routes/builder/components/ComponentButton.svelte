@@ -49,14 +49,14 @@
 
 <Dialog 
     id=new-loop 
-    title="New loop"
+    title="New {titleCase(component['__name__'])}"
     bind:shown={showDialog} 
     buttons={{
         OK: (evt) => {
             // apply changes to params
             notebook.applyChanges(evt)
             // add loop to experiment
-            current.routine.addComponent(dlgComponent)
+            current.inserting = dlgComponent;
         }, 
         CANCEL: () => notebook.discardChanges(), 
         HELP: dlgComponent.helpLink,

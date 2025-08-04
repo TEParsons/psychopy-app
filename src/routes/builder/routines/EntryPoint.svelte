@@ -11,34 +11,61 @@
         index
     } = $props()
 
-    function on_drop(evt) {
+    let hovered = $state(false);
+    let moving = $derived(
+        current.moving && [
+            Component
+        ].includes(current.moving.constructor)
+    )
+    let inserting = $derived(
+        current.inserting && [
+            Component
+        ].includes(current.inserting.constructor)
+    )
+
+    function insertHere(evt) {
         evt.preventDefault();
-        // make sure it's a valid element
-        if (current.moving === undefined) {
-            return;
-        }
         // update history
         actions.update();
-        // move dragged component to new position in the routine
-        routine.relocateComponent(current.moving.index, index)
-        // we're done dragging
+        // if moving, relocate to here
+        if (current.moving) {
+            // move component
+            routine.relocateComponent(current.moving.index, index);
+            // we're done moving
+            current.moving = undefined;
+        }
+        // if inserting, insert here
+        if (current.inserting) {
+            // insert
+            routine.insertComponent(current.inserting, index);
+            // we're done inserting
+            current.inserting = undefined;
+        }
+        // remove hover flag
         hovered = false;
-        current.moving = undefined;
     }
-
-    let hovered = $state(false);
 
 </script>
 
-<div class="entry-point" class:active={current.moving instanceof Component} class:hovered={hovered}>
+<div 
+    class="entry-point" 
+    class:active={moving || inserting} 
+    class:hovered={hovered}
+>
     <img src="icons/{theme}/sym-arrow-right{hovered ? "-hl" : ""}.svg" alt=">" />
     <button 
         class="hitbox" 
         ondragenter={(evt) => {hovered = true}} 
         ondragover={(evt) => {evt.preventDefault()}} 
         ondragleave={(evt) => {hovered = false}} 
-        ondrop={on_drop} 
+        onmouseenter={(evt) => {hovered = true}} 
+        onmouseleave={(evt) => {hovered = false}} 
+        onfocusin={(evt) => {hovered = true}}
+        onfocusout={(evt) => {hovered = false}} 
+        ondrop={insertHere} 
+        onclick={insertHere}
         aria-label="Entry point"
+        tabindex={moving || inserting ? 0 : -1}
     >
     </button>
 </div>

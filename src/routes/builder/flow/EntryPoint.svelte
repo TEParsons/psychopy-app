@@ -1,5 +1,5 @@
 <script>
-    import { LoopInitiator, LoopTerminator, Routine } from '$lib/experiment.svelte.js';
+    import { LoopInitiator, LoopTerminator, Routine, StandaloneRoutine } from '$lib/experiment.svelte.js';
     import { getContext } from "svelte";
     
     let current = getContext("current");
@@ -9,7 +9,24 @@
         index=undefined
     } = $props()
 
-    let hovered = $state(false)
+    let hovered = $state(false);
+
+    let moving = $derived(
+        current.moving && [
+            Routine, 
+            StandaloneRoutine, 
+            LoopInitiator, 
+            LoopTerminator
+        ].includes(current.moving.constructor)
+    )
+    let inserting = $derived(
+        current.inserting && [
+            Routine, 
+            StandaloneRoutine, 
+            LoopInitiator, 
+            LoopTerminator
+        ].includes(current.inserting.constructor)
+    )
 
     function insertHere(evt) {
         // update history
@@ -54,17 +71,22 @@
 
 <div 
     class="entry-point" 
-    class:active={current.moving || current.inserting} 
+    class:active={moving || inserting} 
     class:hovered={hovered}
 >
     <button 
         class="hitbox" 
-        ondragenter={(evt) => evt.preventDefault()} 
+        ondragenter={(evt) => hovered = true} 
         ondragover={(evt) => evt.preventDefault()} 
-        ondragleave={() => hovered=false} 
+        ondragleave={(evt) => hovered = false} 
+        onmouseenter={(evt) => {hovered = true}} 
+        onmouseleave={(evt) => {hovered = false}} 
+        onfocusin={(evt) => {hovered = true}}
+        onfocusout={(evt) => {hovered = false}} 
         ondrop={insertHere} 
         onclick={insertHere}
         aria-label="Entry point"
+        tabindex={moving || inserting ? 0 : -1}
     >
     </button>
 </div>
@@ -84,9 +106,7 @@
     .entry-point.active {
         opacity: 1;
     }
-    .entry-point.active:hover,
-    .entry-point.active:focus-within,
-    .entry-point.hovered {
+    .entry-point.active.hovered {
         opacity: 1;
         background-color: var(--red);
     }

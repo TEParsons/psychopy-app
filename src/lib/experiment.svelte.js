@@ -297,6 +297,21 @@ export class Routine {
         comp.routine = this;
     }
 
+    insertComponent(comp, index) {
+        // convert index to int
+        index = parseInt(index)
+        // if toIndex was -1, move to end
+        if (index < 0) {
+            index = this.components.length;
+        }
+        // insert
+        this.components.splice(
+            index, 0, comp
+        )
+        // add reference to self
+        comp.routine = this;
+    }
+
     removeComponent(comp) {
         // remove from Components array
         let i = this.components.indexOf(comp)
@@ -952,15 +967,12 @@ export class Flow {
             toIndex = this.flat.length;
         }
         // pop element from flat array
-        this.flat = Array.prototype.concat(
-            this.flat.slice(0, fromIndex),
-            this.flat.slice(fromIndex+1)
+        this.flat.splice(
+            fromIndex, 1
         )
         // insert back in at new position
-        this.flat = Array.prototype.concat(
-            this.flat.slice(0, toIndex),
-            element,
-            this.flat.slice(toIndex),
+        this.flat.splice(
+            toIndex, 0, element
         )
     }
 
@@ -972,10 +984,8 @@ export class Flow {
             index = this.flat.length;
         }
         // insert
-        this.flat = Array.prototype.concat(
-            this.flat.slice(0, index),
-            element,
-            this.flat.slice(index),
+        this.flat.splice(
+            index, 0, element
         )
         // update dynamic array
         this.dynamicize();
