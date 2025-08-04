@@ -2,8 +2,11 @@
     import EntryPoint from './EntryPoint.svelte'   
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import { theme } from '$lib/globals.svelte.js';
-    import { current, actions } from '../globals.svelte.js';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
+    let actions = getContext("actions");
 
     let {
         element

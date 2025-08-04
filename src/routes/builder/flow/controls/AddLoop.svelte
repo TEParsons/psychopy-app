@@ -3,8 +3,10 @@
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
-    import { current, actions } from '../../globals.svelte.js';
+    import { getContext } from "svelte";
     
+    let current = getContext("current");
+    let actions = getContext("actions");    
     let notebook;
 
     let element = $state(

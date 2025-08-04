@@ -1,10 +1,11 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
-    import { current } from "../globals.svelte.js"
     import Dialog from '../../dialogs/component/Dialog.svelte';
     import { Button } from '$lib/utils/buttons';
-    import { getContext } from 'svelte';
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
 
     let {
         component

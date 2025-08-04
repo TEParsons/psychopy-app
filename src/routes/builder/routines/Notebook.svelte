@@ -1,9 +1,11 @@
 <script>
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
-    import { current } from '../globals.svelte.js';
     import { StandaloneRoutine, Routine } from '$lib/experiment.svelte.js';
     import { Notebook, NotebookPage } from '$lib/utils/notebook';
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
 
 </script>
 

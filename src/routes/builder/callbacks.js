@@ -1,6 +1,5 @@
 import { current, actions } from './globals.svelte.js';
 import { Experiment } from "$lib/experiment.svelte.js";
-import { writable, get } from 'svelte/store';
 import xmlFormat from 'xml-formatter';
 
 

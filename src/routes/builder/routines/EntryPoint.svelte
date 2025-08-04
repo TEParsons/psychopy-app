@@ -1,7 +1,10 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { current, actions } from "../globals.svelte.js";
-
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
+    let actions = getContext("actions");
+    
     let {
         routine,
         index

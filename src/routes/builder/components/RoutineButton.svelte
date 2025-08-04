@@ -2,7 +2,10 @@
     import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
-    import { current, actions } from "../globals.svelte.js";
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
+    let actions = getContext("actions");
 
     let {
         component

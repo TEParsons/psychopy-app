@@ -1,8 +1,9 @@
 <script>
     import { theme } from "$lib/globals.svelte.js"
-    import { current, actions } from './globals.svelte.js';
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
+    import Dialog from '../dialogs/component/Dialog.svelte';
     import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
+    import { getContext } from "svelte";
 
     import {
         // file
@@ -21,7 +22,8 @@
         new_runner_frame,
     } from './callbacks.js'
 
-    import Dialog from '../dialogs/component/Dialog.svelte';
+    let current = getContext("current");
+    let actions = getContext("actions");
 
     let showMenu = $state(false);
 

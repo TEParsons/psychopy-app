@@ -1,12 +1,13 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import { dragging, hoveredComponent } from './globals.js';
-    import { current, actions } from "../globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import Dialog from "../../dialogs/component/Dialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { getContext } from "svelte";
+    
+    let actions = getContext("actions");
 
     let {
         component,

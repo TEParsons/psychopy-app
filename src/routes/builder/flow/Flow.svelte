@@ -1,11 +1,12 @@
 <script>
-    import { current } from '../globals.svelte.js';
     import { FlowLoop } from "$lib/experiment.svelte.js";
-    import Flow from './Flow.svelte';
     import LoopNode from './Loop.svelte';
     import RoutineNode from './Routine.svelte';
     import { theme } from "$lib/globals.svelte.js";
-    import EntryPoint from './EntryPoint.svelte'
+    import EntryPoint from './EntryPoint.svelte';
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
 
 </script>
 

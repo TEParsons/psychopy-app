@@ -1,8 +1,11 @@
 <script>
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
-    import { current, actions } from '../../builder/globals.svelte.js';
-
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
+    let actions = getContext("actions");
+    
     let {
         component,
         shown=$bindable()

@@ -7,7 +7,10 @@
     import Loop from "./Loop.svelte"
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte'
-    import { current, actions } from "../globals.svelte.js";
+    import { getContext } from "svelte";
+    
+    let current = getContext("current");
+    let actions = getContext("actions");
 
     let {
         element=undefined
