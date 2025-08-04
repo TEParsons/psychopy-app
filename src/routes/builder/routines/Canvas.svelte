@@ -35,9 +35,9 @@
         title="Editing: {routine.settings.name}"
         bind:shown={showDialog} 
         buttons={{
-            OK: () => notebook.applyChanges(), 
-            APPLY: () => notebook.applyChanges(), 
-            CANCEL: () => notebook.discardChanges(), 
+            OK: () => settingsNotebook.applyChanges(), 
+            APPLY: () => settingsNotebook.applyChanges(), 
+            CANCEL: () => settingsNotebook.discardChanges(), 
             HELP: routine.settings.helpLink,
         }}
     >
