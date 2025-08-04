@@ -18,8 +18,8 @@
             <img class=flowline-arrow src="/icons/{theme}/sym-arrow-right.svg" alt="<"/>
         </div>
         {#if current.experiment}
-            {#each current.experiment.flow.dynamic as emt, index (emt)}
-            <div class=flow-animation animate:flip>
+            {#each current.experiment.flow.dynamic as emt}
+            <div class=flow-animation>
                 {#if emt instanceof FlowLoop}
                     <LoopNode element={emt}></LoopNode>
                 {:else}
