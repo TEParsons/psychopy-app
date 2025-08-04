@@ -4,7 +4,7 @@
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from '../../dialogs/component/Dialog.svelte';
+    import Dialog from '../../dialogs/ComponentDialog.svelte';
 
     let {
         routine=undefined

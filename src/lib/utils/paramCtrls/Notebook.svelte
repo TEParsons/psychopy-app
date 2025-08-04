@@ -8,7 +8,7 @@
     let {
         element,
     } = $props();
-    console.log(element, element.tag)
+
     let temp = $state(new HasParams(element.tag));
 
     export function discardChanges(evt) {

@@ -1,7 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js"
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
-    import Dialog from '../dialogs/component/Dialog.svelte';
+    import Dialog from '../dialogs/ComponentDialog.svelte';
     import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
 

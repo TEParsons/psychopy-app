@@ -2,7 +2,7 @@
     import { theme } from "$lib/globals.svelte.js";
     import { dragging, hoveredComponent } from './globals.js';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from "../../dialogs/component/Dialog.svelte";
+    import Dialog from "../../dialogs/ComponentDialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { getContext } from "svelte";

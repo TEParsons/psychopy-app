@@ -1,7 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
-    import Dialog from '../../dialogs/component/Dialog.svelte';
+    import Dialog from '../../dialogs/ComponentDialog.svelte';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     
