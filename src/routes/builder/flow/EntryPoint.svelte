@@ -25,7 +25,7 @@
         if (current.inserting) {
             // if inserting a terminator, make sure it's after the initiator
             if (current.inserting instanceof LoopTerminator) {
-                if (index < current.inserting.initiator.index) {
+                if (0 < index < current.inserting.initiator.index) {
                     // get index of initiator
                     let ogIndex = $state.snapshot(current.inserting.initiator.index)
                     // move initiator to requested index
