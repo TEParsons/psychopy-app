@@ -75,6 +75,7 @@ body {
 
 * {
     font-family: var(--body);
+    transition: border-color .2s, box-shadow .2s;
 }
 
 select, 
@@ -88,9 +89,6 @@ textarea {
     padding-right: 1rem;
     background-color: var(--base);
     border-radius: .25rem;
-}
-input{
-    transition: border-color .2s, box-shadow .2s;
 }
 input:enabled:active, 
 input:enabled:focus {

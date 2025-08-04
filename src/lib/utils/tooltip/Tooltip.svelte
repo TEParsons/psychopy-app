@@ -18,8 +18,8 @@
         class=tooltip
         transition:slide={{axis: "x", delay: delay}}
         style:inset={{
-            "top": "auto auto calc(100% + .5rem) auto",
-            "bottom": "calc(100% + .5rem) auto auto auto",
+            "top": "auto auto calc(100% + .5rem) 0",
+            "bottom": "calc(100% + .5rem) auto auto 0",
             "left": "auto calc(100% + .5rem) auto auto",
             "right": "auto auto auto calc(100% + .5rem)",
         }[position]}

@@ -84,36 +84,6 @@
 </Dialog>
 {/if}
 
-<Dialog 
-    id=new-routine 
-    title="New Routine" 
-    bind:shown={showNewRoutineDialog} 
-    buttons={{
-        OK: () => {
-            // apply changes
-            notebook.applyChanges()
-            // update history
-            actions.update()
-            // add to experiment
-            current.inserting.exp = current.experiment
-            current.experiment.routines[current.inserting.name] = current.inserting
-        }, 
-        CANCEL: () => {
-            // discard changes
-            notebook.discardChanges()
-            // stop inserting
-            current.inserting = undefined;
-        }, 
-    }}
->
-    {#if current.inserting instanceof Routine }
-        <ParamsNotebook 
-            element={current.inserting.settings} 
-            bind:this={notebook} 
-        />
-    {/if}
-</Dialog>
-
 
 <style>
     .container {

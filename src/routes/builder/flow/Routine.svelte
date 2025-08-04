@@ -18,6 +18,8 @@
         y: undefined
     });
 
+    let showTooltip = $state(false);
+
     function removeRoutine(evt) {
         // update history
         actions.update();
@@ -31,6 +33,10 @@
 <button 
     class=routine 
     draggable=true
+    onmouseenter={() => {showTooltip = true}}
+    onmouseleave={() => {showTooltip = false}}
+    onfocusin={() => {showTooltip = true}}
+    onfocusout={() => {showTooltip = false}}
     ondragstart={() => current.moving = element} 
     ondragend={() => current.moving = undefined} 
     onclick={() => current.routine = element}
@@ -44,23 +50,27 @@
         contextMenuPos.y = evt.pageY;
     }}
 >
-{#if element.settings && "desc" in element.settings.params && element.settings.params['desc'].val}
-<Tooltip>
-    {element.settings.params.get('desc').val}
-</Tooltip>
-{/if}
-{element.name}
-<!-- context menu -->
-<Menu 
-    bind:shown={showContextMenu} 
-    bind:position={contextMenuPos}
->
-    <MenuItem 
-        icon="/icons/{theme}/btn-delete.svg"
-        label="Remove"
-        onclick={removeRoutine}
-    />
-</Menu>
+    <!-- tooltip -->
+    {#if element.settings && "desc" in element.settings.params && element.settings.params['desc'].val}
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom"
+        >
+            {element.settings.params['desc'].val}
+        </Tooltip>
+    {/if}
+    {element.name}
+    <!-- context menu -->
+    <Menu 
+        bind:shown={showContextMenu} 
+        bind:position={contextMenuPos}
+    >
+        <MenuItem 
+            icon="/icons/{theme}/btn-delete.svg"
+            label="Remove"
+            onclick={removeRoutine}
+        />
+    </Menu>
 </button>
 
 <style>
@@ -69,20 +79,17 @@
         background-color: var(--blue);
         color: var(--text-on-blue);
         padding: 1rem;
-        line-height: 1rem;
         border-radius: 1rem;
-        margin-top: -1.5rem;
         box-shadow: 
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
         ;
-        border: 2px solid var(--blue);
+        border: 1px solid var(--blue);
+        transform: translateY(-50%);
     }
     .routine:focus,
     .routine:hover {
-        box-shadow: 
-                                inset 1px 1px 10px rgba(0, 0, 0, 0.1)
-        ;
-        border-color: var(--crust);
+        box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.1);
+        border-color: var(--outline);
     }
     .active {
         font-weight: bold;

@@ -140,6 +140,7 @@
         padding: .5rem 1rem;
         background-color: var(--outline);
         color: var(--text-on-outline);
+        border: 1px solid var(--outline);
         border-radius: 1rem;
         box-shadow: 
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
@@ -150,6 +151,7 @@
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.25)
         ;
+        border-color: var(--blue);
     }
     .loop-arrow {
         width: .75rem;
