@@ -112,7 +112,9 @@
     }}
 >
     <ParamsNotebook 
-        element={element} 
+        element={
+            element instanceof FlowLoop ? element.initiator : element
+        } 
         bind:this={notebook}
     />
 </Dialog>

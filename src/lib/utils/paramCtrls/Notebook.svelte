@@ -8,8 +8,8 @@
     let {
         element,
     } = $props();
-
-    let temp = $state(new HasParams());
+    console.log(element, element.tag)
+    let temp = $state(new HasParams(element.tag));
 
     export function discardChanges(evt) {
         // reset temp params from component to discard any live changes

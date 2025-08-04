@@ -10,7 +10,7 @@
     let notebook;
 
     let element = $state(
-        LoopInitiator.fromTemplate("TrialHandler")
+        new LoopInitiator("TrialHandler")
     )
 
     function insertLoopInitiator(evt) {
@@ -43,7 +43,7 @@
     horizontal 
     onclick={() => {
         // create blank Loop
-        element = LoopInitiator.fromTemplate("TrialHandler")
+        element = new LoopInitiator("TrialHandler")
         // show dialog
         showDialog = true
     }}

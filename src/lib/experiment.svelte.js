@@ -306,7 +306,7 @@ export class Routine {
         this.tag = "Routine";
         this.exp = undefined;
         // placeholder settings
-        this.settings = Component.fromTemplate("RoutineSettingsComponent");
+        this.settings = new Component("RoutineSettingsComponent");
     }
 
     get name() {
@@ -460,8 +460,140 @@ export class Routine {
 }
 
 
+export class Param {
+
+    val = $state();
+    updates = $state();
+
+    // attributes which are saved to XML/JSON
+    saveAttrs = [
+        "name", 
+        "val", 
+        "valType", 
+        "updates", 
+        "plugin"
+    ];
+
+    constructor(name) {
+        this.name = name;
+        this.categ = undefined;
+        this.allowedVals = undefined;
+        this.valType = undefined;
+        this.inputType = undefined;
+        this.allowedUpdates = undefined;
+        this.label = undefined;
+        this.hint = undefined;
+        this.plugin = undefined;
+    }
+
+    /**
+     * @returns {HTMLElement} This Param as an XML node
+     */
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement("Param");
+        // populate node
+        for (let key of this.saveAttrs) {
+            node.setAttribute(key, this[key]);
+        }
+
+        return node
+    }
+
+    /**
+     * Set this Param's values from a JSON object
+     * 
+     * @param {HTMLElement} node This Param as an XML node
+     */
+    fromXML(node) {
+        // populate
+        for (let key of this.saveAttrs) {
+            // set from XML if possible
+            this[key] = node.getAttribute(key) || this[key]
+        }
+    }
+
+    /**
+     * @returns {object} This Param as a JSON object
+     */
+    toJSON() {
+        // create node
+        let node = {}
+        // populate node
+        for (let key of this.saveAttrs) {
+            node[key] = this[key]
+        }
+
+        return node
+    }
+
+    /**
+     * Set this Param's values from a JSON object
+     * 
+     * @param {object} node This Param as a JSON object
+     */
+    fromJSON(node) {
+        // populate
+        for (let key of this.saveAttrs) {
+            // set from JSON if possible
+            this[key] = node[key] || this[key]
+        }
+    }
+
+    /**
+     * @param {String} name Name of the param to create
+     * 
+     * @returns {Param} An unknown param
+     */
+    static makeUnknown(name) {
+        // make param
+        let param = new Param(name);
+        // populate with standard unknown loadout
+        Object.apply(param, {
+            val: undefined,
+            categ: "Unknown",
+            allowedVals: undefined,
+            valType: undefined,
+            inputType: "inv",
+            updates: undefined,
+            allowedUpdates: undefined,
+            label: name,
+            hint: "Parameter not recognised",
+            plugin: undefined
+        })
+
+        return param
+    }
+
+    copy() {
+        // create new param
+        let dupe = new Param(this.name)
+        // set attributes
+        for (let key of Object.keys(this)) {
+            dupe[key] = this[key]
+        }
+
+        return dupe
+    }
+}
+
+
 export class HasParams {
-    params = $state({})
+
+    /** @attribute @type {String} Tag describing what kind of element this is (e.g. ImageComponent) */
+    tag = undefined;
+
+    /** @attribute @type {String|undefined} Name of the plugin (if any) which this element comes from */
+    plugin = undefined;
+
+    /**
+     * Array of parameters for this element
+     */
+    params = $state({
+        'name': new Param("name")
+    })
 
     /**
      * Name of this element
@@ -529,21 +661,128 @@ export class HasParams {
         return found
     })
 
+    constructor(tag) {
+        // store tag
+        this.tag = tag === "Settings" ? "SettingsComponent" : tag;
+        // make sure there is a template
+        if (!(this.tag in ComponentProfiles)) {
+            throw new Error(
+                `Failed to find template for ${this.tag})`
+            )
+        }
+        // set plugin
+        this.plugin = ComponentProfiles[this.tag].plugin;
+        // iterate through params in relevant template
+        for (let [name, profile] of Object.entries(
+            ComponentProfiles[this.tag].params || {}
+        )) {
+            // create a new param from template
+            this.params[name] = new Param(name);
+            // set attributes
+            for (let [key, val] of Object.entries(profile)) {
+                this.params[name][key] = val;
+            }
+        }
+    }
+
     /**
      * Make a copy of this element's parameters
      */
     copyParams() {
         return $inspect(this.params)
     }
+
+    /**
+     * Setup this element from the template matching its tag
+     */
+    fromTemplate() {
+        
+    }
+
+    /**
+     * @returns {HTMLElement} XML node representing this element
+     */
+    toXML() {
+        // create document
+        let doc = document.implementation.createDocument(null, "xml");
+        // create node
+        let node = doc.createElement(
+            this.tag === "SettingsComponent" ? "Settings" : this.tag
+        );
+        // set name and plugin
+        node.setAttribute("name", this.name);
+        node.setAttribute("plugin", this.plugin);
+        // add params
+        for (let param of Object.values(this.params)) {
+            node.appendChild(
+                param.toXML()
+            );
+        }
+
+        return node
+    }
+
+    /**
+     * Populate this element from an XML node
+     * 
+     * @param {Object} node JSON object representing this element
+     */
+    fromXML(node) {
+        // set plugin from node
+        this.plugin = node.getAttribute("plugin")
+        // iterate through param nodes
+        for (let paramNode of node.getElementsByTagName("Param")) {
+            // param name
+            let name = paramNode.getAttribute("name")
+            // if param wasn't templated, make an unknown
+            if (!(name in this.params)) {
+                this.params[name] = Param.makeUnknown(name)
+            }
+            // populate param from XML
+            this.params[name].fromXML(paramNode)
+        }
+    }
+
+    /**
+     * @returns JSON object representing this element
+     */
+    toJSON() {
+        // make node with basic attributes
+        let node = {
+            tag: this.tag,
+            plugin: this.plugin,
+            params: {}
+        }
+        // add params
+        for (let [name, param] of Object.entries(this.params)) {
+            node.params[name] = param.toJSON();
+        }
+    }
+
+    /**
+     * Populate this element from a JSON object
+     * 
+     * @param {Object} node JSON object representing this Component
+     */
+    fromJSON(node) {
+        // iterate through param nodes
+        for (let [name, paramNode] of Object.entries(node.params)) {
+            // if param wasn't templated, make an unknown
+            if (!(name in this.params)) {
+                this.params[name] = Param.makeUnknown(name)
+            }
+            // populate param from JSON
+            this.params[name].fromJSON(paramNode)
+        }
+    }
 }
 
 
 export class Component extends HasParams {
     constructor(tag) {
-        super()
-        this.tag = tag;
+        super(tag)
         this.routine = undefined;
-        this.plugin = undefined;
+        this.exp = undefined;
     }
 
     /**
@@ -640,120 +879,14 @@ export class Component extends HasParams {
 
         return force_end;
     })
-
-    /**
-     * Get this Component as a JSON string.
-     */
-    toJSON() {
-        // create node
-        let node = {
-            tag: this.tag,
-            plugin: this.plugin,
-            params: {},
-        };
-        // add params
-        for (let [name, param] of [...Object.entries(this.params)]) {
-            node.params[name] = param.toJSON();
-        }
-
-        return node
-    }
-
-    /**
-     * Create a new Experiment from a JSON object
-     * 
-     * @param {Object} node 
-     */
-    static fromJSON(node) {
-        // create a blank object
-        let component = new Component(node.tag);
-        // populate settings
-        component.plugin = node.plugin;
-        // populate components
-        for (let [name, paramNode] of [...Object.entries(node.params)]) {
-            component.params[name] = Param.fromJSON(paramNode)
-        }
-
-        return component
-    }
-
-    static fromXML(node) {
-        // get tag from node
-        let tag = node.nodeName;
-        if (tag === "Settings") {
-            tag += "Component"
-        }
-        // create from template
-        let comp = Component.fromTemplate(tag);
-        // populate info
-        comp.plugin = node.getAttribute("plugin") || comp.plugin
-        // populate params
-        for (let paramNode of node.getElementsByTagName("Param")) {
-            // get param name
-            let name = paramNode.getAttribute("name")
-            // get param template (from comp or a new template)
-            let paramTemplate;
-            if (name in comp.params) {
-                paramTemplate = comp.params[name]
-            } else {
-                paramTemplate = Param.fromTemplate(comp.tag, name)
-            }
-            // create param from xml
-            let param = Param.fromXML(paramNode, paramTemplate)
-            // store param
-            comp.params[name] = param
-        }
-        
-        return comp
-    }
-
-    static fromTemplate(tag) {
-        // make a blank Component
-        let comp = new Component(tag);
-        // get profile template
-        let profile = ComponentProfiles[tag];
-        // set plugin
-        comp.plugin = profile.plugin;
-        // populate params
-        for (let key in profile.params) {
-            comp.params[key] = Param.fromTemplate(tag, key);
-        }
-
-        return comp
-    }
-
-    toXML() {
-        // create document
-        let doc = document.implementation.createDocument(null, "xml");
-        // get tag
-        let tag
-        if (this.tag === "SettingsComponent") {
-            tag = "Settings"
-        } else {
-            tag = this.tag
-        }
-        // create node
-        let node = doc.createElement(tag);
-        node.setAttribute("name", this.name);
-        node.setAttribute("plugin", this.plugin);
-        // add params
-        for (let [name, param] of [...this.params]) {
-            node.appendChild(
-                param.toXML()
-            )
-        }
-
-        return node
-    }
 }
 
 
 export class StandaloneRoutine extends HasParams {
     constructor(tag) {
-        super()
+        super(tag)
         this.tag = tag;
         this.exp = undefined;
-        this.plugin = undefined;
     }
 
     get index() {
@@ -762,238 +895,6 @@ export class StandaloneRoutine extends HasParams {
                 return i;
             }
         }
-    }
-
-    /**
-     * Get this Component as a JSON string.
-     */
-    toJSON() {
-        // create node
-        let node = {
-            tag: this.tag,
-            plugin: this.plugin,
-            params: {},
-        };
-        // add params
-        for (let [name, param] of Object.entries(this.params)) {
-            node.params[name] = param.toJSON();
-        }
-
-        return node
-    }
-
-    /**
-     * Create a new Experiment from a JSON object
-     * 
-     * @param {Object} node 
-     */
-    static fromJSON(node) {
-        // create a blank Routine
-        let routine = new StandaloneRoutine(node.tag);
-        // populate settings
-        routine.plugin = node.plugin;
-        // populate components
-        for (let [name, paramNode] of [...Object.entries(node.params)]) {
-            routine.params[name] = Param.fromJSON(paramNode)
-        }
-
-        return routine
-    }
-
-    toXML() {
-        // create document
-        let doc = document.implementation.createDocument(null, "xml");
-        // create node
-        let node = doc.createElement(this.tag);
-        node.setAttribute("name", this.name);
-        node.setAttribute("plugin", this.plugin);
-        // add params
-        for (let [name, param] of Object.entries(this.params)) {
-            node.appendChild(
-                param.toXML()
-            )
-        }
-
-        return node
-    }
-
-    static fromXML(node) {
-        // get tag from node
-        let tag = node.nodeName;
-        // create from template
-        let comp = StandaloneRoutine.fromTemplate(tag);
-        // populate info
-        comp.name = node.getAttribute("name");
-        comp.plugin = node.getAttribute("plugin") || comp.plugin;
-        // populate params
-        for (let paramNode of node.getElementsByTagName("Param")) {
-            // get param name
-            let name = paramNode.getAttribute("name")
-            // get param template (from comp or a new template)
-            let paramTemplate;
-            if (comp.params.has(name)) {
-                paramTemplate = comp.params.get(name)
-            } else {
-                paramTemplate = Param.fromTemplate(comp.tag, name)
-            }
-            // create param from xml
-            let param = Param.fromXML(paramNode, paramTemplate)
-            // store param
-            comp.params.set(name, param)
-        }
-        
-        return comp
-    }
-
-    static fromTemplate(tag) {
-        // make a blank Component
-        let comp = new StandaloneRoutine(tag);
-        // get profile template
-        let profile = ComponentProfiles[tag];
-        // set plugin
-        comp.plugin = profile.plugin;
-        // populate params
-        for (let key in profile.params) {
-            comp.params[key] = Param.fromTemplate(tag, key);
-        }
-
-        return comp
-    }
-}
-
-
-export class Param {
-
-    val = $state()
-    updates = $state()
-
-    constructor(name) {
-        this.name = name;
-        this.categ = undefined;
-        this.allowedVals = undefined;
-        this.valType = undefined;
-        this.inputType = undefined;
-        this.allowedUpdates = undefined;
-        this.label = undefined;
-        this.hint = undefined;
-        this.plugin = undefined;
-    }
-
-    /**
-     * Get this Component as a JSON string.
-     */
-    toJSON() {
-        // create node
-        let node = {
-            name: this.name,
-            val: this.val,
-            categ: this.categ,
-            allowedVals: this.allowedVals,
-            valType: this.valType,
-            inputType: this.inputType,
-            updates: this.updates,
-            allowedUpdates: this.allowedUpdates,
-            label: this.label,
-            hint: this.hint,
-            plugin: this.plugin,
-        };
-
-        return node
-    }
-
-    /**
-     * Create a new Param from a JSON object
-     * 
-     * @param {Object} node 
-     */
-    static fromJSON(node) {
-        // create a blank Param
-        let param = new Param();
-        // populate
-        for (let [key, val] of [...Object.entries(node)]) {
-            param[key] = val
-        }
-
-        return param
-    }
-
-    static fromTemplate(comp, name) {
-        // make a blank param
-        let param = new Param(name);
-        // get profile template
-        let profile;
-        if (comp in ComponentProfiles) {
-            if (name in ComponentProfiles[comp].params) {
-                profile = ComponentProfiles[comp].params[name]
-            }
-        }
-        // if not templated, make an unknown param template
-        if (profile === undefined) {
-            profile = {
-                val: undefined,
-                categ: "Unknown",
-                allowedVals: undefined,
-                valType: undefined,
-                inputType: "inv",
-                updates: undefined,
-                allowedUpdates: undefined,
-                label: name,
-                hint: "Parameter not recognised",
-                plugin: undefined
-            }
-        }
-        // set info from template
-        for (let [key, value] of Object.entries(profile)) {
-            param[key] = value;
-        }
-
-        return param
-    }
-
-    static fromXML(node, template) {
-        // copy template as new param
-        let param = template.copy();
-        // populate info from node
-        param.name = node.getAttribute("name") || template.name
-        param.val = node.getAttribute("val") || template.val
-        param.valType = node.getAttribute("valType") || template.valType
-        param.updates = node.getAttribute("updates") || template.updates
-        param.plugin = node.getAttribute("plugin") || template.plugin
-
-        return param
-    }
-
-    copy() {
-        // create new param
-        let dupe = new Param(this.name)
-        // set attributes
-        dupe.val = this.val
-        dupe.categ = this.categ
-        dupe.allowedVals = this.allowedVals
-        dupe.valType = this.valType
-        dupe.inputType = this.inputType
-        dupe.updates = this.updates
-        dupe.allowedUpdates = this.allowedUpdates
-        dupe.label = this.label
-        dupe.hint = this.hint
-        dupe.plugin = this.plugin
-
-        return dupe
-    }
-
-    toXML() {
-        // create document
-        let doc = document.implementation.createDocument(null, "xml");
-        // create node
-        let node = doc.createElement("Param");
-        // assign values
-        node.setAttribute("val", this.val);
-        node.setAttribute("valType", this.valType);
-        node.setAttribute("updates", this.updates);
-        node.setAttribute("name", this.name);
-        node.setAttribute("plugin", this.plugin);
-
-        return node
     }
 }
 
@@ -1195,10 +1096,12 @@ export class FlowLoop {
 }
 
 export class LoopInitiator extends HasParams {
-    constructor() {
-        super()
+
+    loopType = $derived(() => this.params['loopType'].val)
+
+    constructor(tag) {
+        super(tag)
         this.exp = undefined;
-        this.loopType = undefined;
         this.terminator = undefined;
     }
 
@@ -1219,102 +1122,6 @@ export class LoopInitiator extends HasParams {
         this.terminator.name = this.name;
         this.terminator.exp = this.exp;
         this.terminator.initiator = this;
-    }
-
-    /**
-     * Get this Component as a JSON string.
-     */
-    toJSON() {
-        // create node
-        let node = {
-            tag: "LoopInitiator",
-            loopType: this.loopType,
-            name: this.name,
-            params: {},
-        };
-        // add params
-        for (let [name, param] of Object.entries(this.params)) {
-            node.params[name] = param.toJSON();
-        }
-
-        return node
-    }
-
-    /**
-     * Create a new Experiment from a JSON object
-     * 
-     * @param {Object} node 
-     */
-    static fromJSON(node) {
-        // create a blank LoopInitiator
-        let loop = new LoopInitiator();
-        // populate settings
-        loop.loopType = node.loopType;
-        loop.name = node.name
-        // populate components
-        for (let [name, paramNode] of [...Object.entries(node.params)]) {
-            loop.params.set(name, Param.fromJSON(paramNode))
-        }
-
-        return loop
-    }
-
-    toXML() {
-        // create document
-        let doc = document.implementation.createDocument(null, "xml");
-        // create node
-        let node = doc.createElement("LoopInitiator");
-        node.setAttribute("loopType", this.loopType);
-        node.setAttribute("name", this.name);
-        // add params
-        for (let [name, param] of Object.entries(this.params)) {
-            node.appendChild(
-                param.toXML()
-            )
-        }
-
-        return node
-    }
-
-    static fromXML(node) {
-        // create blank LoopInitiator
-        let initiator = LoopInitiator.fromTemplate(
-            node.getAttribute("loopType")
-        )
-        // populate params
-        for (let paramNode of node.getElementsByTagName("Param")) {
-            // get param name
-            let name = paramNode.getAttribute("name")
-            // get param template (from comp or a new template)
-            let paramTemplate;
-            if (name in initiator.params) {
-                paramTemplate = initiator.params[name]
-            } else {
-                paramTemplate = Param.fromTemplate(initiator.loopType, name)
-            }
-            // create param from xml
-            let param = Param.fromXML(paramNode, paramTemplate)
-            // store param
-            initiator.params[name] = param
-        }
-
-        return initiator
-    }
-
-    static fromTemplate(tag) {
-        // make a blank Component
-        let initiator = new LoopInitiator();
-        initiator.loopType = tag;
-        // get profile template
-        let profile = ComponentProfiles[tag];
-        // set plugin
-        initiator.plugin = profile.plugin;
-        // populate params
-        for (let key in profile.params) {
-            initiator.params[key] = Param.fromTemplate(tag, key);
-        }
-
-        return initiator
     }
 }
 
