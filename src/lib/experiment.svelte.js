@@ -558,9 +558,7 @@ export class HasParams {
     /**
      * Array of parameters for this element
      */
-    params = $state({
-        'name': new Param("name")
-    })
+    params = $state({})
 
     /**
      * Name of this element

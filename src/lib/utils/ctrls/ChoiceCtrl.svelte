@@ -1,16 +1,21 @@
 <script>
-    export let param;
+    let {
+        param
+    } = $props()
 
     let valLabelMap = []
-    param.allowedVals.forEach((val, i) => {
-        let label;
-        if (param.allowedLabels && i < param.allowedLabels.length) {
-            label = param.allowedLabels[i];
-        } else {
-            label = val;
-        }
-        valLabelMap.push([val, label])
-    })
+    if (param.allowedVals instanceof Array) {
+        param.allowedVals.forEach((val, i) => {
+            let label;
+            if (param.allowedLabels && i < param.allowedLabels.length) {
+                label = param.allowedLabels[i];
+            } else {
+                label = val;
+            }
+            valLabelMap.push([val, label])
+        })
+    }
+    
 </script>
 
 <select class=param-value disabled={param.allowedVals.length == 1} bind:value={param.val}>
