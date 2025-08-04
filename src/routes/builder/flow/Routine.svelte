@@ -28,14 +28,13 @@
 </script>
 
 <EntryPoint index={element.index}></EntryPoint>
-<div 
+<button 
     class=routine 
     draggable=true
     ondragstart={() => current.moving = element} 
     ondragend={() => current.moving = undefined} 
     onclick={() => current.routine = element}
     class:active={current.routine ? current.routine.name === element.name : false}
-    role="none"
     oncontextmenu={(evt) => {
         evt.preventDefault();
         // show menu
@@ -62,7 +61,7 @@
         onclick={removeRoutine}
     />
 </Menu>
-</div>
+</button>
 
 <style>
     .routine {
@@ -76,11 +75,14 @@
         box-shadow: 
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
         ;
+        border: 2px solid var(--blue);
     }
+    .routine:focus,
     .routine:hover {
         box-shadow: 
-            inset 1px 1px 10px rgba(0, 0, 0, 0.1)
+                                inset 1px 1px 10px rgba(0, 0, 0, 0.1)
         ;
+        border-color: var(--crust);
     }
     .active {
         font-weight: bold;

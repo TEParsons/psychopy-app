@@ -145,7 +145,8 @@
             inset -1px -1px 2px rgba(0, 0, 0, 0.05)
         ;
     }
-    .loop .loop-name:hover {
+    .loop .loop-name:enabled:focus,
+    .loop .loop-name:enabled:hover {
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.25)
         ;

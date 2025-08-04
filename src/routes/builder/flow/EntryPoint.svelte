@@ -71,6 +71,7 @@
         opacity: 1;
     }
     .entry-point.active:hover,
+    .entry-point.active:focus-within,
     .entry-point.hovered {
         opacity: 1;
         background-color: var(--red);
