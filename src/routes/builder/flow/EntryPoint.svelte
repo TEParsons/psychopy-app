@@ -23,6 +23,20 @@
         }
         // if inserting, insert element here
         if (current.inserting) {
+            // if inserting a terminator, make sure it's after the initiator
+            if (current.inserting instanceof LoopTerminator) {
+                if (index < current.inserting.initiator.index) {
+                    // get index of initiator
+                    let ogIndex = $state.snapshot(current.inserting.initiator.index)
+                    // move initiator to requested index
+                    current.experiment.flow.relocateElement(
+                        current.inserting.initiator, 
+                        index
+                    )
+                    // insert at the initiator's old index
+                    index = ogIndex + 1
+                }
+            }
             // insert
             current.experiment.flow.insertElement(current.inserting, index);
             // next steps depend on type of element inserted
@@ -32,7 +46,7 @@
                 current.inserting = current.inserting.terminator;
             } else {
                 // done inserting
-                current.inserting = null;
+                current.inserting = undefined;
             }
         }
     }
