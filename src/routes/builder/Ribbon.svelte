@@ -15,7 +15,6 @@
         undo,
         redo,
         // experiment
-        toggle_pilot_mode,
         // views
         new_builder_frame,
         new_coder_frame,
@@ -128,7 +127,10 @@
         {/if}
         <RibbonSwitchButton 
             labels={["Pilot", "Run"]} 
-            bind:state={current.experiment.pilotMode} 
+            bind:state={
+                () => current.experiment.pilotMode,
+                (value) => current.experiment.settings.params['runMode'].val = value
+            } 
             disabled={current.experiment === null}
         />        
     </RibbonSection>

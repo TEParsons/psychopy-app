@@ -91,12 +91,7 @@ export function redo() {
 
 /* Experiment */
 
-export function toggle_pilot_mode() {
-    // update change history
-    actions.update()
-    // change mode
-    current.experiment.pilotMode = !current.experiment.pilotMode
-}
+
 
 /* Views */
 

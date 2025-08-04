@@ -28,40 +28,7 @@ export class Experiment {
         this.flow.dynamicize()
     }
 
-    /**
-     * Get the current pilot mode from Experiment Settings
-     */
-    get pilotMode() {
-        // make sure there is a runMode param
-        if (!("runMode" in this.settings.params)) {
-            this.settings.params.runMode = Param.fromTemplate("SettingsComponent", "runMode")
-        }
-        // get the relevant param
-        let param = this.settings.params.runMode
-        // if 1, then we are in pilot mode
-        return param.val === "0"
-    }
-
-    /**
-     * Set the pilot mode in Experiment Settings
-     */
-    set pilotMode(val) {
-        // make sure there is a runMode param
-        if (!this.settings.params.has("runMode")) {
-            this.settings.params.set(
-                "runMode", 
-                Param.fromTemplate("SettingsComponent", "runMode")
-            )
-        }
-        // get the relevant param
-        let param = this.settings.params.get("runMode")
-        // set param value
-        if (val) {
-            param.val = "0";
-        } else {
-            param.val = "1";
-        }
-    }
+    pilotMode = $derived(this.settings.params['runMode'].val)
 
     /**
      * Get this Experiment as a JSON string.
@@ -690,13 +657,6 @@ export class HasParams {
      */
     copyParams() {
         return $inspect(this.params)
-    }
-
-    /**
-     * Setup this element from the template matching its tag
-     */
-    fromTemplate() {
-        
     }
 
     /**

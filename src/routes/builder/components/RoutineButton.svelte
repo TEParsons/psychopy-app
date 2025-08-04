@@ -24,7 +24,7 @@
         // update history
         actions.update()
         // create a new StandaloneRoutine
-        let rt = StandaloneRoutine.fromTemplate(component['__name__'])
+        let rt = new StandaloneRoutine(component['__name__'])
         rt.exp = current.experiment;
         // add it to the experiment
         current.experiment.routines[rt.name] = rt

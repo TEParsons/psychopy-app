@@ -12,7 +12,7 @@
     } = $props()
 
     let dlgComponent = $state(
-        Component.fromTemplate(component['__name__'])
+        new Component(component['__name__'])
     );
     let showDialog = $state()
 
@@ -27,7 +27,7 @@
 
     function newComponent() {
         // create a new Component for the dialog
-        dlgComponent = Component.fromTemplate(component['__name__'])
+        dlgComponent = new Component(component['__name__'])
         // show dialog
         showDialog = true
     }
