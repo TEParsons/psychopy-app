@@ -4,13 +4,18 @@
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from '../../dialogs/ComponentDialog.svelte';
+    import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { getContext } from "svelte";
+    import Dialog from "$lib/utils/dialog/Dialog.svelte";
 
     let {
         routine=undefined
     } = $props()
 
+    let actions = getContext("actions")
+
     let showDialog = $state(false)
+    let settingsNotebook;
 
 </script>
 
@@ -24,10 +29,20 @@
             horizontal 
         ></Button>
     </div>
+
     <Dialog 
-        bind:shown={showDialog}
-        component={routine.settings} 
-    ></Dialog>
+        id="{routine.settings.name}-parameters"
+        title="Editing: {routine.settings.name}"
+        bind:shown={showDialog} 
+        buttons={{
+            OK: () => notebook.applyChanges(), 
+            APPLY: () => notebook.applyChanges(), 
+            CANCEL: () => notebook.discardChanges(), 
+            HELP: routine.settings.helpLink,
+        }}
+    >
+        <ParamsNotebook bind:this={settingsNotebook} element={routine.settings}></ParamsNotebook>
+    </Dialog>
 
     {#if routine.components}
     <TimelineHeader bind:ticks={routine.visualTicks}></TimelineHeader>

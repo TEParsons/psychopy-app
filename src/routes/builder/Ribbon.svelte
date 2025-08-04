@@ -1,7 +1,6 @@
 <script>
     import { theme } from "$lib/globals.svelte.js"
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
-    import Dialog from '../dialogs/ComponentDialog.svelte';
     import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
 
@@ -20,6 +19,8 @@
         new_coder_frame,
         new_runner_frame,
     } from './callbacks.js'
+    import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
 
     let current = getContext("current");
     let actions = getContext("actions");
@@ -27,6 +28,7 @@
     let showMenu = $state(false);
 
     let showSettingsDlg = $state(false);
+    let settingsNotebook;
 </script>
 
 <Ribbon>
@@ -121,9 +123,18 @@
         />
         {#if current.experiment !== null }
         <Dialog 
-            component={current.experiment.settings} 
-            bind:shown={showSettingsDlg}
-        ></Dialog>
+            id=experiment-settings
+            title="Experiment settings"
+            bind:shown={showSettingsDlg} 
+            buttons={{
+                OK: () => settingsNotebook.applyChanges(), 
+                APPLY: () => settingsNotebook.applyChanges(), 
+                CANCEL: () => settingsNotebook.discardChanges(), 
+                HELP: current.experiment.settings.helpLink,
+            }}
+        >
+            <ParamsNotebook bind:this={settingsNotebook} element={current.experiment.settings}></ParamsNotebook>
+        </Dialog>
         {/if}
         <RibbonSwitchButton 
             labels={["Pilot", "Run"]} 

@@ -12,8 +12,6 @@
             CANCEL: undefined,
             HELP: undefined
         },
-        /** @prop @type {function} Function to call when dialog is closed */
-        onclose=(evt) => {},
         /** @returns @type {HTMLElement} Handle of this dialog's HTML Element */
         shown=$bindable(),
         /** @interface */
@@ -32,12 +30,18 @@
 
 </script>
 
-<dialog id={id} bind:this={handle} onclose={onclose}>
+<dialog id={id} bind:this={handle}>
     <div class="title">
         <label for={id}>{title}</label>
         <div class=gap></div>
         <div class=title-btns>
-            <button id=close onclick={() => { shown = false; }}>x</button>
+            <button 
+                onclick={() => {
+                    shown = false;
+                }}
+            >
+                🞪
+            </button>
         </div>
     </div>
     <div class="content">
@@ -52,7 +56,7 @@
                         window.open(buttons.HELP, '_blank').focus();
                     }} 
                     horizontal
-                    disabled={buttons.HELP ? true : false}
+                    disabled={!buttons.HELP}
                 ></Button>
                 {/if}
         </div>
@@ -62,7 +66,7 @@
             <Button 
                 label="Okay"
                 onclick={(evt) => {
-                    buttons['OK'](evt); 
+                    buttons['OK'](evt);
                     shown = false;
                 }} 
                 primary

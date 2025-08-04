@@ -58,6 +58,31 @@
 </div>
 
 <!-- dialog for creating a new Routine -->
+{#if current.inserting instanceof Routine}
+<Dialog 
+    id=new-routine
+    title="New Routine" 
+    bind:shown={showNewRoutineDialog} 
+    buttons={{
+        OK: (evt) => {
+            // apply changes
+            notebook.applyChanges()
+            // add to experiment
+            current.inserting.exp = current.experiment
+            current.experiment.routines[current.inserting.name] = current.inserting
+        }, 
+        CANCEL: (evt) => {
+            // discard changes to params
+            notebook.discardChanges(evt)
+            // stop inserting
+            current.inserting = undefined;
+        }, 
+        HELP: "https://www.psychopy.org/builder/routines.html#routines",
+    }}
+>
+    <ParamsNotebook bind:this={notebook} element={current.inserting.settings}></ParamsNotebook>
+</Dialog>
+{/if}
 
 <Dialog 
     id=new-routine 
@@ -66,7 +91,7 @@
     buttons={{
         OK: () => {
             // apply changes
-            notebook.discardChanges()
+            notebook.applyChanges()
             // update history
             actions.update()
             // add to experiment

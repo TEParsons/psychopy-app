@@ -1,9 +1,9 @@
 <script>
     import { LoopInitiator } from '$lib/experiment.svelte.js';
-    import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
+    import Dialog from "$lib/utils/dialog/Dialog.svelte";
     
     let current = getContext("current");
     let actions = getContext("actions");    
@@ -43,23 +43,34 @@
     horizontal 
     onclick={() => {
         // create blank Loop
-        element = new LoopInitiator("TrialHandler")
+        current.inserting = new LoopInitiator("TrialHandler")
         // show dialog
         showDialog = true
     }}
 ></Button>
-<!-- dialog for creating a new Routine -->
+<!-- dialog for creating a new Loop -->
+{#if current.inserting instanceof LoopInitiator}
 <Dialog 
     id=new-loop 
-    title="New Loop" 
+    title="New loop"
     bind:shown={showDialog} 
     buttons={{
-        OK: insertLoopInitiator, 
-        CANCEL: discardChanges, 
+        OK: (evt) => {
+            // apply changes to params
+            notebook.applyChanges(evt)
+            // add loop to experiment
+            current.inserting.exp = current.experiment
+            current.experiment.loops[current.inserting.name] = current.inserting
+        }, 
+        CANCEL: (evt) => {
+            // discard changes to params
+            notebook.discardChanges(evt)
+            // stop inserting
+            current.inserting = undefined;
+        }, 
+        HELP: "https://www.psychopy.org/builder/flow.html#loops",
     }}
 >
-    <ParamsNotebook 
-        element={element} 
-        bind:this={notebook}
-    />
+    <ParamsNotebook bind:this={notebook} element={element}></ParamsNotebook>
 </Dialog>
+{/if}

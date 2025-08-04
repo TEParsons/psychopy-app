@@ -1,15 +1,19 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
-    import Dialog from '../../dialogs/ComponentDialog.svelte';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
+    import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    import { ParamsNotebook } from "$lib/utils/paramCtrls";
     
     let current = getContext("current");
+    let actions = getContext("actions");
 
     let {
         component
     } = $props()
+
+    let notebook;
 
     let dlgComponent = $state(
         new Component(component['__name__'])
@@ -42,8 +46,22 @@
     disabled={!(current.routine instanceof Routine)}
     onclick={newComponent}
 ></Button>
+
 <Dialog 
-    component={dlgComponent} 
-    bind:shown={showDialog}
-></Dialog>
+    id=new-loop 
+    title="New loop"
+    bind:shown={showDialog} 
+    buttons={{
+        OK: (evt) => {
+            // apply changes to params
+            notebook.applyChanges(evt)
+            // add loop to experiment
+            current.routine.addComponent(dlgComponent)
+        }, 
+        CANCEL: () => notebook.discardChanges(), 
+        HELP: dlgComponent.helpLink,
+    }}
+>
+    <ParamsNotebook bind:this={notebook} element={dlgComponent}></ParamsNotebook>
+</Dialog>
 {/if}

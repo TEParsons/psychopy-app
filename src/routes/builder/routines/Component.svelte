@@ -2,10 +2,11 @@
     import { theme } from "$lib/globals.svelte.js";
     import { dragging, hoveredComponent } from './globals.js';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from "../../dialogs/ComponentDialog.svelte";
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { getContext } from "svelte";
+    import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     
     let actions = getContext("actions");
 
@@ -32,6 +33,7 @@
     }
 
     let showDialog = $state(false);
+    let notebook;
 
     function removeComponent() {
         // update history
@@ -123,10 +125,20 @@
 </Menu>
 
 <!-- dialog to open when clicked on -->
+
 <Dialog 
-    component={component} 
-    bind:shown={showDialog}
-></Dialog>
+    id="{routine.settings.name}-parameters"
+    title="Editing: {routine.settings.name}"
+    bind:shown={showDialog} 
+    buttons={{
+        OK: () => notebook.applyChanges(), 
+        APPLY: () => notebook.applyChanges(), 
+        CANCEL: () => notebook.discardChanges(), 
+        HELP: component.helpLink,
+    }}
+>
+    <ParamsNotebook bind:this={notebook} element={component}></ParamsNotebook>
+</Dialog>
 
 <style>
     .comp-timeline {
