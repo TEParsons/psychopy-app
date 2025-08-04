@@ -5,6 +5,7 @@
     import { theme } from "$lib/globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import { getContext } from "svelte";
+    import { flip } from "svelte/animate";
     
     let current = getContext("current");
 
@@ -17,12 +18,14 @@
             <img class=flowline-arrow src="/icons/{theme}/sym-arrow-right.svg" alt="<"/>
         </div>
         {#if current.experiment}
-            {#each current.experiment.flow.dynamic as emt}
+            {#each current.experiment.flow.dynamic as emt, index (emt)}
+            <div class=flow-animation animate:flip>
                 {#if emt instanceof FlowLoop}
                     <LoopNode element={emt}></LoopNode>
                 {:else}
                     <RoutineNode element={emt}></RoutineNode>
                 {/if}
+            </div>
             {/each}
         {/if}
         <EntryPoint index=-1></EntryPoint>
@@ -30,12 +33,14 @@
 </div>
 
 <style>
-    .flow {
+    .flow, .flow-animation {
         position: relative;
         display: flex;
         flex-direction: row;
         align-items: start;
         gap: 1rem;
+    }
+    .flow {
         padding: 2rem;
         padding-top: 0;
     }

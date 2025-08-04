@@ -1,6 +1,5 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { dragging, hoveredComponent } from './globals.js';
     import EntryPoint from './EntryPoint.svelte';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
@@ -8,6 +7,7 @@
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     
+    let current = getContext("current");
     let actions = getContext("actions");
 
     let {
@@ -16,6 +16,8 @@
     } = $props()
 
     let routine = component.routine;
+
+    let hovered = $state(false);
 
     let showContextMenu = $state(false);
     let contextMenuPos = $state({
@@ -52,11 +54,11 @@
     for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
     draggable="true" 
-    ondragstart={() => dragging.set(component.index)} 
-    ondragend={() => dragging.set(null)} 
     onclick={() => {showDialog = true}}
-    onmouseenter={() => hoveredComponent.set(component.name)}
-    onmouseleave={() => hoveredComponent.set(null)}
+    ondragstart={() => current.moving = component} 
+    ondragend={() => current.moving = undefined} 
+    onmouseenter={() => hovered = true}
+    onmouseleave={() => hovered = false}
     role="none"
     oncontextmenu={oncontextmenu}
 >    
@@ -85,17 +87,20 @@
     draggable={true} 
     onclick={() => {showDialog = true}}
     oncontextmenu={oncontextmenu}
-    onmouseenter={() => hoveredComponent.set(component.name)}
-    onmouseleave={() => hoveredComponent.set(null)}
-    ondragstart={() => dragging.set(component.index)} 
-    ondragend={() => dragging.set(null)} 
-    role="none"
+    ondragstart={() => current.moving = component} 
+    ondragend={() => current.moving = undefined} 
+    onmouseenter={() => hovered = true}
+    onmouseleave={() => hovered = false}
+    role=none
 >
     <div 
         class=comp-timeline-bar 
         style:left="{component.visualStart === null ? 0 : component.visualStart * 100 / routine.visualStop}%"
         style:right="{component.visualStop === null ? 0 : (routine.visualStop - component.visualStop) * 100 / routine.visualStop}%"
         style:background-color="var(--{component.visualColor})"
+        style:border={hovered ? "1px solid var(--outline)" : `1px solid var(--${component.visualColor})`}
+        onfocusin={() => hovered = true}
+        onfocusout={() => hovered = false}
     ></div>
     {#each ticks.labels as tick}
     <div class=comp-timeline-tick style="flex-basis: {tick.proportion}"></div>
@@ -201,5 +206,4 @@
         padding: .5rem;
         justify-self: right;
     }
-
 </style>

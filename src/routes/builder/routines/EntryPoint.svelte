@@ -1,4 +1,5 @@
 <script>
+    import { Component } from "$lib/experiment.svelte";
     import { theme } from "$lib/globals.svelte.js";
     import { getContext } from "svelte";
     
@@ -12,24 +13,24 @@
 
     function on_drop(evt) {
         evt.preventDefault();
-        // update history
-        actions.update();
         // make sure it's a valid element
-        if (current.dragging === undefined) {
+        if (current.moving === undefined) {
             return;
         }
+        // update history
+        actions.update();
         // move dragged component to new position in the routine
-        routine.relocateComponent(current.dragging, index)
+        routine.relocateComponent(current.moving.index, index)
         // we're done dragging
         hovered = false;
-        current.dragging = undefined;
+        current.moving = undefined;
     }
 
     let hovered = $state(false);
 
 </script>
 
-<div class="entry-point" class:active={current.dragging !== undefined} class:hovered={hovered}>
+<div class="entry-point" class:active={current.moving instanceof Component} class:hovered={hovered}>
     <img src="icons/{theme}/sym-arrow-right{hovered ? "-hl" : ""}.svg" alt=">" />
     <button 
         class="hitbox" 
