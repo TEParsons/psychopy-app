@@ -93,12 +93,10 @@ export class Experiment {
         // clear the flow
         this.flow.clear()
         // add a default routine
-        let trial = new Routine();
-        trial.exp = this;
-        trial.name = "trial";
-        this.routines['trial'] = trial
-        this.flow.flat.push(trial)
-        // 
+        this.routines['trial'] = new Routine();
+        this.routines['trial'].exp = this;
+        this.routines['trial'].name = "trial";
+        this.flow.flat.push(this.routines['trial'])
     }
 
     pilotMode = $derived(this.settings.params['runMode'].val)
@@ -129,13 +127,13 @@ export class Experiment {
      * @param {Object} node JSON object representing this Experiment
      */
     fromJSON(node) {
+        // reset experiment
+        this.reset()
         // set basic attributes
         this.filename = node.filename;
         this.version = node.version;
         // copy settings
         this.settings.fromJSON(node.settings);
-        // clear routines
-        Object.keys(this.routines).forEach(key => delete this.routines[key])
         // add each routine from JSON
         for (let [name, profile] of Object.entries(node.routines)) {
             // make a new routine
@@ -157,6 +155,8 @@ export class Experiment {
      * @param {Element} node XML element to create the Experiment from
      */
     fromXML(filename, node) {
+        // reset experiment
+        this.reset()
         // store filename
         this.filename = filename
         // get version
@@ -165,8 +165,6 @@ export class Experiment {
         this.settings.fromXML(
             node.getElementsByTagName("Settings")[0]
         );
-        // clear routines
-        Object.keys(this.routines).forEach(key => delete this.routines[key])
         // get routines
         let routinesNode = node.getElementsByTagName("Routines")[0];
         for (let routineNode of routinesNode.childNodes) {
@@ -220,30 +218,7 @@ export class Experiment {
         main.appendChild(flowNode)
 
         return main
-    }
-
-    /**
-     * Save this Experiment as a psyexp file
-     */
-    async save() {
-        // get file handle from system dialog
-        let handle = await window.showOpenFilePicker({
-            types: [{
-                description: "PsychoPy Experiments",
-                accept: {
-                    "application/xml": [".psyexp"]
-                }
-            }]
-        });
-        // get file blob from handle
-        let file = await handle[0].getFile();
-        // load xml
-        let xml_parser = new DOMParser()
-        let document = xml_parser.parseFromString(await file.text(), "application/xml");
-        // construct an Experiment object from the file
-        let exp = new Experiment(document)
-    }
-    
+    }    
 }
 export class Routine {
     components = $state([])
@@ -410,7 +385,8 @@ export class Routine {
         // populate components
         for (let compNode of node.components) {
             // new component
-            let comp = new Component(compNode.nodeName)
+            let comp = new Component(compNode.tag)
+            comp.routine = this;
             // populate
             comp.fromJSON(compNode)
             // append
@@ -735,7 +711,8 @@ export class HasParams {
      * @param {Object} node JSON object representing this element
      */
     fromXML(node) {
-        // set plugin from node
+        // set plugin and tag from node
+        this.tag = node.nodeName === "Settings" ? "SettingsComponent" : node.nodeName;
         this.plugin = node.getAttribute("plugin")
         // iterate through param nodes
         for (let paramNode of node.getElementsByTagName("Param")) {
@@ -1121,7 +1098,6 @@ export class Flow {
             } else if (elementNode.nodeName === "LoopTerminator") {
                 // error if initiator doesn't exist
                 if (!(name in initiators)) {
-                    console.log(initiators)
                     throw Error(`Reference to nonexistant LoopInitiator ${name} in LoopTerminator`)
                 }
                 // recreate
@@ -1211,6 +1187,13 @@ export class LoopInitiator extends HasParams {
         this.terminator.name = this.name;
         this.terminator.exp = this.exp;
         this.terminator.initiator = this;
+    }
+
+    fromXML(node) {
+        // load via parent method
+        super.fromXML(node)
+        // set tag from loopType rather than node name
+        this.tag = node.getAttribute("loopType")
     }
 
     toXML() {

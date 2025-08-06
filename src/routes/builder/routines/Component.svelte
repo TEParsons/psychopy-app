@@ -14,8 +14,6 @@
         ticks
     } = $props()
 
-    let routine = component.routine;
-
     let hovered = $state(false);
 
     let showContextMenu = $state(false);
@@ -40,12 +38,12 @@
         // update history
         current.experiment.history.update();
         // remove from Routine
-        routine.removeComponent(component);
+        component.routine.removeComponent(component);
     }
 </script>
 
 <!-- entry point for this component -->
-<EntryPoint routine={routine} index={component.index}></EntryPoint>
+<EntryPoint routine={component.routine} index={component.index}></EntryPoint>
 
 <!-- icon & name -->
 <label 
@@ -98,8 +96,8 @@
 >
     <div 
         class=comp-timeline-bar 
-        style:left="{component.visualStart === null ? 0 : component.visualStart * 100 / routine.visualStop}%"
-        style:right="{component.visualStop === null ? 0 : (routine.visualStop - component.visualStop) * 100 / routine.visualStop}%"
+        style:left="{component.visualStart === null ? 0 : component.visualStart * 100 / component.routine.visualStop}%"
+        style:right="{component.visualStop === null ? 0 : (component.routine.visualStop - component.visualStop) * 100 / component.routine.visualStop}%"
         style:background-color="var(--{component.visualColor})"
         style:border={hovered ? "1px solid var(--outline)" : `1px solid var(--${component.visualColor})`}
         onfocusin={() => hovered = true}
@@ -138,8 +136,8 @@
 <!-- dialog to open when clicked on -->
 
 <Dialog 
-    id="{routine.settings.name}-parameters"
-    title="Editing: {routine.settings.name}"
+    id="{component.routine.settings.name}-parameters"
+    title="Editing: {component.routine.settings.name}"
     bind:shown={showDialog} 
     buttons={{
         OK: () => notebook.applyChanges(), 
