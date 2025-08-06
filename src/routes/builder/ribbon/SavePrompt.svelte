@@ -16,6 +16,7 @@
         if (shown && !current.experiment.history.past.length) {
             // if shown when there are no changes, skip and go straight to the action
             shown = false;
+            action()
         }
     })
 </script>

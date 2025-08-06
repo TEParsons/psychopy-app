@@ -774,6 +774,9 @@ export class HasParams {
      * @param {Object} node JSON object representing this element
      */
     fromJSON(node) {
+        // set plugin and tag
+        this.tag = node.tag
+        this.plugin = node.plugin
         // iterate through param nodes
         for (let [name, paramNode] of Object.entries(node.params)) {
             // if param wasn't templated, make an unknown
