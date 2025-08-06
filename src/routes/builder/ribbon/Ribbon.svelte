@@ -3,6 +3,8 @@
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
+    import { Dialog } from "$lib/utils/dialog";
+    import SavePrompt from "./SavePrompt.svelte"
 
     import {
         // file
@@ -19,7 +21,7 @@
         new_coder_frame,
         new_runner_frame,
     } from './callbacks.js'
-    import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
 
     let current = getContext("current");
@@ -28,6 +30,11 @@
 
     let showSettingsDlg = $state(false);
     let settingsNotebook;
+
+    let savePrompt = $state({
+        NEW: false,
+        OPEN: false
+    });
 </script>
 
 <Ribbon>
@@ -69,12 +76,20 @@
         <RibbonButton 
             icon="/icons/{theme}/btn-new.svg" 
             label="New file" 
-            onclick={file_new}
+            onclick={(evt) => savePrompt.NEW = true}
         />
+        <SavePrompt
+            bind:shown={savePrompt.NEW}
+            action={file_new}
+        />  
         <RibbonButton 
             icon="/icons/{theme}/btn-open.svg" 
             label="Open file" 
-            onclick={file_open} 
+            onclick={(evt) => savePrompt.OPEN = true} 
+        />
+        <SavePrompt
+            bind:shown={savePrompt.OPEN}
+            action={file_open}
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-save.svg" 

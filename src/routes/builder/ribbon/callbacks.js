@@ -1,4 +1,4 @@
-import { current } from './globals.svelte.js';
+import { current } from '../globals.svelte.js';
 import { Experiment } from "$lib/experiment.svelte.js";
 import xmlFormat from 'xml-formatter';
 

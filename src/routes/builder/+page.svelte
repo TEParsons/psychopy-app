@@ -2,7 +2,7 @@
     import Panel from '$lib/utils/Panel.svelte';
     import Frame from '$lib/utils/Frame.svelte';
 
-    import Ribbon from './Ribbon.svelte';
+    import Ribbon from './ribbon/Ribbon.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';

@@ -4,18 +4,22 @@
     let {
         id,
         /** @prop @type {string} Text to display in the title bar of this dialog */
-        title,
+        title="",
         /** @prop @type {OK: function|undefined, APPLY: function|undefined, CANCEL: function|undefined, HELP: string|undefined} Standard dialog buttons to display, with additional callback functions (or navigation link, in the case of HELP) */
         buttons={
             OK: undefined,
             APPLY: undefined,
+            YES: undefined,
+            NO: undefined,
             CANCEL: undefined,
             HELP: undefined
         },
-        /** @returns @type {HTMLElement} Handle of this dialog's HTML Element */
+        /** @bindable @type {Boolean} State dictating whether this dialog is shown */
         shown=$bindable(),
+        /** @prop @type {Boolean} Determines whether the dialog box should shrink to fit its contents */
+        shrink=false,
         /** @interface */
-        children
+        children=undefined
     } = $props();
 
     let handle;
@@ -30,7 +34,11 @@
 
 </script>
 
-<dialog id={id} bind:this={handle}>
+<dialog 
+    id={id} 
+    bind:this={handle}
+    style:height={shrink ? "fit-content" : "80vh"}
+>
     <div class="title">
         <label for={id}>{title}</label>
         <div class=gap></div>
@@ -45,7 +53,7 @@
         </div>
     </div>
     <div class="content">
-        {@render children()}
+        {@render children?.()}
     </div>
     <div class="buttons">
         <div class="btn-array extra">
@@ -62,6 +70,27 @@
         </div>
         <div class=gap></div>
         <div class="btn-array standard">
+            {#if buttons.YES}
+            <Button 
+                label="Yes"
+                onclick={(evt) => {
+                    buttons['YES'](evt);
+                    shown = false;
+                }} 
+                primary
+                horizontal
+            ></Button>
+            {/if}
+            {#if buttons.NO}
+            <Button 
+                label="No"
+                onclick={(evt) => {
+                    buttons['NO'](evt);
+                    shown = false;
+                }} 
+                horizontal
+            ></Button>
+            {/if}
             {#if buttons.OK}
             <Button 
                 label="Okay"
@@ -111,7 +140,6 @@
         padding: 0;
         border: 1px solid var(--outline);
         width: fit-content;
-        height: 80vh;
     }
     dialog .content {
         position: relative;

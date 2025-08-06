@@ -8,6 +8,7 @@ export class Experiment {
 
     routines = $state({})
     loops = $state({})
+    filename = $state(null)
 
     /** store past and future states for this experiment */
     history = $state({

@@ -10,7 +10,9 @@
         /** @prop @type {function} Function to call when this button is clicked */
         onclick=(evt) => {},
         /** @prop @type {boolean} Disable this button */
-        disabled=false
+        disabled=false,
+        /** @interface */
+        children=undefined
     } = $props()
 
     let showTooltip = $state(false)
@@ -31,6 +33,8 @@
     >
         {label}
     </Tooltip>
+
+    {@render children?.()}
 </button>
 
 
