@@ -44,7 +44,7 @@
         {#each Object.entries(temp.sortedParams) as [categ, params]}
             <NotebookPage
                 label={categ}
-                data={element}
+                data={temp}
                 bind:selected={
                     () => {return pageIndex === categ},
                     (value) => {pageIndex = categ}
@@ -55,14 +55,14 @@
                     {#if "startVal" in params}
                         <StartStopCtrl
                             name=Start
-                            params={element.startParams}
+                            params={temp.startParams}
                         ></StartStopCtrl>
                     {/if}
                     <!-- stop ctrl, if needed -->
                     {#if "stopVal" in params}
                         <StartStopCtrl
                             name=Stop
-                            params={element.stopParams}
+                            params={temp.stopParams}
                         ></StartStopCtrl>
                     {/if}
                     <!-- other params -->
