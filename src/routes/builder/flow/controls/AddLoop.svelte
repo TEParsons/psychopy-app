@@ -43,6 +43,7 @@
     onclick={() => {
         // create blank Loop
         current.inserting = new LoopInitiator("TrialHandler")
+        current.inserting.exp = current.experiment;
         // show dialog
         showDialog = true
     }}
@@ -58,7 +59,6 @@
             // apply changes to params
             notebook.applyChanges(evt)
             // add loop to experiment
-            current.inserting.exp = current.experiment
             current.experiment.loops[current.inserting.name] = current.inserting
         }, 
         CANCEL: (evt) => {

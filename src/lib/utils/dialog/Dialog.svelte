@@ -38,7 +38,6 @@
     id={id} 
     bind:this={handle}
     style:height={shrink ? "fit-content" : "80vh"}
-    onclose={buttons.CANCEL ? buttons.CANCEL : (evt) => {}}
 >
     <div class="title">
         <label for={id}>{title}</label>
@@ -46,8 +45,11 @@
         <div class=title-btns>
             <button 
                 id=close
-                onclick={() => {
+                onclick={(evt) => {
                     shown = false;
+                    if (buttons.CANCEL) {
+                        buttons.CANCEL(evt)
+                    }
                 }}
             >
                 🞪
