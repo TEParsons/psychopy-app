@@ -4,6 +4,8 @@ import ComponentProfiles from "$lib/components.json"
 
 export class Experiment {
 
+    version = "2026.1.0"
+
     routines = $state({})
     loops = $state({})
 
@@ -28,13 +30,40 @@ export class Experiment {
             // clear arrays for past and future
             this.history.past = []
             this.history.future = []
+        },
+        undo: () => {
+            // do nothing if we have no past
+            if (!this.history.past) {
+                return
+            }
+            // store present as future
+            this.history.future.unshift(
+                this.toJSON()
+            )
+            // restore last state
+            this.fromJSON(
+                this.history.past.pop()
+            )
+        },
+        redo: () => {
+            // do nothin if we have no future
+            if (!this.history.future) {
+                return
+            }
+            // add current state to past
+            this.history.past.push(
+                this.toJSON()
+            )
+            // restore next state
+            this.fromJSON(
+                this.history.future.shift()
+            )
         }
     })
 
     /**
      *
      * @param {String} filename Name of the experiment file
-     * @param {Document} document XML document to create an Experiment from
      */
     constructor(filename) {
         // store filename
@@ -42,14 +71,13 @@ export class Experiment {
         // create attributes
         this.version = undefined;
         this.settings = new Component("SettingsComponent")
-        this.flow = new Flow();
+        this.flow = new Flow(this);
         // placeholder Routine
         let trial = new Routine();
         trial.exp = this;
         trial.name = "trial";
         this.routines['trial'] = trial
         this.flow.flat.push(trial)
-        this.flow.dynamicize()
     }
 
     pilotMode = $derived(this.settings.params['runMode'].val)
@@ -75,54 +103,30 @@ export class Experiment {
     }
 
     /**
-     * Create a new Experiment from a JSON object
+     * Populate this Experiment from a JSON object
      * 
-     * @param {Object} node 
+     * @param {Object} node JSON object representing this Experiment
      */
-    static fromJSON(node) {
-        // create a blank Experiment
-        let exp = new Experiment(node.filename);
-        // get version
-        exp.version = node.version;
-        // get settings
-        exp.settings = Component.fromJSON(node.settings)
-        // get routines
-        for (let [name, rtNode] of [...Object.entries(node.routines)]) {
-            let routine
-            if (rtNode.tag === "Routine") {
-                routine = Routine.fromJSON(rtNode)
-            } else {
-                routine = StandaloneRoutine.fromJSON(rtNode)
-            }
-            
-            routine.exp = exp
-            exp.routines.set(name, routine)
+    fromJSON(node) {
+        // set basic attributes
+        this.filename = node.filename;
+        this.version = node.version;
+        // copy settings
+        this.settings.fromJSON(node.settings);
+        // clear routines
+        Object.keys(this.routines).forEach(key => delete this.routines[key])
+        // add each routine from JSON
+        for (let [name, profile] of Object.entries(node.routines)) {
+            // make a new routine
+            let rt = new Routine();
+            rt.exp = this;
+            // populate it from JSON
+            rt.fromJSON(profile)
+            // append it
+            this.routines[name] = rt
         }
-        // get flow
-        exp.flow.flat = [];
-        for (let elementNode of node.flow) {
-            let element;
-            if (elementNode.tag === "LoopInitiator") {
-                // create initiator object
-                element = LoopInitiator.fromXML(elementNode)
-                element.exp = exp;
-                // store in loops array
-                exp.loops.set(element.name, element)
-            } else if (elementNode.tag === "LoopTerminator") {
-                // create and use a terminator object
-                element = LoopTerminator.fromXML(elementNode)
-                element.exp = exp;
-                // store reference in initiator
-                exp.loops.get(element.name).terminator = element
-            } else {
-                // get from routines
-                element = exp.routines.get(elementNode.name)
-            }
-            exp.flow.flat.push(element)
-        }
-        exp.flow.dynamicize()
-
-        return exp
+        // populate flow from JSON
+        this.flow.fromJSON(node.flow)
     }
 
     /**
@@ -186,8 +190,6 @@ export class Experiment {
             // append node
             exp.flow.flat.push(element)
         }
-        // dynamicise flow
-        exp.flow.dynamicize()
 
         return exp
     }
@@ -401,23 +403,24 @@ export class Routine {
     }
 
     /**
-     * Create a new Experiment from a JSON object
+     * Populate this Routine from a JSON
      * 
-     * @param {Object} node 
+     * @param {Object} node JSON object to populate from
      */
-    static fromJSON(node) {
-        // create a blank Routine
-        let routine = new Routine();
+    fromJSON(node) {
+        // clear Components
+        Object.keys(this.components).forEach(key => delete this.components[key])
         // populate settings
-        routine.settings = Component.fromJSON(node.settings)
+        this.settings.fromJSON(node.settings)
         // populate components
         for (let compNode of node.components) {
-            let component = Component.fromJSON(compNode)
-            component.routine = routine
-            routine.components.push(component)
+            // new component
+            let comp = new Component(compNode.tag)
+            // populate
+            comp.fromJSON(compNode)
+            // append
+            this.addComponent(comp)
         }
-
-        return routine
     }
 
     toXML() {
@@ -754,12 +757,14 @@ export class HasParams {
         for (let [name, param] of Object.entries(this.params)) {
             node.params[name] = param.toJSON();
         }
+
+        return node
     }
 
     /**
      * Populate this element from a JSON object
      * 
-     * @param {Object} node JSON object representing this Component
+     * @param {Object} node JSON object representing this element
      */
     fromJSON(node) {
         // iterate through param nodes
@@ -961,10 +966,6 @@ export class Flow {
         }
     }
 
-    dynamicize() {
-        
-    }
-
     removeElement(index) {
         // convert index to int
         index = parseInt(index)
@@ -973,8 +974,6 @@ export class Flow {
             this.flat.slice(0, index),
             this.flat.slice(index+1)
         )
-        // update dynamic array
-        this.dynamicize();
     }
 
     relocateElement(element, toIndex) {
@@ -1011,23 +1010,67 @@ export class Flow {
         this.flat.splice(
             index, 0, element
         )
-        // update dynamic array
-        this.dynamicize();
     }
 
     toJSON() {
-        let flow = []
+        let node = []
+        // iterate through items
         for (let item of this.flat) {
+            // for Routines, just add name as they're defined elsewhere
             if (item instanceof Routine || item instanceof StandaloneRoutine) {
-                flow.push({
-                    name: item.name
-                })
-            } else {
-                flow.push(item.toJSON())
+                node.push({ref: item.name})
+                continue
+            }
+            // anything else, use its JSON method
+            node.push(item.toJSON())
+        }
+
+        return node
+    }
+
+    fromJSON(node) {
+        // clear self
+        this.flat = [];
+        // object to reference initiators as they're created
+        let initiators = {}
+        // iterate through items in node
+        for (let profile of node) {
+            // if profile is a ref to an extant object, get it
+            if ("ref" in profile && profile.ref in this.exp.routines) {
+                this.flat.push(
+                    this.exp.routines[profile.ref]
+                );
+                continue
+            } else if ("ref" in profile) {
+                // if profile is a ref to a non-existent object, error
+                throw Error(`Reference to nonexistant Routine ${profile.ref} in flow`)
+            }
+            // if profile is a loop initiator, recreate it
+            if (LoopInitiator.tags.includes(profile.tag)) {
+                // recreate
+                let element = new LoopInitiator(profile.tag);
+                element.exp = this.exp;
+                // add to flow
+                this.flat.push(element);
+                // store handle
+                initiators[element.name] = element;
+            }
+            // if profile is a loop terminator, recreate it and link initiator
+            if (profile.tag === "LoopTerminator") {
+                // error if initiator doesn't exist
+                if (!(profile.name in initiators)) {
+                    console.log(initiators)
+                    throw Error(`Reference to nonexistant LoopInitiator ${profile.name} in LoopTerminator`)
+                }
+                // recreate
+                initiators[profile.name].addTerminator()
+                // add to flow
+                this.flat.push(
+                    initiators[profile.name].terminator
+                )
             }
         }
 
-        return flow
     }
 
     toXML() {
@@ -1090,6 +1133,10 @@ export class FlowLoop {
 export class LoopInitiator extends HasParams {
 
     loopType = $derived(() => this.params['loopType'].val)
+    // tags which are known to correspond to a LoopInitiator
+    static tags = [
+        "TrialHandler"
+    ]
 
     constructor(tag) {
         super(tag)

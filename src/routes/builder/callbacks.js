@@ -82,11 +82,19 @@ export async function file_save_as() {
 
 /* Edit */
 export function undo() {
-    current.undo();
+    current.experiment.history.undo();
+    // restore focus to tab if possible
+    if (current.routine && current.routine.name in current.experiment.routines) {
+        current.routine = current.experiment.routines[current.routine.name]
+    }
 }
 
 export function redo() {
-    current.redo();
+    current.experiment.history.redo();
+    // restore focus to tab if possible
+    if (current.routine && current.routine.name in current.experiment.routines) {
+        current.routine = current.experiment.routines[current.routine.name]
+    }
 }
 
 /* Experiment */

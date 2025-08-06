@@ -52,10 +52,12 @@
     bind:shown={showDialog} 
     buttons={{
         OK: (evt) => {
+            // update history
+            current.experiment.history.update()
             // apply changes to params
             notebook.applyChanges(evt)
             // add loop to experiment
-            current.inserting = dlgComponent;
+            current.routine.addComponent(dlgComponent);
         }, 
         CANCEL: () => notebook.discardChanges(), 
         HELP: dlgComponent.helpLink,
