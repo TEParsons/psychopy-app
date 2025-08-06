@@ -130,20 +130,22 @@ export class Experiment {
     }
 
     /**
-     * Create a new Experiment from an XML element
+     * Populate this Experiment from an XML element
      * 
      * @param {String} filename Name of the experiment file
      * @param {Element} node XML element to create the Experiment from
      */
-    static fromXML(filename, node) {
-        // create blank experiment
-        let exp = new Experiment(filename)
-        exp.flow.flat = [];
+    fromXML(filename, node) {
+        // store filename
+        this.filename = filename
         // get version
-        exp.version = node.getAttribute("version");
+        this.version = node.getAttribute("version");
         // get settings
-        let settingsNode = node.getElementsByTagName("Settings")[0];
-        exp.settings = Component.fromXML(settingsNode);
+        this.settings.fromXML(
+            node.getElementsByTagName("Settings")[0]
+        );
+        // clear routines
+        Object.keys(this.routines).forEach(key => delete this.routines[key])
         // get routines
         let routinesNode = node.getElementsByTagName("Routines")[0];
         for (let routineNode of routinesNode.childNodes) {
@@ -154,44 +156,19 @@ export class Experiment {
             // parse node
             let routine;
             if (routineNode.nodeName === "Routine") {
-                routine = Routine.fromXML(routineNode);
+                routine = new Routine(); 
             } else {
-                routine = StandaloneRoutine.fromXML(routineNode);
+                routine = new StandaloneRoutine();
             }
-            routine.exp = exp;
+            routine.exp = this;
+            routine.fromXML(routineNode);
             // parse and append node
-            exp.routines[routineNode.getAttribute("name")] = routine
+            this.routines[routine.name] = routine
         }
         // get flow
-        let flowNode = node.getElementsByTagName("Flow")[0];
-        for (let elementNode of flowNode.childNodes) {
-            // skip blank nodes
-            if (elementNode instanceof Text) {
-                continue
-            }
-            // parse node
-            let element;
-            if (elementNode.nodeName === "LoopInitiator") {
-                // create initiator object
-                element = LoopInitiator.fromXML(elementNode)
-                element.exp = exp;
-                // store in loops array
-                exp.loops[element.name] = element
-            } else if (elementNode.nodeName === "LoopTerminator") {
-                // create and use a terminator object
-                element = LoopTerminator.fromXML(elementNode)
-                element.exp = exp;
-                // store reference in initiator
-                exp.loops[element.name].terminator = element
-            } else {
-                // get from routines
-                element = exp.routines[elementNode.getAttribute("name")]
-            }
-            // append node
-            exp.flow.flat.push(element)
-        }
-
-        return exp
+        this.flow.fromXML(
+            node.getElementsByTagName("Flow")[0]
+        );
     }
 
     /**
@@ -415,7 +392,7 @@ export class Routine {
         // populate components
         for (let compNode of node.components) {
             // new component
-            let comp = new Component(compNode.tag)
+            let comp = new Component(compNode.nodeName)
             // populate
             comp.fromJSON(compNode)
             // append
@@ -443,10 +420,9 @@ export class Routine {
         return node
     }
 
-    static fromXML(node) {
-        let routine = new Routine();
+    fromXML(node) {
         // parse details
-        routine.name = node.getAttribute("name")
+        this.name = node.getAttribute("name")
         // parse Components
         for (let compNode of node.childNodes) {
             // skip blank nodes
@@ -454,17 +430,16 @@ export class Routine {
                 continue
             }
             // parse node
-            let comp = Component.fromXML(compNode);
-            comp.routine = routine;
+            let comp = new Component(compNode.nodeName);
+            comp.routine = this;
+            comp.fromXML(compNode);
             // add to either components list or settings attribute
             if (comp.tag === "RoutineSettingsComponent") {
-                routine.settings = comp;
+                this.settings = comp;
             } else {
-                routine.components.push(comp);
+                this.components.push(comp);
             }
         }
-
-        return routine
     }
 }
 
@@ -671,17 +646,21 @@ export class HasParams {
     constructor(tag) {
         // store tag
         this.tag = tag === "Settings" ? "SettingsComponent" : tag;
-        // make sure there is a template
-        if (!(this.tag in ComponentProfiles)) {
-            throw new Error(
-                `Failed to find template for ${this.tag})`
+        // get template
+        let template
+        if (this.tag in ComponentProfiles) {
+            template = ComponentProfiles[this.tag]
+        } else {
+            console.warn(
+                `Failed to find template for ${this.tag}, reverting to UnknownComponent`
             )
+            template = ComponentProfiles["UnknownComponent"]
         }
         // set plugin
-        this.plugin = ComponentProfiles[this.tag].plugin;
+        this.plugin = template.plugin;
         // iterate through params in relevant template
         for (let [name, profile] of Object.entries(
-            ComponentProfiles[this.tag].params || {}
+            template.params || {}
         )) {
             // create a new param from template
             this.params[name] = new Param(name);
@@ -1054,6 +1033,7 @@ export class Flow {
                 // recreate
                 let element = new LoopInitiator(profile.tag);
                 element.exp = this.exp;
+                element.fromJSON(profile)
                 // add to flow
                 this.flat.push(element);
                 // store handle
@@ -1074,7 +1054,6 @@ export class Flow {
                 )
             }
         }
-
     }
 
     toXML() {
@@ -1096,6 +1075,55 @@ export class Flow {
         }
 
         return node
+    }
+
+    fromXML(node) {
+        // clear self
+        this.flat = [];
+        // object to reference initiators as they're created
+        let initiators = {}
+        // iterate through items in node
+        for (let elementNode of node.childNodes) {
+            if (elementNode instanceof Text) {
+                continue
+            }
+            let name = elementNode.getAttribute("name");
+            // if node is a loop initiator, recreate it
+            if (elementNode.nodeName === "LoopInitiator") {
+                // recreate
+                let element = new LoopInitiator(
+                    elementNode.getAttribute("loopType")
+                );
+                element.exp = this.exp;
+                element.fromXML(elementNode)
+                // add to flow
+                this.flat.push(element);
+                // store handle
+                initiators[name] = element;
+            } else if (elementNode.nodeName === "LoopTerminator") {
+                // error if initiator doesn't exist
+                if (!(name in initiators)) {
+                    console.log(initiators)
+                    throw Error(`Reference to nonexistant LoopInitiator ${name} in LoopTerminator`)
+                }
+                // recreate
+                initiators[name].addTerminator()
+                // add to flow
+                this.flat.push(
+                    initiators[name].terminator
+                )
+            } else {
+                if (name in this.exp.routines) {
+                    this.flat.push(
+                        this.exp.routines[name]
+                    );
+                    continue
+                } else {
+                    // if profile is a ref to a non-existent object, error
+                    throw Error(`Reference to nonexistant Routine ${name} in flow`)
+                }
+            }
+        }
     }
 }
 
