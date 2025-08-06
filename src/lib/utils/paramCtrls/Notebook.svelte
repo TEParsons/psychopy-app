@@ -2,42 +2,29 @@
     import ParamCtrl from "./Ctrl.svelte";
     import StartStopCtrl from "./StartStopCtrl.svelte";
     import { Notebook, NotebookPage } from "$lib/utils/notebook"
-    import { HasParams } from "$lib/experiment.svelte.js";
-    import { getContext, onMount } from "svelte";
+    import { getContext } from "svelte";
 
     let {
         element,
     } = $props();
 
-    let temp = $state(new HasParams(element.tag));
+    let backup = {}
 
     let current = getContext("current")
 
-    export function discardChanges(evt) {
-        // reset temp params from component to discard any live changes
-        for (let key of Object.keys(element.params)) {
-            // make sure temp array has this param
-            if (!(key in temp.params)) {
-                temp.params[key] = element.params[key].copy()
-            }
-            // assign values
-            temp.params[key].val = element.params[key].val
-            temp.params[key].updates = element.params[key].updates
-        }
+    export function applyRestorePoint(evt) {
+        // restore backup to clear changes
+        element.fromJSON(backup)
+        // remove last entry from experiment history
+        current.experiment.history.past.pop()
     }
 
-    export function applyChanges(evt) {
+    export function setRestorePoint(evt) {
         // update history
-        current.experiment.history.update();
-        // set component params from temp to apply any live changes
-        for (let key of Object.keys(temp.params)) {
-            // assign values
-            element.params[key].val = temp.params[key].val
-            element.params[key].updates = temp.params[key].updates
-        }
+        current.experiment.history.update()
+        // set restore point
+        backup = element.toJSON()
     }
-
-    onMount(discardChanges)
 
     let pageIndex = $state()
 
@@ -45,10 +32,10 @@
 
 <div class=params-container>
     <Notebook>
-        {#each Object.entries(temp.sortedParams) as [categ, params]}
+        {#each Object.entries(element.sortedParams) as [categ, params]}
             <NotebookPage
                 label={categ}
-                data={temp}
+                data={element}
                 bind:selected={
                     () => {return pageIndex === categ},
                     (value) => {pageIndex = categ}
@@ -59,14 +46,14 @@
                     {#if "startVal" in params}
                         <StartStopCtrl
                             name=Start
-                            params={temp.startParams}
+                            params={element.startParams}
                         ></StartStopCtrl>
                     {/if}
                     <!-- stop ctrl, if needed -->
                     {#if "stopVal" in params}
                         <StartStopCtrl
                             name=Stop
-                            params={temp.stopParams}
+                            params={element.stopParams}
                         ></StartStopCtrl>
                     {/if}
                     <!-- other params -->

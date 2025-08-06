@@ -62,20 +62,18 @@
     id=new-routine
     title="New Routine" 
     bind:shown={showNewRoutineDialog} 
+        onopen={() => notebook.setRestorePoint()}
     buttons={{
         OK: (evt) => {
-            // apply changes
-            notebook.applyChanges()
             // add to experiment
             current.inserting.exp = current.experiment
             current.experiment.routines[current.inserting.name] = current.inserting
         }, 
         CANCEL: (evt) => {
-            // discard changes to params
-            notebook.discardChanges(evt)
+            notebook.applyRestorePoint(evt)
             // stop inserting
             current.inserting = undefined;
-        }, 
+        },  
         HELP: "https://www.psychopy.org/builder/routines.html#routines",
     }}
 >

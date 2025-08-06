@@ -136,13 +136,14 @@
 <!-- dialog to open when clicked on -->
 
 <Dialog 
-    id="{component.routine.settings.name}-parameters"
-    title="Editing: {component.routine.settings.name}"
+    id="{component.name}-parameters"
+    title="Editing: {component.name}"
     bind:shown={showDialog} 
+    onopen={() => notebook.setRestorePoint()}
     buttons={{
-        OK: () => notebook.applyChanges(), 
-        APPLY: () => notebook.applyChanges(), 
-        CANCEL: () => notebook.discardChanges(), 
+        OK: () => {}, 
+        APPLY: () => notebook.setRestorePoint(), 
+        CANCEL: () => notebook.applyRestorePoint(), 
         HELP: component.helpLink,
     }}
 >

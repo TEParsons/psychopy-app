@@ -49,18 +49,16 @@
 <Dialog 
     id=new-loop 
     title="New {titleCase(component['__name__'])}"
-    bind:shown={showDialog} 
+    bind:shown={showDialog}
+    onopen={() => notebook.setRestorePoint()}
     buttons={{
         OK: (evt) => {
-            // update history
-            current.experiment.history.update()
-            // apply changes to params
-            notebook.applyChanges(evt)
-            // add loop to experiment
+            notebook.setRestorePoint()
+            // add to experiment
             current.routine.addComponent(dlgComponent);
         }, 
-        CANCEL: () => notebook.discardChanges(), 
-        HELP: dlgComponent.helpLink,
+        CANCEL: () => notebook.applyRestorePoint(), 
+        HELP: dlgComponent.helpLink
     }}
 >
     <ParamsNotebook bind:this={notebook} element={dlgComponent}></ParamsNotebook>

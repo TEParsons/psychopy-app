@@ -1,10 +1,13 @@
 <script>
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
     import { Button } from '$lib/utils/buttons';
+    import { onMount } from "svelte";
 
     let {
         component
     } = $props();
+
+    onMount(() => notebook.setRestorePoint())
 
     let notebook;
 </script>
@@ -20,12 +23,12 @@
             label=Apply
             primary
             horizontal
-            onclick={(evt) => notebook.applyChanges(evt)} 
+            onclick={(evt) => notebook.setRestorePoint()} 
         ></Button>
         <Button
             label=Discard
             horizontal
-            onclick={(evt) => notebook.discardChanges(evt)} 
+            onclick={(evt) => notebook.applyRestorePoint()} 
         ></Button>
     </div>
 </div>

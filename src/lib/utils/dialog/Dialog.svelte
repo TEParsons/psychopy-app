@@ -1,5 +1,6 @@
 <script>
     import { Button } from "$lib/utils/buttons";
+    import { untrack } from "svelte";
 
     let {
         id,
@@ -16,6 +17,8 @@
         },
         /** @bindable @type {Boolean} State dictating whether this dialog is shown */
         shown=$bindable(),
+        /** @prop @type {Function} Function to execute when this dialog is opened */
+        onopen=() => {},
         /** @prop @type {Boolean} Determines whether the dialog box should shrink to fit its contents */
         shrink=false,
         /** @interface */
@@ -26,6 +29,7 @@
 
     $effect(() => {
         if (shown) {
+            untrack(() => onopen())
             handle.showModal()
         } else {
             handle.close()

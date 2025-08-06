@@ -12,23 +12,6 @@
         new LoopInitiator("TrialHandler")
     )
 
-    function insertLoopInitiator(evt) {
-        // apply temporary params to loop
-        notebook.applyChanges()
-        // update history
-        current.experiment.history.update()
-        // add to experiment
-        element.exp = current.experiment
-        current.experiment.loops[element.name] = element
-        // prepare to insert the new Routine into the Flow
-        current.inserting = element;
-    }
-
-    function discardChanges(evt) {
-        // reset temp params from component to discard any live changes
-        notebook.discardChanges()
-    }
-
     let showDialog = $state(false)
 
 </script>
@@ -54,16 +37,14 @@
     id=new-loop 
     title="New loop"
     bind:shown={showDialog} 
+    onopen={() => notebook.setRestorePoint()}
     buttons={{
         OK: (evt) => {
-            // apply changes to params
-            notebook.applyChanges(evt)
-            // add loop to experiment
+            // add to experiment
             current.experiment.loops[current.inserting.name] = current.inserting
         }, 
         CANCEL: (evt) => {
-            // discard changes to params
-            notebook.discardChanges(evt)
+            notebook.applyRestorePoint(evt)
             // stop inserting
             current.inserting = undefined;
         }, 

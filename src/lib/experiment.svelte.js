@@ -311,12 +311,7 @@ export class Routine {
     removeComponent(comp) {
         // remove from Components array
         let i = this.components.indexOf(comp)
-        this.components = Array.prototype.concat(
-            this.components.slice(0, i),
-            this.components.slice(i+1)
-        )
-        // remove reference to self
-        comp.routine = undefined;
+        this.components.splice(i, 1)
     }
 
     get index() {
@@ -341,16 +336,9 @@ export class Routine {
         }
         // pop component from array
         let emt = this.components[fromIndex]
-        this.components = Array.prototype.concat(
-            this.components.slice(0, fromIndex),
-            this.components.slice(fromIndex+1)
-        )
+        this.removeComponent(emt)
         // insert back in at new position
-        this.components = Array.prototype.concat(
-            this.components.slice(0, toIndex),
-            emt,
-            this.components.slice(toIndex),
-        )
+        this.insertComponent(emt, toIndex)
     }
 
     /**

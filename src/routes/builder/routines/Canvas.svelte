@@ -31,10 +31,11 @@
         id="{routine.settings.name}-parameters"
         title="Editing: {routine.settings.name}"
         bind:shown={showDialog} 
+        onopen={() => settingsNotebook.setRestorePoint()}
         buttons={{
-            OK: () => settingsNotebook.applyChanges(), 
-            APPLY: () => settingsNotebook.applyChanges(), 
-            CANCEL: () => settingsNotebook.discardChanges(), 
+            OK: () => {}, 
+            APPLY: () => settingsNotebook.setRestorePoint(), 
+            CANCEL: () => settingsNotebook.applyRestorePoint(), 
             HELP: routine.settings.helpLink,
         }}
     >

@@ -104,10 +104,11 @@
     id="loop-{element.name}" 
     title={element.name}
     bind:shown={showDialog} 
+    onopen={() => notebook.setRestorePoint()}
     buttons={{
-        OK: () => notebook.applyChanges(), 
-        APPLY: () => notebook.applyChanges(), 
-        CANCEL: () => notebook.discardChanges(), 
+        OK: (evt) => {}, 
+        APPLY: (evt) => notebook.setRestorePoint(),
+        CANCEL: (evt) => notebook.applyRestorePoint(evt), 
     }}
 >
     <ParamsNotebook 

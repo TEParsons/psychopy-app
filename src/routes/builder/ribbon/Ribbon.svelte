@@ -140,10 +140,11 @@
             id=experiment-settings
             title="Experiment settings"
             bind:shown={showSettingsDlg} 
+            onopen={() => settingsNotebook.setRestorePoint()}
             buttons={{
-                OK: () => settingsNotebook.applyChanges(), 
-                APPLY: () => settingsNotebook.applyChanges(), 
-                CANCEL: () => settingsNotebook.discardChanges(), 
+                OK: () => {}, 
+                APPLY: () => settingsNotebook.setRestorePoint(), 
+                CANCEL: () => settingsNotebook.applyRestorePoint(), 
                 HELP: current.experiment.settings.helpLink,
             }}
         >
