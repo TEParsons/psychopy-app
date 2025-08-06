@@ -45,6 +45,7 @@
         <div class=gap></div>
         <div class=title-btns>
             <button 
+                id=close
                 onclick={() => {
                     shown = false;
                 }}
@@ -78,7 +79,7 @@
                     buttons['YES'](evt);
                     shown = false;
                 }} 
-                primary
+                affirmative
                 horizontal
             ></Button>
             {/if}
@@ -90,6 +91,7 @@
                     shown = false;
                 }} 
                 horizontal
+                negative
             ></Button>
             {/if}
             {#if buttons.OK}

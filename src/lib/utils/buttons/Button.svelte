@@ -12,6 +12,10 @@
         tooltip = undefined,
         /** @prop @type {boolean} Is this button the primary action? */
         primary = false,
+        /** @prop @type {boolean} Is this button an affirmative response? */
+        affirmative = false,
+        /** @prop @type {boolean} Is this button a negative response? */
+        negative = false,
         /** @prop @type {boolean} Set the layout of this button to horizontal */
         horizontal = false,
         /** @prop @type {boolean} Set the layout of this button to vertical */
@@ -28,6 +32,8 @@
     class:vertical
     class:horizontal
     class:primary
+    class:affirmative
+    class:negative
     disabled={disabled}
     onmouseenter={() => {showTooltip = true}}
     onmouseleave={() => {showTooltip = false}}
@@ -66,7 +72,7 @@
         border-radius: .5rem;
         max-width: 100%;
         max-height: 100%;
-        transition: border-color .2s, box-shadow .2s;
+        transition: border-color .2s, box-shadow .2s, background-color .2s, color .2s;
         box-shadow: 
             inset -1px -1px 2px rgba(0, 0, 0, 0.025)
         ;
@@ -104,13 +110,27 @@
         background-color: var(--blue);
         border-width: 0;
     }
-    button:enabled:hover.primary,
-    button:enabled:focus.primary {
+    button:enabled:hover.primary, button:enabled:focus.primary,
+    button:enabled:hover.affirmative, button:enabled:focus.affirmative,
+    button:enabled:hover.negative, button:enabled:focus.negative {
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.1)
         ;
     }
 
+    button:enabled:hover.affirmative,
+    button:enabled:focus.affirmative {
+        color: var(--text-on-blue);
+        background-color: var(--blue);
+        border-color: var(--blue);
+    }
+
+    button:enabled:hover.negative,
+    button:enabled:focus.negative {
+        color: var(--text-on-red);
+        background-color: var(--red);
+        border-color: var(--red);
+    }
 
     button:disabled {
         opacity: 50%;
