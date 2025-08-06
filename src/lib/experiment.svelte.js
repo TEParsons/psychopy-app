@@ -814,6 +814,10 @@ export class Component extends HasParams {
         } else if (startType === "frames") {
             start_secs = startVal / fr;
         }
+        // sub in null for NaN
+        if (isNaN(start_secs)) {
+            start_secs = null;
+        }
 
         return start_secs;
     })

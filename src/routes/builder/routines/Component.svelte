@@ -52,6 +52,7 @@
     class=comp-name 
     for={component.params['name'].val} 
     style="opacity: {component.disabled ? 0.3 : 1}"
+    style:border={hovered ? "1px solid var(--overlay)" : `1px solid var(--base)`}
     draggable="true" 
     onclick={() => {showDialog = true}}
     ondragstart={() => current.moving = component} 
@@ -75,6 +76,9 @@
     <div 
         class=comp-overshoot-bar
         style="background:linear-gradient(-90deg, var(--{component.visualColor}), var(--base));"
+        onmouseenter={() => hovered = true}
+        onmouseleave={() => hovered = false}
+        role="none"
     ></div>
 {/if}
 </div>
@@ -112,6 +116,9 @@
     <div 
         class=comp-overshoot-bar
         style="background:linear-gradient(90deg, var(--{component.visualColor}), var(--base));"
+        onmouseenter={() => hovered = true}
+        onmouseleave={() => hovered = false}
+        role="none"
     ></div>
     {/if}
 </div>
@@ -202,7 +209,8 @@
         justify-items: center;
         grid-column-start: name;
         font-size: 1.2rem;
-        padding: .5rem;
+        padding: .5rem 1rem;
         justify-self: right;
+        border-radius: .5rem;
     }
 </style>

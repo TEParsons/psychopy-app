@@ -56,7 +56,7 @@
 <style>
     .routine-canvas {
         display: grid;
-        grid-template-columns: [entrypoints] 1rem [name] min-content [controls] min-content [undershoot] 3rem [timeline] 1fr [overshoot] 3rem;
+        grid-template-columns: [entrypoints] 1rem [name] min-content [undershoot] 3rem [timeline] 1fr [overshoot] 3rem;
         grid-gap: 0;
         padding-bottom: 2rem;
     }
