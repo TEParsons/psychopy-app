@@ -3,13 +3,15 @@
     import StartStopCtrl from "./StartStopCtrl.svelte";
     import { Notebook, NotebookPage } from "$lib/utils/notebook"
     import { HasParams } from "$lib/experiment.svelte.js";
-    import { onMount } from "svelte";
+    import { getContext, onMount } from "svelte";
 
     let {
         element,
     } = $props();
 
     let temp = $state(new HasParams(element.tag));
+
+    let current = getContext("current")
 
     export function discardChanges(evt) {
         // reset temp params from component to discard any live changes
@@ -25,6 +27,8 @@
     }
 
     export function applyChanges(evt) {
+        // update history
+        current.experiment.history.update();
         // set component params from temp to apply any live changes
         for (let key of Object.keys(temp.params)) {
             // assign values

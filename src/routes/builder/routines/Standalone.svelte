@@ -7,19 +7,6 @@
     } = $props();
 
     let notebook;
-    
-    function discardChanges(evt) {
-        // reset temp params from component to discard any live changes
-        notebook.discardChanges(evt)
-    }
-
-
-    function applyChanges(evt) {
-        // update history
-        current.experiment.history.update();
-        // apply temporary params to component
-        notebook.applyChanges(evt)
-    }
 </script>
 
 <div class=standalone-routine-canvas>
@@ -33,12 +20,12 @@
             label=Apply
             primary
             horizontal
-            onclick={applyChanges} 
+            onclick={(evt) => notebook.applyChanges(evt)} 
         ></Button>
         <Button
             label=Discard
             horizontal
-            onclick={discardChanges} 
+            onclick={(evt) => notebook.discardChanges(evt)} 
         ></Button>
     </div>
 </div>
