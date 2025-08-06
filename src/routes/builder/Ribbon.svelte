@@ -139,7 +139,12 @@
             labels={["Pilot", "Run"]} 
             bind:state={
                 () => current.experiment.pilotMode,
-                (value) => current.experiment.settings.params['runMode'].val = value
+                (value) => {
+                    // update history
+                    current.experiment.history.update()
+                    // set pilot mode
+                    current.experiment.settings.params['runMode'].val = value;
+                }
             } 
             disabled={current.experiment === null}
         />        
