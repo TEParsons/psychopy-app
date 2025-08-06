@@ -180,23 +180,20 @@ export class Experiment {
         let main = doc.createElement("PsychoPy2experiment");
         main.setAttribute("encoding", "utf-8");
         main.setAttribute("version", this.version);
-
         // create settings node
         let settingsNode = this.settings.toXML();
         settingsNode.removeAttribute("name");
         settingsNode.removeAttribute("plugin");
         main.appendChild(settingsNode);
-
         // create routines node
         let routinesNode = doc.createElement("Routines");
-        for (let [name, routine] of [...this.routines]) {
+        for (let [name, routine] of Object.entries(this.routines)) {
             // get xml of each routine
             routinesNode.appendChild(
                 routine.toXML()
             )
         }
         main.appendChild(routinesNode)
-
         // create flow node
         let flowNode = this.flow.toXML()
         main.appendChild(flowNode)
@@ -1193,6 +1190,23 @@ export class LoopInitiator extends HasParams {
         this.terminator.name = this.name;
         this.terminator.exp = this.exp;
         this.terminator.initiator = this;
+    }
+
+    toXML() {
+        // get node via parent method
+        let node = super.toXML()
+        // create a new node with the correct tag
+        let newNode = node.ownerDocument.createElement("LoopInitiator")
+        // copy inner content
+        newNode.innerHTML = node.innerHTML
+        // copy attributes
+        for (let attr of node.attributes) {
+            newNode.setAttribute(attr.name, attr.value)
+        }
+        // put tag in loopType instead
+        newNode.setAttribute("loopType", this.tag);
+
+        return newNode
     }
 }
 
