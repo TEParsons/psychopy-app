@@ -6,7 +6,6 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let {
         element
@@ -22,7 +21,7 @@
 
     function removeRoutine(evt) {
         // update history
-        actions.update();
+        current.experiment.history.update();
         // move dragged routine to new position in the flow
         current.experiment.flow.removeElement(element.index)
     }

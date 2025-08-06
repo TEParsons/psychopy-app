@@ -10,7 +10,6 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let {
         element=undefined
@@ -27,7 +26,7 @@
 
     function removeLoop(evt) {
         // update history
-        actions.update();
+        current.experiment.history.update();
         // remove from experiment
         if (element.name in current.experiment.loops) {
             delete current.experiment.loops[element.name]

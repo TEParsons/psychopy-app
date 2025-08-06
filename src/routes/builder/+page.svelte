@@ -6,12 +6,11 @@
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
-    import { current, actions } from "./globals.svelte.js";
+    import { current } from "./globals.svelte.js";
     import { setContext } from 'svelte';
 
-    // reference current and actions in context for ease of access
+    // reference current in context for ease of access
     setContext("current", current)
-    setContext("actions", actions)
 </script>
 
 <title>PsychoPy Builder: {current.experiment.filename}</title>

@@ -5,7 +5,6 @@
     import { getContext } from "svelte";
 
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let {
         component
@@ -22,7 +21,7 @@
 
     function newRoutine() {
         // update history
-        actions.update()
+        current.experiment.history.update()
         // create a new StandaloneRoutine
         let rt = new StandaloneRoutine(component['__name__'])
         rt.exp = current.experiment;

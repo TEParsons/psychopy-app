@@ -7,6 +7,30 @@ export class Experiment {
     routines = $state({})
     loops = $state({})
 
+    /** store past and future states for this experiment */
+    history = $state({
+        past: [],
+        future: [],
+        update: () => {
+            // store experiment state
+            this.history.past.push(
+                this.toJSON()
+            )
+            // limit to 16 items to save memory
+            while (this.history.past.length >= 16) {
+                delete this.history.past[0]
+                this.history.past = this.history.past.slice(1);
+            }
+            // clear future
+            this.history.future = []
+        },
+        clear: () => {
+            // clear arrays for past and future
+            this.history.past = []
+            this.history.future = []
+        }
+    })
+
     /**
      *
      * @param {String} filename Name of the experiment file

@@ -23,7 +23,6 @@
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
 
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let showMenu = $state(false);
 
@@ -56,7 +55,7 @@
                     icon="/icons/{theme}/btn-save.svg" 
                     label="Save file" 
                     onclick={file_save} 
-                    disabled={!actions.past.length} 
+                    disabled={!current.experiment.history.past.length} 
                 />
                 <MenuItem 
                     icon="/icons/{theme}/btn-saveas.svg" 
@@ -81,7 +80,7 @@
             icon="/icons/{theme}/btn-save.svg" 
             label="Save file" 
             onclick={file_save}
-            disabled={!actions.past.length} 
+            disabled={!current.experiment.history.past.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-saveas.svg" 
@@ -95,13 +94,13 @@
             icon="/icons/{theme}/btn-undo.svg" 
             label="Undo" 
             onclick={undo} 
-            disabled={current.file === null || !actions.past.length} 
+            disabled={current.file === null || !current.experiment.history.past.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-redo.svg" 
             label="Redo" 
             onclick={redo} 
-            disabled={current.file === null || !actions.future.length} 
+            disabled={current.file === null || !current.experiment.history.future.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-find.svg" 

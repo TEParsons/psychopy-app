@@ -5,14 +5,11 @@
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
-    import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
 
     let {
         routine=undefined
     } = $props()
-
-    let actions = getContext("actions")
 
     let showDialog = $state(false)
     let settingsNotebook;

@@ -4,7 +4,6 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");
     
     let {
         routine,
@@ -26,7 +25,7 @@
     function insertHere(evt) {
         evt.preventDefault();
         // update history
-        actions.update();
+        current.experiment.history.update();
         // if moving, relocate to here
         if (current.moving) {
             // move component

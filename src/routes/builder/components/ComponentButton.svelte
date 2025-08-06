@@ -7,7 +7,6 @@
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
     
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let {
         component

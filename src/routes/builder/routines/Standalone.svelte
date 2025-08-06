@@ -1,9 +1,6 @@
 <script>
     import { ParamsNotebook } from "$lib/utils/paramCtrls";
     import { Button } from '$lib/utils/buttons';
-    import { getContext } from 'svelte';
-
-    let actions = getContext("actions");
 
     let {
         component
@@ -19,7 +16,7 @@
 
     function applyChanges(evt) {
         // update history
-        actions.update();
+        current.experiment.history.update();
         // apply temporary params to component
         notebook.applyChanges(evt)
     }

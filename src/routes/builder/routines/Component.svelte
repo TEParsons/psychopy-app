@@ -8,7 +8,6 @@
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     
     let current = getContext("current");
-    let actions = getContext("actions");
 
     let {
         component,
@@ -39,7 +38,7 @@
 
     function removeComponent() {
         // update history
-        actions.update();
+        current.experiment.history.update();
         // remove from Routine
         routine.removeComponent(component);
     }

@@ -6,7 +6,6 @@
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");    
     let notebook;
 
     let element = $state(
@@ -17,7 +16,7 @@
         // apply temporary params to loop
         notebook.applyChanges()
         // update history
-        actions.update()
+        current.experiment.history.update()
         // add to experiment
         element.exp = current.experiment
         current.experiment.loops[element.name] = element

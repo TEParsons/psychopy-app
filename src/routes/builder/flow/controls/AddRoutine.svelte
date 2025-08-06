@@ -8,7 +8,6 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");
         
     let notebook;
 

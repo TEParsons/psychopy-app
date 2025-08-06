@@ -1,4 +1,4 @@
-import { current, actions } from './globals.svelte.js';
+import { current } from './globals.svelte.js';
 import { Experiment } from "$lib/experiment.svelte.js";
 import xmlFormat from 'xml-formatter';
 
@@ -10,7 +10,7 @@ export function file_new() {
     // create blank experiment
     current.experiment = new Experiment("untitled.psyexp")
     // mark as no longer modified
-    actions.clear()
+    current.experiment.history.clear()
 }
 
 export async function file_open() {
@@ -39,7 +39,7 @@ export async function file_open() {
         current.routine = undefined;
     }
     // mark as no longer modified
-    actions.clear()
+    current.experiment.history.clear()
 
     console.log(`Loaded experiment ${file.name}:`, current.experiment);
 }
@@ -60,7 +60,7 @@ export async function file_save() {
     file.write(content);
     file.close();
     // mark as no longer modified
-    actions.clear()
+    current.experiment.history.clear()
 }
 
 export async function file_save_as() {
@@ -82,11 +82,11 @@ export async function file_save_as() {
 
 /* Edit */
 export function undo() {
-    actions.undo();
+    current.undo();
 }
 
 export function redo() {
-    actions.redo();
+    current.redo();
 }
 
 /* Experiment */

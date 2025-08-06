@@ -3,7 +3,6 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-    let actions = getContext("actions");
     
     let {
         index=undefined
@@ -30,7 +29,7 @@
 
     function insertHere(evt) {
         // update history
-        actions.update();
+        current.experiment.history.update();
         // if dragging, move dragged element here
         if (current.moving) {
             // relocate it

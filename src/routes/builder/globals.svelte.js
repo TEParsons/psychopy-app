@@ -6,50 +6,29 @@ export let current = $state({
     experiment: new Experiment("untitled.psyexp"),
     routine: undefined,
     moving: undefined,
-    inserting: undefined
-})
-export let actions = $state({
-    past: [],
-    future: [],
-    update: () => {
-        // store experiment state
-        actions.past.push(
-            current.experiment.toJSON()
-        )
-        // limit to 16 items to save memory
-        while (actions.past.length >= 16) {
-            delete actions.past[0]
-            actions.past = actions.past.slice(1);
-        }
-        // clear future
-        actions.future = []
-    },
+    inserting: undefined,
     undo: () => {
         // do nothing if we have no past
-        if (!actions.past) {
+        if (!current.experiment.history.past) {
             return
         }
         // store present as future
-        actions.future.push(
+        current.experiment.history.future.push(
             current.experiment.toJSON()
         )
         // restore last state
         current.experiment = Experiment.fromJSON(
-            actions.past.pop()
+            current.experiment.history.past.pop()
         )
     },
     redo: () => {
         // do nothin if we have no future
-        if (!actions.future) {
+        if (!current.experiment.history.future) {
             return
         }
         // restore next state
         current.experiment = Experiment.fromJSON(
-            actions.future.shift()
+            current.experiment.history.future.shift()
         )
-    },
-    clear: () => {
-        actions.past = []
-        actions.future = []
     }
 })
