@@ -66,18 +66,38 @@ export class Experiment {
      * @param {String} filename Name of the experiment file
      */
     constructor(filename) {
-        // store filename
-        this.filename = filename;
         // create attributes
-        this.version = undefined;
         this.settings = new Component("SettingsComponent")
         this.flow = new Flow(this);
-        // placeholder Routine
+        // starting defaults
+        this.reset()
+        // set filename
+        this.filename = filename;
+    }
+
+    /**
+     * Reset this Experiment as if from new
+     */
+    reset() {
+        // set filename to untitled
+        this.filename = "untitled.psyexp"
+        // set to current version
+        this.version = "2026.1.0"
+        // clear history
+        this.history.clear()
+        // reset settings
+        this.settings.reset()
+        // remove all routines
+        Object.keys(this.routines).forEach((key) => delete this.routines[key])
+        // clear the flow
+        this.flow.clear()
+        // add a default routine
         let trial = new Routine();
         trial.exp = this;
         trial.name = "trial";
         this.routines['trial'] = trial
         this.flow.flat.push(trial)
+        // 
     }
 
     pilotMode = $derived(this.settings.params['runMode'].val)
@@ -643,6 +663,14 @@ export class HasParams {
     constructor(tag) {
         // store tag
         this.tag = tag === "Settings" ? "SettingsComponent" : tag;
+        // start off blank
+        this.reset()
+    }
+
+    /**
+     * Reset this elements parameters to a template
+     */
+    reset() {
         // get template
         let template
         if (this.tag in ComponentProfiles) {
@@ -655,6 +683,8 @@ export class HasParams {
         }
         // set plugin
         this.plugin = template.plugin;
+        // clear params
+        Object.keys(this.params).forEach((key) => delete this.params[key])
         // iterate through params in relevant template
         for (let [name, profile] of Object.entries(
             template.params || {}
@@ -929,31 +959,18 @@ export class Flow {
         this.exp = exp;
     }
 
-    flatten() {
-        this.flat = [];
-        for (let rt of this.dynamic) {
-            if (rt instanceof FlowLoop) {
-                this.flat.push(rt.initiator);
-                for (let subrt of rt.flatten()) {
-                    this.flat.push(subrt);
-                }
-                if (rt.terminator !== undefined) {
-                    this.flat.push(rt.terminator);
-                }
-            } else {
-                this.flat.push(rt);
-            }
-        }
+    /**
+     * Remove all items from the flow
+     */
+    clear() {
+        this.flat.length = 0
     }
 
     removeElement(index) {
         // convert index to int
         index = parseInt(index)
         // pop from flat array
-        this.flat = Array.prototype.concat(
-            this.flat.slice(0, index),
-            this.flat.slice(index+1)
-        )
+        this.flat.splice(index, 1)
     }
 
     relocateElement(element, toIndex) {
@@ -1010,7 +1027,7 @@ export class Flow {
 
     fromJSON(node) {
         // clear self
-        this.flat = [];
+        this.clear()
         // object to reference initiators as they're created
         let initiators = {}
         // iterate through items in node
@@ -1076,7 +1093,7 @@ export class Flow {
 
     fromXML(node) {
         // clear self
-        this.flat = [];
+        this.clear();
         // object to reference initiators as they're created
         let initiators = {}
         // iterate through items in node

@@ -6,11 +6,12 @@ import xmlFormat from 'xml-formatter';
 /* File */
 
 export function file_new() {
+    // clear current file
     current.file = null;
-    // create blank experiment
-    current.experiment = new Experiment("untitled.psyexp")
-    // mark as no longer modified
-    current.experiment.history.clear()
+    // clear experiment
+    current.experiment.reset()
+    // focus trial
+    current.routine = current.experiment.routines['trial']
 }
 
 export async function file_open() {
