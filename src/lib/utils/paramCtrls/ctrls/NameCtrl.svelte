@@ -1,23 +1,14 @@
 <script>
-    import TextInput from "./elements/TextInput.svelte";
+    import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
         param
     } = $props()
-
-    export function validate(param) {
-        return !String(param.val).includes(" ")
-    }
-
 </script>
 
-<div class="name-ctrl param-value">
-    <TextInput
-        param={param}
-        validate={validate}
-    ></TextInput>
-</div>
-
-<style>
-    @import url("./paramCtrl.css");
-</style>
+<SingleLineCtrl
+    param={param}
+    checkCode={(param) => false}
+    validate={(param) => !String(param.val).includes(" ")}
+    codeIndicator={false}
+/>

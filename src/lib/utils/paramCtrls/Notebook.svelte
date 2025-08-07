@@ -1,5 +1,5 @@
 <script>
-    import ParamCtrl from "./Ctrl.svelte";
+    import ParamCtrl from "./ParamCtrl.svelte";
     import StartStopCtrl from "./StartStopCtrl.svelte";
     import { Notebook, NotebookPage } from "$lib/utils/notebook"
     import { getContext } from "svelte";
@@ -76,7 +76,7 @@
         display: grid;
         grid-auto-flow: row;
         align-content: start;
-        grid-gap: .5rem;
+        gap: 1rem;
         width: 45rem;
         box-sizing: border-box;
         padding: 1rem;

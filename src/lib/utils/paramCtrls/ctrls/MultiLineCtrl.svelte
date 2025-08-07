@@ -1,14 +1,53 @@
 <script>
-    export let param;
+    let {
+        /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
+        param,
+        /** @prop @type {Function} Function to check whether this param's value is valid */
+        validate = (param) => true,
+        /** @prop @type {Function} Function to check whether this param is code */
+        checkCode = (param) => ["code", "extendedCode"].includes(param.valType) || String(param.val).startsWith("$"),
+        /** @prop @type {Boolean} Should the code indicator ($) be shown? */
+        codeIndicator = ["code", "extendedCode"].includes(param.valType)
+    } = $props()
+
+    let isCode = $derived(checkCode(param));
+    let isValid = $derived(validate(param));
 </script>
 
-<textarea class=param-value bind:value={param.val}></textarea>
+{#if codeIndicator}
+<span 
+    class=code-indicator
+>
+    $
+</span>
+{/if}
+<textarea 
+    class=param-text-input-multi
+    bind:value={param.val} 
+    class:valid={isValid} 
+    class:code={isCode} 
+>
+<textarea></textarea>
 
 <style>
-    @import url("paramCtrl.css");
-
-    .param-value {
+    textarea {
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+        flex-grow: 1;
+        min-height: 10rem;
         resize: vertical;
-        min-height: 5rem;
+    }
+    textarea:not(.valid) {
+        color: var(--red);
+    }
+    textarea.code {
+        font-family: var(--mono);
+        font-weight: bold;
+    }
+
+    .code-indicator {
+        align-self: center;
     }
 </style>

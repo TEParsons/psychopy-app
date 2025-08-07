@@ -1,39 +1,26 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
-    import { writable } from "svelte/store";
-    import { Button, TextInput } from "./elements";
-    export let param;
+    import SingleLineCtrl from "./SingleLineCtrl.svelte"
 
-    let ctrl;
-    let isValid = writable(true);
-
-    function getFile() {
-        // todo: add functionality to get file
-        return
-    }
-
-    function validate() {
-        if (!String(param.val).includes("/")) {
-            isValid.set(false)
-        }
-    }
+    let {
+        /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
+        param,
+        /** @prop @type {Function} Function to check whether this param's value is valid */
+        validate = (param) => true,
+        /** @prop @type {Function} Function to check whether this param is code */
+        checkCode = (param) => ["code", "extendedCode"].includes(param.valType) || String(param.val).startsWith("$"),
+        /** @prop @type {Boolean} Should the code indicator ($) be shown? */
+        codeIndicator = ["code", "extendedCode"].includes(param.valType)
+    } = $props()
 </script>
 
-<div class="file-ctrl param-value">
-    <TextInput 
-        param={param} 
-        bind:ctrl={ctrl} 
-        bind:isValid={isValid}
-        on:input={validate}
-    />
-    <Button icon="/icons/{theme}/btn-open.svg" on:click={getFile}/>
-</div>
-
-<style>
-    @import url("paramCtrl.css");
-
-    .file-ctrl {
-        grid-template-columns: auto min-content;
-    }
-
-</style>
+<SingleLineCtrl 
+    param={param} 
+    validate={validate}
+    checkCode={checkCode}
+    codeIndicator={codeIndicator}
+/>
+<button 
+    icon="/icons/{theme}/btn-open.svg" 
+    on:click={getFile}
+/>

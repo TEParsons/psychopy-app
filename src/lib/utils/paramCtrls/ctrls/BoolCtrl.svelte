@@ -1,17 +1,18 @@
 <script>
-    export let param;
-
-    import { Checkbox } from "./elements";
+    let {
+        param
+    } = $props()
 </script>
 
-<Checkbox param={param}></Checkbox>
+<input 
+    class=param-bool-input 
+    type="checkbox" 
+    bind:checked={param.val} 
+/>
 
 <style>
-    @import url("paramCtrl.css");
-
-    .param-value {
-        grid-row-start: label;
-        grid-column-start: before;
-        grid-column-end: before;
-    }
+input[type=checkbox] {
+    flex-grow: 0;
+    align-self: center;
+}
 </style>
