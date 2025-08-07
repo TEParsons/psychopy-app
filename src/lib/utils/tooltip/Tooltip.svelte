@@ -19,7 +19,9 @@
         transition:slide={{axis: "x", delay: delay}}
         style:inset={{
             "top": "auto auto calc(100% + .5rem) 0",
+            "top-right": "auto 0 calc(100% + .5rem) auto",
             "bottom": "calc(100% + .5rem) auto auto 0",
+            "bottom-right": "calc(100% + .5rem) 0 auto auto",
             "left": "auto calc(100% + .5rem) auto auto",
             "right": "auto auto auto calc(100% + .5rem)",
         }[position]}

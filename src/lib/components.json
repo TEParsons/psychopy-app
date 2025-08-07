@@ -4313,7 +4313,18 @@
    "image": {
     "val": "",
     "categ": "Basic",
-    "allowedVals": [],
+    "allowedVals": [
+        {
+            "image/png": [".png"],
+            "image/bmp": [".bmp"],
+            "image/jpeg": [".jpeg", ".jpg"],
+            "image/gif": [".gif"],
+            "image/avif": [".avif"]
+        }
+    ],
+    "allowedLabels": [
+        "Images"
+    ],
     "valType": "file",
     "inputType": "file",
     "updates": "constant",
