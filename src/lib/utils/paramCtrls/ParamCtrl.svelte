@@ -39,7 +39,7 @@
             </Tooltip>
         {/if}
     </label>
-    {#if param.allowedUpdates}
+    {#if param.allowedUpdates && param.allowedUpdates.length > 0}
         <select 
             class=param-updates 
             id="{name}-updates" 
