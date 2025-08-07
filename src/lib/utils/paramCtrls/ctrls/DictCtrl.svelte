@@ -2,32 +2,12 @@
     import { Param } from "$lib/experiment.svelte";
     import { theme } from "$lib/globals.svelte";
     import { ParamCtrlButton } from "$lib/utils/buttons";
+    import { iterateName } from "./utils.js";
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
         param
     } = $props()
-
-    /**
-     * Iterate a name by +1 (e.g. "field_1" becomes "field_2")
-     * 
-     * @param name Name to be iterated
-     */
-    function iterateName(name) {
-        if (name.match(/\d+$/)) {
-            // if name ends with a number, iterate it
-            return name.replace(
-                /(\d+$)/,
-                (num) => String(
-                    parseInt(num) + 1
-                )
-            )
-        } else {
-            // otherwise, add a number
-            return name + "_1"
-        }
-        
-    }
     
     // make sure param val is always an object rather than a string
     $effect(() => {

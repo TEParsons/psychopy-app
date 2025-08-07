@@ -1,0 +1,56 @@
+/**
+ * Iterate a name by +1 (e.g. "field_1" becomes "field_2")
+ * 
+ * @param name Name to be iterated
+ */
+export function iterateName(name) {
+    if (name.match(/\d+$/)) {
+        // if name ends with a number, iterate it
+        return name.replace(
+            /(\d+$)/,
+            (num) => String(
+                parseInt(num) + 1
+            )
+        )
+    } else {
+        // otherwise, add a number
+        return name + "_1"
+    }
+    
+}
+
+/**
+ * Get an object mapping options from a parameter
+ * 
+ * @param param Param to get options for
+ */
+export function optionsFromParam(param) {
+        let output = {};
+        // if either allowed labels or values are a Python function, execute it
+        if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
+            // placeholder: include raw value
+            param.allowedVals = [param.allowedVals]
+        }
+        if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
+            // placeholder: leave blank
+            param.allowedVals = [param.allowedVals]
+        }
+        // if no allowed labels, use allowed values
+        if (!param.allowedLabels) {
+            param.allowedLabels = param.allowedVals;
+        }
+        // if no allowed values, use allowed labels
+        if (!param.allowedVals) {
+            param.allowedVals = param.allowedLabels;
+        }
+        // if no allowed values or labels, there's no options
+        if (!param.allowedVals && !param.allowedLabels) {
+            return output;
+        }
+        // add allowed vals & labels to options
+        for (let i in param.allowedVals) {
+            output[param.allowedVals[i]] = param.allowedLabels[i];
+        }
+        
+        return output
+    }
