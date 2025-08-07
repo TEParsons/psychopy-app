@@ -4,6 +4,7 @@ export { default as NameCtrl } from "./NameCtrl.svelte";
 export { default as BoolCtrl } from "./BoolCtrl.svelte";
 export { default as ChoiceCtrl } from "./ChoiceCtrl.svelte";
 export { default as FileCtrl } from "./FileCtrl.svelte";
+export { default as DictCtrl } from "./DictCtrl.svelte";
 // export { default as ColorCtrl } from "./ColorCtrl.svelte";
 
 import {
@@ -20,7 +21,7 @@ import {
     // FileListCtrl,
     // TableCtrl,
     // ColorCtrl,
-    // DictCtrl,
+    DictCtrl,
     // InvalidCtrl,
 } from ".";
 
@@ -39,6 +40,6 @@ export var mapping = {
     // "fileList": FileListCtrl,
     // "table": TableCtrl,
     // "color": ColorCtrl,
-    // "dict": DictCtrl,
+    "dict": DictCtrl,
     // "inv": InvalidCtrl
 }

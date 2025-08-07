@@ -33,7 +33,7 @@ export async function file_open() {
     let document = xml_parser.parseFromString(await file.text(), "application/xml");
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment.fromXML(file.name, node);
+    current.experiment.fromXML(file.name.replace(".psyexp", ""), node);
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
@@ -53,15 +53,21 @@ export async function file_save() {
     let content = ser.serializeToString(node)
     // make human readable
     content = xmlFormat(content)
-    // get file writable from handle
-    let handle = current.file
-    let file = await handle.createWritable();
-    // write to file
-    file.seek(0);
-    file.write(content);
-    file.close();
-    // mark as no longer modified
-    current.experiment.history.clear()
+    // diverge here based on whether there is a current file...
+    if (current.file) {
+        // get file writable from handle
+        let handle = current.file
+        let file = await handle.createWritable();
+        // write to file
+        file.seek(0);
+        file.write(content);
+        file.close();
+        // mark as no longer modified
+        current.experiment.history.clear()
+    } else {
+        await file_save_as()
+    }
+    
 }
 
 export async function file_save_as() {

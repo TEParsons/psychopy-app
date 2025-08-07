@@ -22,6 +22,7 @@
     onmouseleave={() => {showTooltip = false}}
     onfocusin={() => {showTooltip = true}}
     onfocusout={() => {showTooltip = false}}
+    style:z-index={showTooltip ? 10 : "inherit"}
 >
     {#if tooltip}
     <Tooltip

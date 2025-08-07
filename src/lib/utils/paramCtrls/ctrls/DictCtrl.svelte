@@ -1,0 +1,143 @@
+<script>
+    import { Param } from "$lib/experiment.svelte";
+    import { theme } from "$lib/globals.svelte";
+    import { ParamCtrlButton } from "$lib/utils/buttons";
+    import SingleLineCtrl from "./SingleLineCtrl.svelte";
+
+    let {
+        param
+    } = $props()
+
+    /**
+     * Iterate a name by +1 (e.g. "field_1" becomes "field_2")
+     * 
+     * @param name Name to be iterated
+     */
+    function iterateName(name) {
+        if (name.match(/\d+$/)) {
+            // if name ends with a number, iterate it
+            return name.replace(
+                /(\d+$)/,
+                (num) => String(
+                    parseInt(num) + 1
+                )
+            )
+        } else {
+            // otherwise, add a number
+            return name + "_1"
+        }
+        
+    }
+    
+    // make sure param val is always an object rather than a string
+    $effect(() => {
+        if (typeof param.val === "string") {
+            // sanitize value
+            let value = String(param.val).replaceAll(
+                // identify key:value pairs with single quotes
+                /'(.*?)': *'(.*?)'/g, 
+                (_, key, val) => {
+                    // escape any double quotes inside the key and value
+                    key = key.replaceAll(
+                        /(?<!\\)"/g,
+                        "\\\""
+                    )
+                    val = val.replaceAll(
+                        /(?<!\\)"/g,
+                        "\\\""
+                    )
+                    // return the key:value pair with double quotes (i.e. JSON friendly)
+                    return `"${key}": "${val}"`
+                }
+            )
+            // parse JSON
+            param.val = JSON.parse(value)
+        }
+    })
+
+    let entries = $derived.by(() => {
+        let entries = []
+        // make a param for each entry
+        for (let [key, val] of Object.entries(param.val)) {
+            entries[key] = new Param(`${key}:value`);
+            entries[key].val = val;
+            entries[key].valType = "code"
+        }
+        
+        return Object.entries(entries)
+    })
+</script>
+
+<div class=dict-ctrl-layout>
+    {#each entries as [label, value]}
+        <input
+            bind:value={
+                () => label,
+                (value) => {
+                    // iterate name to avoid duplication
+                    while (value in param.val) {
+                        value = iterateName(value)
+                    }
+                    // get keys and values in param val
+                    let keys = Object.keys(param.val);
+                    let values = Object.values(param.val)
+                    // switch out name
+                    keys[keys.indexOf(label)] = value;
+                    // clear param val
+                    param.val = {}
+                    // apply new key:value pairs
+                    for (let i in keys) {
+                        param.val[keys[i]] = values[i]
+                    };
+                }
+            }
+        />
+        <span
+            class=dict-ctrl-label
+        >
+            :
+        </span>
+        <SingleLineCtrl
+            param={value}
+            codeIndicator={false}
+        />
+        <ParamCtrlButton
+            icon="/icons/{theme}/btn-delete.svg"
+            onclick={(evt) => {
+                delete param.val[label]
+            }}
+            tooltip="Remove item"
+        />
+    {/each}
+    <div class=gap></div>
+    <div class=gap></div>
+    <div class=gap></div>
+    <ParamCtrlButton
+        icon="/icons/{theme}/btn-add.svg"
+        onclick={(evt) => {
+            // enumerate field name to avoid duplication
+            let key = "field";
+            while (key in param.val) {
+                key = iterateName(key)
+            }
+            // add field
+            param.val[key] = "\"default\"";
+        }}
+        tooltip="Add item"
+    />
+</div>
+
+<style>
+    .dict-ctrl-layout {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: [key] auto [colon] min-content [value] auto [delete] min-content;
+        gap: .5rem;
+    }
+    .dict-ctrl-label {
+        align-self: center;
+        justify-self: end;
+        font-family: var(--mono);
+        color: var(--outline)
+    }
+</style>

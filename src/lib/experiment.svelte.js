@@ -81,7 +81,7 @@ export class Experiment {
      */
     reset() {
         // set filename to untitled
-        this.filename = "untitled.psyexp"
+        this.filename = "untitled"
         // set to current version
         this.version = "2026.1.0"
         // clear history
