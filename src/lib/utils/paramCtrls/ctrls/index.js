@@ -6,6 +6,7 @@ export { default as ChoiceCtrl } from "./ChoiceCtrl.svelte";
 export { default as FileCtrl } from "./FileCtrl.svelte";
 export { default as DictCtrl } from "./DictCtrl.svelte";
 export { default as MultipleChoiceCtrl } from "./MultipleChoiceCtrl.svelte";
+export { default as TableCtrl } from "./TableCtrl.svelte";
 
 import {
     SingleLineCtrl,
@@ -19,7 +20,7 @@ import {
     // FontCtrl,
     // SurveyCtrl,
     // FileListCtrl,
-    // TableCtrl,
+    TableCtrl,
     // ColorCtrl,
     DictCtrl,
     // InvalidCtrl,
@@ -38,7 +39,7 @@ export var mapping = {
     // "font": FontCtrl,
     // "survey": SurveyCtrl,
     // "fileList": FileListCtrl,
-    // "table": TableCtrl,
+    "table": TableCtrl,
     // "color": ColorCtrl,
     "dict": DictCtrl,
     // "inv": InvalidCtrl
