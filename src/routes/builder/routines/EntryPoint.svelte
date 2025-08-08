@@ -30,7 +30,7 @@
             // update history
             current.experiment.history.update(`move ${current.moving.name}`);
             // move component
-            routine.relocateComponent(current.moving.index, index);
+            current.moving.routine.relocateComponent(current.moving.index, index, routine);
             // we're done moving
             current.moving = undefined;
         }

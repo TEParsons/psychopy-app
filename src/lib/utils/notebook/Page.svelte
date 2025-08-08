@@ -54,9 +54,8 @@
 <button
     class="notebook-tab"
     class:current={selected}
-    onclick={() => {
-        selected = true;
-    }}
+    onclick={() => selected = true}
+    ondragover={() => selected = true}
     bind:this={handle}
 >
     {#if icon}

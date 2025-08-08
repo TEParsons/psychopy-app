@@ -378,12 +378,12 @@ export class Routine {
         }
     }
 
-    relocateComponent(fromIndex, toIndex) {
+    relocateComponent(fromIndex, toIndex, toRoutine=this) {
         // convert indices to int
         fromIndex = parseInt(fromIndex)
         toIndex = parseInt(toIndex)
         // if this changes the indices, adjust
-        if (toIndex > fromIndex) {
+        if (toIndex > fromIndex && toRoutine === this) {
             toIndex -= 1;
         }
         // if toIndex was -1, move to end
@@ -394,7 +394,7 @@ export class Routine {
         let emt = this.components[fromIndex]
         this.removeComponent(emt)
         // insert back in at new position
-        this.insertComponent(emt, toIndex)
+        toRoutine.insertComponent(emt, toIndex)
     }
 
     /**

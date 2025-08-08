@@ -1,6 +1,6 @@
 button {
     position: relative;
-    background-color: var(--base);
+    background-color: transparent;
     border: 1px solid var(--overlay);
     border-radius: .5rem;
     transition: border-color .2s, box-shadow .2s, background-color .2s, color .2s;
