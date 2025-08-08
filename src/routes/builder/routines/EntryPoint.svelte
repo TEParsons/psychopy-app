@@ -28,7 +28,7 @@
         // if moving, relocate to here
         if (current.moving) {
             // update history
-            current.experiment.history.update(`insert ${current.moving.name}`);
+            current.experiment.history.update(`move ${current.moving.name}`);
             // move component
             routine.relocateComponent(current.moving.index, index);
             // we're done moving

@@ -28,11 +28,10 @@
     )
 
     function insertHere(evt) {
-        
         // if dragging, move dragged element here
         if (current.moving) {
             // update history
-            current.experiment.history.update(`insert ${current.moving.name} into flow`);
+            current.experiment.history.update(`move ${current.moving.name} in flow`);
             // relocate it
             current.experiment.flow.relocateElement(current.moving, index)
             // done dragging
@@ -42,20 +41,6 @@
         if (current.inserting) {
             // update history
             current.experiment.history.update(`insert ${current.inserting.name} into flow`);
-            // if inserting a terminator, make sure it's after the initiator
-            if (current.inserting instanceof LoopTerminator) {
-                if (0 < index < current.inserting.initiator.index) {
-                    // get index of initiator
-                    let ogIndex = $state.snapshot(current.inserting.initiator.index)
-                    // move initiator to requested index
-                    current.experiment.flow.relocateElement(
-                        current.inserting.initiator, 
-                        index
-                    )
-                    // insert at the initiator's old index
-                    index = ogIndex + 1
-                }
-            }
             // insert
             current.experiment.flow.insertElement(current.inserting, index);
             // next steps depend on type of element inserted
@@ -66,6 +51,28 @@
             } else {
                 // done inserting
                 current.inserting = undefined;
+            }
+        }
+        // make sure no loops are broken
+        for (let i in current.experiment.flow.flat) {
+            let node = current.experiment.flow.flat[i]
+            // only interested in loop terminators
+            if (!(node instanceof LoopTerminator)) {
+                continue
+            }
+            // only interested if terminator is in front of initiator
+            console.log(node.index, node.initiator.index)
+            if (node.index < node.initiator.index) {
+                // relocate this terminator to where the initiator is
+                current.experiment.flow.relocateElement(
+                    node,
+                    $state.snapshot(node.initiator.index)
+                )
+                // relocate the initiator to here
+                current.experiment.flow.relocateElement(
+                    node.initiator,
+                    i
+                )
             }
         }
     }

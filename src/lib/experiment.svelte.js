@@ -47,7 +47,6 @@ export class Experiment {
                 msg: last.msg, 
                 state: this.toJSON()
             })
-            console.log("HIT")
             // restore last state
             this.fromJSON(
                 last.state

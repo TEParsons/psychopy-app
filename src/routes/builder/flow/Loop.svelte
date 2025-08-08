@@ -72,7 +72,14 @@
         </button>
         
     {/if}
-    <img class=loop-arrow src="/icons/{theme}/sym-arrow-up.svg" alt="<"/>
+    <img 
+        class="loop-arrow left"
+        src="/icons/{theme}/sym-arrow-up.svg" 
+        alt="^"
+        draggable
+        ondragstart={() => current.moving = element.initiator} 
+        ondragend={() => current.moving = undefined} 
+    />
     {#if element}
         {#each element.routines as rt}
             {#if rt instanceof FlowLoop}
@@ -82,6 +89,14 @@
             {/if}
         {/each}
     {/if}
+    <img 
+        class="loop-arrow right"
+        src="/icons/{theme}/sym-arrow-down.svg" 
+        alt="v"
+        draggable
+        ondragstart={() => current.moving = element.terminator} 
+        ondragend={() => current.moving = undefined} 
+    />
     {#if element.complete}
         <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}
@@ -159,6 +174,14 @@
         right: 100%;
         top: 50%;
         transform: translateX(calc(50% - .5px)) translateY(-50%);
+    }
+    .loop-arrow.left {
+        right: 100%;
+        transform: translateX(calc(50% - .5px)) translateY(-50%);
+    }
+    .loop-arrow.right {
+        left: 100%;
+        transform: translateX(calc(-50% + .5px)) translateY(-50%);
     }
 
     .loop.incomplete {

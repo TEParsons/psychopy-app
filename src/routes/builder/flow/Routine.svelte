@@ -31,7 +31,7 @@
 <EntryPoint index={element.index}></EntryPoint>
 <button 
     class=routine 
-    draggable=true
+    draggable
     onmouseenter={() => {showTooltip = true}}
     onmouseleave={() => {showTooltip = false}}
     onfocusin={() => {showTooltip = true}}
