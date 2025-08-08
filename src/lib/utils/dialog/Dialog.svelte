@@ -44,7 +44,6 @@
 <dialog 
     id={id} 
     bind:this={handle}
-    style:height={shrink ? "fit-content" : "80vh"}
 >
     <div class="title">
         <label for={id}>{title}</label>
@@ -63,7 +62,10 @@
             </button>
         </div>
     </div>
-    <div class="content">
+    <div 
+        class="content"
+        style:height={shrink ? "fit-content" : "80vh"}
+    >
         {@render children?.()}
     </div>
     <div class="buttons">
@@ -152,11 +154,10 @@
         padding: 0;
         border: 1px solid var(--outline);
         width: fit-content;
+        height: fit-content;
     }
     dialog .content {
         position: relative;
-        height: 100%;
-        width: 100%;
         overflow-y: auto;
     }
     dialog .title {
@@ -193,7 +194,7 @@
     .buttons {
         display: grid;
         grid-template-columns: [extra] min-content [gap] auto [standard] min-content;
-        padding: 0 1rem;
+        padding: 1rem;
         padding-bottom: 2rem;
     }
     .btn-array {

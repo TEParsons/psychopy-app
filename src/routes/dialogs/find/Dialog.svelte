@@ -31,6 +31,7 @@
 <Dialog
     id=find-in-experiment
     title="Find in experiment..."
+    onopen={(evt) => searchTerm = ""}
     buttons={{
         OK: (evt) => {},
     }}
@@ -129,10 +130,18 @@
 <style>
     @import url("$lib/utils/buttons/button.css");
 
+    .container {
+        display: grid;
+        position: relative;
+        grid-template-rows: min-content 1fr;
+        padding: 1rem;
+        height: 100%;
+        box-sizing: border-box;
+        gap: 1rem;
+    }
     .find-ctrls {
         display: flex;
         flex-wrap: nowrap;
-        margin: 1rem;
         gap: .5rem;
     }
     .search-bar {
@@ -143,7 +152,7 @@
         display: flex;
         flex-direction: column;
         gap: .5rem;
-        margin: 1rem;
+        overflow-y: auto;
     }
     .result-item {
         padding: .5rem 1rem;
@@ -151,7 +160,6 @@
         border: 1px solid var(--overlay);
         background-color: var(--base);
         display: grid;
-        grid-template-columns: auto;
         grid-template-rows: [breadcrumbs] min-content [content] min-content [end];
     }
     .result-item .item-breadcrumbs {
