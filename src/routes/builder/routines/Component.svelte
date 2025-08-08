@@ -3,9 +3,8 @@
     import EntryPoint from './EntryPoint.svelte';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
-    import { getContext } from "svelte";
-    import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
+    import { getContext } from "svelte"
+    import { ParamsDialog } from "$lib/utils/paramCtrls";
     
     let current = getContext("current");
 
@@ -32,7 +31,6 @@
     }
 
     let showDialog = $state(false);
-    let notebook;
 
     function removeComponent() {
         // update history
@@ -135,20 +133,10 @@
 
 <!-- dialog to open when clicked on -->
 
-<Dialog 
-    id="{component.name}-parameters"
-    title="Editing: {component.name}"
+<ParamsDialog 
+    element={component}
     bind:shown={showDialog} 
-    onopen={() => notebook.setRestorePoint()}
-    buttons={{
-        OK: () => {}, 
-        APPLY: () => notebook.setRestorePoint(), 
-        CANCEL: () => notebook.applyRestorePoint(), 
-        HELP: component.helpLink,
-    }}
->
-    <ParamsNotebook bind:this={notebook} element={component}></ParamsNotebook>
-</Dialog>
+/>
 
 <style>
     .comp-timeline {

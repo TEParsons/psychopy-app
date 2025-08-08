@@ -24,6 +24,7 @@
     
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     import { Experiment } from "$lib/experiment.svelte";
+    import { FindDialog } from "../../dialogs/find";
 
     let current = getContext("current");
 
@@ -31,6 +32,8 @@
 
     let showSettingsDlg = $state(false);
     let settingsNotebook;
+
+    let showFindDialog = $state(false);
 
     let lastAction = $derived.by(() => {
         if (current.experiment.history.past.length) {
@@ -42,7 +45,6 @@
             return ` "${current.experiment.history.future[0].msg}"`
         }
     })
-    $inspect(current.experiment.history.future)
 
     let savePrompt = $state({
         NEW: false,
@@ -133,7 +135,11 @@
         <RibbonButton 
             icon="/icons/{theme}/btn-find.svg" 
             label="Find" 
+            onclick={() => showFindDialog = true}
         />
+        <FindDialog
+            bind:shown={showFindDialog}
+        ></FindDialog>
     </RibbonSection>
     
     <RibbonSection label=Experiment icon="/icons/{theme}/rbn-experiment.svg">

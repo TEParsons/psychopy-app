@@ -61,6 +61,7 @@
         white-space: nowrap;
         margin: 0;
         background-color: transparent;
+        border: none;
         border-radius: 0;
         padding: 0.5rem 1rem;
     }

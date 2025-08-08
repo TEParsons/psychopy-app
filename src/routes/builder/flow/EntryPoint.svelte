@@ -118,5 +118,7 @@
         left: -2rem; right: -2rem; top: -2rem; bottom: -2rem;
         color: transparent !important;
         background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 </style>

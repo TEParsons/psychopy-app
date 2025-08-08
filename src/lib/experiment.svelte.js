@@ -107,8 +107,39 @@ export class Experiment {
         // add a default routine
         this.routines['trial'] = new Routine();
         this.routines['trial'].exp = this;
-        this.routines['trial'].name = "trial";
+        this.routines['trial'].settings.params['name'].val = "trial";
         this.flow.flat.push(this.routines['trial'])
+    }
+
+    /**
+     * Search this experiment for a particular phrase
+     */
+    search(searchTerm, useRegex=false, caseSensitive=false) {
+        let results = []
+        // abort if search term is blank
+        if (searchTerm === "") {
+            return results;
+        }
+        // search all routines
+        for (let routine of Object.values(this.routines)) {
+            results.push(
+                ...routine.search(searchTerm, useRegex, caseSensitive)
+            )
+        }
+        // search all loops
+        for (let element of Object.values(this.flow.flat)) {
+            if (element instanceof LoopInitiator) {
+                results.push(
+                    ...element.search(searchTerm, useRegex, caseSensitive)
+                )
+            }
+        }
+        // search settings
+        results.push(
+            ...this.settings.search()
+        )
+
+        return results
     }
 
     pilotMode = $derived(this.settings.params['runMode'].val)
@@ -277,25 +308,39 @@ export class Routine {
         }
     })
 
+    name = $derived.by(() => {
+        if (this.settings) {
+            return this.settings.params['name'].val
+        }
+    })
+    
+
     constructor() {
         this.tag = "Routine";
         this.exp = undefined;
         // placeholder settings
         this.settings = new Component("RoutineSettingsComponent");
+        this.settings.routine = this;
     }
 
-    get name() {
-        return this.settings.params['name'].val
-    }
+    /**
+     * Search this element for a particular phrase
+     */
+    search(searchTerm, useRegex=false, caseSensitive=false) {
+        let results = []
 
-    set name(value) {
-        if (this.exp !== undefined) {
-            // relocate in routines map
-            delete this.exp.routines[this.name]
-            this.exp.routines[value] = this
+        // search each component
+        for (let comp of this.components) {
+            results.push(
+                ...comp.search(searchTerm, useRegex, caseSensitive)
+            )
         }
-        // set in settings
-        this.settings.params['name'].val = value;
+        // search settings
+        results.push(
+            ...this.settings.search(searchTerm, useRegex, caseSensitive)
+        )
+
+        return results
     }
 
     addComponent(comp) {
@@ -415,8 +460,6 @@ export class Routine {
     }
 
     fromXML(node) {
-        // parse details
-        this.name = node.getAttribute("name")
         // parse Components
         for (let compNode of node.childNodes) {
             // skip blank nodes
@@ -679,7 +722,83 @@ export class HasParams {
      * Make a copy of this element's parameters
      */
     copyParams() {
-        return $inspect(this.params)
+        return $state.snapshot(this.params)
+    }
+
+    /**
+     * Search this element for a particular phrase
+     */
+    search(searchTerm, useRegex=false, caseSensitive=false) {
+        let results = []
+
+        for (let param of Object.values(this.params)) {
+            // get a static copy of param value
+            let val = $state.snapshot(param.val)
+            // if ignoring case, convert val and term to lowercase
+            if (!caseSensitive) {
+                val = String(val).toLowerCase()
+                searchTerm = String(searchTerm).toLowerCase()
+            }
+            // placeholders for match details
+            let found = {
+                got: false,
+                index: undefined,
+                text: undefined
+            }
+            // use different method if using regex...
+            if (useRegex) {
+                // do a regex match
+                let reMatch = val.match(searchTerm)
+                // if found, get indices and string
+                if (reMatch) {
+                    found.got = true
+                    found.index = reMatch.index
+                    found.text = reMatch[0]
+                }
+            } else {
+                // do a simple string match
+                if (val.includes(searchTerm)) {
+                    // if found, store text and index
+                    found.got = true
+                    found.index = val.indexOf(searchTerm)
+                    found.text = searchTerm
+                }
+            }
+            // construct match object if found
+            if (found.got) {
+                // store information on text found
+                let match = {
+                    breadcrumbs: {},
+                    text: {
+                        before: val.slice(0, found.index),
+                        text: found.text,
+                        after: val.slice(found.index + found.text.length)
+                    }
+                }
+                // add breadcrumbs
+                if (this instanceof Component) {
+                    match.breadcrumbs = {
+                        param: param,
+                        component: this,
+                        routine: this.routine
+                    }
+                } else if (this instanceof StandaloneRoutine) {
+                    match.breadcrumbs = {
+                        param: param,
+                        routine: this
+                    }
+                } else if (this instanceof LoopInitiator) {
+                    match.breadcrumbs = {
+                        param: param,
+                        loop: this
+                    }
+                }
+                // add to results
+                results.push(match)
+            }
+        }
+
+        return results
     }
 
     /**

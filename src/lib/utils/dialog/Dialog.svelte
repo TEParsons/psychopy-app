@@ -19,6 +19,8 @@
         shown=$bindable(),
         /** @prop @type {Function} Function to execute when this dialog is opened */
         onopen=() => {},
+        /** @prop @type {Function} Function to execute when this dialog is closed */
+        onclose=() => {},
         /** @prop @type {Boolean} Determines whether the dialog box should shrink to fit its contents */
         shrink=false,
         /** @interface */
@@ -32,6 +34,7 @@
             untrack(() => onopen())
             handle.showModal()
         } else {
+            untrack(() => onclose())
             handle.close()
         }
     })
