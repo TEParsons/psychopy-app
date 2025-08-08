@@ -44,11 +44,12 @@
                 1
             )
         }
-
-        console.log(
-            $state.snapshot(current.experiment.flow.flat)
-        )
     }
+
+    let edgeHovered = $state({
+        left: false,
+        right: false
+    })
 </script>
 
 {#if element.complete}
@@ -74,11 +75,13 @@
     {/if}
     <img 
         class="loop-arrow left"
-        src="/icons/{theme}/sym-arrow-up.svg" 
+        src="/icons/{theme}/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" 
         alt="^"
-        draggable
+        draggable={true}
         ondragstart={() => current.moving = element.initiator} 
-        ondragend={() => current.moving = undefined} 
+        ondragend={() => current.moving = undefined}
+        onmouseenter={() => edgeHovered.left = true}
+        onmouseleave={() => edgeHovered.left = false}
     />
     {#if element}
         {#each element.routines as rt}
@@ -91,11 +94,13 @@
     {/if}
     <img 
         class="loop-arrow right"
-        src="/icons/{theme}/sym-arrow-down.svg" 
+        src="/icons/{theme}/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg" 
         alt="v"
-        draggable
+        draggable={true}
         ondragstart={() => current.moving = element.terminator} 
         ondragend={() => current.moving = undefined} 
+        onmouseenter={() => edgeHovered.right = true}
+        onmouseleave={() => edgeHovered.right = false}
     />
     {#if element.complete}
         <EntryPoint index={element.terminator.index}></EntryPoint>

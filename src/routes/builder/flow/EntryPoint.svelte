@@ -18,6 +18,7 @@
             LoopTerminator
         ].includes(current.moving.constructor)
     )
+    
     let inserting = $derived(
         current.inserting && [
             Routine, 
@@ -61,7 +62,6 @@
                 continue
             }
             // only interested if terminator is in front of initiator
-            console.log(node.index, node.initiator.index)
             if (node.index < node.initiator.index) {
                 // relocate this terminator to where the initiator is
                 current.experiment.flow.relocateElement(
