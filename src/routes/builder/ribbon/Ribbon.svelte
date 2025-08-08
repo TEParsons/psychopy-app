@@ -23,6 +23,7 @@
     } from './callbacks.js'
     
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
+    import { Experiment } from "$lib/experiment.svelte";
 
     let current = getContext("current");
 
@@ -30,6 +31,18 @@
 
     let showSettingsDlg = $state(false);
     let settingsNotebook;
+
+    let lastAction = $derived.by(() => {
+        if (current.experiment.history.past.length) {
+            return ` "${current.experiment.history.past.at(-1).msg}"`
+        }
+    })
+    let nextAction = $derived.by(() => {
+        if (current.experiment.history.future.length) {
+            return ` "${current.experiment.history.future[0].msg}"`
+        }
+    })
+    $inspect(current.experiment.history.future)
 
     let savePrompt = $state({
         NEW: false,
@@ -107,13 +120,13 @@
     <RibbonSection label=Edit icon="/icons/{theme}/rbn-edit.svg">
         <RibbonButton 
             icon="/icons/{theme}/btn-undo.svg" 
-            label="Undo" 
+            label="Undo{lastAction}" 
             onclick={undo} 
             disabled={current.file === null || !current.experiment.history.past.length} 
         />
         <RibbonButton 
             icon="/icons/{theme}/btn-redo.svg" 
-            label="Redo" 
+            label="Redo {nextAction}" 
             onclick={redo} 
             disabled={current.file === null || !current.experiment.history.future.length} 
         />
@@ -157,7 +170,7 @@
                 () => current.experiment.pilotMode,
                 (value) => {
                     // update history
-                    current.experiment.history.update()
+                    current.experiment.history.update(`toggle pilot mode`)
                     // set pilot mode
                     current.experiment.settings.params['runMode'].val = value;
                 }

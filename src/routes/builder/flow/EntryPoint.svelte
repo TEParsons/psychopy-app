@@ -28,10 +28,11 @@
     )
 
     function insertHere(evt) {
-        // update history
-        current.experiment.history.update();
+        
         // if dragging, move dragged element here
         if (current.moving) {
+            // update history
+            current.experiment.history.update(`insert ${current.moving.name} into flow`);
             // relocate it
             current.experiment.flow.relocateElement(current.moving, index)
             // done dragging
@@ -39,6 +40,8 @@
         }
         // if inserting, insert element here
         if (current.inserting) {
+            // update history
+            current.experiment.history.update(`insert ${current.inserting.name} into flow`);
             // if inserting a terminator, make sure it's after the initiator
             if (current.inserting instanceof LoopTerminator) {
                 if (0 < index < current.inserting.initiator.index) {

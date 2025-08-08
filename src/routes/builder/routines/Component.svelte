@@ -36,7 +36,7 @@
 
     function removeComponent() {
         // update history
-        current.experiment.history.update();
+        current.experiment.history.update(`remove ${component.name}`);
         // remove from Routine
         component.routine.removeComponent(component);
     }

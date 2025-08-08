@@ -24,10 +24,11 @@
 
     function insertHere(evt) {
         evt.preventDefault();
-        // update history
-        current.experiment.history.update();
+
         // if moving, relocate to here
         if (current.moving) {
+            // update history
+            current.experiment.history.update(`insert ${current.moving.name}`);
             // move component
             routine.relocateComponent(current.moving.index, index);
             // we're done moving
@@ -35,6 +36,8 @@
         }
         // if inserting, insert here
         if (current.inserting) {
+            // update history
+            current.experiment.history.update(`insert ${current.inserting.name}`);
             // insert
             routine.insertComponent(current.inserting, index);
             // we're done inserting

@@ -21,7 +21,7 @@
 
     function newRoutine() {
         // update history
-        current.experiment.history.update()
+        current.experiment.history.update(`new Routine`)
         // create a new StandaloneRoutine
         let rt = new StandaloneRoutine(component['__name__'])
         rt.exp = current.experiment;

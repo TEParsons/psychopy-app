@@ -14,10 +14,13 @@ export class Experiment {
     history = $state({
         past: [],
         future: [],
-        update: () => {
+        update: (msg) => {
             // store experiment state
             this.history.past.push(
-                this.toJSON()
+                {
+                    msg: msg,
+                    state: this.toJSON()
+                }
             )
             // limit to 16 items to save memory
             while (this.history.past.length >= 16) {
@@ -37,13 +40,17 @@ export class Experiment {
             if (!this.history.past) {
                 return
             }
+            // get last state
+            let last = this.history.past.pop()
             // store present as future
-            this.history.future.unshift(
-                this.toJSON()
-            )
+            this.history.future.unshift({
+                msg: last.msg, 
+                state: this.toJSON()
+            })
+            console.log("HIT")
             // restore last state
             this.fromJSON(
-                this.history.past.pop()
+                last.state
             )
         },
         redo: () => {
@@ -51,13 +58,16 @@ export class Experiment {
             if (!this.history.future) {
                 return
             }
+            // get next state
+            let next = this.history.future.shift()
             // add current state to past
-            this.history.past.push(
-                this.toJSON()
-            )
+            this.history.past.push({
+                msg: next.msg,
+                state: this.toJSON()
+            })
             // restore next state
             this.fromJSON(
-                this.history.future.shift()
+                next.state
             )
         }
     })
@@ -79,13 +89,15 @@ export class Experiment {
     /**
      * Reset this Experiment as if from new
      */
-    reset() {
+    reset(keepHistory=false) {
         // set filename to untitled
         this.filename = "untitled"
         // set to current version
         this.version = "2026.1.0"
         // clear history
-        this.history.clear()
+        if (!keepHistory) {
+            this.history.clear()
+        }
         // reset settings
         this.settings.reset()
         // remove all routines
@@ -128,7 +140,7 @@ export class Experiment {
      */
     fromJSON(node) {
         // reset experiment
-        this.reset()
+        this.reset(true)
         // set basic attributes
         this.filename = node.filename;
         this.version = node.version;

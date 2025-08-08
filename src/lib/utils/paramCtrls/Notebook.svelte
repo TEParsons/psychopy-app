@@ -21,7 +21,7 @@
 
     export function setRestorePoint(evt) {
         // update history
-        current.experiment.history.update()
+        current.experiment.history.update(`edit ${element.name}`)
         // set restore point
         backup = element.toJSON()
     }
