@@ -1,6 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
+    import { slide } from "svelte/transition";
 
     let {
         /** @prop @type {string} Label for this button */
@@ -43,6 +44,7 @@
 {#if open}
 <div 
     class="toggled-panel"
+    transition:slide
 >
     {@render children()}
 </div>
