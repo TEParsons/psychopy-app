@@ -1,7 +1,6 @@
 <script>
     import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
-    import Menu from '$lib/utils/menu/Menu.svelte';
-    import MenuItem from '$lib/utils/menu/Item.svelte';
+    import { Menu, MenuItem } from '$lib/utils/menu';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
@@ -28,6 +27,7 @@
             // open the "add routine" menu
             showMenu = true
         }}
+        disabled={current.inserting}
         horizontal
     ></Button>
     
@@ -85,5 +85,7 @@
 <style>
     .container {
         position: relative;
+        display: grid;
+        justify-content: stretch;
     }
 </style>

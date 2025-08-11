@@ -1277,10 +1277,6 @@ export class FlowLoop {
 export class LoopInitiator extends HasParams {
 
     loopType = $derived(() => this.params['loopType'].val)
-    // tags which are known to correspond to a LoopInitiator
-    static tags = [
-        "TrialHandler"
-    ]
 
     constructor(tag) {
         super(tag)
