@@ -17,10 +17,14 @@
     let showDialog = $state(false)
     let showMenu = $state(false);
 
+    // object of just loop profiles
     let LoopProfiles = {};
     Object.keys(ComponentProfiles).forEach((key) => {
         if (ComponentProfiles[key]['__class__'].startsWith("psychopy.experiment.loops")) {
-            LoopProfiles[key] = ComponentProfiles[key]
+            // transform key name for display
+            let label = key.replace("Handler", "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+            // add profile
+            LoopProfiles[label] = ComponentProfiles[key]
         }
     })
 
