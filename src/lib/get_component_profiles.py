@@ -14,7 +14,8 @@ def default(o):
     if callable(o):
         return o()
 # save to json
-with open("components.json", "w") as f:
+print((Path(__file__).parent / "components.json").absolute())
+with (Path(__file__).parent / "components.json").open("w") as f:
     json.dump(
         profiles, f, indent=True, default=default
     )
