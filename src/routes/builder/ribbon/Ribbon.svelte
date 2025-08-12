@@ -25,6 +25,7 @@
     import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     import { Experiment } from "$lib/experiment.svelte";
     import { FindDialog } from "../../dialogs/find";
+    import { DeviceManagerDialog } from "../../dialogs/deviceManager"
 
     let current = getContext("current");
 
@@ -34,6 +35,8 @@
     let settingsNotebook;
 
     let showFindDialog = $state(false);
+
+    let showDeviceMgr = $state(false)
 
     let lastAction = $derived.by(() => {
         if (current.experiment.history.past.length) {
@@ -148,10 +151,19 @@
             icon="/icons/{theme}/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
+        <RibbonButton
+            icon="/icons/{theme}/btn-devices.svg"
+            label="Open the device manager"
+            onclick={(evt) => showDeviceMgr = true}
+        ></RibbonButton>
+        <DeviceManagerDialog
+            bind:shown={showDeviceMgr}
+        ></DeviceManagerDialog>
+
         <RibbonButton 
             icon="/icons/{theme}/btn-settings.svg" 
             label="Experiment settings" 
-            onclick={() => {showSettingsDlg = true}}
+            onclick={(evt) => showSettingsDlg = true}
             disabled={current.experiment === null}
         />
         {#if current.experiment !== null }

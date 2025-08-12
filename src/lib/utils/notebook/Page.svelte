@@ -11,7 +11,7 @@
         /** @prop @type {any} Arbitrary data relating to this page */
         data={},
         /** @interface @type {Array<HTMLElement>} Contents of this page */
-        children
+        children=undefined
     } = $props()
 
     // get context
@@ -54,6 +54,8 @@
 <button
     class="notebook-tab"
     class:current={selected}
+    class:listbook={siblings.book === "listbook"}
+    class:notebook={siblings.book === "notebook"}
     onclick={() => selected = true}
     ondragover={() => selected = true}
     bind:this={handle}
@@ -69,7 +71,8 @@
 {#if selected}
     <div 
         class="notebook-page"
-        style:grid-column-end="span {siblings.all.length + 1}"
+        class:listbook={siblings.book === "listbook"}
+        class:notebook={siblings.book === "notebook"}
     >
         {@render children?.()}
     </div>
@@ -78,18 +81,37 @@
 
 <style>
     .notebook-tab {
-        grid-row-start: tabs;
         background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         border: none;
         border-radius: 0;
         padding: .25rem 1rem;
         margin: 0;
-        text-align: center;
         transition: background .2s;
-        /* position within notebook */
-        grid-row-start: tabs;
     }
-    button.notebook-tab:hover {
+    .notebook-tab.notebook {
+        grid-row-start: tabs;
+        text-align: center;
+    }
+    .notebook-tab.listbook {
+        grid-column-start: tabs;
+        text-align: left;
+        padding: .5rem 1rem;
+    }
+    .notebook-tab.current {
+        border-bottom: none;
+        background: var(--base);
+        z-index: 2;
+        border: 1px solid var(--overlay);
+    }
+    .notebook-tab.notebook.current {
+        border-bottom: none;
+        margin-bottom: -1px;
+    }
+    .notebook-tab.listbook.current {
+        border-right: none;
+        margin-right: -1px;
+    }
+    .notebook-tab:hover {
         background-color: var(--mantle);
         background: var(--mantle) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.01) 100%);
     }
@@ -104,15 +126,17 @@
         background-color: var(--base);
         z-index: 1;
         border: 1px solid var(--overlay);
-        /* position within notebook */
+    }
+    .notebook-page.notebook {
         grid-row-start: pages;
+        grid-column-start: start;
+        grid-column-end: end;
     }
-    .notebook-tab.current {
-        border-bottom: none;
-        background: var(--base);
-        z-index: 2;
-        border: 1px solid var(--overlay);
-        border-bottom: none;
-        margin-bottom: -1px;
+    .notebook-page.listbook {
+        grid-column-start: pages;
+        grid-row-start: start;
+        grid-row-end: end;
     }
+    
+
 </style>

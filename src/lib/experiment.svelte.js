@@ -1,5 +1,7 @@
 // get component profiles from json file
 import ComponentProfiles from "$lib/components.json"
+import LoopProfiles from "$lib/loops.json"
+import DeviceProfiles from "$lib/devices.json"
 
 
 export class Experiment {
@@ -694,6 +696,10 @@ export class HasParams {
         let template
         if (this.tag in ComponentProfiles) {
             template = ComponentProfiles[this.tag]
+        } else if (this.tag in LoopProfiles) {
+            template = LoopProfiles[this.tag]
+        } else if (this.tag in DeviceProfiles) {
+            template = DeviceProfiles[this.tag]
         } else {
             console.warn(
                 `Failed to find template for ${this.tag}, reverting to UnknownComponent`
@@ -872,6 +878,8 @@ export class HasParams {
         // set plugin and tag
         this.tag = node.tag
         this.plugin = node.plugin
+        // reset defaults
+        this.reset()
         // iterate through param nodes
         for (let [name, paramNode] of Object.entries(node.params)) {
             // if param wasn't templated, make an unknown
@@ -881,6 +889,14 @@ export class HasParams {
             // populate param from JSON
             this.params[name].fromJSON(paramNode)
         }
+    }
+}
+
+
+export class Device extends HasParams {
+    constructor(tag, profile) {
+        super(tag)
+        this.profile = profile;
     }
 }
 

@@ -9,7 +9,7 @@
     } = $props()
 
     let pages = $state({
-        book: "notebook",
+        book: "listbook",
         current: undefined,
         all: [],
         data: []
@@ -23,24 +23,24 @@
 </script>
 
 <div 
-    class=notebook
-    style:grid-template-columns="[start] repeat({pages.all.length}, min-content) 1fr [end]"
+    class=listbook
+    style:grid-template-rows="[start] repeat({pages.all.length}, min-content) 1fr [end]"
 >
     {@render children?.()}
-    <div class=notebook-tab-filler></div>
+    <div class=listbook-tab-filler></div>
 </div>
 
 <style>
-    .notebook {
+    .listbook {
         display: grid;
-        grid-template-rows: [tabs] max-content [pages] auto;
+        grid-template-columns: [tabs] max-content [pages] auto;
         gap: 0;
-        justify-items: start;
+        justify-items: stretch;
         align-items: stretch;
         margin: auto;
         height: 100%;
     }
-    .notebook-tab-filler {
-        grid-row-start: tabs;
+    .listbook-tab-filler {
+        grid-column-start: tabs;
     }
 </style>
