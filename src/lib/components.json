@@ -5365,11 +5365,13 @@
     "allowedUpdates": null,
     "allowedVals": [
      "none",
-     "google"
+     "google",
+     "Whisper"
     ],
     "allowedLabels": [
      "None",
-     "Google"
+     "Google",
+     "OpenAI Whisper"
     ],
     "label": "Transcription backend",
     "hint": "What transcription service to use to transcribe audio?",
@@ -12618,6 +12620,1178 @@
     "allowedLabels": [],
     "label": "Disable Component",
     "hint": "Disable this Component",
+    "plugin": null
+   }
+  }
+ },
+ "CedrusButtonBoxComponent": {
+  "__class__": "psychopy_cedrus.components.cedrusBox:CedrusButtonBoxComponent",
+  "__name__": "CedrusButtonBoxComponent",
+  "categories": [
+   "Responses"
+  ],
+  "targets": [
+   "PsychoPy"
+  ],
+  "plugin": "psychopy-cedrus",
+  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\venv310\\lib\\site-packages\\psychopy_cedrus\\components\\cedrusBox\\cedrusBox.png",
+  "tooltip": "Cedrus Button Box: Legacy support for old experiment using an RB Series Cedrus box.",
+  "version": "0.0.0",
+  "beta": false,
+  "validatorClasses": [],
+  "hidden": true,
+  "params": {
+   "name": {
+    "val": "buttonBox",
+    "valType": "code",
+    "inputType": "name",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Name",
+    "hint": "Name of this Component (alphanumeric or _, no spaces)",
+    "plugin": null
+   },
+   "startVal": {
+    "val": 0.0,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Start",
+    "hint": "When does the Component start?",
+    "plugin": null
+   },
+   "startEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected start (s)",
+    "hint": "(Optional) expected start (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "startType": {
+    "val": "time (s)",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Start type",
+    "hint": "How do you want to define your start point?",
+    "plugin": null
+   },
+   "stopVal": {
+    "val": 1.0,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Stop",
+    "hint": "When does the Component end? (blank is endless)",
+    "plugin": null
+   },
+   "durationEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected duration (s)",
+    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "stopType": {
+    "val": "duration (s)",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "duration (s)",
+     "duration (frames)",
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Stop type",
+    "hint": "How do you want to define your end point?",
+    "plugin": null
+   },
+   "forceEndRoutine": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Force end of Routine",
+    "hint": "Should a response force the end of the Routine (e.g end the trial)?",
+    "plugin": null
+   },
+   "registerOn": {
+    "val": "press",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [
+     "press",
+     "release"
+    ],
+    "allowedLabels": [],
+    "label": "Register keypress on...",
+    "hint": "When should the keypress be registered? As soon as pressed, or when released?",
+    "plugin": null
+   },
+   "allowedKeys": {
+    "val": "",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Allowed keys",
+    "hint": "Keys to be read (blank for any) or key numbers separated by commas",
+    "plugin": null
+   },
+   "store": {
+    "val": "first key",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [
+     "last key",
+     "first key",
+     "all keys",
+     "nothing"
+    ],
+    "allowedLabels": [],
+    "label": "Store",
+    "hint": "Choose which (if any) responses to store at the end of a trial",
+    "plugin": null
+   },
+   "storeCorrect": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Store correct",
+    "hint": "Do you want to save the response as correct/incorrect?",
+    "plugin": null
+   },
+   "correctAns": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Correct answer",
+    "hint": "What is the 'correct' response? NB, buttons are labelled 0 to 6 on a 7-button box. Enter 'None' (no quotes) if withholding a response is correct. Might be helpful to add a correctAns column and use $correctAns to compare to the key press.",
+    "plugin": null
+   },
+   "saveStartStop": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Save onset/offset times",
+    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
+    "plugin": null
+   },
+   "syncScreenRefresh": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Sync timing with screen",
+    "hint": "A reaction time to a visual stimulus should be based on when the screen flipped",
+    "plugin": null
+   },
+   "disabled": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Testing",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Disable Component",
+    "hint": "Disable this Component",
+    "plugin": null
+   },
+   "discard previous": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Discard previous",
+    "hint": "Do you want to discard all responses occurring before the onset of this Component?",
+    "plugin": null
+   },
+   "deviceNumber": {
+    "val": 0,
+    "valType": "int",
+    "inputType": "spin",
+    "categ": "Hardware",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "deviceNumber",
+    "hint": "Device number, if you have multiple devices which one do you want (0, 1, 2...)",
+    "plugin": null
+   },
+   "useBoxTimer": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Hardware",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [
+     true,
+     false
+    ],
+    "allowedLabels": [],
+    "label": "useBoxTimer",
+    "hint": "According to Cedrus the response box timer has a drift - use with caution!",
+    "plugin": null
+   }
+  }
+ },
+ "PatchComponent": {
+  "__class__": "psychopy_legacy.components.patch:PatchComponent",
+  "__name__": "PatchComponent",
+  "categories": [
+   "Stimuli"
+  ],
+  "targets": [
+   "PsychoPy"
+  ],
+  "plugin": null,
+  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy-plugins\\psychopy-legacy\\psychopy_legacy\\components\\patch\\patch.png",
+  "tooltip": "Patch: present images (bmp, jpg, tif...) or textures like gratings",
+  "version": "0.0.0",
+  "beta": false,
+  "validatorClasses": [
+   "VisualValidatorRoutine"
+  ],
+  "hidden": false,
+  "params": {
+   "name": {
+    "val": "patch",
+    "valType": "code",
+    "inputType": "name",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Name",
+    "hint": "Name of this Component (alphanumeric or _, no spaces)",
+    "plugin": null
+   },
+   "startVal": {
+    "val": 0.0,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Start",
+    "hint": "When does the Component start?",
+    "plugin": null
+   },
+   "startEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected start (s)",
+    "hint": "(Optional) expected start (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "startType": {
+    "val": "time (s)",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Start type",
+    "hint": "How do you want to define your start point?",
+    "plugin": null
+   },
+   "stopVal": {
+    "val": 1.0,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Stop",
+    "hint": "When does the Component end? (blank is endless)",
+    "plugin": null
+   },
+   "durationEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected duration (s)",
+    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "stopType": {
+    "val": "duration (s)",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "duration (s)",
+     "duration (frames)",
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Stop type",
+    "hint": "How do you want to define your end point?",
+    "plugin": null
+   },
+   "color": {
+    "val": "$[1,1,1]",
+    "valType": "color",
+    "inputType": "color",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Foreground color",
+    "hint": "Foreground color of this stimulus (e.g. $[1,1,0], red )",
+    "plugin": null
+   },
+   "fillColor": {
+    "val": "",
+    "valType": "color",
+    "inputType": "color",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Fill color",
+    "hint": "Fill color of this stimulus (e.g. $[1,1,0], red )",
+    "plugin": null
+   },
+   "borderColor": {
+    "val": "",
+    "valType": "color",
+    "inputType": "color",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Border color",
+    "hint": "Border color of this stimulus (e.g. $[1,1,0], red )",
+    "plugin": null
+   },
+   "colorSpace": {
+    "val": "rgb",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [
+     "rgb",
+     "dkl",
+     "lms",
+     "hsv"
+    ],
+    "allowedLabels": [],
+    "label": "Color space",
+    "hint": "In what format (color space) have you specified the colors? (rgb, dkl, lms, hsv)",
+    "plugin": null
+   },
+   "opacity": {
+    "val": "",
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Opacity",
+    "hint": "Opacity of the stimulus (1=opaque, 0=fully transparent, 0.5=translucent). Leave blank for each color to have its own opacity (recommended if any color is None).",
+    "plugin": null
+   },
+   "size": {
+    "val": [
+     0.5,
+     0.5
+    ],
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Layout",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Size [w,h]",
+    "hint": "Size of this stimulus (either a single value or x,y pair, e.g. 2.5, [1,2] ",
+    "plugin": null
+   },
+   "pos": {
+    "val": [
+     0,
+     0
+    ],
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Layout",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Position [x,y]",
+    "hint": "Position of this stimulus (e.g. [1,2] )",
+    "plugin": null
+   },
+   "units": {
+    "val": "from exp settings",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Layout",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "from exp settings",
+     "deg",
+     "cm",
+     "pix",
+     "norm",
+     "height",
+     "degFlatPos",
+     "degFlat"
+    ],
+    "allowedLabels": [],
+    "label": "Spatial units",
+    "hint": "Units of dimensions for this stimulus",
+    "plugin": null
+   },
+   "ori": {
+    "val": 0,
+    "valType": "num",
+    "inputType": "spin",
+    "categ": "Layout",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [
+     -360,
+     360
+    ],
+    "allowedLabels": [],
+    "label": "Orientation",
+    "hint": "Orientation of this stimulus (in deg)",
+    "plugin": null
+   },
+   "saveStartStop": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Save onset/offset times",
+    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
+    "plugin": null
+   },
+   "syncScreenRefresh": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Sync timing with screen refresh",
+    "hint": "Synchronize times with screen refresh (good for visual stimuli and responses based on them)",
+    "plugin": null
+   },
+   "disabled": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Testing",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Disable Component",
+    "hint": "Disable this Component",
+    "plugin": null
+   },
+   "contrast": {
+    "val": 1,
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Appearance",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Contrast",
+    "hint": "Contrast of the stimulus (1.0=unchanged contrast, 0.5=decrease contrast, 0.0=uniform/no contrast, -0.5=slightly inverted, -1.0=totally inverted)",
+    "plugin": null
+   },
+   "validator": {
+    "val": "",
+    "valType": "code",
+    "inputType": "choice",
+    "categ": "Testing",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": "python:///psychopy.experiment.components._base:BaseComponent.getAllValidatorRoutineVals",
+    "allowedLabels": "python:///psychopy.experiment.components._base:BaseComponent.getAllValidatorRoutineLabels",
+    "label": "Validate with...",
+    "hint": "Name of validator Component/Routine to use to check the timing of this stimulus.",
+    "plugin": null
+   },
+   "image": {
+    "val": "sin",
+    "valType": "file",
+    "inputType": "file",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Image/tex",
+    "hint": "The image to be displayed - 'sin','sqr'... or a filename (including path)",
+    "plugin": null
+   },
+   "mask": {
+    "val": "None",
+    "valType": "str",
+    "inputType": "single",
+    "categ": "Texture",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Mask",
+    "hint": "An image to define the alpha mask (ie shape)- gauss, circle... or a filename (including path)",
+    "plugin": null
+   },
+   "sf": {
+    "val": "None",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Texture",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Spatial frequency",
+    "hint": "Spatial frequency of image repeats across the patch, e.g. 4 or [2,3]",
+    "plugin": null
+   },
+   "phase": {
+    "val": 0.0,
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Texture",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Phase (in cycles)",
+    "hint": "Spatial positioning of the image on the patch (in range 0-1.0)",
+    "plugin": null
+   },
+   "texture resolution": {
+    "val": "128",
+    "valType": "num",
+    "inputType": "choice",
+    "categ": "Texture",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [
+     "32",
+     "64",
+     "128",
+     "256",
+     "512"
+    ],
+    "allowedLabels": [],
+    "label": "Texture resolution",
+    "hint": "Resolution of the texture for standard ones such as sin, sqr etc. For most cases a value of 256 pixels will suffice",
+    "plugin": null
+   },
+   "interpolate": {
+    "val": "linear",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Texture",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [
+     "linear",
+     "nearest"
+    ],
+    "allowedLabels": [],
+    "label": "Interpolate",
+    "hint": "How should the image be interpolated if/when rescaled",
+    "plugin": null
+   }
+  }
+ },
+ "RatingScaleComponent": {
+  "__class__": "psychopy_legacy.components.ratingScale:RatingScaleComponent",
+  "__name__": "RatingScaleComponent",
+  "categories": [
+   "Responses"
+  ],
+  "targets": [
+   "PsychoPy"
+  ],
+  "plugin": null,
+  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy-plugins\\psychopy-legacy\\psychopy_legacy\\components\\ratingScale\\ratingscale.png",
+  "tooltip": "Rating scale: obtain numerical or categorical responses",
+  "version": "0.0.0",
+  "beta": false,
+  "validatorClasses": [],
+  "hidden": false,
+  "params": {
+   "name": {
+    "val": "rating",
+    "valType": "code",
+    "inputType": "name",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Name",
+    "hint": "Name of this Component (alphanumeric or _, no spaces)",
+    "plugin": null
+   },
+   "visualAnalogScale": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Visual analog scale",
+    "hint": "Show a continuous visual analog scale; returns 0.00 to 1.00; takes precedence over numeric scale or categorical choices",
+    "plugin": null
+   },
+   "categoryChoices": {
+    "val": "",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Category choices",
+    "hint": "A list of categories (non-numeric alternatives) to present, space or comma-separated; these take precedence over a numeric scale",
+    "plugin": null
+   },
+   "scaleDescription": {
+    "val": "",
+    "valType": "str",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Scale description",
+    "hint": "Brief instructions, such as a description of the scale numbers as seen by the subject.",
+    "plugin": null
+   },
+   "low": {
+    "val": "1",
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Lowest value",
+    "hint": "Lowest rating (low end of the scale); not used for categories.",
+    "plugin": null
+   },
+   "high": {
+    "val": "7",
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Highest value",
+    "hint": "Highest rating (top end of the scale); not used for categories.",
+    "plugin": null
+   },
+   "labels": {
+    "val": "",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Labels",
+    "hint": "Labels for the ends of the scale, separated by commas",
+    "plugin": null
+   },
+   "markerStart": {
+    "val": "",
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Marker start",
+    "hint": "initial position for the marker",
+    "plugin": null
+   },
+   "size": {
+    "val": "1.0",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Layout",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Size",
+    "hint": "Size of this stimulus (either a single value or x,y pair, e.g. 2.5, [1,2] ",
+    "plugin": null
+   },
+   "pos": {
+    "val": "0, -0.4",
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Layout",
+    "updates": "constant",
+    "allowedUpdates": [
+     "constant",
+     "set every repeat",
+     "set every frame"
+    ],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Position [x,y]",
+    "hint": "Position of this stimulus (e.g. [1,2] )",
+    "plugin": null
+   },
+   "tickHeight": {
+    "val": "",
+    "valType": "num",
+    "inputType": "single",
+    "categ": "Interface",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Tick height",
+    "hint": "height of tick marks (1 is upward, 0 is hidden, -1 is downward)",
+    "plugin": null
+   },
+   "startType": {
+    "val": "time (s)",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Start type",
+    "hint": "How do you want to define your start point?",
+    "plugin": null
+   },
+   "stopType": {
+    "val": "condition",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [
+     "duration (s)",
+     "duration (frames)",
+     "time (s)",
+     "frame N",
+     "condition"
+    ],
+    "allowedLabels": [],
+    "label": "Stop type",
+    "hint": "How do you want to define your end point?",
+    "plugin": null
+   },
+   "startVal": {
+    "val": "0.0",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Start",
+    "hint": "When does the Component start?",
+    "plugin": null
+   },
+   "stopVal": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Stop",
+    "hint": "When does the Component end? (blank is endless)",
+    "plugin": null
+   },
+   "startEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected start (s)",
+    "hint": "(Optional) expected start (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "durationEstim": {
+    "val": "",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Expected duration (s)",
+    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
+    "plugin": null
+   },
+   "saveStartStop": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Save onset/offset times",
+    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
+    "plugin": null
+   },
+   "syncScreenRefresh": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Sync timing with screen refresh",
+    "hint": "Synchronize times with screen refresh (good for visual stimuli and responses based on them)",
+    "plugin": null
+   },
+   "disabled": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Testing",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Disable Component",
+    "hint": "Disable this Component",
+    "plugin": null
+   },
+   "marker": {
+    "val": "triangle",
+    "valType": "str",
+    "inputType": "choice",
+    "categ": "Interface",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [
+     "triangle",
+     "circle",
+     "glow",
+     "slider",
+     "hover"
+    ],
+    "allowedLabels": [],
+    "label": "Marker type",
+    "hint": "Style for the marker: triangle, circle, glow, slider, hover",
+    "plugin": null
+   },
+   "singleClick": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Interface",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Single click",
+    "hint": "Should clicking the line accept that rating (without needing to confirm via 'accept')?",
+    "plugin": null
+   },
+   "disappear": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Interface",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Disappear",
+    "hint": "Hide the scale when a rating has been accepted; False to remain on-screen",
+    "plugin": null
+   },
+   "showAccept": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Interface",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Show accept",
+    "hint": "Should the accept button by visible?",
+    "plugin": null
+   },
+   "storeRating": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Store rating",
+    "hint": "store the rating",
+    "plugin": null
+   },
+   "storeRatingTime": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Store rating time",
+    "hint": "store the time taken to make the choice (in seconds)",
+    "plugin": null
+   },
+   "storeHistory": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Data",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Store history",
+    "hint": "store the history of (selection, time)",
+    "plugin": null
+   },
+   "forceEndRoutine": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Basic",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Force end of Routine",
+    "hint": "Should accepting a rating cause the end of the Routine (e.g. trial)?",
+    "plugin": null
+   },
+   "customize_everything": {
+    "val": "",
+    "valType": "code",
+    "inputType": "multi",
+    "categ": "Custom",
+    "updates": "constant",
+    "allowedUpdates": [],
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Customize everything :",
+    "hint": "Use this text to create the rating scale as you would in a code Component; overrides all dialog settings except time parameters, forceEndRoutine, storeRatingTime, storeRating",
     "plugin": null
    }
   }
