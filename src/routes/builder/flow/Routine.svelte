@@ -22,9 +22,15 @@
     function removeRoutine(evt) {
         // update history
         current.experiment.history.update(`remove ${element.name}`);
-        // move dragged routine to new position in the flow
+        // remove this element from the flow
         current.experiment.flow.removeElement(element.index)
     }
+    
+    $effect(() => {
+        if (!Object.values(current.experiment.routines).includes(element)) {
+            current.experiment.flow.removeElement(element.index)
+        }
+    })
 
 </script>
 
