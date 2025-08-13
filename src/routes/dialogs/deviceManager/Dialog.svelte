@@ -5,17 +5,25 @@
     import { setContext } from "svelte";
     import DeviceDetails from "./DeviceDetails.svelte";
     import DeviceProfiles from "./devices.json";
-    import { Listbook } from "$lib/utils/notebook";
+    import { Listbook, NotebookPage } from "$lib/utils/notebook";
+    import { Device } from "$lib/experiment.svelte";
 
     let {
         /** @bindable @type {boolean} State controlling when this dialog is shown */
         shown=$bindable()
     } = $props()
 
+    // state in which to store devices
     let devices = $state({
         current: undefined,
-        all: DeviceProfiles
+        all: {}
     })
+    // add each device from the JSON as an object
+    for (let [key, dev] of Object.entries(DeviceProfiles)) {
+        dev['tag'] = dev['__name__']
+        devices.all[key] = new Device(dev['tag'], dev.profile);
+        devices.all[key].fromJSON(dev)
+    }
 
     setContext("devices", devices)
 </script>
@@ -34,10 +42,20 @@
 >
     <div class=container>
         <Listbook>
-            {#each Object.values(devices.all) as device}
+            {#each Object.entries(devices.all) as [key, device]}
+            <NotebookPage
+                bind:selected={
+                    () => {return devices.current === device},
+                    (value) => {devices.current = device}
+                }
+                label={device.name} 
+                data={device}
+                close={(evt) => delete devices.all[key]}
+            >
                 <DeviceDetails
                     device={device}
                 ></DeviceDetails>
+            </NotebookPage>
             {/each}
         </Listbook>
     </div>

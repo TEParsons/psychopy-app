@@ -31,7 +31,12 @@
                 }
             )
             // parse JSON
-            param.val = JSON.parse(value)
+            try {
+                param.val = JSON.parse(value)
+            } catch {
+                console.warn(`Failed to parse '${value}' as JSON`)
+                param.val = {}
+            }
         }
     })
 

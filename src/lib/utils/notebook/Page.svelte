@@ -1,5 +1,6 @@
 <script>
     import { onMount, onDestroy, getContext } from 'svelte';
+    import { current } from '../../../routes/builder/globals.svelte';
 
     let {
         /** @prop @type {String} Label for this page's tab */
@@ -8,6 +9,9 @@
         icon=undefined,
         /** @binding Control whether this page is selected */
         selected=$bindable(),
+        /** @prop @type {function|undefined} Function to close the tab (setting this will show the 
+         * close button) */
+        close=undefined,
         /** @prop @type {any} Arbitrary data relating to this page */
         data={},
         /** @interface @type {Array<HTMLElement>} Contents of this page */
@@ -32,7 +36,9 @@
     onMount(() => {
         siblings.all.push(handle)
         siblings.data.push(data)
-        // show self if no page is shown
+    })
+    // show self if no page is shown
+    $effect(() => {
         if (siblings.current === undefined) {
             siblings.current = index;
             selected = true;
@@ -49,7 +55,6 @@
     })
 </script>
 
-
 <!-- tab button for this page -->
 <button
     class="notebook-tab"
@@ -61,12 +66,28 @@
     bind:this={handle}
 >
     {#if icon}
-    <img 
-        src={icon} 
-        alt="" 
-    />
+        <img 
+            src={icon} 
+            alt="" 
+        />
     {/if}
-    {label}
+    <span class=label>
+        {label}
+    </span>
+    {#if close !== undefined}
+        <div
+            class=close-btn
+            role=none
+            onclick={(evt) => {
+                // do close method
+                close(evt);
+                // select default tab
+                siblings.current = undefined;
+            }}
+        >
+            🞪
+        </div>
+    {/if}
 </button>
 {#if selected}
     <div 
@@ -78,15 +99,27 @@
     </div>
 {/if}
 
-
 <style>
     .notebook-tab {
+        display: grid;
+        grid-template-columns: [icon] min-content [label] 1fr [close] min-content;
+        gap: .5rem;
         background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         border: none;
         border-radius: 0;
-        padding: .25rem 1rem;
+        padding: .25rem .5rem;
         margin: 0;
         transition: background .2s;
+    }
+    .notebook-tab .label {
+        grid-column-start: label;
+    }
+    .notebook-tab .close-btn {
+        color: var(--overlay);
+        grid-column-start: close;
+    }
+    .notebook-tab .close-btn:hover {
+        color: var(--red);
     }
     .notebook-tab.notebook {
         grid-row-start: tabs;

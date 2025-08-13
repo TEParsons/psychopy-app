@@ -1,54 +1,35 @@
 <script>
     import { ParamsNotebook, ParamCtrl } from "$lib/utils/paramCtrls";
-    import { Device } from "$lib/experiment.svelte";
-    import { getContext } from "svelte";
-    import { NotebookPage } from "$lib/utils/notebook";
 
     let {
         device
     } = $props()
-
-    device.tag = device.__name__
-    let deviceObject = new Device(device.tag, device.profile);
-    deviceObject.fromJSON(device)
-    // pop name so it's not shown within the notebook
-    let name = deviceObject.params['name']
-    delete deviceObject.params['name']
-
-    let devices = getContext("devices")
 </script>
 
-<NotebookPage
-    bind:selected={
-        () => {return devices.current === deviceObject},
-        (value) => {devices.current = deviceObject}
-    }
-    label={name.val} 
-    data={deviceObject}
->
-    <div class=device-details-pnl>
-        <div class=name-container>
-            <ParamCtrl
-                name="name"
-                param={name}
-            ></ParamCtrl>
-        </div>
-        <table class=device-params>
-            <tbody>
-                {#each Object.entries(deviceObject.profile) as [key, val]}
-                    <tr>
-                        <th>{key}</th>
-                        <td>{val}</td>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
-        <ParamsNotebook
-            element={deviceObject}
-        >
-        </ParamsNotebook>
+
+<div class=device-details-pnl>
+    <div class=name-container>
+        <ParamCtrl
+            name="name"
+            param={device.params['name']}
+        ></ParamCtrl>
     </div>
-</NotebookPage>
+    <table class=device-params>
+        <tbody>
+            {#each Object.entries(device.profile) as [key, val]}
+                <tr>
+                    <th>{key}</th>
+                    <td>{val}</td>
+                </tr>
+            {/each}
+        </tbody>
+    </table>
+    <ParamsNotebook
+        element={device}
+        hideParams={["name"]}
+    >
+    </ParamsNotebook>
+</div>
 
 <style>
     .device-details-pnl {
