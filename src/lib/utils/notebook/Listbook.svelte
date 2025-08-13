@@ -11,6 +11,7 @@
     let pages = $state({
         book: "listbook",
         current: undefined,
+        add: false,
         all: [],
         data: []
     })
@@ -24,7 +25,7 @@
 
 <div 
     class=listbook
-    style:grid-template-rows="[start] repeat({pages.all.length}, min-content) 1fr [end]"
+    style:grid-template-rows="[start] repeat({pages.all.length + (pages.add ? 1 : 0)}, min-content) 1fr [end]"
 >
     {@render children?.()}
     <div class=listbook-tab-filler></div>

@@ -1,6 +1,6 @@
 <script>
     import { onMount, onDestroy, getContext } from 'svelte';
-    import { current } from '../../../routes/builder/globals.svelte';
+    import Tooltip from '../tooltip/Tooltip.svelte';
 
     let {
         /** @prop @type {String} Label for this page's tab */
@@ -12,6 +12,8 @@
         /** @prop @type {function|undefined} Function to close the tab (setting this will show the 
          * close button) */
         close=undefined,
+        /** @prop @type {string|undefined} Tooltip when hovered over close button */
+        closeTooltip=undefined,
         /** @prop @type {any} Arbitrary data relating to this page */
         data={},
         /** @interface @type {Array<HTMLElement>} Contents of this page */
@@ -53,6 +55,8 @@
             delete siblings.data[index]
         }
     })
+
+    let closeHovered = $state.raw(false)
 </script>
 
 <!-- tab button for this page -->
@@ -84,8 +88,20 @@
                 // select default tab
                 siblings.current = undefined;
             }}
+            onmouseenter={() => {closeHovered = true}}
+            onmouseleave={() => {closeHovered = false}}
+            onfocusin={() => {closeHovered = true}}
+            onfocusout={() => {closeHovered = false}}
         >
             🞪
+            {#if closeTooltip}
+                <Tooltip
+                    bind:shown={closeHovered}
+                    position="bottom"
+                >
+                    {closeTooltip}
+                </Tooltip>
+            {/if}
         </div>
     {/if}
 </button>
@@ -104,7 +120,6 @@
         display: grid;
         grid-template-columns: [icon] min-content [label] 1fr [close] min-content;
         gap: .5rem;
-        background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
         border: none;
         border-radius: 0;
         padding: .25rem .5rem;
@@ -115,20 +130,26 @@
         grid-column-start: label;
     }
     .notebook-tab .close-btn {
-        color: var(--overlay);
+        position: relative;
+        color: var(--outline);
+        opacity: 0.5;
         grid-column-start: close;
+        z-index: 2;
     }
     .notebook-tab .close-btn:hover {
+        opacity: 1;
         color: var(--red);
     }
     .notebook-tab.notebook {
         grid-row-start: tabs;
         text-align: center;
+        background: var(--crust) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
     }
     .notebook-tab.listbook {
         grid-column-start: tabs;
         text-align: left;
         padding: .5rem 1rem;
+        background: var(--crust) linear-gradient(90deg, transparent 0%, transparent 75%, rgba(0, 0, 0, 0.025) 100%);
     }
     .notebook-tab.current {
         border-bottom: none;

@@ -62,7 +62,7 @@
     id=new-routine
     title="New Routine" 
     bind:shown={showNewRoutineDialog} 
-        onopen={() => notebook.setRestorePoint()}
+    onopen={() => notebook.setRestorePoint()}
     buttons={{
         OK: (evt) => {
             // add to experiment

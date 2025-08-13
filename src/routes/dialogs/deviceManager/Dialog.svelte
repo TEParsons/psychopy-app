@@ -1,11 +1,9 @@
 <script>
-    import Button from "$lib/utils/buttons/Button.svelte";
     import { Dialog } from "$lib/utils/dialog";
-    import { ParamsNotebook } from "$lib/utils/paramCtrls";
     import { setContext } from "svelte";
     import DeviceDetails from "./DeviceDetails.svelte";
     import DeviceProfiles from "./devices.json";
-    import { Listbook, NotebookPage } from "$lib/utils/notebook";
+    import { AddPageButton, Listbook, NotebookPage } from "$lib/utils/notebook";
     import { Device } from "$lib/experiment.svelte";
 
     let {
@@ -57,6 +55,10 @@
                 ></DeviceDetails>
             </NotebookPage>
             {/each}
+            <AddPageButton
+                callback={() => {}}
+                label="+ Add device"
+            ></AddPageButton>
         </Listbook>
     </div>
 </Dialog>
