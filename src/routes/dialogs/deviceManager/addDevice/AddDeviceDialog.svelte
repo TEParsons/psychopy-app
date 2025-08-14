@@ -34,8 +34,10 @@
 
         return output
     })
-    let selectedDevice = $state()
-    setContext("selectedDevice", selectedDevice)
+    let selected = $state({
+        device: undefined
+    })
+    setContext("selected", selected)
 
     let param = new Param("Device label")
     param.inputType = "name"
@@ -45,7 +47,7 @@
     /** Reset this dialog */
     export function clear(evt) {
         // nothing selected
-        selectedDevice = undefined;
+        selected.device = undefined;
         // no name
         param.val = ""
         // close all panels
@@ -53,6 +55,11 @@
             panelsOpen[key] = false;
         }
     }
+
+    let disableBtns = $derived({
+        OK: String(param.val).length === 0 || !selected.device
+    })
+    $inspect(disableBtns)
 
 </script>
 
@@ -65,6 +72,7 @@
         OK: (evt) => {},
         CANCEL: (evt) => {}
     }}
+    buttonsDisabled={disableBtns}
 >
     <div class=container>
         <ParamCtrl

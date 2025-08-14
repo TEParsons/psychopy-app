@@ -8,14 +8,14 @@
         device
     } = $props()
 
-    let selectedDevice = getContext("selectedDevice");
+    let selected = getContext("selected");
 
     let hovered = $state.raw(false)
 
     onDestroy(() => {
         // clear selected device if selected and destroyed
-        if (selectedDevice === device) {
-            selectedDevice = undefined;
+        if (selected.device === device) {
+            selected.device = undefined;
         }
     })
 </script>
@@ -28,7 +28,7 @@
         type="radio" 
         name="device" 
         value={key}
-        onclick={() => selectedDevice = device}
+        onclick={() => selected.device = device}
     />
     <label 
         for="device-{key}"

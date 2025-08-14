@@ -15,6 +15,8 @@
             CANCEL: undefined,
             HELP: undefined
         },
+        /** @bindable State controlling whether each button is disabled */
+        buttonsDisabled={},
         /** @bindable @type {Boolean} State dictating whether this dialog is shown */
         shown=$bindable(),
         /** @prop @type {Function} Function to execute when this dialog is opened */
@@ -77,7 +79,6 @@
                         window.open(buttons.HELP, '_blank').focus();
                     }} 
                     horizontal
-                    disabled={!buttons.HELP}
                 ></Button>
                 {/if}
         </div>
@@ -92,6 +93,7 @@
                 }} 
                 affirmative
                 horizontal
+                disabled={buttonsDisabled && buttonsDisabled['YES']}
             ></Button>
             {/if}
             {#if buttons.NO}
@@ -103,6 +105,7 @@
                 }} 
                 horizontal
                 negative
+                disabled={buttonsDisabled && buttonsDisabled['NO']}
             ></Button>
             {/if}
             {#if buttons.OK}
@@ -114,6 +117,7 @@
                 }} 
                 primary
                 horizontal
+                disabled={buttonsDisabled && buttonsDisabled['OK']}
             ></Button>
             {/if}
             {#if buttons.APPLY}
@@ -123,6 +127,7 @@
                     buttons['APPLY'](evt); 
                 }} 
                 horizontal
+                disabled={buttonsDisabled && buttonsDisabled['APPLY']}
             ></Button>
             {/if}
             {#if buttons.CANCEL}
@@ -133,6 +138,7 @@
                     shown = false;
                 }} 
                 horizontal
+                disabled={buttonsDisabled && buttonsDisabled['CANCEL']}
             ></Button>
             {/if}
         </div>
