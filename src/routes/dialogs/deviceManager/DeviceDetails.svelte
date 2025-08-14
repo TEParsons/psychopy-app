@@ -1,5 +1,6 @@
 <script>
     import { ParamsNotebook, ParamCtrl } from "$lib/utils/paramCtrls";
+    import DeviceProfile from "./DeviceProfile.svelte";
 
     let {
         device
@@ -14,16 +15,9 @@
             param={device.params['name']}
         ></ParamCtrl>
     </div>
-    <table class=device-params>
-        <tbody>
-            {#each Object.entries(device.profile) as [key, val]}
-                <tr>
-                    <th>{key}</th>
-                    <td>{val}</td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
+    <DeviceProfile 
+        profile={device.profile}
+    ></DeviceProfile>
     <ParamsNotebook
         element={device}
         hideParams={["name"]}
@@ -43,19 +37,5 @@
     }
     .name-container {
         padding: 1rem;
-    }
-
-    table.device-params {
-        border-collapse: collapse;
-        margin: 1rem;
-    }
-    table.device-params td, 
-    table.device-params th {
-        border: 1px solid var(--overlay);
-        padding: .5rem;
-    }
-    table.device-params th {
-        text-align: right;
-        background-color: var(--mantle);
     }
 </style>

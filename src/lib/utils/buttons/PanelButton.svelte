@@ -8,12 +8,11 @@
         label,
         /** @prop @type {string|undefined} Hover text for this button, if any */
         tooltip=undefined,
+        /** @bindable State controlling whether this panel button is open */
+        open=$bindable(),
         /** @interface */
-        children
+        children=undefined
     } = $props()
-
-    /** @state @type {boolean} Whether this panel is open */
-    let open = $state(false)
 </script>
 
 <button
@@ -46,7 +45,7 @@
     class="toggled-panel"
     transition:slide
 >
-    {@render children()}
+    {@render children?.()}
 </div>
 {/if}
 

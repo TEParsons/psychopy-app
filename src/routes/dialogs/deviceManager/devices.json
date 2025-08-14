@@ -1,6 +1,6 @@
 {
  "BRIOmic": {
-  "__class__": "psychopy.experiment.components.microphone.MicrophoneDeviceBackend",
+  "__class__": "psychopy.experiment.components.microphone:MicrophoneDeviceBackend",
   "__name__": "MicrophoneDeviceBackend",
   "profile": {
    "deviceName": "Microphone (Logitech BRIO)",
@@ -25,7 +25,7 @@
   }
  },
  "BRIOcam": {
-  "__class__": "psychopy.experiment.components.camera.CameraDeviceBackend",
+  "__class__": "psychopy.experiment.components.camera:CameraDeviceBackend",
   "__name__": "CameraDeviceBackend",
   "profile": {
    "deviceName": "Logitech BRIO",
@@ -63,7 +63,7 @@
   }
  },
  "dummyPhotometer": {
-  "__class__": "psychopy.experiment.monitor.ScreenBufferPhotometerDeviceBackend",
+  "__class__": "psychopy.experiment.monitor:ScreenBufferPhotometerDeviceBackend",
   "__name__": "ScreenBufferPhotometerDeviceBackend",
   "profile": {
    "deviceName": "Photometer Emulator",
@@ -98,7 +98,7 @@
   }
  },
  "keyboardButtonBox": {
-  "__class__": "psychopy.experiment.components.buttonBox.KeyboardButtonBoxDeviceBackend",
+  "__class__": "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend",
   "__name__": "KeyboardButtonBoxDeviceBackend",
   "profile": {
    "deviceName": "KeyboardButtonBox",
@@ -122,7 +122,7 @@
   }
  },
  "laptopCam": {
-  "__class__": "psychopy.experiment.components.camera.CameraDeviceBackend",
+  "__class__": "psychopy.experiment.components.camera:CameraDeviceBackend",
   "__name__": "CameraDeviceBackend",
   "profile": {
    "deviceName": "Integrated Webcam",
@@ -160,7 +160,7 @@
   }
  },
  "S3mic": {
-  "__class__": "psychopy.experiment.components.microphone.MicrophoneDeviceBackend",
+  "__class__": "psychopy.experiment.components.microphone:MicrophoneDeviceBackend",
   "__name__": "MicrophoneDeviceBackend",
   "profile": {
    "deviceName": "Headset (Anker PowerConf S3)",
@@ -185,7 +185,7 @@
   }
  },
  "laptopMic": {
-  "__class__": "psychopy.experiment.components.microphone.MicrophoneDeviceBackend",
+  "__class__": "psychopy.experiment.components.microphone:MicrophoneDeviceBackend",
   "__name__": "MicrophoneDeviceBackend",
   "profile": {
    "deviceName": "Microphone Array (Realtek(R) Audio)",
@@ -210,7 +210,8 @@
   }
  },
  "com3": {
-  "__class__": "psychopy.experiment.components.serialOut.SerialDeviceBackend",
+  "__class__": "psychopy.experiment.components.serialOut:SerialDeviceBackend",
+  "__name__": "SerialDeviceBackend",
   "profile": {
    "deviceName": "COM3",
    "port": "COM3",
@@ -236,7 +237,7 @@
   }
  },
  "S3speakers": {
-  "__class__": "psychopy.experiment.components.sound.SpeakerDeviceBackend",
+  "__class__": "psychopy.experiment.components.sound:SpeakerDeviceBackend",
   "__name__": "SpeakerDeviceBackend",
   "profile": {
    "deviceName": "Headphones (Anker PowerConf S3)",
@@ -266,7 +267,7 @@
   }
  },
  "laptopSpeakers": {
-  "__class__": "psychopy.experiment.components.sound.SpeakerDeviceBackend",
+  "__class__": "psychopy.experiment.components.sound:SpeakerDeviceBackend",
   "__name__": "SpeakerDeviceBackend",
   "profile": {
    "deviceName": "Speakers (Realtek(R) Audio)",
@@ -296,7 +297,7 @@
   }
  },
  "S3soundSensor": {
-  "__class__": "psychopy.experiment.components.soundsensor.MicrophoneSoundSensorBackend",
+  "__class__": "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
   "__name__": "MicrophoneSoundSensorBackend",
   "profile": {
    "deviceName": "SoundSensor Emulator (Headset (Anker PowerConf S3))",
@@ -331,7 +332,7 @@
   }
  },
  "BRIOsoundSensor": {
-  "__class__": "psychopy.experiment.components.soundsensor.MicrophoneSoundSensorBackend",
+  "__class__": "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
   "__name__": "MicrophoneSoundSensorBackend",
   "profile": {
    "deviceName": "SoundSensor Emulator (Microphone (Logitech BRIO))",
@@ -366,7 +367,7 @@
   }
  },
  "demoButtonBox": {
-  "__class__": "psychopy.experiment.components.buttonBox.KeyboardButtonBoxDeviceBackend",
+  "__class__": "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend",
   "__name__": "KeyboardButtonBoxDeviceBackend",
   "profile": {
    "deviceName": "KeyboardButtonBox",
@@ -390,7 +391,7 @@
   }
  },
  "demoMicrophone": {
-  "__class__": "psychopy.experiment.components.microphone.MicrophoneDeviceBackend",
+  "__class__": "psychopy.experiment.components.microphone:MicrophoneDeviceBackend",
   "__name__": "MicrophoneDeviceBackend",
   "profile": {
    "deviceName": "Microphone (Logitech BRIO)",
@@ -415,7 +416,8 @@
   }
  },
  "demoLightSensor": {
-  "__class__": "psychopy.experiment.routines.visualValidator.ScreenBufferVisualValidatorBackend",
+  "__class__": "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend",
+  "__name__": "ScreenBufferVisualValidatorBackend",
   "profile": {
    "deviceName": "Light Sensor Emulator (Screen Buffer)",
    "deviceClass": "psychopy.hardware.lightsensor.ScreenBufferSampler",

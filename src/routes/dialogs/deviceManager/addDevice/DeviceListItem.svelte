@@ -1,0 +1,67 @@
+<script>
+    import { getContext, onDestroy } from "svelte";
+    import DeviceProfile from "../DeviceProfile.svelte";
+    import { fade } from "svelte/transition";
+
+    let {
+        key,
+        device
+    } = $props()
+
+    let selectedDevice = getContext("selectedDevice");
+
+    let hovered = $state.raw(false)
+
+    onDestroy(() => {
+        // clear selected device if selected and destroyed
+        if (selectedDevice === device) {
+            selectedDevice = undefined;
+        }
+    })
+</script>
+
+<div
+    class=device-list-item
+>
+    <input 
+        id="device-{key}"
+        type="radio" 
+        name="device" 
+        value={key}
+        onclick={() => selectedDevice = device}
+    />
+    <label 
+        for="device-{key}"
+        onmouseenter={() => hovered = true}
+        onmouseleave={() => hovered = false}
+        onfocusin={() => hovered = true}
+        onfocusout={() => hovered = false}
+        role=none
+    >
+        {device.profile.deviceName}
+    </label>
+    {#if hovered}
+        <div 
+            class=details-panel
+            transition:fade
+        >
+            <DeviceProfile
+                profile={device.profile}
+            ></DeviceProfile>
+        </div>
+    {/if}
+    
+</div>
+
+<style>
+    .device-list-item {
+        position: relative;
+    }
+    .details-panel {
+        position: absolute;
+        top: calc(100% + 1rem);
+        left: 1rem;
+        z-index: 2;
+        width: 35rem;
+    }
+</style>

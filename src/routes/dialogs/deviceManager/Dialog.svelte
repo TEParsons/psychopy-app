@@ -5,6 +5,7 @@
     import DeviceProfiles from "./devices.json";
     import { AddPageButton, Listbook, NotebookPage } from "$lib/utils/notebook";
     import { Device } from "$lib/experiment.svelte";
+    import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
 
     let {
         /** @bindable @type {boolean} State controlling when this dialog is shown */
@@ -24,6 +25,8 @@
     }
 
     setContext("devices", devices)
+
+    let showAddDeviceDialog = $state.raw(false)
 </script>
 
 
@@ -56,11 +59,15 @@
             </NotebookPage>
             {/each}
             <AddPageButton
-                callback={() => {}}
+                callback={(evt) => showAddDeviceDialog = true}
                 label="+ Add device"
             ></AddPageButton>
         </Listbook>
     </div>
+
+    <AddDeviceDialog
+        bind:shown={showAddDeviceDialog}
+    ></AddDeviceDialog>
 </Dialog>
 
 <style>
