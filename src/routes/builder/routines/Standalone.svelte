@@ -10,11 +10,20 @@
     onMount(() => notebook.setRestorePoint())
 
     let notebook;
+
+    let valid = $state({})
+
+    let applyDisabled = $derived(
+        Object.values(valid).some(
+            (val) => !val.state
+        )
+    )
 </script>
 
 <div class=standalone-routine-canvas>
     <ParamsNotebook 
         bind:this={notebook}
+        bind:valid={valid}
         element={component}
     ></ParamsNotebook>
     <div class=standalone-routine-ctrls>
@@ -23,6 +32,7 @@
             label=Apply
             primary
             horizontal
+            disabled={applyDisabled}
             onclick={(evt) => notebook.setRestorePoint()} 
         ></Button>
         <Button

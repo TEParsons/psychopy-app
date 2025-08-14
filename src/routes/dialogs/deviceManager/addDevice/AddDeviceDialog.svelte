@@ -59,7 +59,6 @@
     let disableBtns = $derived({
         OK: String(param.val).length === 0 || !selected.device
     })
-    $inspect(disableBtns)
 
 </script>
 

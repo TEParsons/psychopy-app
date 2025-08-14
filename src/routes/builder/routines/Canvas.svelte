@@ -4,8 +4,8 @@
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
-    import { ParamsNotebook } from "$lib/utils/paramCtrls";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
 
     let {
         routine=undefined
@@ -27,20 +27,10 @@
         ></Button>
     </div>
 
-    <Dialog 
-        id="{routine.settings.name}-parameters"
-        title="Editing: {routine.settings.name}"
-        bind:shown={showDialog} 
-        onopen={() => settingsNotebook.setRestorePoint()}
-        buttons={{
-            OK: () => {}, 
-            APPLY: () => settingsNotebook.setRestorePoint(), 
-            CANCEL: () => settingsNotebook.applyRestorePoint(), 
-            HELP: routine.settings.helpLink,
-        }}
-    >
-        <ParamsNotebook bind:this={settingsNotebook} element={routine.settings}></ParamsNotebook>
-    </Dialog>
+    <ParamsDialog
+        element={routine.settings}
+        bind:shown={showDialog}
+    ></ParamsDialog>
 
     {#if routine.components}
     <TimelineHeader bind:ticks={routine.visualTicks}></TimelineHeader>

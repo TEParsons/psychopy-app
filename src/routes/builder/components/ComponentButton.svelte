@@ -34,6 +34,17 @@
         // show dialog
         showDialog = true
     }
+
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
         
 </script>
 
@@ -60,7 +71,12 @@
         CANCEL: () => notebook.applyRestorePoint(), 
         HELP: dlgComponent.helpLink
     }}
+    buttonsDisabled={btnsDisabled}
 >
-    <ParamsNotebook bind:this={notebook} element={dlgComponent}></ParamsNotebook>
+    <ParamsNotebook 
+        bind:this={notebook} 
+        bind:valid={valid}
+        element={dlgComponent}
+    ></ParamsNotebook>
 </Dialog>
 {/if}

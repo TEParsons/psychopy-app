@@ -27,6 +27,17 @@
     setContext("devices", devices)
 
     let showAddDeviceDialog = $state.raw(false)
+
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
 </script>
 
 
@@ -39,6 +50,7 @@
         CANCEL: () => {},
         HELP: ""
     }}
+    buttonsDisabled={btnsDisabled}
     shown={shown}
 >
     <div class=container>
@@ -55,6 +67,7 @@
             >
                 <DeviceDetails
                     device={device}
+                    bind:valid={valid}
                 ></DeviceDetails>
             </NotebookPage>
             {/each}

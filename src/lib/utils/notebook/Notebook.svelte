@@ -5,11 +5,6 @@
     let {
         /** @prop @type {function} Function to execute when the page is changed */
         onselect=(index, data) => {},
-        /** @prop @type {function|undefined} Function to add a new tab (setting this will show the 
-         * add button) */
-        add=undefined,
-        /** @prop @type {string|undefined} Tooltip when hovered over add button */
-        addTooltip=undefined,
         /** @interface @type {Array<HTMLElement>} Child elements of this notebook */
         children=undefined
     } = $props()

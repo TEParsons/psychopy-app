@@ -50,6 +50,17 @@
         left: false,
         right: false
     })
+
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
 </script>
 
 {#if element.complete}
@@ -130,12 +141,14 @@
         APPLY: (evt) => notebook.setRestorePoint(),
         CANCEL: (evt) => notebook.applyRestorePoint(evt), 
     }}
+    buttonsDisabled={btnsDisabled}
 >
     <ParamsNotebook 
         element={
             element instanceof FlowLoop ? element.initiator : element
         } 
         bind:this={notebook}
+        bind:valid={valid}
     />
 </Dialog>
 

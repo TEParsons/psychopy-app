@@ -3,26 +3,34 @@
     import DeviceProfile from "./DeviceProfile.svelte";
 
     let {
-        device
+        device,
+        valid=$bindable()
     } = $props()
+
+    valid['name'] = {
+        state: true,
+        warnings: []
+    }
 </script>
 
 
 <div class=device-details-pnl>
-    <div class=name-container>
-        <ParamCtrl
-            name="name"
-            param={device.params['name']}
-        ></ParamCtrl>
-    </div>
+    <ParamCtrl
+        name="name"
+        param={device.params['name']}
+        bind:valid={valid['name']}
+    ></ParamCtrl>
     <DeviceProfile 
         profile={device.profile}
     ></DeviceProfile>
-    <ParamsNotebook
-        element={device}
-        hideParams={["name"]}
-    >
-    </ParamsNotebook>
+    <div class=notebook-container>
+        <ParamsNotebook
+            element={device}
+            hideParams={["name"]}
+            bind:valid={valid}
+        >
+        </ParamsNotebook>
+    </div>
 </div>
 
 <style>
@@ -33,9 +41,10 @@
 
         display: flex;
         flex-direction: column;
-        pad: .5rem;
-    }
-    .name-container {
+        gap: 1rem;
         padding: 1rem;
+    }
+    .notebook-container {
+        margin: -1rem;
     }
 </style>

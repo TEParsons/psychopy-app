@@ -7,7 +7,9 @@
     let {
         element,
         /** @prop @type {array<string>} List of param names not to show */
-        hideParams=[]
+        hideParams=[],
+        /** @bindable State keeping track of whether each param's value is valid */
+        valid=$bindable({}),
     } = $props();
 
     let backup = {}
@@ -29,7 +31,14 @@
     }
 
     let pageIndex = $state()
-
+    for (let key in element.params) {
+        if (!(key in valid)){
+            valid[key] = {
+                state: true,
+                warnings: []
+            }
+        }
+    }
 </script>
 
 <div class=params-container>
@@ -67,6 +76,7 @@
                                 <ParamCtrl 
                                     name={name} 
                                     param={param}
+                                    bind:valid={valid[name]}
                                 ></ParamCtrl>
                             {/if}
                         {/each}

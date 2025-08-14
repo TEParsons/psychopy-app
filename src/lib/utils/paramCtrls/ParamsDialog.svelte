@@ -12,13 +12,23 @@
     } = $props()
 
     let notebook;
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
 
 </script>
 
 
 <Dialog 
     id="{element.name}-parameters"
-    title="Editing: {element.name}"
+    title="Editing: {element.name || "Experiment"}"
     bind:shown={shown} 
     onclose={onclose}
     onopen={() => notebook.setRestorePoint()}
@@ -28,6 +38,11 @@
         CANCEL: () => notebook.applyRestorePoint(), 
         HELP: element.helpLink,
     }}
+    buttonsDisabled={btnsDisabled}
 >
-    <ParamsNotebook bind:this={notebook} element={element}></ParamsNotebook>
+    <ParamsNotebook 
+        bind:this={notebook} 
+        bind:valid={valid}
+        element={element}
+    ></ParamsNotebook>
 </Dialog>

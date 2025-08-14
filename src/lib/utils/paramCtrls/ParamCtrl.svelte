@@ -1,10 +1,13 @@
 <script>
     import { mapping } from "./ctrls";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
+    import { setContext } from "svelte";
 
     let {
         name,
-        param
+        param,
+        /** @bindable State keeping track of whether this param's value is valid */
+        valid=$bindable()
     } = $props();
 
     let ValueCtrl = $state.raw();
@@ -18,6 +21,8 @@
     let inline = $derived(
         ["bool"].includes(param.inputType)
     )
+
+    setContext("valid", valid)
 </script>
 
 
@@ -56,7 +61,9 @@
         style:grid-row-start={inline ? "label" : "ctrl"}
         style:grid-column-end={inline ? "gap" : "end"}
     >
-        <ValueCtrl param={param}></ValueCtrl>
+        <ValueCtrl 
+            param={param}
+        ></ValueCtrl>
     </div>
 </div>
 

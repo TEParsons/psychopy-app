@@ -28,6 +28,17 @@
         }
     })
 
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
+
 </script>
 
 <div
@@ -80,8 +91,13 @@
             }, 
             HELP: "https://www.psychopy.org/builder/flow.html#loops",
         }}
+        buttonsDisabled={btnsDisabled}
     >
-        <ParamsNotebook bind:this={notebook} element={element}></ParamsNotebook>
+        <ParamsNotebook 
+            bind:this={notebook} 
+            bind:valid={valid}
+            element={element}
+        ></ParamsNotebook>
     </Dialog>
     {/if}
 </div>

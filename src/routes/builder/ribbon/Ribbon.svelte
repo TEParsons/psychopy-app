@@ -22,10 +22,10 @@
         new_runner_frame,
     } from './callbacks.js'
     
-    import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
     import { Experiment } from "$lib/experiment.svelte";
     import { FindDialog } from "../../dialogs/find";
     import { DeviceManagerDialog } from "../../dialogs/deviceManager"
+    import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
 
     let current = getContext("current");
 
@@ -167,20 +167,10 @@
             disabled={current.experiment === null}
         />
         {#if current.experiment !== null }
-        <Dialog 
-            id=experiment-settings
-            title="Experiment settings"
-            bind:shown={showSettingsDlg} 
-            onopen={() => settingsNotebook.setRestorePoint()}
-            buttons={{
-                OK: () => {}, 
-                APPLY: () => settingsNotebook.setRestorePoint(), 
-                CANCEL: () => settingsNotebook.applyRestorePoint(), 
-                HELP: current.experiment.settings.helpLink,
-            }}
-        >
-            <ParamsNotebook bind:this={settingsNotebook} element={current.experiment.settings}></ParamsNotebook>
-        </Dialog>
+        <ParamsDialog
+            element={current.experiment.settings}
+            bind:shown={showSettingsDlg}
+        ></ParamsDialog>
         {/if}
         <RibbonSwitchButton 
             labels={["Pilot", "Run"]} 

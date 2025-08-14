@@ -10,6 +10,17 @@
     let current = getContext("current");
     let showNewRoutineDialog = $state.raw(false)
     let notebook;
+
+    let valid = $state({})
+
+    let btnsDisabled = $derived({
+        OK: Object.values(valid).some(
+            (val) => !val.state
+        ),
+        APPLY: Object.values(valid).some(
+            (val) => !val.state
+        )
+    })
 </script>
 
 <Notebook>
@@ -64,7 +75,12 @@
             },  
             HELP: "https://www.psychopy.org/builder/routines.html#routines",
         }}
+        buttonsDisabled={btnsDisabled}
     >
-        <ParamsNotebook bind:this={notebook} element={current.inserting.settings}></ParamsNotebook>
+        <ParamsNotebook 
+            bind:this={notebook} 
+            bind:valid={valid}
+            element={current.inserting.settings}
+        ></ParamsNotebook>
     </Dialog>
 {/if}

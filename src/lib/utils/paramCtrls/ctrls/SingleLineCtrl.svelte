@@ -1,4 +1,6 @@
 <script>
+    import { getContext } from "svelte";
+
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
@@ -11,7 +13,16 @@
     } = $props()
 
     let isCode = $derived(checkCode(param));
-    let isValid = $derived(validate(param));
+
+    let valid = getContext("valid")
+
+    $effect(() => {
+        if (valid !== undefined) {
+            valid.state = validate(param)
+        }
+
+        return param.val
+    })
 </script>
 
 {#if codeIndicator}
@@ -25,7 +36,7 @@
     class=param-text-input-single 
     type="text" 
     bind:value={param.val} 
-    class:valid={isValid} 
+    class:valid={valid ? valid.state : true} 
     class:code={isCode} 
 />
 
