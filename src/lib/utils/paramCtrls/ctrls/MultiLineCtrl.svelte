@@ -2,6 +2,8 @@
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
+        /** @bindable State tracking whether this param's value is valid */
+        valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
         validate = (param) => true,
         /** @prop @type {Function} Function to check whether this param is code */
@@ -11,7 +13,12 @@
     } = $props()
 
     let isCode = $derived(checkCode(param));
-    let isValid = $derived(validate(param));
+
+    $effect(() => {
+        if (valid !== undefined) {
+            valid.state = validate(param)
+        }
+    })
 </script>
 
 {#if codeIndicator}
@@ -24,7 +31,7 @@
 <textarea 
     class=param-text-input-multi
     bind:value={param.val} 
-    class:valid={isValid} 
+    class:valid={valid.state} 
     class:code={isCode} 
 >
 <textarea></textarea>

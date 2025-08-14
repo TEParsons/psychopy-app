@@ -1,11 +1,13 @@
 <script>
-    import { getContext } from "svelte";
+    import { getContext, onDestroy } from "svelte";
 
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
+        /** @bindable State tracking whether the value of this ctrl is valid */
+        valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => true,
+        validate = (param) => !String(param.val).includes("error"),
         /** @prop @type {Function} Function to check whether this param is code */
         checkCode = (param) => ["code", "extendedCode"].includes(param.valType) || String(param.val).startsWith("$"),
         /** @prop @type {Boolean} Should the code indicator ($) be shown? */
@@ -14,7 +16,6 @@
 
     let isCode = $derived(checkCode(param));
 
-    let valid = getContext("valid")
 
     $effect(() => {
         if (valid !== undefined) {

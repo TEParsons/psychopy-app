@@ -6,7 +6,8 @@
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
-        param
+        param,
+        valid=$bindable()
     } = $props()
     
     // make sure param val is always an object rather than a string
@@ -51,6 +52,28 @@
         
         return Object.entries(entries)
     })
+    
+
+    let entriesValid = $state({})
+    
+    $effect(() => {
+        for (let [key, val] of entries) {
+            if (!(key in entriesValid)) {
+                entriesValid[key] = {
+                    state: true,
+                    warnings: []
+                }
+            }
+        }
+    })
+
+    $effect(() => {
+        valid.state = Object.values(entriesValid).every(
+            (val) => val.state
+        )
+    })
+    $inspect(valid)
+
 </script>
 
 <div class=dict-ctrl-layout>
@@ -85,6 +108,7 @@
         <SingleLineCtrl
             param={value}
             codeIndicator={false}
+            bind:valid={entriesValid[label]}
         />
         <ParamCtrlButton
             icon="/icons/{theme}/btn-delete.svg"

@@ -1,7 +1,6 @@
 <script>
     import { mapping } from "./ctrls";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
-    import { setContext } from "svelte";
 
     let {
         name,
@@ -21,8 +20,6 @@
     let inline = $derived(
         ["bool"].includes(param.inputType)
     )
-
-    setContext("valid", valid)
 </script>
 
 
@@ -63,6 +60,7 @@
     >
         <ValueCtrl 
             param={param}
+            bind:valid={valid}
         ></ValueCtrl>
     </div>
 </div>

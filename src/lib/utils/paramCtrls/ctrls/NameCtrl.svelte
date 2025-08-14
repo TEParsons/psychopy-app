@@ -2,7 +2,8 @@
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
-        param
+        param,
+        valid=$bindable()
     } = $props()
 </script>
 
@@ -10,5 +11,6 @@
     param={param}
     checkCode={(param) => false}
     validate={(param) => !String(param.val).includes(" ")}
+    bind:valid={valid}
     codeIndicator={false}
 />

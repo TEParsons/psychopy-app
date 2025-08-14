@@ -1,6 +1,7 @@
 <script>
     let {
-        param
+        param,
+        valid=$bindable()
     } = $props()
 </script>
 

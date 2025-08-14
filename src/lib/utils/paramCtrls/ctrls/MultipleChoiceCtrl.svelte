@@ -3,6 +3,7 @@
 
     let {
         param,
+        valid=$bindable(),
         validate = (param) => !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
     } = $props()
 
@@ -11,14 +12,16 @@
     let options = $derived(
         optionsFromParam(param)
     )
-    
-    let isValid = $derived(validate(param))
+
+    $effect(() => {
+        valid.state = validate(param)
+    })
     
 </script>
 
 <div
     class=param-multi-choice-input
-    style:color={isValid ? "inherit" : "var(--red)"}
+    style:color={valid.state ? "inherit" : "var(--red)"}
 >
     {#each Object.entries(options) as [val, label]}
         <input

@@ -6,6 +6,7 @@
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
+        valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
         validate = (param) => true,
     } = $props()
@@ -20,6 +21,7 @@
 <FileCtrl
     param={param}
     validate={validate}
+    bind:valid={valid}
 ></FileCtrl>
 <ParamCtrlButton
     icon="/icons/{theme}/btn-table.svg"

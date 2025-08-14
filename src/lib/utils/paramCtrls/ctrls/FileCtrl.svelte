@@ -6,6 +6,8 @@
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
+        /** @bindable State tracking whether this param's value is valid */
+        valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
         validate = (param) => true,
     } = $props()
@@ -35,6 +37,7 @@
 <SingleLineCtrl 
     param={param} 
     validate={validate}
+    bind:valid={valid}
 />
 <ParamCtrlButton 
     icon="/icons/{theme}/btn-open.svg"
