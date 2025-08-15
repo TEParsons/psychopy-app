@@ -33,14 +33,14 @@ export function optionsFromParam(param) {
         }
         if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
             // placeholder: leave blank
-            param.allowedVals = [param.allowedVals]
+            param.allowedLabels = [param.allowedLabels]
         }
         // if no allowed labels, use allowed values
-        if (!param.allowedLabels) {
+        if (param.allowedLabels === undefined || param.allowedLabels.length == 0) {
             param.allowedLabels = param.allowedVals;
         }
         // if no allowed values, use allowed labels
-        if (!param.allowedVals) {
+        if (param.allowedVals === undefined || param.allowedVals.length == 0) {
             param.allowedVals = param.allowedLabels;
         }
         // if no allowed values or labels, there's no options
