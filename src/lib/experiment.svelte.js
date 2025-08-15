@@ -506,6 +506,11 @@ export class Param {
         this.label = undefined;
         this.hint = undefined;
         this.plugin = undefined;
+        this.depends = {
+            shown: [],
+            enabled: []
+        }
+        this.siblings = {};
     }
 
     /**
@@ -716,6 +721,8 @@ export class HasParams {
         )) {
             // create a new param from template
             this.params[name] = new Param(name);
+            // store ref to sibling params
+            this.params[name].siblings = this.params
             // set attributes
             for (let [key, val] of Object.entries(profile)) {
                 this.params[name][key] = val;
@@ -848,6 +855,8 @@ export class HasParams {
             }
             // populate param from XML
             this.params[name].fromXML(paramNode)
+            // store ref to sibling params
+            this.params[name].siblings = this.params
         }
     }
 
@@ -888,6 +897,8 @@ export class HasParams {
             }
             // populate param from JSON
             this.params[name].fromJSON(paramNode)
+            // store ref to sibling params
+            this.params[name].siblings = this.params
         }
     }
 }

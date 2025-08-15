@@ -6,6 +6,8 @@
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         /** @bindable State tracking whether this param's value is valid */
         valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
@@ -38,9 +40,11 @@
     param={param} 
     validate={validate}
     bind:valid={valid}
+    disabled={disabled}
 />
 <ParamCtrlButton 
     icon="/icons/{theme}/btn-open.svg"
     tooltip="Browse for file..."
     onclick={getFile}
+    disabled={disabled}
 />

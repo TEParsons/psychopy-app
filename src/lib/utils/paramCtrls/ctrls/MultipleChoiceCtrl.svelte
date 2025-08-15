@@ -4,6 +4,8 @@
     let {
         param,
         valid=$bindable(),
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         validate = (param) => !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
     } = $props()
 
@@ -38,6 +40,7 @@
                     }
                 }
             }
+            disabled={disabled}
         />
         {label}
     {/each}

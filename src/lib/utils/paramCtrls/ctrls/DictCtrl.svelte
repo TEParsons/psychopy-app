@@ -7,6 +7,8 @@
 
     let {
         param,
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         valid=$bindable()
     } = $props()
     
@@ -75,7 +77,6 @@
             (val) => val.warning
         ).flat()[0]
     })
-    $inspect(valid)
 
 </script>
 
@@ -102,6 +103,7 @@
                     };
                 }
             }
+            disabled={disabled}
         />
         <span
             class=dict-ctrl-label
@@ -111,6 +113,7 @@
         <SingleLineCtrl
             param={value}
             codeIndicator={false}
+            disabled={disabled}
             bind:valid={entriesValid[label]}
         />
         <ParamCtrlButton
@@ -118,6 +121,7 @@
             onclick={(evt) => {
                 delete param.val[label]
             }}
+            disabled={disabled}
             tooltip="Remove item"
         />
     {/each}
@@ -136,6 +140,7 @@
             param.val[key] = "\"default\"";
         }}
         tooltip="Add item"
+        disabled={disabled}
     />
 </div>
 

@@ -15,7 +15,11 @@
     "allowedLabels": [],
     "label": "Name",
     "hint": "Name of this loop",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "nReps": {
     "val": 5,
@@ -28,7 +32,11 @@
     "allowedLabels": [],
     "label": "Num. repeats",
     "hint": "Number of repeats (for each condition)",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "conditions": {
     "val": [],
@@ -41,7 +49,11 @@
     "allowedLabels": [],
     "label": "Conditions",
     "hint": "A list of dictionaries describing the parameters in each condition",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "conditionsFile": {
     "val": "",
@@ -54,7 +66,11 @@
     "allowedLabels": [],
     "label": "Conditions",
     "hint": "Name of a file specifying the parameters for each condition (.csv, .xlsx, or .pkl). Browse to select a file. Right-click to preview file contents, or create a new file.",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "endPoints": {
     "val": [
@@ -70,7 +86,11 @@
     "allowedLabels": [],
     "label": "End points",
     "hint": "The start and end of the loop (see flow timeline)",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "Selected rows": {
     "val": "",
@@ -83,7 +103,11 @@
     "allowedLabels": [],
     "label": "Selected rows",
     "hint": "Select just a subset of rows from your condition file (the first is 0 not 1!). Examples: 0, 0:5, 5:-1",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "loopType": {
     "val": "random",
@@ -102,7 +126,11 @@
     "allowedLabels": [],
     "label": "Loop type",
     "hint": "How should the next condition value(s) be chosen?",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "random seed": {
     "val": "",
@@ -115,7 +143,11 @@
     "allowedLabels": [],
     "label": "Random seed",
     "hint": "To have a fixed random sequence provide an integer of your choosing here. Leave blank to have a new random sequence on each run of the experiment.",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "isTrials": {
     "val": true,
@@ -128,7 +160,11 @@
     "allowedLabels": [],
     "label": "Is trials",
     "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    }
   }
  },
@@ -148,7 +184,11 @@
     "allowedLabels": [],
     "label": "Name",
     "hint": "Name of this loop",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "nReps": {
     "val": "50",
@@ -161,7 +201,11 @@
     "allowedLabels": [],
     "label": "nReps",
     "hint": "(Minimum) number of trials in the staircase",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "start value": {
     "val": "",
@@ -174,7 +218,11 @@
     "allowedLabels": [],
     "label": "Start value",
     "hint": "The initial value of the parameter",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "max value": {
     "val": 1,
@@ -187,7 +235,11 @@
     "allowedLabels": [],
     "label": "Max value",
     "hint": "The maximum value the parameter can take",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "min value": {
     "val": 0,
@@ -200,7 +252,11 @@
     "allowedLabels": [],
     "label": "Min value",
     "hint": "The minimum value the parameter can take",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "step sizes": {
     "val": "[4,4,2,2,1]",
@@ -213,7 +269,11 @@
     "allowedLabels": [],
     "label": "Step sizes",
     "hint": "The size of the jump at each step (can change on each 'reversal')",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "step type": {
     "val": "db",
@@ -230,7 +290,11 @@
     "allowedLabels": [],
     "label": "Step type",
     "hint": "The units of the step size (e.g. 'linear' will add/subtract that value each step, whereas 'log' will ad that many log units)",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "N up": {
     "val": 1,
@@ -243,7 +307,11 @@
     "allowedLabels": [],
     "label": "N up",
     "hint": "The number of 'incorrect' answers before the value goes up",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "N down": {
     "val": 3,
@@ -256,7 +324,11 @@
     "allowedLabels": [],
     "label": "N down",
     "hint": "The number of 'correct' answers before the value goes down",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "N reversals": {
     "val": "",
@@ -269,7 +341,11 @@
     "allowedLabels": [],
     "label": "N reversals",
     "hint": "Minimum number of times the staircase must change direction before ending",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "loopType": {
     "val": "staircase",
@@ -288,7 +364,11 @@
     "allowedLabels": [],
     "label": "Loop type",
     "hint": "How should the next trial value(s) be chosen?",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "endPoints": {
     "val": [
@@ -304,7 +384,11 @@
     "allowedLabels": [],
     "label": "End points",
     "hint": "Where to loop from and to (see values currently shown in the flow view)",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "isTrials": {
     "val": true,
@@ -317,7 +401,11 @@
     "allowedLabels": [],
     "label": "Is trials",
     "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    }
   }
  },
@@ -337,7 +425,11 @@
     "allowedLabels": [],
     "label": "Name",
     "hint": "Name of this loop",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "nReps": {
     "val": "50",
@@ -350,7 +442,11 @@
     "allowedLabels": [],
     "label": "nReps",
     "hint": "(Minimum) number of trials in *each* staircase",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "stairType": {
     "val": "simple",
@@ -367,7 +463,11 @@
     "allowedLabels": [],
     "label": "Stair type",
     "hint": "How to select the next staircase to run",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "switchMethod": {
     "val": "random",
@@ -384,7 +484,11 @@
     "allowedLabels": [],
     "label": "Switch method",
     "hint": "How to select the next staircase to run",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "loopType": {
     "val": "staircase",
@@ -403,7 +507,11 @@
     "allowedLabels": [],
     "label": "Loop type",
     "hint": "How should the next trial value(s) be chosen?",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "endPoints": {
     "val": [
@@ -419,7 +527,11 @@
     "allowedLabels": [],
     "label": "End points",
     "hint": "Where to loop from and to (see values currently shown in the flow view)",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "conditions": {
     "val": [],
@@ -432,7 +544,11 @@
     "allowedLabels": [],
     "label": "Conditions",
     "hint": "A list of dictionaries describing the differences between each staircase",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "conditionsFile": {
     "val": "",
@@ -445,7 +561,11 @@
     "allowedLabels": [],
     "label": "Conditions",
     "hint": "An xlsx or csv file specifying the parameters for each condition",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    },
    "isTrials": {
     "val": true,
@@ -458,7 +578,11 @@
     "allowedLabels": [],
     "label": "Is trials",
     "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
-    "plugin": null
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
    }
   }
  }

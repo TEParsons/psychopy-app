@@ -3,6 +3,8 @@
 
     let {
         param,
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         valid=$bindable()
     } = $props()
 </script>
@@ -19,4 +21,5 @@
     }}
     bind:valid={valid}
     codeIndicator={false}
+    disabled={disabled}
 />

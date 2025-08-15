@@ -4,6 +4,8 @@
         param,
         /** @bindable State tracking whether this param's value is valid */
         valid=$bindable(),
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         /** @prop @type {Function} Function to check whether this param's value is valid */
         validate = (param) => true,
         /** @prop @type {Function} Function to check whether this param is code */
@@ -33,8 +35,9 @@
     bind:value={param.val} 
     class:valid={valid.state} 
     class:code={isCode} 
+    disabled={disabled}
 >
-<textarea></textarea>
+</textarea>
 
 <style>
     textarea {

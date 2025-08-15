@@ -20,57 +20,122 @@
     let inline = $derived(
         ["bool"].includes(param.inputType)
     )
+
+    function evaluateDepend(dep) {
+        let target
+        // evaluate condition
+        if (String(dep.condition).startsWith("==")) {
+            // equal to something...
+            target = String(dep.condition).replace(/==['"](.*?)['"]|==(.*?)/, "$1")
+            // convert True/False to true/false
+            if (target === "True") {
+                target = true
+            } else if (target === "False") {
+                target = false
+            }
+            // evaluate
+            if (param.siblings[dep.param].val !== target) {
+                return false
+            }
+        } else if (String(dep.condition).startsWith("in")) {
+            // within an array...
+            target = String(dep.condition).replace(
+                /in [\[\(](.*?)[\]\)]/, "$1"
+            ).split(
+                /, ?/g
+            ).map(
+                (value) => value.replace(/['"](.*?)['"]/, "$1")
+            )
+            // evaluate
+            if (!target.includes(param.siblings[dep.param].val)) {
+                return false
+            }
+        } else {
+            // evaluate value itself
+            if (!param.siblings[dep.param].val) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    let shown = $derived.by(() => {
+        // iterate through dependencies controlling shown state
+        for (let dep of param.depends.shown) {
+            // evaluate each
+            if (!evaluateDepend(dep)) {
+                return false
+            }
+        }
+
+        return true
+    })
+
+    let enabled = $derived.by(() => {
+        // iterate through dependencies controlling shown state
+        for (let dep of param.depends.enabled) {
+            // evaluate each
+            if (!evaluateDepend(dep)) {
+                return false
+            }
+        }
+
+        return true
+    })
 </script>
 
-
-<div 
-    class=param-ctrl 
-    id={name}
-    style:grid-template-rows={inline ? "[label] min-content [warning] min-content" : "[label] min-content [ctrl] auto [warning] min-content"}
->
-    <label 
-        class=param-label 
-        for={name}
-        style:grid-column-start={inline ? "gap" : "label"}
-        style:align-self={inline ? "center" : "end"}
+{#if shown}
+    <div 
+        class=param-ctrl 
+        id={name}
+        style:grid-template-rows={inline ? "[label] min-content [warning] min-content" : "[label] min-content [ctrl] auto [warning] min-content"}
     >
-        {param.label ? param.label : name}
-        {#if param.hint}
-            <Tooltip>
-                {param.hint}
-            </Tooltip>
-        {/if}
-    </label>
-    {#if param.allowedUpdates && param.allowedUpdates.length > 0}
-        <select 
-            class=param-updates 
-            id="{name}-updates" 
-            disabled={param.allowedUpdates.length == 1} 
-            bind:value={param.updates}
+        <label 
+            class=param-label 
+            for={name}
+            style:grid-column-start={inline ? "gap" : "label"}
+            style:align-self={inline ? "center" : "end"}
         >
-            {#each param.allowedUpdates as ud}
-                <option value={ud}>{ud}</option>
-            {/each}
-        </select>
-    {/if}
-    <div 
-        class="param-value"
-        style:grid-row-start={inline ? "label" : "ctrl"}
-        style:grid-column-end={inline ? "gap" : "end"}
-    >
-        <ValueCtrl 
-            param={param}
-            bind:valid={valid}
-        ></ValueCtrl>
-    </div>
-    <div 
-        class=warning
-    >
-        {#if valid.warning !== undefined}
-            {valid.warning}
+            {param.label ? param.label : name}
+            {#if param.hint}
+                <Tooltip>
+                    {param.hint}
+                </Tooltip>
+            {/if}
+        </label>
+        {#if param.allowedUpdates && param.allowedUpdates.length > 0}
+            <select 
+                class=param-updates 
+                id="{name}-updates" 
+                disabled={param.allowedUpdates.length == 1} 
+                bind:value={param.updates}
+            >
+                {#each param.allowedUpdates as ud}
+                    <option value={ud}>{ud}</option>
+                {/each}
+            </select>
         {/if}
+        <div 
+            class="param-value"
+            style:grid-row-start={inline ? "label" : "ctrl"}
+            style:grid-column-end={inline ? "gap" : "end"}
+        >
+            <ValueCtrl 
+                param={param}
+                disabled={!enabled}
+                bind:valid={valid}
+            ></ValueCtrl>
+        </div>
+        <div 
+            class=warning
+        >
+            {#if valid && valid.warning !== undefined}
+                {valid.warning}
+            {/if}
+        </div>
     </div>
-</div>
+{/if}
 
 <style>
     .param-ctrl {

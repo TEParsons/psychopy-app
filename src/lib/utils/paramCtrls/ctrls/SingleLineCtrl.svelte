@@ -6,6 +6,8 @@
         param,
         /** @bindable State tracking whether the value of this ctrl is valid */
         valid=$bindable(),
+        /** @prop @type {boolean} Controls whether this control is disabled */
+        disabled=false,
         /** @prop @type {Function} Function to check whether this param's value is valid */
         validate = (param) => [true, undefined],
         /** @prop @type {Function} Function to check whether this param is code */
@@ -39,14 +41,11 @@
     bind:value={param.val} 
     class:valid={valid ? valid.state : true} 
     class:code={isCode} 
+    disabled={disabled}
 />
 
 <style>
     input {
-        font-family: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        color: inherit;
         flex-grow: 1;
     }
     input:not(.valid) {
@@ -56,6 +55,7 @@
         font-family: var(--mono);
         font-weight: bold;
     }
+
 
     .code-indicator {
         align-self: center;
