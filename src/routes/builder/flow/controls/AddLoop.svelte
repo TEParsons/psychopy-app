@@ -6,6 +6,7 @@
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
     import ComponentProfiles from "$lib/components.json";
+    import LoopProfiles from "$lib/loops.json";
     
     let current = getContext("current");
     let notebook;
@@ -17,16 +18,13 @@
     let showDialog = $state(false)
     let showMenu = $state(false);
 
-    // object of just loop profiles
-    let LoopProfiles = {};
-    Object.keys(ComponentProfiles).forEach((key) => {
-        if (ComponentProfiles[key]['__class__'].startsWith("psychopy.experiment.loops")) {
-            // transform key name for display
-            let label = key.replace("Handler", "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
-            // add profile
-            LoopProfiles[label] = ComponentProfiles[key]
-        }
-    })
+    function titleCase(label) {
+        return label.replace(
+            "Handler", ""
+        ).replace(
+            /([a-z])([A-Z])/g, "$1 $2"
+        ).toLowerCase();
+    }
 
     let valid = $state({})
 
@@ -60,7 +58,7 @@
     >
         {#each Object.keys(LoopProfiles) as loopType}
             <MenuItem 
-                label="New {loopType} loop..."
+                label="New {titleCase(loopType)} loop..."
                 onclick={() => {
                     // create blank Loop
                     current.inserting = new LoopInitiator(loopType)

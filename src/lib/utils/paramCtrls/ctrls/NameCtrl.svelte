@@ -16,6 +16,9 @@
         if (String(param.val).includes(" ")) {
             return [false, "Names cannot include spaces"]
         }
+        if (String(param.val).length === 0) {
+            return [false, "Must have a name"]
+        }
 
         return [true, undefined]
     }}
