@@ -15,10 +15,6 @@
     let options = $derived(
         optionsFromParam(param)
     )
-
-    $effect(() => {
-        valid.state = validate(param)
-    })    
 </script>
 
 <select 
