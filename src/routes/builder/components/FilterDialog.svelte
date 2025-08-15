@@ -11,9 +11,6 @@
 <Dialog
     id=component-filter
     title="Filter Components"
-    buttons={{
-        OK: (evt) => {}
-    }}
     bind:shown={shown}
     shrink
 >
