@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
     import { slide } from "svelte/transition";
 
@@ -26,19 +25,12 @@
     </Tooltip>
     {/if}
     {label}
-    {#if open}
-    <img 
-        class="panel-indicator open"
-        src="/icons/{theme}/sym-arrow-down.svg"
-        alt="^"
-    />
-    {:else}
-    <img 
-        class="panel-indicator closed"
-        src="/icons/{theme}/sym-arrow-right.svg"
-        alt="v"
-    />
-    {/if}
+    <svg 
+        class=panel-indicator
+        class:open={open}
+    >
+        <use xlink:href="/icons/sym-arrow-right.svg"></use>
+    </svg>
 </button>
 {#if open}
 <div 
@@ -69,13 +61,13 @@
     }
     .panel-indicator {
         position: absolute;
+        aspect-ratio: 1/1;
         left: 1rem;
         bottom: 1rem;
+        height: .5rem;
+        transition: transform .2s;
     }
     .panel-indicator.open {
-        height: .5rem;
-    }
-    .panel-indicator.closed {
-        width: .5rem;
+        transform: rotate(90deg);
     }
 </style>

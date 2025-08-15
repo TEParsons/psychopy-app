@@ -2,7 +2,6 @@
     import { FlowLoop } from "$lib/experiment.svelte.js";
     import LoopNode from './Loop.svelte';
     import RoutineNode from './Routine.svelte';
-    import { theme } from "$lib/globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import { getContext } from "svelte";
     import { flip } from "svelte/animate";
@@ -15,7 +14,9 @@
     <div class="flow">
         <div class=flowline-container>
             <div class=flowline></div>
-            <img class=flowline-arrow src="/icons/{theme}/sym-arrow-right.svg" alt="<"/>
+            <svg class=flowline-arrow>
+                <use xlink:href="/icons/sym-arrow-right.svg"></use>
+            </svg>
         </div>
         {#if current.experiment}
             {#each current.experiment.flow.dynamic as emt}

@@ -165,6 +165,7 @@
     dialog .content {
         position: relative;
         overflow-y: auto;
+        color: var(--text);
     }
     dialog .title {
         display: grid;
@@ -173,6 +174,7 @@
         justify-items: start;
         padding: .3em 1rem;
         background-color: var(--overlay);
+        color: var(--text-on-overlay);
         padding: 0;
     }
     dialog .title label {

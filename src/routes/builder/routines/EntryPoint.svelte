@@ -1,6 +1,5 @@
 <script>
     import { Component } from "$lib/experiment.svelte";
-    import { theme } from "$lib/globals.svelte.js";
     import { getContext } from "svelte";
     
     let current = getContext("current");
@@ -54,7 +53,10 @@
     class:active={moving || inserting} 
     class:hovered={hovered}
 >
-    <img src="icons/{theme}/sym-arrow-right{hovered ? "-hl" : ""}.svg" alt=">" />
+    <svg>
+        <use xlink:href="icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"></use>
+    </svg>
+    
     <button 
         class="hitbox" 
         ondragenter={(evt) => {hovered = true}} 

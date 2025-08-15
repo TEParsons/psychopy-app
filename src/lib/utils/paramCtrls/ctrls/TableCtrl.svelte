@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte";
     import { CompactButton } from "$lib/utils/buttons";
     import FileCtrl from "./FileCtrl.svelte";
 
@@ -28,7 +27,7 @@
     disabled={disabled}
 ></FileCtrl>
 <CompactButton
-    icon="/icons/{theme}/btn-table.svg"
+    icon="/icons/btn-table.svg"
     tooltip="{param.val ? "Open" : "Create"} table"
     onclick={openTable}
     disabled={disabled || (

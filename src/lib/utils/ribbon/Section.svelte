@@ -18,7 +18,9 @@
         class=ribbon-section-label
     >
         {#if icon}
-            <img alt={label} src={icon} />
+            <svg>
+                <use xlink:href={icon}></use>
+            </svg>
         {:else}
             <div></div>
         {/if}

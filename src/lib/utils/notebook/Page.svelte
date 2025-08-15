@@ -70,10 +70,9 @@
     bind:this={handle}
 >
     {#if icon}
-        <img 
-            src={icon} 
-            alt="" 
-        />
+        <svg>
+            <use xlink:href={icon}></use>
+        </svg>
     {/if}
     <span class=label>
         {label}

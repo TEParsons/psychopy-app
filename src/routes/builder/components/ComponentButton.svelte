@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import { StandaloneRoutine, Routine, Component } from '$lib/experiment.svelte.js';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
@@ -51,7 +50,7 @@
 {#if !component.hidden}
 <Button 
     label={titleCase(component['__name__'])}
-    icon="/icons/{theme}/components/{component['__name__']}.svg"
+    icon="/icons/components/{component['__name__']}.svg"
     vertical
     disabled={!(current.routine instanceof Routine)}
     onclick={newComponent}

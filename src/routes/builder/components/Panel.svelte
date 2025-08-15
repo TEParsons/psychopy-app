@@ -6,7 +6,6 @@
     import RoutineButton from './RoutineButton.svelte';
     import FilterDialog from './FilterDialog.svelte';
     import { CompactButton } from "$lib/utils/buttons";
-    import { theme } from '$lib/globals.svelte';
 
     let sortedComponents = new Map();
     for (let [name, profile] of Object.entries(ComponentProfiles)) {
@@ -55,7 +54,7 @@
     <div class=ctrls>
         <div class=gap></div>
         <CompactButton
-            icon="/icons/{theme}/btn-filter.svg"
+            icon="/icons/btn-filter.svg"
             tooltip="Filter..."
             onclick={(evt) => showFilterDlg = true}
         />

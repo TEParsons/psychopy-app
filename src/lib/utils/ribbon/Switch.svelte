@@ -1,6 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js"
-
     let {
         /** @prop @type {string} Text label for this button, if any */
         labels=["", ""],
@@ -23,7 +21,9 @@
     disabled={disabled}
 >
     <span class="{state ? "active" : "inactive"}">{labels[0]}</span>
-    <img src="/icons/{theme}/ctrl-switch-{state ? "left" : "right"}.svg" alt="Toggle ({state ? "left" : "right"})"/>
+    <svg>
+        <use xlink:href="/icons/ctrl-switch-{state ? "left" : "right"}.svg"></use>
+    </svg>
     <span class="{state ? "inactive" : "active"}">{labels[1]}</span>
 </button>
 
@@ -40,7 +40,7 @@
     button:disabled {
         opacity: .5;
     }
-    button img {
+    button svg {
         width: 32px;
     }
 

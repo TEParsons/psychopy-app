@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { Menu, MenuItem } from "$lib/utils/menu"
     import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
@@ -84,16 +83,17 @@
         </button>
         
     {/if}
-    <img 
+    <svg 
         class="loop-arrow left"
-        src="/icons/{theme}/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" 
-        alt="^"
-        draggable={true}
         ondragstart={() => current.moving = element.initiator} 
         ondragend={() => current.moving = undefined}
         onmouseenter={() => edgeHovered.left = true}
         onmouseleave={() => edgeHovered.left = false}
-    />
+        draggable={true}
+        role=none
+    >
+        <use xlink:href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
+    </svg>
     {#if element}
         {#each element.routines as rt}
             {#if rt instanceof FlowLoop}
@@ -103,16 +103,17 @@
             {/if}
         {/each}
     {/if}
-    <img 
+    <svg 
         class="loop-arrow right"
-        src="/icons/{theme}/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg" 
-        alt="v"
-        draggable={true}
         ondragstart={() => current.moving = element.terminator} 
         ondragend={() => current.moving = undefined} 
         onmouseenter={() => edgeHovered.right = true}
         onmouseleave={() => edgeHovered.right = false}
-    />
+        draggable={true}
+        role=none
+    >
+        <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
+    </svg>
     {#if element.complete}
         <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}
@@ -124,7 +125,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/{theme}/btn-delete.svg"
+        icon="/icons/btn-delete.svg"
         label="Delete Loop"
         onclick={removeLoop}
     />

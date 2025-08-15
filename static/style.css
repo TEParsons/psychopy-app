@@ -17,7 +17,7 @@
     --overlay: #D6D6D6;
     --outline: #66666E;
     /* text colors */
-    --text: #1A1A1C;
+    --text: #242427;
     --hltext: #FFFFFF;
     --text-on-red: var(--hltext);
     --text-on-purple: var(--text);
@@ -28,7 +28,7 @@
     --text-on-base: var(--text);
     --text-on-mantle: var(--text);
     --text-on-crust: var(--text);
-    --text-on-overlay: var(--hltext);
+    --text-on-overlay: var(--text);
     --text-on-outline: var(--hltext);
     /* fonts */
     --body: Noto Sans;
@@ -39,7 +39,7 @@
     /* defaults */
     color: var(--text);
     background-color: var(--base);
-    font-family: var(--body), Noto Color Emoji;
+    font-family: Noto Color Emoji, var(--body);
     font-size: 10pt;
 }
 
@@ -53,7 +53,7 @@
         --outline: #ACACB0;
         /*  text colors */
         --text: #FFFFFF;
-        --hltext: #161616;
+        --hltext: #242427;
         --text-on-red: var(--text);
         --text-on-purple: var(--hltext);
         --text-on-blue: var(--text);
@@ -64,7 +64,11 @@
         --text-on-mantle: var(--text);
         --text-on-crust: var(--text);
         --text-on-overlay: var(--text);
-        --text-on-outline: var(--text);
+        --text-on-outline: var(--hltext);
+
+        /* defaults */
+        color: var(--text);
+        background-color: var(--base);
     }   
 }
 
@@ -122,8 +126,9 @@ option img {
 button {
     outline: none;
     border: none;
+    color: var(--text);
 }
 
-img {
-    color: var(--outline);
+svg {
+    aspect-ratio: 1/1;
 }

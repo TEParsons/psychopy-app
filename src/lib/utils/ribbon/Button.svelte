@@ -26,7 +26,9 @@
     onfocusin={() => {showTooltip = true}}
     onfocusout={() => {showTooltip = false}}
 >
-    <img src={icon} alt={label} />
+    <svg>
+        <use xlink:href={icon}></use>
+    </svg>
     <Tooltip
         bind:shown={showTooltip}
         position="bottom"
@@ -69,7 +71,7 @@
         border-color: var(--blue);
     }
 
-    button img {
+    button svg {
         height: 2.25rem;
     }
 

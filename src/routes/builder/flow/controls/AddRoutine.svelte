@@ -32,7 +32,7 @@
     <!-- button to open add Routine menu -->
     <Button 
         label="Add Routine"
-        icon="/icons/light/btn-routine.svg"
+        icon="/icons/btn-routine.svg"
         tooltip="Add a Routine to the experiment flow"
         onclick={() => {
             // open the "add routine" menu

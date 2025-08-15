@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import { Button } from "$lib/utils/buttons";
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
@@ -20,7 +19,7 @@
     <div class=button-container>
         <Button 
             label="Routine settings"
-            icon="icons/{theme}/btn-settings.svg"
+            icon="icons/btn-settings.svg"
             tooltip="Edit settings for this Routine"
             onclick={() => showDialog = true}
             horizontal 

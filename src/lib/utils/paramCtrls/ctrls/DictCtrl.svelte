@@ -1,6 +1,5 @@
 <script>
     import { Param } from "$lib/experiment.svelte";
-    import { theme } from "$lib/globals.svelte";
     import { CompactButton } from "$lib/utils/buttons";
     import { iterateName } from "./utils.js";
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
@@ -117,7 +116,7 @@
             bind:valid={entriesValid[label]}
         />
         <CompactButton
-            icon="/icons/{theme}/btn-delete.svg"
+            icon="/icons/btn-delete.svg"
             onclick={(evt) => {
                 delete param.val[label]
             }}
@@ -129,7 +128,7 @@
     <div class=gap></div>
     <div class=gap></div>
     <CompactButton
-        icon="/icons/{theme}/btn-add.svg"
+        icon="/icons/btn-add.svg"
         onclick={(evt) => {
             // enumerate field name to avoid duplication
             let key = "field";

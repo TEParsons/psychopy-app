@@ -49,11 +49,11 @@
     </Tooltip>
     {/if}
     {#if icon}
-    <img 
+    <svg 
         class=icon
-        src={icon} 
-        alt=""
-    />
+    >
+        <use xlink:href={icon}></use>
+    </svg>
     {/if}
     <span
         class=label
@@ -70,6 +70,9 @@
         font-family: var(--body);
         max-width: 100%;
         max-height: 100%;
+    }
+    button svg {
+        aspect-ratio: 1 / 1;
     }
 
     button.horizontal {

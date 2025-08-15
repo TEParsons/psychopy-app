@@ -47,11 +47,11 @@
     </Tooltip>
     {/if}
     {#if icon}
-    <img 
+    <svg 
         class=icon
-        src={icon} 
-        alt=""
-    />
+    >
+        <use xlink:href={icon}></use>
+    </svg>
     {/if}
 </button>
 

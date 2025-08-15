@@ -145,6 +145,7 @@
         align-items: center;
         min-width: 20rem;
         box-sizing: border-box;
+        color: var(--text);
     }
     .param-ctrl .param-label {
         position: relative;
@@ -153,6 +154,7 @@
     .param-ctrl .param-updates {
         grid-column-start: updates;
         grid-row-start: label;
+        color: var(--text);
     }
 
     .param-ctrl#name {

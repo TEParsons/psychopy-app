@@ -41,7 +41,11 @@
     disabled={disabled}
 >
     {#if icon}
-    <img src={icon} alt="-" class=menu-item-icon />
+    <svg 
+        class=menu-item-icon
+    >
+        <use xlink:href={icon}></use>
+    </svg>
     {/if}
     <span>{label}</span>
     {@render submenu?.()}

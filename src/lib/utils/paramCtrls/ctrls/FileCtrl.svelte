@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import SingleLineCtrl from "./SingleLineCtrl.svelte"
     import { Button, CompactButton } from "$lib/utils/buttons"
 
@@ -43,7 +42,7 @@
     disabled={disabled}
 />
 <CompactButton 
-    icon="/icons/{theme}/btn-open.svg"
+    icon="/icons/btn-open.svg"
     tooltip="Browse for file..."
     onclick={getFile}
     disabled={disabled}

@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import EntryPoint from './EntryPoint.svelte';
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
@@ -59,10 +58,9 @@
     oncontextmenu={oncontextmenu}
 >    
     {component.name}
-    <img 
-        src="/icons/{theme}/components/{component.tag}.svg" 
-        alt="" 
-    />
+    <svg>
+        <use xlink:href="/icons/components/{component.tag}.svg"></use>
+    </svg>
 </label>
 
 <!-- bars representing this on the timeline -->
@@ -125,7 +123,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/{theme}/btn-delete.svg"
+        icon="/icons/btn-delete.svg"
         label="Delete Component"
         onclick={removeComponent}
     />

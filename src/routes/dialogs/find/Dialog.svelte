@@ -1,9 +1,7 @@
 <script>
-    import { theme } from "$lib/globals.svelte";
     import { ToggleButton } from "$lib/utils/buttons";
     import { Dialog } from "$lib/utils/dialog"
     import { ParamsDialog } from "$lib/utils/paramCtrls";
-    import Routine from "../../builder/flow/Routine.svelte";
     import { current } from "../../builder/globals.svelte";
 
     let {
@@ -49,12 +47,12 @@
             >
             <ToggleButton 
                 bind:value={useRegex} 
-                icon="/icons/{theme}/btn-regex.svg"
+                icon="/icons/btn-regex.svg"
                 tooltip="Use RegEx syntax"
             />
             <ToggleButton 
                 bind:value={caseSensitive} 
-                icon="/icons/{theme}/btn-case.svg"
+                icon="/icons/btn-case.svg"
                 tooltip="Use case-sensitive searching"
             />
         </div>

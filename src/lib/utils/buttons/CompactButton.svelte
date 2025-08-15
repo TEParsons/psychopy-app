@@ -33,11 +33,9 @@
         </Tooltip>
     {/if}
     {#if icon}
-        <img 
-            class=icon
-            src={icon} 
-            alt="{icon}"
-        />
+    <svg>
+        <use xlink:href={icon}></use>
+    </svg>
     {/if}
 </button>
 
@@ -61,7 +59,7 @@
         justify-content: center;
     }
 
-    button img {
+    button svg {
         aspect-ratio: 1 / 1;
         height: 1.25rem;
         width: 1.25rem;

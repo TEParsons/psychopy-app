@@ -47,6 +47,7 @@
 <style>
     input {
         flex-grow: 1;
+        color: var(--text);
     }
     input:not(.valid) {
         color: var(--red);
@@ -55,8 +56,6 @@
         font-family: var(--mono);
         font-weight: bold;
     }
-
-
     .code-indicator {
         align-self: center;
     }

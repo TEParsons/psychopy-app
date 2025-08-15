@@ -50,6 +50,7 @@
         grid-gap: .5rem;
         align-items: end;
         min-width: 20rem;
+        color: var(--text);
     }
 
     .start-stop-ctrl .param-label {
@@ -71,10 +72,12 @@
     .start-stop-ctrl .param-type select {
         width: 100%;
         min-width: 8rem;
+        color: var(--text);
     }
     .start-stop-ctrl .param-value {
         grid-column-start: ctrl;
         grid-row-start: ctrl;
+        color: var(--text);
     }
     .start-stop-ctrl .param-estim-label {
         position: relative;
@@ -89,5 +92,6 @@
     .start-stop-ctrl .param-estim {
         grid-column-start: ctrl;
         grid-row-start: estim;
+        color: var(--text);
     }
 </style>

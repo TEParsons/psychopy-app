@@ -1,5 +1,4 @@
 <script>
-    import { theme } from "$lib/globals.svelte.js";
     import Menu from "./Menu.svelte";
     import Item from "./Item.svelte";
 
@@ -29,7 +28,11 @@
     disabled={disabled}
 >
     {#snippet submenu()}
-        <img class=menu-item-chevron src="/icons/{theme}/sym-arrow-right.svg" alt=">" />
+        <svg 
+            class=menu-item-chevron
+        >
+            <use xlink:href="/icons/sym-arrow-right.svg"></use>
+        </svg>
         <Menu 
             bind:shown={shown}
         >
@@ -47,7 +50,7 @@
         flex-direction: column;
     }
     .menu-item-chevron {
-        width: .4rem;
+        width: .5rem;
         margin-left: auto;
     }
 </style>
