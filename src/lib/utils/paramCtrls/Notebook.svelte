@@ -35,7 +35,7 @@
         if (!(key in valid)){
             valid[key] = {
                 state: true,
-                warnings: []
+                warning: undefined
             }
         }
     }

@@ -10,7 +10,13 @@
 <SingleLineCtrl
     param={param}
     checkCode={(param) => false}
-    validate={(param) => !String(param.val).includes(" ")}
+    validate={(param) => {
+        if (String(param.val).includes(" ")) {
+            return [false, "Names cannot include spaces"]
+        }
+
+        return [true, undefined]
+    }}
     bind:valid={valid}
     codeIndicator={false}
 />

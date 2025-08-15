@@ -61,7 +61,7 @@
             if (!(key in entriesValid)) {
                 entriesValid[key] = {
                     state: true,
-                    warnings: []
+                    warning: undefined
                 }
             }
         }
@@ -71,6 +71,9 @@
         valid.state = Object.values(entriesValid).every(
             (val) => val.state
         )
+        valid.warning = Object.values(entriesValid).map(
+            (val) => val.warning
+        ).flat()[0]
     })
     $inspect(valid)
 

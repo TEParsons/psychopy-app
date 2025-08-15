@@ -8,7 +8,7 @@
         param,
         valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => true,
+        validate = (param) => [true, undefined],
     } = $props()
 
     function openTable() {

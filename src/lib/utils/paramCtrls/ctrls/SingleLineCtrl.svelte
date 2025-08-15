@@ -7,7 +7,13 @@
         /** @bindable State tracking whether the value of this ctrl is valid */
         valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => !String(param.val).includes("error"),
+        validate = (param) => {
+            if (String(param.val).includes("error")) {
+                return [false, "Manually triggered"]
+            } else {
+                return [true, undefined]
+            }
+        },
         /** @prop @type {Function} Function to check whether this param is code */
         checkCode = (param) => ["code", "extendedCode"].includes(param.valType) || String(param.val).startsWith("$"),
         /** @prop @type {Boolean} Should the code indicator ($) be shown? */
@@ -19,7 +25,7 @@
 
     $effect(() => {
         if (valid !== undefined) {
-            valid.state = validate(param)
+            [valid.state, valid.warning] = validate(param)
         }
 
         return param.val

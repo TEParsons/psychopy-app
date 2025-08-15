@@ -9,7 +9,7 @@
         /** @bindable State tracking whether this param's value is valid */
         valid=$bindable(),
         /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => true,
+        validate = (param) => [true, ""],
     } = $props()
 
     async function getFile(evt) {

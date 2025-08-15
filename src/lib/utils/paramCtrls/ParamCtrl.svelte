@@ -26,7 +26,7 @@
 <div 
     class=param-ctrl 
     id={name}
-    style:grid-template-rows={inline ? "[label] min-content [ctrl]" : "[label] min-content [ctrl] auto"}
+    style:grid-template-rows={inline ? "[label] min-content [warning] min-content" : "[label] min-content [ctrl] auto [warning] min-content"}
 >
     <label 
         class=param-label 
@@ -63,6 +63,13 @@
             bind:valid={valid}
         ></ValueCtrl>
     </div>
+    <div 
+        class=warning
+    >
+        {#if valid.warning !== undefined}
+            {valid.warning}
+        {/if}
+    </div>
 </div>
 
 <style>
@@ -93,5 +100,13 @@
         display: flex;
         gap: .5rem;
         flex-direction: row;
+    }
+
+    .warning {
+        color: var(--red);
+        grid-row-start: warning;
+        grid-column-start: label;
+        grid-column-end: end;
+        justify-self: end;
     }
 </style>
