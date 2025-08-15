@@ -123,3 +123,7 @@ button {
     outline: none;
     border: none;
 }
+
+img {
+    color: var(--outline);
+}
