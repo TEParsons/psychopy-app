@@ -108,5 +108,6 @@
         grid-column-start: label;
         grid-column-end: end;
         justify-self: end;
+        margin-top: -.25rem;
     }
 </style>
