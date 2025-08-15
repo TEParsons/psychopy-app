@@ -96,7 +96,6 @@
 
     .param-value {
         grid-column-start: label;
-
         display: flex;
         gap: .5rem;
         flex-direction: row;
