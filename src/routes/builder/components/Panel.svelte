@@ -4,6 +4,9 @@
 
     import ComponentProfiles from '$lib/components.json';
     import RoutineButton from './RoutineButton.svelte';
+    import FilterDialog from './FilterDialog.svelte';
+    import { CompactButton } from "$lib/utils/buttons";
+    import { theme } from '$lib/globals.svelte';
 
     let sortedComponents = new Map();
     for (let [name, profile] of Object.entries(ComponentProfiles)) {
@@ -42,27 +45,54 @@
         }
     }
     categOrder = categOrder.concat(lastCategs)
+
+    let showFilterDlg = $state.raw(false);
+    let filter = $state()
 </script>
 
 
 <div id="components">
-    {#each categOrder as categ}
-    <ComponentSection id={categ} label={categ}>
-        {#each sortedComponents.get(categ) as comp}
-        {#if comp['__class__'].startsWith("psychopy.experiment.components")}
-        <ComponentButton 
-            component={comp}
-        ></ComponentButton>
-        {:else}
-        <RoutineButton 
-            component={comp}
-        ></RoutineButton>
-        {/if}
+    <div class=ctrls>
+        <div class=gap></div>
+        <CompactButton
+            icon="/icons/{theme}/btn-filter.svg"
+            tooltip="Filter..."
+            onclick={(evt) => showFilterDlg = true}
+        />
+        <FilterDialog
+            bind:filter={filter}
+            bind:shown={showFilterDlg}
+        ></FilterDialog>
+    </div>
+    <div class=components>
+        {#each categOrder as categ}
+            <ComponentSection label={categ}>
+                {#each sortedComponents.get(categ) as comp}
+                    {#if filter === undefined || filter.every((value) => comp.targets.includes(value))}
+                        {#if comp['__class__'].startsWith("psychopy.experiment.components")}
+                            <ComponentButton 
+                                component={comp}
+                            ></ComponentButton>
+                        {:else}
+                            <RoutineButton 
+                                component={comp}
+                            ></RoutineButton>
+                        {/if}
+                    {/if}
+                {/each}
+            </ComponentSection>
         {/each}
-    </ComponentSection>
-    {/each}
+    </div>
 </div>
 
 <style>
-
+    .gap {
+        flex-grow: 1;
+    }
+    .ctrls {
+        padding: .5rem;
+        display: flex;
+        gap: .5rem;
+        border-bottom: 1px solid var(--overlay);
+    }
 </style>

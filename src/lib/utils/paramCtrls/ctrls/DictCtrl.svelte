@@ -1,7 +1,7 @@
 <script>
     import { Param } from "$lib/experiment.svelte";
     import { theme } from "$lib/globals.svelte";
-    import { ParamCtrlButton } from "$lib/utils/buttons";
+    import { CompactButton } from "$lib/utils/buttons";
     import { iterateName } from "./utils.js";
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
@@ -116,7 +116,7 @@
             disabled={disabled}
             bind:valid={entriesValid[label]}
         />
-        <ParamCtrlButton
+        <CompactButton
             icon="/icons/{theme}/btn-delete.svg"
             onclick={(evt) => {
                 delete param.val[label]
@@ -128,7 +128,7 @@
     <div class=gap></div>
     <div class=gap></div>
     <div class=gap></div>
-    <ParamCtrlButton
+    <CompactButton
         icon="/icons/{theme}/btn-add.svg"
         onclick={(evt) => {
             // enumerate field name to avoid duplication

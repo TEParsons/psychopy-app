@@ -1,7 +1,7 @@
 <script>
     import { theme } from "$lib/globals.svelte.js";
     import SingleLineCtrl from "./SingleLineCtrl.svelte"
-    import { Button, ParamCtrlButton } from "$lib/utils/buttons"
+    import { Button, CompactButton } from "$lib/utils/buttons"
 
     let {
         /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
@@ -42,7 +42,7 @@
     bind:valid={valid}
     disabled={disabled}
 />
-<ParamCtrlButton 
+<CompactButton 
     icon="/icons/{theme}/btn-open.svg"
     tooltip="Browse for file..."
     onclick={getFile}

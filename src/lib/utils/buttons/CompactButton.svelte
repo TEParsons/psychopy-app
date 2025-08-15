@@ -25,19 +25,19 @@
     style:z-index={showTooltip ? 10 : "inherit"}
 >
     {#if tooltip}
-    <Tooltip
-        bind:shown={showTooltip}
-        position="bottom-right"
-    >
-        {tooltip}
-    </Tooltip>
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom-right"
+        >
+            {tooltip}
+        </Tooltip>
     {/if}
     {#if icon}
-    <img 
-        class=icon
-        src={icon} 
-        alt="{icon}"
-    />
+        <img 
+            class=icon
+            src={icon} 
+            alt="{icon}"
+        />
     {/if}
 </button>
 
@@ -55,6 +55,10 @@
             inset -1px -1px 2px rgba(0, 0, 0, 0.025)
         ;
         height: 100%;
+
+        display: grid;
+        align-items: center;
+        justify-content: center;
     }
 
     button img {

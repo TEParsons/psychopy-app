@@ -1,6 +1,6 @@
 <script>
     import { theme } from "$lib/globals.svelte";
-    import { ParamCtrlButton } from "$lib/utils/buttons";
+    import { CompactButton } from "$lib/utils/buttons";
     import FileCtrl from "./FileCtrl.svelte";
 
     let {
@@ -27,7 +27,7 @@
     bind:valid={valid}
     disabled={disabled}
 ></FileCtrl>
-<ParamCtrlButton
+<CompactButton
     icon="/icons/{theme}/btn-table.svg"
     tooltip="{param.val ? "Open" : "Create"} table"
     onclick={openTable}
@@ -36,4 +36,4 @@
             String(param.val).startsWith("$")
         )
     )}
-></ParamCtrlButton>
+></CompactButton>
