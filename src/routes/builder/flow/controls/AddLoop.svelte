@@ -11,10 +11,6 @@
     let current = getContext("current");
     let notebook;
 
-    let element = $state(
-        new LoopInitiator("TrialHandler")
-    )
-
     let showDialog = $state(false)
     let showMenu = $state(false);
 
@@ -94,7 +90,7 @@
         <ParamsNotebook 
             bind:this={notebook} 
             bind:valid={valid}
-            element={element}
+            element={current.inserting}
         ></ParamsNotebook>
     </Dialog>
     {/if}

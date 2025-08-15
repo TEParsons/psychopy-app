@@ -31,9 +31,7 @@
     "allowedVals": [
      "random",
      "sequential",
-     "fullRandom",
-     "staircase",
-     "interleaved staircases"
+     "fullRandom"
     ],
     "allowedLabels": [],
     "label": "Loop type",
@@ -80,8 +78,8 @@
    },
    "nReps": {
     "val": 5,
-    "valType": "num",
-    "inputType": "spin",
+    "valType": "code",
+    "inputType": "single",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
@@ -97,7 +95,7 @@
    },
    "Selected rows": {
     "val": "",
-    "valType": "str",
+    "valType": "code",
     "inputType": "single",
     "categ": "Basic",
     "updates": null,
@@ -151,7 +149,7 @@
      0,
      1
     ],
-    "valType": "num",
+    "valType": "code",
     "inputType": "hidden",
     "categ": "Basic",
     "updates": null,
@@ -190,10 +188,27 @@
      "enabled": []
     }
    },
+   "isTrials": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Is trials",
+    "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   },
    "nReps": {
     "val": "50",
-    "valType": "num",
-    "inputType": "spin",
+    "valType": "code",
+    "inputType": "single",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
@@ -209,9 +224,9 @@
    },
    "start value": {
     "val": "",
-    "valType": "num",
+    "valType": "code",
     "inputType": "single",
-    "categ": "Basic",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -226,9 +241,9 @@
    },
    "max value": {
     "val": 1,
-    "valType": "num",
+    "valType": "code",
     "inputType": "single",
-    "categ": "Basic",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -243,9 +258,9 @@
    },
    "min value": {
     "val": 0,
-    "valType": "num",
+    "valType": "code",
     "inputType": "single",
-    "categ": "Basic",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -262,7 +277,7 @@
     "val": "[4,4,2,2,1]",
     "valType": "list",
     "inputType": "single",
-    "categ": "Basic",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -279,7 +294,7 @@
     "val": "db",
     "valType": "str",
     "inputType": "choice",
-    "categ": "Basic",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
@@ -298,9 +313,9 @@
    },
    "N up": {
     "val": 1,
-    "valType": "num",
-    "inputType": "spin",
-    "categ": "Basic",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -315,9 +330,9 @@
    },
    "N down": {
     "val": 3,
-    "valType": "num",
-    "inputType": "spin",
-    "categ": "Basic",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
@@ -332,75 +347,15 @@
    },
    "N reversals": {
     "val": "",
-    "valType": "num",
-    "inputType": "spin",
-    "categ": "Basic",
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Staircase",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
     "allowedLabels": [],
     "label": "N reversals",
     "hint": "Minimum number of times the staircase must change direction before ending",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "loopType": {
-    "val": "staircase",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "random",
-     "sequential",
-     "fullRandom",
-     "staircase",
-     "interleaved staircases"
-    ],
-    "allowedLabels": [],
-    "label": "Loop type",
-    "hint": "How should the next trial value(s) be chosen?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "endPoints": {
-    "val": [
-     0,
-     1
-    ],
-    "valType": "num",
-    "inputType": "hidden",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "End points",
-    "hint": "Where to loop from and to (see values currently shown in the flow view)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "isTrials": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Is trials",
-    "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
     "plugin": null,
     "depends": {
      "shown": [],
@@ -425,6 +380,23 @@
     "allowedLabels": [],
     "label": "Name",
     "hint": "Name of this loop",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   },
+   "isTrials": {
+    "val": true,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Is trials",
+    "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
     "plugin": null,
     "depends": {
      "shown": [],
@@ -490,53 +462,10 @@
      "enabled": []
     }
    },
-   "loopType": {
-    "val": "staircase",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "random",
-     "sequential",
-     "fullRandom",
-     "staircase",
-     "interleaved staircases"
-    ],
-    "allowedLabels": [],
-    "label": "Loop type",
-    "hint": "How should the next trial value(s) be chosen?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "endPoints": {
-    "val": [
-     0,
-     1
-    ],
-    "valType": "num",
-    "inputType": "hidden",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "End points",
-    "hint": "Where to loop from and to (see values currently shown in the flow view)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
    "conditions": {
     "val": [],
     "valType": "list",
-    "inputType": "conditions",
+    "inputType": "hidden",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
@@ -550,7 +479,7 @@
      "enabled": []
     }
    },
-   "conditionsFile": {
+   "conditionsFile_simple": {
     "val": "",
     "valType": "file",
     "inputType": "conditions",
@@ -563,24 +492,56 @@
     "hint": "An xlsx or csv file specifying the parameters for each condition",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "stairType",
+       "condition": "=='simple'"
+      }
+     ],
      "enabled": []
     }
    },
-   "isTrials": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
+   "conditionsFile_QUEST": {
+    "val": "",
+    "valType": "file",
+    "inputType": "conditions",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Is trials",
-    "hint": "Indicates that this loop generates TRIALS, rather than BLOCKS of trials or stimuli within a trial. It alters how data files are output",
+    "label": "Conditions",
+    "hint": "An xlsx or csv file specifying the parameters for each condition",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "stairType",
+       "condition": "=='QUEST'"
+      }
+     ],
+     "enabled": []
+    }
+   },
+   "conditionsFile_questplus": {
+    "val": "",
+    "valType": "file",
+    "inputType": "conditions",
+    "categ": "Basic",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Conditions",
+    "hint": "An xlsx or csv file specifying the parameters for each condition",
+    "plugin": null,
+    "depends": {
+     "shown": [
+      {
+       "param": "stairType",
+       "condition": "=='questplus'"
+      }
+     ],
      "enabled": []
     }
    }
