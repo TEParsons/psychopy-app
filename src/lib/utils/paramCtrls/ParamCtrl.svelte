@@ -85,7 +85,7 @@
     })
 </script>
 
-{#if shown}
+{#if shown && param.inputType !== "hidden"}
     <div 
         class=param-ctrl 
         id={name}
@@ -166,6 +166,7 @@
         display: flex;
         gap: .5rem;
         flex-direction: row;
+        align-items: center;
     }
 
     .warning {
