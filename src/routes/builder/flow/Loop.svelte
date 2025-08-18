@@ -83,7 +83,7 @@
         </button>
         
     {/if}
-    <svg 
+    <div 
         class="loop-arrow left"
         ondragstart={() => current.moving = element.initiator} 
         ondragend={() => current.moving = undefined}
@@ -92,8 +92,10 @@
         draggable={true}
         role=none
     >
-        <use xlink:href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
-    </svg>
+        <svg>
+            <use xlink:href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
+        </svg>
+    </div>
     {#if element}
         {#each element.routines as rt}
             {#if rt instanceof FlowLoop}
@@ -104,7 +106,7 @@
         {/each}
     {/if}
     {#if element.complete}
-        <svg 
+        <div 
             class="loop-arrow right"
             ondragstart={() => current.moving = element.terminator} 
             ondragend={() => current.moving = undefined} 
@@ -113,8 +115,10 @@
             draggable={true}
             role=none
         >
-            <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
-        </svg>
+            <svg>
+                <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
+            </svg>
+        </div>
         <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}
 </div>
@@ -164,6 +168,7 @@
         border-radius: 1rem;
         padding: 2rem 1rem;
         padding-top: 0;
+        min-height: 2rem;
     }
     .loop .loop-name {
         position: absolute;
