@@ -59,7 +59,7 @@
         border-radius: .1rem;
         z-index: 100;
         list-style-type: none;
-        padding: 0;
+        padding: .5rem 0;
     }
     div:focus {
         border-color: var(--blue)

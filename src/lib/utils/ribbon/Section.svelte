@@ -36,7 +36,7 @@
         grid-template-rows: [top] 1fr [divide] 1rem [bottom];
         justify-items: center;
         justify-content: center;
-        align-items: center;
+        align-items: stretch;
         gap: .5rem 0;
         padding: 0 1rem;
     }

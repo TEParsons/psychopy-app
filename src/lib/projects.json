@@ -1,0 +1,9 @@
+{
+  "ToddOST/drag_and_drop": {
+    "id": "ToddOST/drag_and_drop",
+    "idNumber": 330773,
+    "localRoot": "W:/My Drive/Throwaway/testSync",
+    "remoteHTTPS": "https://gitlab.pavlovia.org/ToddOST/drag_and_drop.git",
+    "remoteSSH": "git@gitlab.pavlovia.org:ToddOST/drag_and_drop.git"
+  }
+}

@@ -1,10 +1,4 @@
 <script>
-    import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
-    import { Ribbon, RibbonSection, RibbonGap, RibbonButton, RibbonSwitchButton } from '$lib/utils/ribbon';
-    import { getContext } from "svelte";
-    import { Dialog } from "$lib/utils/dialog";
-    import SavePrompt from "./SavePrompt.svelte"
-
     import {
         // file
         file_new,
@@ -21,11 +15,16 @@
         new_runner_frame,
     } from './callbacks.js'
     
-    import { Experiment } from "$lib/experiment.svelte";
+    import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
+    import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
+    import { getContext } from "svelte";
+    import SavePrompt from "./SavePrompt.svelte"
     import { FindDialog } from "../../dialogs/find";
     import { DeviceManagerDialog } from "../../dialogs/deviceManager"
     import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
     import PrefsDialog from '../../dialogs/preferences/PrefsDialog.svelte';
+    import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
+    import { PavloviaUsers } from '$lib/pavlovia.svelte';
 
     let current = getContext("current");
 
@@ -58,7 +57,7 @@
 
 <Ribbon>
     <RibbonSection>
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-hamburger.svg"
             label="Menu"
             onclick={() => showMenu = true} 
@@ -100,7 +99,7 @@
         ></PrefsDialog>
     </RibbonSection>
     <RibbonSection label=File icon="/icons/rbn-file.svg">
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-new.svg" 
             label="New file" 
             onclick={(evt) => savePrompt.NEW = true}
@@ -109,7 +108,7 @@
             bind:shown={savePrompt.NEW}
             action={file_new}
         />  
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-open.svg" 
             label="Open file" 
             onclick={(evt) => savePrompt.OPEN = true} 
@@ -118,13 +117,13 @@
             bind:shown={savePrompt.OPEN}
             action={file_open}
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-save.svg" 
             label="Save file" 
             onclick={file_save}
             disabled={!current.experiment.history.past.length} 
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-saveas.svg" 
             label="Save file as"
             onclick={file_save_as} 
@@ -132,19 +131,19 @@
     </RibbonSection>
 
     <RibbonSection label=Edit icon="/icons/rbn-edit.svg">
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-undo.svg" 
             label="Undo{lastAction}" 
             onclick={undo} 
             disabled={current.file === null || !current.experiment.history.past.length} 
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-redo.svg" 
             label="Redo {nextAction}" 
             onclick={redo} 
             disabled={current.file === null || !current.experiment.history.future.length} 
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-find.svg" 
             label="Find" 
             onclick={() => showFindDialog = true}
@@ -155,21 +154,21 @@
     </RibbonSection>
     
     <RibbonSection label=Experiment icon="/icons/rbn-experiment.svg">
-        <!-- <RibbonButton 
+        <!-- <IconButton 
             id="ribbon-btn-monitors" 
             icon="/icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
-        <RibbonButton
+        <IconButton
             icon="/icons/btn-devices.svg"
             label="Open the device manager"
             onclick={(evt) => showDeviceMgr = true}
-        ></RibbonButton>
+        ></IconButton>
         <DeviceManagerDialog
             bind:shown={showDeviceMgr}
         ></DeviceManagerDialog>
 
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-settings.svg" 
             label="Experiment settings" 
             onclick={(evt) => showSettingsDlg = true}
@@ -181,9 +180,10 @@
             bind:shown={showSettingsDlg}
         ></ParamsDialog>
         {/if}
-        <RibbonSwitchButton 
+        <SwitchButton 
             labels={["Pilot", "Run"]} 
-            bind:state={
+            tooltip="Experiment will run in {current.experiment.pilotMode ? "pilot" : "run"} mode"
+            bind:value={
                 () => current.experiment.pilotMode,
                 (value) => {
                     // update history
@@ -197,22 +197,22 @@
     </RibbonSection>
 
     <!-- <RibbonSection id=desktop label=Desktop icon="/icons/rbn-desktop.svg">
-        <RibbonButton id="ribbon-btn-compilepy" icon="/icons/btn-compilepy.svg" label="Compile to Python" />
-        <RibbonButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="/icons/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
+        <IconButton id="ribbon-btn-compilepy" icon="/icons/btn-compilepy.svg" label="Compile to Python" />
+        <IconButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="/icons/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
     </RibbonSection> -->
 
     <!-- <RibbonSection id=browser label=Browser icon="/icons/rbn-browser.svg">
-        <RibbonButton 
+        <IconButton 
             id="ribbon-btn-compilejs" 
             icon="/icons/btn-compilejs.svg" 
             label="Compile to JavaScript" 
         />
-        <RibbonButton 
+        <IconButton 
             id="ribbon-btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}" 
             icon="/icons/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
             label="{$experiment.pilotMode ? "Pilot" : "Run"} in browser" 
         />
-        <RibbonButton 
+        <IconButton 
             id="ribbon-btn-sync" 
             icon="/icons/btn-sync.svg" 
             label="Sync to Pavlovia" 
@@ -220,24 +220,86 @@
     </RibbonSection> -->
 
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
-        ToddOST
-        No project
+        <DropdownButton
+            label={current.user ? current.user.name : "No user"}
+            icon={current.user ? current.user.avatar_url : undefined}
+            onclick={(evt) => {
+                if (current.user) {
+                    window.open(current.user.web_url)
+                }
+            }}
+        >
+            <MenuItem
+                label="Edit user..."
+                icon="/icons/btn-edit.svg"
+            ></MenuItem>
+            <SubMenu
+                label="Switch user..."
+            >
+                {#each Object.values(PavloviaUsers) as user}
+                    <MenuItem
+                        label={user.name}
+                        icon={user.avatar_url}
+                        onclick={(evt) => current.user = user}
+                    ></MenuItem>
+                {/each}
+                <MenuSeparator/>
+                <MenuItem
+                    label="New user..."
+                    icon="/icons/btn-new.svg"
+                ></MenuItem>
+            </SubMenu>
+            <MenuSeparator/>
+            {#if current.user}
+                <MenuItem
+                    label="Logout"
+                    onclick={(evt) => current.user = undefined}
+                ></MenuItem>
+            {:else}
+                <MenuItem
+                    label="Login"
+                ></MenuItem>
+            {/if}
+        </DropdownButton>
+        <DropdownButton
+            label={current.project ? current.project.name : "No project"}
+            icon={current.project ? current.project.avatar_url : undefined}
+            onclick={(evt) => {
+                if (current.project) {
+                    window.open(current.project.web_url)
+                }
+            }}
+        >
+            <MenuItem
+                label="New project"
+                icon="/icons/btn-add.svg"
+            ></MenuItem>
+            <MenuItem
+                label="Edit project"
+                icon="/icons/btn-edit.svg"
+            ></MenuItem>
+            <MenuSeparator/>
+            <MenuItem
+                label="Search projects..."
+                icon="/icons/btn-find.svg"
+            ></MenuItem>
+        </DropdownButton>
     </RibbonSection>
 
     <RibbonGap></RibbonGap>
 
     <RibbonSection label=Views icon="/icons/rbn-windows.svg">
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-builder.svg" 
             label="Builder view" 
             onclick={new_builder_frame} 
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-coder.svg" 
             label="Coder view" 
             onclick={new_coder_frame} 
         />
-        <RibbonButton 
+        <IconButton 
             icon="/icons/btn-runner.svg" 
             label="Runner view" 
             onclick={new_runner_frame} 

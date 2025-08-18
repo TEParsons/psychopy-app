@@ -40,12 +40,18 @@
     }}
     disabled={disabled}
 >
-    {#if icon}
-    <svg 
-        class=menu-item-icon
-    >
-        <use xlink:href={icon}></use>
-    </svg>
+    {#if icon && String(icon).endsWith(".svg")}
+        <svg 
+            class=menu-item-icon
+        >
+            <use xlink:href={icon}></use>
+        </svg>
+    {:else if icon && String(icon).endsWith(".png")}
+        <img 
+            class=menu-item-icon
+            src={icon}
+            alt={icon}
+        />
     {/if}
     <span>{label}</span>
     {@render submenu?.()}
@@ -60,6 +66,7 @@
         position: relative;
         grid-template-columns: [icon] 1rem [label] 1fr [chevron] 1rem;
         align-items: center;
+        justify-items: start;
         gap: 0 .5rem;
         width: 100%;
         white-space: nowrap;
@@ -68,6 +75,7 @@
         border: none;
         border-radius: 0;
         padding: 0.5rem 1rem;
+        transition: background-color .2s;
     }
     .menu-item span {
         grid-column-start: label;
@@ -78,6 +86,11 @@
     }
     .menu-item:enabled:focus {
         border: 1px solid var(--blue);
+    }
+
+    .menu-item-icon {
+        border-radius: .5rem;
+        width: 100%;
     }
 
 </style>

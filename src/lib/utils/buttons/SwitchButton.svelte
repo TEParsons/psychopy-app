@@ -1,34 +1,52 @@
 <script>
+    import Tooltip from "../tooltip/Tooltip.svelte";
+
     let {
         /** @prop @type {string} Text label for this button, if any */
         labels=["", ""],
+        /** @prop @type {string|undefined} Hover text for this button, if any */
+        tooltip=undefined,
         /** @prop @type {string} Starting  */
-        state=$bindable(false),
+        value=$bindable(false),
         /** @prop @type {function} Function to call when this switch is toggled */
         onclick=() => {},
         /** @prop @type {boolean} Disable this button */
         disabled=false
     } = $props()
 
+    let showTooltip = $state.raw(false)
 </script>
 
 <button 
     class="switch-ctrl" 
     onclick={(evt) => {
-        state = !state;
+        value = !value;
         onclick(evt)
     }}
+    onmouseenter={() => showTooltip = true}
+    onmouseleave={() => showTooltip = false}
+    onfocusin={() => showTooltip = true}
+    onfocusout={() => showTooltip = false}
     disabled={disabled}
 >
-    <span class="{state ? "active" : "inactive"}">{labels[0]}</span>
+    {#if tooltip}
+        <Tooltip
+            position=bottom
+            bind:shown={showTooltip}
+        >
+            {tooltip}
+        </Tooltip>
+    {/if}
+    <span class="{value ? "active" : "inactive"}">{labels[0]}</span>
     <svg>
-        <use xlink:href="/icons/ctrl-switch-{state ? "left" : "right"}.svg"></use>
+        <use xlink:href="/icons/ctrl-switch-{value ? "left" : "right"}.svg"></use>
     </svg>
-    <span class="{state ? "inactive" : "active"}">{labels[1]}</span>
+    <span class="{value ? "inactive" : "active"}">{labels[1]}</span>
 </button>
 
 <style>
     button {
+        position: relative;
         background-color: transparent;
         padding: 0.25rem;
         margin: 0;
@@ -36,6 +54,7 @@
         padding-bottom: 0.5rem;
         border: none;
         outline: none;
+        z-index: 1;
     }
     button:disabled {
         opacity: .5;
