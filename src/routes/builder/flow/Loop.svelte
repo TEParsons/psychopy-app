@@ -103,18 +103,18 @@
             {/if}
         {/each}
     {/if}
-    <svg 
-        class="loop-arrow right"
-        ondragstart={() => current.moving = element.terminator} 
-        ondragend={() => current.moving = undefined} 
-        onmouseenter={() => edgeHovered.right = true}
-        onmouseleave={() => edgeHovered.right = false}
-        draggable={true}
-        role=none
-    >
-        <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
-    </svg>
     {#if element.complete}
+        <svg 
+            class="loop-arrow right"
+            ondragstart={() => current.moving = element.terminator} 
+            ondragend={() => current.moving = undefined} 
+            onmouseenter={() => edgeHovered.right = true}
+            onmouseleave={() => edgeHovered.right = false}
+            draggable={true}
+            role=none
+        >
+            <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
+        </svg>
         <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}
 </div>
@@ -207,6 +207,7 @@
         border-right: none;
         border-top: none;
         border-bottom: none;
+        border-radius: 0;
         padding: 4rem 1rem;
     }
     .loop.incomplete .loop-name {
