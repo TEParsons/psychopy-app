@@ -37,6 +37,8 @@
         border-radius: .5rem;
         background-color: var(--outline);
         color: var(--text-on-outline);
+        overflow: hidden;
         text-wrap: nowrap;
+        max-width: 35rem;
     }
 </style>

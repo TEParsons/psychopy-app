@@ -2,6 +2,7 @@
 import ComponentProfiles from "$lib/components.json"
 import LoopProfiles from "$lib/loops.json"
 import DeviceProfiles from "$lib/devices.json"
+import PreferencesProfile from "$lib/preferences.json"
 
 
 export class Experiment {
@@ -626,6 +627,10 @@ export class HasParams {
     name = $derived.by(() => {
         if ("name" in this.params) {
             return this.params['name'].val
+        } else if (this.tag === "SettingsComponent") {
+            return "Experiment"
+        } else if (this.tag === "Preferences") {
+            return this.tag
         }
     })
 
@@ -705,6 +710,8 @@ export class HasParams {
             template = LoopProfiles[this.tag]
         } else if (this.tag in DeviceProfiles) {
             template = DeviceProfiles[this.tag]
+        } else if (this.tag === "Preferences") {
+            template = PreferencesProfile
         } else {
             console.warn(
                 `Failed to find template for ${this.tag}, reverting to UnknownComponent`

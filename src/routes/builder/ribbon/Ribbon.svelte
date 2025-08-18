@@ -25,17 +25,19 @@
     import { FindDialog } from "../../dialogs/find";
     import { DeviceManagerDialog } from "../../dialogs/deviceManager"
     import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
+    import PrefsDialog from '../../dialogs/preferences/PrefsDialog.svelte';
 
     let current = getContext("current");
 
-    let showMenu = $state(false);
+    let showMenu = $state.raw(false);
 
-    let showSettingsDlg = $state(false);
+    let showSettingsDlg = $state.raw(false);
     let settingsNotebook;
 
-    let showFindDialog = $state(false);
+    let showFindDialog = $state.raw(false);
 
-    let showDeviceMgr = $state(false)
+    let showDeviceMgr = $state.raw(false);
+    let showPrefsDialog = $state.raw(false);
 
     let lastAction = $derived.by(() => {
         if (current.experiment.history.past.length) {
@@ -86,8 +88,16 @@
                     label="Save file as"
                     onclick={file_save_as} 
                 />
+                <MenuItem
+                    icon="/icons/btn-settings.svg"
+                    label="Preferences"
+                    onclick={(evt) => {showPrefsDialog = true}}
+                ></MenuItem>
             </SubMenu>
         </Menu>
+        <PrefsDialog
+            bind:shown={showPrefsDialog}
+        ></PrefsDialog>
     </RibbonSection>
     <RibbonSection label=File icon="/icons/rbn-file.svg">
         <RibbonButton 

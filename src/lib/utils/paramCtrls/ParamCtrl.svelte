@@ -83,6 +83,8 @@
 
         return true
     })
+
+    let showTooltip = $state.raw(false)
 </script>
 
 {#if shown && param.inputType !== "hidden"}
@@ -96,10 +98,17 @@
             for={name}
             style:grid-column-start={inline ? "gap" : "label"}
             style:align-self={inline ? "center" : "end"}
+            onmouseenter={(evt) => showTooltip = true}
+            onmouseleave={(evt) => showTooltip = false}
+            onfocusin={(evt) => showTooltip = true}
+            onfocusout={(evt) => showTooltip = false}
         >
             {param.label ? param.label : name}
             {#if param.hint}
-                <Tooltip>
+                <Tooltip
+                    bind:shown={showTooltip}
+                    position=bottom
+                >
                     {param.hint}
                 </Tooltip>
             {/if}

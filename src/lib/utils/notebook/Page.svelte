@@ -127,6 +127,7 @@
     }
     .notebook-tab .label {
         grid-column-start: label;
+        text-wrap: nowrap;
     }
     .notebook-tab .close-btn {
         position: relative;

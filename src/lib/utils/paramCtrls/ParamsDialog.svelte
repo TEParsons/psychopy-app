@@ -28,7 +28,7 @@
 
 <Dialog 
     id="{element.name}-parameters"
-    title="Editing: {element.name || "Experiment"}"
+    title="Editing: {element.name || element.tag}"
     bind:shown={shown} 
     onclose={onclose}
     onopen={() => notebook.setRestorePoint()}
