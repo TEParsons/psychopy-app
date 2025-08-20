@@ -47,12 +47,12 @@
             >
             <ToggleButton 
                 bind:value={useRegex} 
-                icon="/icons/btn-regex.svg"
+                icon="icons/btn-regex.svg"
                 tooltip="Use RegEx syntax"
             />
             <ToggleButton 
                 bind:value={caseSensitive} 
-                icon="/icons/btn-case.svg"
+                icon="icons/btn-case.svg"
                 tooltip="Use case-sensitive searching"
             />
         </div>

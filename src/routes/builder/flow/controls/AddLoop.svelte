@@ -41,7 +41,7 @@
     <!-- button to open add Loop menu -->
     <Button 
         label="Add Loop"
-        icon="/icons/btn-loop.svg"
+        icon="icons/btn-loop.svg"
         tooltip="Add a loop to the experiment flow"
         onclick={() => showMenu = true}
         disabled={current.inserting}

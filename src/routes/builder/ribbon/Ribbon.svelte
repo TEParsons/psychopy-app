@@ -58,37 +58,37 @@
 <Ribbon>
     <RibbonSection>
         <IconButton 
-            icon="/icons/btn-hamburger.svg"
+            icon="icons/btn-hamburger.svg"
             label="Menu"
             onclick={() => showMenu = true} 
         />
         <Menu 
             bind:shown={showMenu}
         >
-            <SubMenu label="File" icon="/icons/rbn-file.svg">
+            <SubMenu label="File" icon="icons/rbn-file.svg">
                 <MenuItem 
-                    icon="/icons/btn-new.svg" 
+                    icon="icons/btn-new.svg" 
                     label="New file" 
                     onclick={file_new}
                 />
                 <MenuItem 
-                    icon="/icons/btn-open.svg" 
+                    icon="icons/btn-open.svg" 
                     label="Open file" 
                     onclick={file_open} 
                 />
                 <MenuItem 
-                    icon="/icons/btn-save.svg" 
+                    icon="icons/btn-save.svg" 
                     label="Save file" 
                     onclick={file_save} 
                     disabled={!current.experiment.history.past.length} 
                 />
                 <MenuItem 
-                    icon="/icons/btn-saveas.svg" 
+                    icon="icons/btn-saveas.svg" 
                     label="Save file as"
                     onclick={file_save_as} 
                 />
                 <MenuItem
-                    icon="/icons/btn-settings.svg"
+                    icon="icons/btn-settings.svg"
                     label="Preferences"
                     onclick={(evt) => {showPrefsDialog = true}}
                 ></MenuItem>
@@ -98,9 +98,9 @@
             bind:shown={showPrefsDialog}
         ></PrefsDialog>
     </RibbonSection>
-    <RibbonSection label=File icon="/icons/rbn-file.svg">
+    <RibbonSection label=File icon="icons/rbn-file.svg">
         <IconButton 
-            icon="/icons/btn-new.svg" 
+            icon="icons/btn-new.svg" 
             label="New file" 
             onclick={(evt) => savePrompt.NEW = true}
         />
@@ -109,7 +109,7 @@
             action={file_new}
         />  
         <IconButton 
-            icon="/icons/btn-open.svg" 
+            icon="icons/btn-open.svg" 
             label="Open file" 
             onclick={(evt) => savePrompt.OPEN = true} 
         />
@@ -118,33 +118,33 @@
             action={file_open}
         />
         <IconButton 
-            icon="/icons/btn-save.svg" 
+            icon="icons/btn-save.svg" 
             label="Save file" 
             onclick={file_save}
             disabled={!current.experiment.history.past.length} 
         />
         <IconButton 
-            icon="/icons/btn-saveas.svg" 
+            icon="icons/btn-saveas.svg" 
             label="Save file as"
             onclick={file_save_as} 
         />
     </RibbonSection>
 
-    <RibbonSection label=Edit icon="/icons/rbn-edit.svg">
+    <RibbonSection label=Edit icon="icons/rbn-edit.svg">
         <IconButton 
-            icon="/icons/btn-undo.svg" 
+            icon="icons/btn-undo.svg" 
             label="Undo{lastAction}" 
             onclick={undo} 
             disabled={current.file === null || !current.experiment.history.past.length} 
         />
         <IconButton 
-            icon="/icons/btn-redo.svg" 
+            icon="icons/btn-redo.svg" 
             label="Redo {nextAction}" 
             onclick={redo} 
             disabled={current.file === null || !current.experiment.history.future.length} 
         />
         <IconButton 
-            icon="/icons/btn-find.svg" 
+            icon="icons/btn-find.svg" 
             label="Find" 
             onclick={() => showFindDialog = true}
         />
@@ -153,14 +153,14 @@
         ></FindDialog>
     </RibbonSection>
     
-    <RibbonSection label=Experiment icon="/icons/rbn-experiment.svg">
+    <RibbonSection label=Experiment icon="icons/rbn-experiment.svg">
         <!-- <IconButton 
             id="ribbon-btn-monitors" 
-            icon="/icons/btn-monitors.svg" 
+            icon="icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
         <IconButton
-            icon="/icons/btn-devices.svg"
+            icon="icons/btn-devices.svg"
             label="Open the device manager"
             onclick={(evt) => showDeviceMgr = true}
         ></IconButton>
@@ -169,7 +169,7 @@
         ></DeviceManagerDialog>
 
         <IconButton 
-            icon="/icons/btn-settings.svg" 
+            icon="icons/btn-settings.svg" 
             label="Experiment settings" 
             onclick={(evt) => showSettingsDlg = true}
             disabled={current.experiment === null}
@@ -196,30 +196,30 @@
         />        
     </RibbonSection>
 
-    <!-- <RibbonSection id=desktop label=Desktop icon="/icons/rbn-desktop.svg">
-        <IconButton id="ribbon-btn-compilepy" icon="/icons/btn-compilepy.svg" label="Compile to Python" />
-        <IconButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="/icons/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
+    <!-- <RibbonSection id=desktop label=Desktop icon="icons/rbn-desktop.svg">
+        <IconButton id="ribbon-btn-compilepy" icon="icons/btn-compilepy.svg" label="Compile to Python" />
+        <IconButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="icons/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
     </RibbonSection> -->
 
-    <!-- <RibbonSection id=browser label=Browser icon="/icons/rbn-browser.svg">
+    <!-- <RibbonSection id=browser label=Browser icon="icons/rbn-browser.svg">
         <IconButton 
             id="ribbon-btn-compilejs" 
-            icon="/icons/btn-compilejs.svg" 
+            icon="icons/btn-compilejs.svg" 
             label="Compile to JavaScript" 
         />
         <IconButton 
             id="ribbon-btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}" 
-            icon="/icons/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
+            icon="icons/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
             label="{$experiment.pilotMode ? "Pilot" : "Run"} in browser" 
         />
         <IconButton 
             id="ribbon-btn-sync" 
-            icon="/icons/btn-sync.svg" 
+            icon="icons/btn-sync.svg" 
             label="Sync to Pavlovia" 
         />
     </RibbonSection> -->
 
-    <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
+    <RibbonSection label=Pavlovia icon="icons/rbn-pavlovia.svg">
         <DropdownButton
             label={current.user ? current.user.name : "No user"}
             icon={current.user ? current.user.avatar_url : undefined}
@@ -231,7 +231,7 @@
         >
             <MenuItem
                 label="Edit user..."
-                icon="/icons/btn-edit.svg"
+                icon="icons/btn-edit.svg"
             ></MenuItem>
             <SubMenu
                 label="Switch user..."
@@ -246,7 +246,7 @@
                 <MenuSeparator/>
                 <MenuItem
                     label="New user..."
-                    icon="/icons/btn-new.svg"
+                    icon="icons/btn-new.svg"
                 ></MenuItem>
             </SubMenu>
             <MenuSeparator/>
@@ -272,35 +272,35 @@
         >
             <MenuItem
                 label="New project"
-                icon="/icons/btn-add.svg"
+                icon="icons/btn-add.svg"
             ></MenuItem>
             <MenuItem
                 label="Edit project"
-                icon="/icons/btn-edit.svg"
+                icon="icons/btn-edit.svg"
             ></MenuItem>
             <MenuSeparator/>
             <MenuItem
                 label="Search projects..."
-                icon="/icons/btn-find.svg"
+                icon="icons/btn-find.svg"
             ></MenuItem>
         </DropdownButton>
     </RibbonSection>
 
     <RibbonGap></RibbonGap>
 
-    <RibbonSection label=Views icon="/icons/rbn-windows.svg">
+    <RibbonSection label=Views icon="icons/rbn-windows.svg">
         <IconButton 
-            icon="/icons/btn-builder.svg" 
+            icon="icons/btn-builder.svg" 
             label="Builder view" 
             onclick={new_builder_frame} 
         />
         <IconButton 
-            icon="/icons/btn-coder.svg" 
+            icon="icons/btn-coder.svg" 
             label="Coder view" 
             onclick={new_coder_frame} 
         />
         <IconButton 
-            icon="/icons/btn-runner.svg" 
+            icon="icons/btn-runner.svg" 
             label="Runner view" 
             onclick={new_runner_frame} 
         />

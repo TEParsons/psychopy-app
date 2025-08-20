@@ -74,7 +74,7 @@
         bind:position={contextMenuPos}
     >
         <MenuItem 
-            icon="/icons/btn-delete.svg"
+            icon="icons/btn-delete.svg"
             label="Remove"
             onclick={removeRoutine}
         />

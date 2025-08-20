@@ -59,7 +59,7 @@
 >    
     {component.name}
     <svg>
-        <use xlink:href="/icons/components/{component.tag}.svg"></use>
+        <use xlink:href="icons/components/{component.tag}.svg"></use>
     </svg>
 </label>
 
@@ -123,7 +123,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="/icons/btn-delete.svg"
+        icon="icons/btn-delete.svg"
         label="Delete Component"
         onclick={removeComponent}
     />

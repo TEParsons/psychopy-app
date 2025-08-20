@@ -27,7 +27,7 @@
     disabled={disabled}
 ></FileCtrl>
 <CompactButton
-    icon="/icons/btn-table.svg"
+    icon="icons/btn-table.svg"
     tooltip="{param.val ? "Open" : "Create"} table"
     onclick={openTable}
     disabled={disabled || (

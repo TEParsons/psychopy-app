@@ -54,7 +54,7 @@
     <div class=ctrls>
         <div class=gap></div>
         <CompactButton
-            icon="/icons/btn-filter.svg"
+            icon="icons/btn-filter.svg"
             tooltip="Filter..."
             onclick={(evt) => showFilterDlg = true}
         />
