@@ -1,18 +1,18 @@
 <div class=container>
     <nav>
-        <a href="/builder">
+        <a href="./builder">
             <svg>
                 <use xlink:href="/icons/btn-builder.svg"></use>
             </svg>
             Builder
         </a>
-        <a href="/coder">
+        <a href="./coder">
             <svg>
                 <use xlink:href="/icons/btn-coder.svg"></use>
             </svg>
             Coder
         </a>
-        <a href="/runner">
+        <a href="./runner">
             <svg>
                 <use xlink:href="/icons/btn-runner.svg"></use>
             </svg>
