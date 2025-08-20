@@ -2,6 +2,7 @@
     import { Param } from "$lib/experiment.svelte";
     import { CompactButton } from "$lib/utils/buttons";
     import { iterateName } from "./utils.js";
+    import { sanitizeJSON } from "$lib/transpiler"
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
@@ -15,23 +16,7 @@
     $effect(() => {
         if (typeof param.val === "string") {
             // sanitize value
-            let value = String(param.val).replaceAll(
-                // identify key:value pairs with single quotes
-                /'(.*?)': *'(.*?)'/g, 
-                (_, key, val) => {
-                    // escape any double quotes inside the key and value
-                    key = key.replaceAll(
-                        /(?<!\\)"/g,
-                        "\\\""
-                    )
-                    val = val.replaceAll(
-                        /(?<!\\)"/g,
-                        "\\\""
-                    )
-                    // return the key:value pair with double quotes (i.e. JSON friendly)
-                    return `"${key}": "${val}"`
-                }
-            )
+            let value = sanitizeJSON(param.val)
             // parse JSON
             try {
                 param.val = JSON.parse(value)

@@ -3,6 +3,7 @@ import ComponentProfiles from "$lib/components.json"
 import LoopProfiles from "$lib/loops.json"
 import DeviceProfiles from "$lib/devices.json"
 import PreferencesProfile from "$lib/preferences.json"
+import { js2py, py2js } from "$lib/transpiler"
 
 
 export class Experiment {
@@ -526,13 +527,8 @@ export class Param {
         for (let key of this.saveAttrs) {
             // take a snapshot
             let val = $state.snapshot(this[key])
-            // substitute JS booleans
-            if (val === true || val === "true") {
-                val = "True"
-            }
-            if (val === false || val === "false") {
-                val = "False"
-            }
+            // make Python compatable
+            val = js2py(val);
             // set value
             node.setAttribute(key, val);
         }
@@ -548,8 +544,15 @@ export class Param {
     fromXML(node) {
         // populate
         for (let key of this.saveAttrs) {
-            // set from XML if possible
-            this[key] = node.getAttribute(key) || this[key]
+            // only set value if it exists in node
+            if (node.hasAttribute(key)) {
+                // get value
+                let val = node.getAttribute(key)
+                // convert to JS
+                val = py2js(val)
+                // set
+                this[key] = val
+            }
         }
     }
 
