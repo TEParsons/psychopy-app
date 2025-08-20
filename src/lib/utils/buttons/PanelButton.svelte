@@ -53,11 +53,14 @@
         padding: .5rem;
         border-bottom: 1px solid var(--overlay);
         transition: border-color .2s, background .2s;
+        border-radius: 0;
+        box-shadow: none;
     }
     button:enabled:focus,
     button:enabled:hover {
         border-color: var(--blue);
         background: linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.05) 100%);
+        box-shadow: none;
     }
     .panel-indicator {
         position: absolute;

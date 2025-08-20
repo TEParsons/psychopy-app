@@ -14,8 +14,11 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: "/psychopy-svelte"
-		}
+			base: ""
+		},
+		prerender: {
+			entries: ['*'],  
+		},
 	}
 };
 

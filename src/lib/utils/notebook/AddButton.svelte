@@ -44,6 +44,7 @@
         transition: background .2s, color .2s;
         background-color: var(--crust);
         z-index: 2;
+        border-radius: 0;
     }
     .add-btn:hover {
         color: var(--blue);
