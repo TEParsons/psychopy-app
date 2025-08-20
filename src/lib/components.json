@@ -2731,23 +2731,6 @@
      "enabled": []
     }
    },
-   "disabled": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Testing",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Disable Component",
-    "hint": "Disable this Component",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
    "Code Type": {
     "val": "Auto->JS",
     "valType": "str",
@@ -3031,6 +3014,23 @@
        "condition": "in ['JS', 'Both', 'Auto->JS']"
       }
      ],
+     "enabled": []
+    }
+   },
+   "disabled": {
+    "val": false,
+    "valType": "bool",
+    "inputType": "bool",
+    "categ": "Testing",
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Disable Component",
+    "hint": "Disable this Component",
+    "plugin": null,
+    "depends": {
+     "shown": [],
      "enabled": []
     }
    }
