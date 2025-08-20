@@ -524,7 +524,17 @@ export class Param {
         let node = doc.createElement("Param");
         // populate node
         for (let key of this.saveAttrs) {
-            node.setAttribute(key, this[key]);
+            // take a snapshot
+            let val = $state.snapshot(this[key])
+            // substitute JS booleans
+            if (val === true || val === "true") {
+                val = "True"
+            }
+            if (val === false || val === "false") {
+                val = "False"
+            }
+            // set value
+            node.setAttribute(key, val);
         }
 
         return node
