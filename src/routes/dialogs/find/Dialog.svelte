@@ -126,7 +126,39 @@
 {/if}
 
 <style>
-    @import url("$lib/utils/buttons/button.css");
+    button {
+        position: relative;
+        background-color: transparent;
+        border: 1px solid var(--overlay);
+        border-radius: .5rem;
+        transition: border-color .2s, box-shadow .2s, background-color .2s, color .2s;
+        box-shadow: 
+            inset -1px -1px 2px rgba(0, 0, 0, 0.025)
+        ;
+    }
+
+    button:disabled {
+        opacity: 50%;
+    }
+    button:enabled:hover,
+    button:enabled:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.05)
+        ;
+    }
+    button:disabled {
+        opacity: 50%;
+    }
+    button:enabled:hover,
+    button:enabled:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.05)
+        ;
+    }
 
     .container {
         display: grid;
