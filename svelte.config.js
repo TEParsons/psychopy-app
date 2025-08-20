@@ -14,8 +14,8 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: "/psychopy-svelte",
-			assets: "https://teparsons.github.io/psychopy-svelte/psychopy-svelte"
+			base: process.argv.includes('dev') ? "" : "/psychopy-svelte",
+			assets: process.argv.includes('dev') ? "" : "https://teparsons.github.io/psychopy-svelte"
 		},
 		prerender: {
 			entries: ['*'],  
