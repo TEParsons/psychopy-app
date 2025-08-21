@@ -75,6 +75,31 @@ export class Experiment {
         }
     })
 
+    /** Stores all names used in this experiment */
+    namespace = $derived.by(() => {
+        // start with none
+        let names = {}
+        // iterate through all Routines
+        for (let rt of Object.values(this.routines)) {
+            // for a Routine, iterate through Components
+            if (rt instanceof Routine) {
+                for (let comp of rt.components) {
+                    // add Component name and param
+                    names[comp.name] = comp.params['name']
+                }
+            }
+            // add Routine name and param
+            names[rt.name] = rt.settings.params['name']
+        }
+        // iterate through all loops
+        for (let loop of Object.values(this.loops)) {
+            // add Loop name
+            names[loop.name] = loop.params['name']
+        }
+        
+        return names
+    })
+
     /**
      *
      * @param {String} filename Name of the experiment file
