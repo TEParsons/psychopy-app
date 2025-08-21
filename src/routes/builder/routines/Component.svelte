@@ -159,6 +159,7 @@
         position: absolute;
         top: 25%;
         bottom: 25%;
+        z-index: 1;
     }
 
     .comp-overshoot-bar {
