@@ -8,7 +8,7 @@
     
     let current = getContext("current");
         
-    let notebook;
+    let notebook = $state.raw();;
 
     let showNewRoutineDialog = $state(false)
     let showMenu = $state(false)

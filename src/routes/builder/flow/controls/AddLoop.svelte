@@ -9,7 +9,7 @@
     import LoopProfiles from "$lib/loops.json";
     
     let current = getContext("current");
-    let notebook;
+    let notebook = $state.raw();
 
     let showDialog = $state(false)
     let showMenu = $state(false);

@@ -9,7 +9,7 @@
     
     let current = getContext("current");
     let showNewRoutineDialog = $state.raw(false)
-    let notebook;
+    let notebook = $state.raw();;
 
     let valid = $state({})
 

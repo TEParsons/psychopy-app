@@ -83,7 +83,7 @@
         padding: 0;
         margin: 0;
     }
-    .entry-point img {
+    .entry-point svg {
         height: 1rem;
     }
     .entry-point.active {

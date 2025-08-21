@@ -11,7 +11,7 @@
         component
     } = $props()
 
-    let notebook;
+    let notebook = $state.raw();
 
     let dlgComponent = $state(
         new Component(component['__name__'])
