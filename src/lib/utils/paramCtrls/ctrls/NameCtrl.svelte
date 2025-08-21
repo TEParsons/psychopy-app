@@ -11,7 +11,6 @@
     } = $props()
 
     let current = getContext("current")
-    $inspect(current.experiment.namespace)
 </script>
 
 <SingleLineCtrl
