@@ -7,43 +7,46 @@
     import FilterDialog from './FilterDialog.svelte';
     import { CompactButton } from "$lib/utils/buttons";
 
-    let sortedComponents = new Map();
-    for (let [name, profile] of Object.entries(ComponentProfiles)) {
-        // skip anything that isn't a Component or Routine
-        if (!profile['__class__'].match(/psychopy\.experiment\.(components|routines).*/)) {
-            continue
-        }
-        // mark base components as hidden
-        if ([
-            "BaseComponent", "BaseVisualComponent", "BaseDeviceComponent", "BaseStandaloneRoutine",
-            "BaseValidator"
-        ].includes(profile['__name__'])) {
-            profile.hidden = true
-        }
-        // iterate through categories
-        for (let categ of profile.categories) {
-            // make sure category exists
-            if (!sortedComponents.has(categ)) {
-                sortedComponents.set(categ, [])
+    let components = $derived.by(() => {
+        // object containing information derived from Components
+        let output = {
+            categs: {
+                first: ["Stimuli", "Responses"],
+                other: [],
+                last: ["I/O", "Custom", "Other"]
+            },
+            sorted: {},
+        };
+        // iterate through all profiles
+        for (let profile of Object.values(ComponentProfiles)) {
+            // skip...
+            if (
+                // ...anything that isn't a Component or Routine
+                !profile['__class__'].match(/psychopy\.experiment\.(components|routines).*/) ||
+                // ...base elements
+                profile['__class__'].match(/psychopy\.experiment\.(components|routines)\._?base:.*/) ||
+                // ...hidden elements
+                profile.hidden
+            ) {
+                continue
             }
-            // append Component to categ
-            sortedComponents.get(categ).push(profile)
+            // iterate through categories
+            for (let categ of profile.categories) {
+                // make sure categ exists in order
+                if (!Object.values(output.categs).flat().includes(categ)) {
+                    output.categs.other.push(categ)
+                }
+                // make sure category exists in sorted comps object
+                if (!(categ in output.sorted)) {
+                    output.sorted[categ] = []
+                }
+                // append Component to categ
+                output.sorted[categ].push(profile)
+            }
         }
-    }
-    // define categ order
-    let firstCategs = [
-        "Stimuli", "Responses"
-    ]
-    let lastCategs = [
-        "I/O", "Custom", "Other"
-    ]
-    let categOrder = firstCategs
-    for (let categ of sortedComponents.keys()) {
-        if (!firstCategs.includes(categ) && !lastCategs.includes(categ)) {
-            categOrder.push(categ)
-        }
-    }
-    categOrder = categOrder.concat(lastCategs)
+
+        return output
+    });
 
     let showFilterDlg = $state.raw(false);
     let filter = $state()
@@ -64,22 +67,24 @@
         ></FilterDialog>
     </div>
     <div class=components>
-        {#each categOrder as categ}
-            <ComponentSection label={categ}>
-                {#each sortedComponents.get(categ) as comp}
-                    {#if filter === undefined || filter.every((value) => comp.targets.includes(value))}
-                        {#if comp['__class__'].startsWith("psychopy.experiment.components")}
-                            <ComponentButton 
-                                component={comp}
-                            ></ComponentButton>
-                        {:else}
-                            <RoutineButton 
-                                component={comp}
-                            ></RoutineButton>
+        {#each [components.categs.first, components.categs.other, components.categs.last].flat() as categ}
+            {#if components.sorted[categ] && components.sorted[categ].length}
+                <ComponentSection label={categ}>
+                    {#each components.sorted[categ] as comp}
+                        {#if filter === undefined || filter.every((value) => comp.targets.includes(value))}
+                            {#if comp['__class__'].startsWith("psychopy.experiment.components")}
+                                <ComponentButton 
+                                    component={comp}
+                                ></ComponentButton>
+                            {:else}
+                                <RoutineButton 
+                                    component={comp}
+                                ></RoutineButton>
+                            {/if}
                         {/if}
-                    {/if}
-                {/each}
-            </ComponentSection>
+                    {/each}
+                </ComponentSection>
+            {/if}
         {/each}
     </div>
 </div>
