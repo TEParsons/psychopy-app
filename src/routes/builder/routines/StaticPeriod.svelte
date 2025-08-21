@@ -23,7 +23,7 @@
         grid-row-start: timeline-top;
         grid-row-end: timeline-bottom;
         grid-column-start: timeline;
-        z-index: -1;
+        z-index: 0;
     }
     .static-period {
         position: absolute;
