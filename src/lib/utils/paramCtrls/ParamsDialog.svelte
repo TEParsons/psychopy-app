@@ -11,7 +11,6 @@
         onclose=(evt) => {}
     } = $props()
 
-    let notebook;
     let valid = $state({})
 
     let btnsDisabled = $derived({
@@ -31,17 +30,16 @@
     title="Editing: {element.name || element.tag}"
     bind:shown={shown} 
     onclose={onclose}
-    onopen={() => notebook.setRestorePoint()}
+    onopen={() => element.restore.set()}
     buttons={{
         OK: () => {}, 
-        APPLY: () => notebook.setRestorePoint(), 
-        CANCEL: () => notebook.applyRestorePoint(), 
+        APPLY: () => element.restore.set(), 
+        CANCEL: () => element.restore.apply(), 
         HELP: element.helpLink,
     }}
     buttonsDisabled={btnsDisabled}
 >
     <ParamsNotebook 
-        bind:this={notebook} 
         bind:valid={valid}
         element={element}
     ></ParamsNotebook>

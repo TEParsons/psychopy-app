@@ -10,9 +10,7 @@
     let {
         component
     } = $props()
-
-    let notebook = $state.raw();
-
+    
     let dlgComponent = $state(
         new Component(component['__name__'])
     );
@@ -57,23 +55,23 @@
 ></Button>
 
 <Dialog 
-    id=new-loop 
+    id=new-component
     title="New {titleCase(component['__name__'])}"
     bind:shown={showDialog}
-    onopen={() => notebook.setRestorePoint()}
+    onopen={() => dlgComponent.restore.set()}
     buttons={{
         OK: (evt) => {
-            notebook.setRestorePoint()
             // add to experiment
             current.routine.addComponent(dlgComponent);
+            // set restore point
+            dlgComponent.restore.set()
         }, 
-        CANCEL: () => notebook.applyRestorePoint(), 
+        CANCEL: () => dlgComponent.restore.apply(), 
         HELP: dlgComponent.helpLink
     }}
     buttonsDisabled={btnsDisabled}
 >
     <ParamsNotebook 
-        bind:this={notebook} 
         bind:valid={valid}
         element={dlgComponent}
     ></ParamsNotebook>

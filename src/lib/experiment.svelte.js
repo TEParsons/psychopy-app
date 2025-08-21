@@ -326,11 +326,12 @@ export class Routine {
         } else {
             increment = 100;
         }
+        console.log(increment)
         // work out duration to last increment
         let last_increment = Math.floor(this.visualStop / increment) * increment;
         // work out ticks for timeline grid
         var ticks = [];
-        for (let tick = 0; tick < last_increment; tick += increment) {
+        for (let tick = 0; tick <= last_increment - increment; tick += increment) {
             ticks.push({
                 label: Math.round((tick + increment) * 100) / 100,
                 proportion: 1
@@ -663,6 +664,9 @@ export class HasParams {
     /** @attribute @type {String|undefined} Name of the plugin (if any) which this element comes from */
     plugin = undefined;
 
+    /** @attribute @type {Experiment} Experiment this element belongs to */
+    exp = undefined;
+
     /**
      * Array of parameters for this element
      */
@@ -743,6 +747,26 @@ export class HasParams {
         this.tag = tag === "Settings" ? "SettingsComponent" : tag;
         // start off blank
         this.reset()
+    }
+
+    restore = {
+        point: undefined,
+        set: () => {
+        // update history
+        if (this.exp) {
+            this.exp.history.update(`edit ${this.name}`)
+        }
+        // set restore point
+        this.restore.point = this.toJSON()
+        },
+        apply: () => {
+            // restore backup to clear changes
+            this.fromJSON(this.restore.point)
+            // remove last entry from experiment history
+            if (this.exp) {
+                this.exp.history.past.pop()
+            }
+        }
     }
 
     /**

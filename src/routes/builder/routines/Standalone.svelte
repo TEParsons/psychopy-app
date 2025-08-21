@@ -7,9 +7,7 @@
         component
     } = $props();
 
-    onMount(() => notebook.setRestorePoint())
-
-    let notebook;
+    onMount(() => component.restore.set())
 
     let valid = $state({})
 
@@ -22,7 +20,6 @@
 
 <div class=standalone-routine-canvas>
     <ParamsNotebook 
-        bind:this={notebook}
         bind:valid={valid}
         element={component}
     ></ParamsNotebook>
@@ -33,12 +30,12 @@
             primary
             horizontal
             disabled={applyDisabled}
-            onclick={(evt) => notebook.setRestorePoint()} 
+            onclick={(evt) => component.restore.set()} 
         ></Button>
         <Button
             label=Discard
             horizontal
-            onclick={(evt) => notebook.applyRestorePoint()} 
+            onclick={(evt) => component.restore.apply()} 
         ></Button>
     </div>
 </div>

@@ -15,7 +15,6 @@
     } = $props()
 
     let showDialog = $state(false);
-    let notebook;
 
     let showContextMenu = $state(false);
     let contextMenuPos = $state({
@@ -140,11 +139,11 @@
     id="loop-{element.name}" 
     title={element.name}
     bind:shown={showDialog} 
-    onopen={() => notebook.setRestorePoint()}
+    onopen={() => element.restore.set()}
     buttons={{
         OK: (evt) => {}, 
-        APPLY: (evt) => notebook.setRestorePoint(),
-        CANCEL: (evt) => notebook.applyRestorePoint(evt), 
+        APPLY: (evt) => element.restore.set(),
+        CANCEL: (evt) => element.restore.apply(), 
     }}
     buttonsDisabled={btnsDisabled}
 >
@@ -152,7 +151,6 @@
         element={
             element instanceof FlowLoop ? element.initiator : element
         } 
-        bind:this={notebook}
         bind:valid={valid}
     />
 </Dialog>

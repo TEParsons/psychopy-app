@@ -9,6 +9,11 @@
         valid=$bindable()
     } = $props();
 
+    valid = {
+        state: true,
+        warning: undefined
+    }
+
     let ValueCtrl = $state.raw();
     if (param.inputType in mapping) {
         ValueCtrl = mapping[param.inputType]

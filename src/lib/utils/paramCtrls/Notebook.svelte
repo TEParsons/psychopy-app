@@ -9,36 +9,10 @@
         /** @prop @type {array<string>} List of param names not to show */
         hideParams=[],
         /** @bindable State keeping track of whether each param's value is valid */
-        valid=$bindable({}),
+        valid=$bindable(),
     } = $props();
 
-    let backup = {}
-
-    let current = getContext("current")
-
-    export function applyRestorePoint(evt) {
-        // restore backup to clear changes
-        element.fromJSON(backup)
-        // remove last entry from experiment history
-        current.experiment.history.past.pop()
-    }
-
-    export function setRestorePoint(evt) {
-        // update history
-        current.experiment.history.update(`edit ${element.name}`)
-        // set restore point
-        backup = element.toJSON()
-    }
-
     let pageIndex = $state()
-    for (let key in element.params) {
-        if (!(key in valid)){
-            valid[key] = {
-                state: true,
-                warning: undefined
-            }
-        }
-    }
 </script>
 
 <div class=params-container>

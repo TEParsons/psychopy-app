@@ -9,8 +9,6 @@
     
     let current = getContext("current");
     let showNewRoutineDialog = $state.raw(false)
-    let notebook = $state.raw();;
-
     let valid = $state({})
 
     let btnsDisabled = $derived({
@@ -61,7 +59,7 @@
         id=new-routine
         title="New Routine" 
         bind:shown={showNewRoutineDialog} 
-        onopen={() => notebook.setRestorePoint()}
+        onopen={() => current.inserting.settings.restore.set()}
         buttons={{
             OK: (evt) => {
                 // add to experiment
@@ -69,7 +67,7 @@
                 current.experiment.routines[current.inserting.name] = current.inserting
             }, 
             CANCEL: (evt) => {
-                notebook.applyRestorePoint(evt)
+                current.inserting.settings.restore.apply()
                 // stop inserting
                 current.inserting = undefined;
             },  
@@ -78,7 +76,6 @@
         buttonsDisabled={btnsDisabled}
     >
         <ParamsNotebook 
-            bind:this={notebook} 
             bind:valid={valid}
             element={current.inserting.settings}
         ></ParamsNotebook>

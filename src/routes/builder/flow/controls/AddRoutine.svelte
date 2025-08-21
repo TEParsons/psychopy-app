@@ -7,9 +7,7 @@
     import { getContext } from "svelte";
     
     let current = getContext("current");
-        
-    let notebook = $state.raw();;
-
+    
     let showNewRoutineDialog = $state(false)
     let showMenu = $state(false)
 
@@ -73,7 +71,7 @@
     id=new-routine
     title="New Routine" 
     bind:shown={showNewRoutineDialog} 
-    onopen={() => notebook.setRestorePoint()}
+    onopen={() => current.inserting.settings.restore.set()}
     buttons={{
         OK: (evt) => {
             // add to experiment
@@ -81,7 +79,7 @@
             current.experiment.routines[current.inserting.name] = current.inserting
         }, 
         CANCEL: (evt) => {
-            notebook.applyRestorePoint(evt)
+            current.inserting.settings.restore.apply()
             // stop inserting
             current.inserting = undefined;
         },  
@@ -90,7 +88,6 @@
     buttonsDisabled={btnsDisabled}
 >
     <ParamsNotebook 
-        bind:this={notebook} 
         element={current.inserting.settings}
         bind:valid={valid}
     ></ParamsNotebook>

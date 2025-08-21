@@ -9,7 +9,6 @@
     import LoopProfiles from "$lib/loops.json";
     
     let current = getContext("current");
-    let notebook = $state.raw();
 
     let showDialog = $state(false)
     let showMenu = $state(false);
@@ -72,14 +71,14 @@
         id=new-loop 
         title="New loop"
         bind:shown={showDialog} 
-        onopen={() => notebook.setRestorePoint()}
+        onopen={() => current.inserting.restore.set()}
         buttons={{
             OK: (evt) => {
                 // add to experiment
                 current.experiment.loops[current.inserting.name] = current.inserting
             }, 
             CANCEL: (evt) => {
-                notebook.applyRestorePoint(evt)
+                current.inserting.restore.apply()
                 // stop inserting
                 current.inserting = undefined;
             }, 
@@ -88,7 +87,6 @@
         buttonsDisabled={btnsDisabled}
     >
         <ParamsNotebook 
-            bind:this={notebook} 
             bind:valid={valid}
             element={current.inserting}
         ></ParamsNotebook>
