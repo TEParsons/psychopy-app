@@ -87,9 +87,12 @@ export class Experiment {
                     // add Component name and param
                     names[comp.name] = comp.params['name']
                 }
+                // add Routine name and param
+                names[rt.name] = rt.settings.params['name']
+            } else {
+                // add Routine name and param
+                names[rt.name] = rt.params['name']
             }
-            // add Routine name and param
-            names[rt.name] = rt.settings.params['name']
         }
         // iterate through all loops
         for (let loop of Object.values(this.loops)) {
