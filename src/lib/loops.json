@@ -5,7 +5,7 @@
   "plugin": null,
   "params": {
    "name": {
-    "val": null,
+    "val": "trials",
     "valType": "code",
     "inputType": "name",
     "categ": "Basic",
@@ -172,7 +172,7 @@
   "plugin": null,
   "params": {
    "name": {
-    "val": null,
+    "val": "staircase",
     "valType": "code",
     "inputType": "name",
     "categ": "Basic",
@@ -370,7 +370,7 @@
   "plugin": null,
   "params": {
    "name": {
-    "val": null,
+    "val": "staircase",
     "valType": "code",
     "inputType": "name",
     "categ": "Basic",
