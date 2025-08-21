@@ -4,14 +4,13 @@
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { getContext } from "svelte"
     import { ParamsDialog } from "$lib/utils/paramCtrls";
+    import StaticPeriod from './StaticPeriod.svelte';
     
     let current = getContext("current");
 
     let {
         component
     } = $props()
-
-    let ticks = $derived(component.routine.visualTicks)
 
     let hovered = $state(false);
 
@@ -57,6 +56,7 @@
     onmouseleave={() => hovered = false}
     role="none"
     oncontextmenu={oncontextmenu}
+    style:grid-row-start={component.index + 3}
 >    
     {component.name}
     <svg>
@@ -66,22 +66,27 @@
 
 <!-- bars representing this on the timeline -->
 
-<div class=comp-overshoot-timeline>
-{#if component.visualStart === null}
-    <div 
-        class=comp-overshoot-bar
-        style="background:linear-gradient(-90deg, var(--{component.visualColor}), var(--base));"
-        onmouseenter={() => hovered = true}
-        onmouseleave={() => hovered = false}
-        role="none"
-    ></div>
-{/if}
+<div 
+    class=comp-overshoot-timeline
+    style:grid-column-start=undershoot
+    style:grid-row-start={component.index + 3}
+>
+    {#if component.visualStart === null}
+        <div 
+            class=comp-overshoot-bar
+            style:background="linear-gradient(-90deg, var(--{component.visualColor}), var(--base));"
+            onmouseenter={() => hovered = true}
+            onmouseleave={() => hovered = false}
+            role="none"
+        ></div>
+    {/if}
 </div>
 
 <div 
     class=comp-timeline 
     id={component.params['name'].val} 
-    style="grid-template-columns: repeat({ticks.labels.length}, 1fr) {ticks.remainder}fr;" 
+    style:grid-template-columns="repeat({component.routine.visualTicks.labels.length}, 1fr) {component.routine.visualTicks.remainder}fr;"
+    style:grid-row-start={component.index + 3}
     draggable={true} 
     onclick={() => {showDialog = true}}
     oncontextmenu={oncontextmenu}
@@ -100,8 +105,8 @@
         onfocusin={() => hovered = true}
         onfocusout={() => hovered = false}
     ></div>
-    {#each ticks.labels as tick}
-    <div class=comp-timeline-tick style="flex-basis: {tick.proportion}"></div>
+    {#each component.routine.visualTicks.labels as tick}
+        <div class=comp-timeline-tick style="flex-basis: {tick.proportion}"></div>
     {/each}
     <div 
         class=comp-timeline-tick 
@@ -111,7 +116,18 @@
     ></div>
 </div>
 
-<div class=comp-overshoot-timeline>
+{#if component.tag === "StaticComponent"}
+    <StaticPeriod 
+        component={component}
+        bind:hovered={hovered}
+    />
+{/if}
+
+<div 
+    class=comp-overshoot-timeline
+    style:grid-column-start=overshoot
+    style:grid-row-start={component.index + 3}
+>
 {#if component.visualStop === null || (component.routine.visualStop && component.visualStop > component.routine.visualStop)}
     <div 
         class=comp-overshoot-bar

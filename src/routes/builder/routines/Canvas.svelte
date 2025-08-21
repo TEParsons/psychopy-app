@@ -12,7 +12,10 @@
     let showDialog = $state(false);
 </script>
 
-<div class=routine-canvas>
+<div 
+    class=routine-canvas
+    style:grid-template-rows="min-content [timeline-top] min-content repeat({routine.components.length}, min-content) [timeline-bottom] min-content"
+>
     <div class=button-container>
         <Button 
             label="Routine settings"
@@ -33,9 +36,7 @@
     {/if}
 
     {#each routine.components as component}
-    {#if component !== null}
-    <Component component={component}></Component>
-    {/if}
+        <Component component={component}></Component>
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>
 </div>

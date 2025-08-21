@@ -1042,7 +1042,9 @@ export class Component extends HasParams {
      * Color of this Component on the Routine canvas
      */
     visualColor = $derived.by(() => {
-        if (this.disabled) {
+        if (this.tag === "StaticComponent") {
+            return "red"
+        } else if (this.disabled) {
             return "overlay";
         } else if (this.forceEnd) {
             return "orange";

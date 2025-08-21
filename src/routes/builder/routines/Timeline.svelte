@@ -29,6 +29,7 @@
         display: grid;
         position: relative;
         width: 100%;
+        grid-row-start: timeline-top;
         grid-column-start: timeline;
     }
     .comp-overshoot-timeline {
