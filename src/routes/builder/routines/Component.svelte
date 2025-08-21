@@ -8,9 +8,10 @@
     let current = getContext("current");
 
     let {
-        component,
-        ticks
+        component
     } = $props()
+
+    let ticks = $derived(component.routine.visualTicks)
 
     let hovered = $state(false);
 
@@ -102,14 +103,19 @@
     {#each ticks.labels as tick}
     <div class=comp-timeline-tick style="flex-basis: {tick.proportion}"></div>
     {/each}
-    <div class=comp-timeline-tick id=timeline-label-remainder></div>
+    <div 
+        class=comp-timeline-tick 
+        id=timeline-label-remainder 
+        style:border-left={component.routine.settings.visualStop ? ".5rem solid var(--orange)" : "1px solid var(--overlay)"}
+        style:z-index={component.routine.settings.visualStop ? 2 : 0}
+    ></div>
 </div>
 
 <div class=comp-overshoot-timeline>
 {#if component.visualStop === null}
     <div 
         class=comp-overshoot-bar
-        style="background:linear-gradient(90deg, var(--{component.visualColor}), var(--base));"
+        style:background="linear-gradient(90deg, var(--{component.routine.settings.visualStop ? "overlay" : component.visualColor}), var(--base))"
         onmouseenter={() => hovered = true}
         onmouseleave={() => hovered = false}
         role="none"

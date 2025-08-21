@@ -3,16 +3,13 @@
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
-    import Dialog from "$lib/utils/dialog/Dialog.svelte";
     import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
 
     let {
         routine=undefined
     } = $props()
 
-    let showDialog = $state(false)
-    let settingsNotebook;
-
+    let showDialog = $state(false);
 </script>
 
 <div class=routine-canvas>
@@ -32,12 +29,12 @@
     ></ParamsDialog>
 
     {#if routine.components}
-    <TimelineHeader bind:ticks={routine.visualTicks}></TimelineHeader>
+    <TimelineHeader routine={routine}></TimelineHeader>
     {/if}
 
     {#each routine.components as component}
     {#if component !== null}
-    <Component component={component} ticks={routine.visualTicks}></Component>
+    <Component component={component}></Component>
     {/if}
     {/each}
     <EntryPoint routine={routine} index=-1></EntryPoint>

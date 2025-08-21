@@ -295,7 +295,13 @@ export class Routine {
     components = $state([])
 
     visualStop = $derived.by(() => {
+        // use visual stop from settings if there is one
+        if (this.settings.visualStop) {
+            return this.settings.visualStop
+        }
+        // default to 1s
         let dur = 1;
+        // use from Components if any
         for (let comp of this.components) {
             if (comp.visualStop > dur) {
                 dur = comp.visualStop;

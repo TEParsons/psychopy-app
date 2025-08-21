@@ -1,16 +1,26 @@
 <script>
-    export let ticks;
+    let {
+        routine
+    } = $props();
+
 </script>
 
 <div class=comp-name></div>
 <div class=comp-overshoot-timeline></div>
-<div class=comp-timeline style="grid-template-columns: repeat({ticks ? ticks.labels.length : 0}, 1fr) {ticks.remainder}fr;">
-    {#each ticks.labels as tick}
-    <div class=comp-timeline-tick id=timeline-label-{tick.label}>
-        <label for=timeline-labels>{tick.label}s</label>
+<div class=comp-timeline style="grid-template-columns: repeat({routine.visualTicks ? routine.visualTicks.labels.length : 0}, 1fr) {routine.visualTicks.remainder}fr;">
+    {#each routine.visualTicks.labels as tick}
+    <div class=comp-timeline-tick id="timeline-label-{tick.label}">
+        <label 
+            for=timeline-labels
+            class:force-ended={routine.settings.visualStop}
+        >{tick.label}s</label>
     </div>
     {/each}
-    <div class=comp-timeline-tick id=timeline-label-remainder></div>
+    <div 
+        class=comp-timeline-tick 
+        id=timeline-label-remainder
+        style:border-left={routine.settings.visualStop ? ".5rem solid var(--orange)" : "1px solid var(--overlay)"}
+    ></div>
 </div>
 <div class=comp-overshoot-timeline></div>
 
@@ -38,11 +48,15 @@
         border-left: 1px solid var(--overlay);
         width: 100%;
         text-align: right;
-    }.comp-timeline-tick:last-child {
+    }
+    .comp-timeline-tick:last-child {
         border-right: 1px solid var(--overlay);
     }
     .comp-timeline-tick label {
         padding-right: .5rem;
+    }
+    .comp-timeline-tick:nth-last-child(2) label.force-ended {
+        color: var(--orange);
     }
     .comp-timeline-tick:last-child {
         border-right: 0;
