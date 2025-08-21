@@ -94,7 +94,7 @@
     <div 
         class=comp-timeline-bar 
         style:left="{component.visualStart === null ? 0 : component.visualStart * 100 / component.routine.visualStop}%"
-        style:right="{component.visualStop === null ? 0 : (component.routine.visualStop - component.visualStop) * 100 / component.routine.visualStop}%"
+        style:right="{component.visualStop === null || (component.routine.visualStop && component.visualStop > component.routine.visualStop) ? 0 : (component.routine.visualStop - component.visualStop) * 100 / component.routine.visualStop}%"
         style:background-color="var(--{component.visualColor})"
         style:border={hovered ? "1px solid var(--outline)" : `1px solid var(--${component.visualColor})`}
         onfocusin={() => hovered = true}
@@ -112,7 +112,7 @@
 </div>
 
 <div class=comp-overshoot-timeline>
-{#if component.visualStop === null}
+{#if component.visualStop === null || (component.routine.visualStop && component.visualStop > component.routine.visualStop)}
     <div 
         class=comp-overshoot-bar
         style:background="linear-gradient(90deg, var(--{component.routine.settings.visualStop ? "overlay" : component.visualColor}), var(--base))"
