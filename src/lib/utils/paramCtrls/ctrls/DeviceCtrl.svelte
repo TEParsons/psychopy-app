@@ -1,5 +1,6 @@
 <script>
     import { devices } from "$lib/globals.svelte";
+    import { DeviceManagerDialog } from "$lib/dialogs/deviceManager"
 
     let {
         param,

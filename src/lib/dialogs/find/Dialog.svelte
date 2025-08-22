@@ -2,7 +2,7 @@
     import { ToggleButton } from "$lib/utils/buttons";
     import { Dialog } from "$lib/utils/dialog"
     import { ParamsDialog } from "$lib/utils/paramCtrls";
-    import { current } from "../../builder/globals.svelte";
+    import { current } from "../../../routes/builder/globals.svelte";
 
     let {
         /** @bindable @type {Boolean} State dictating whether this dialog is shown */
