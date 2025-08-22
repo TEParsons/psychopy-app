@@ -355,6 +355,11 @@ export class Routine {
             return this.settings.params['name'].val
         }
     })
+
+    /**
+     * Whether this Routine is disabled
+     */
+    disabled = $derived(this.settings.disabled)
     
 
     constructor() {

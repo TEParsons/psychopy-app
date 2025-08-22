@@ -45,6 +45,7 @@
     ondragend={() => current.moving = undefined} 
     onclick={() => current.routine = element}
     class:active={current.routine ? current.routine.name === element.name : false}
+    class:disabled={element.disabled}
     oncontextmenu={(evt) => {
         evt.preventDefault();
         // show menu
@@ -101,5 +102,9 @@
     }
     .active {
         font-weight: bold;
+    }
+    .disabled {
+        background-color: var(--overlay);
+        border-color: var(--overlay);
     }
 </style>
