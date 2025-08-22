@@ -5,7 +5,7 @@
     import { Notebook, NotebookPage, ButtonTab } from '$lib/utils/notebook';
     import { getContext } from "svelte";
     import { Dialog } from '$lib/utils/dialog';
-    import { ParamsNotebook } from '$lib/utils/paramCtrls';
+    import { ParamsNotebook } from '$lib/paramCtrls';
     
     let current = getContext("current");
     let showNewRoutineDialog = $state.raw(false)

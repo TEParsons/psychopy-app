@@ -1,7 +1,7 @@
 <script>
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { Menu, MenuItem } from "$lib/utils/menu"
-    import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
+    import { ParamsNotebook } from '$lib/paramCtrls/index.js';
     import { FlowLoop } from "$lib/experiment.svelte.js";
     import Loop from "./Loop.svelte"
     import RoutineNode from './Routine.svelte';

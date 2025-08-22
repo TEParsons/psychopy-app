@@ -1,5 +1,5 @@
 <script>
-    import { ParamsNotebook, ParamCtrl } from "$lib/utils/paramCtrls";
+    import { ParamsNotebook, ParamCtrl } from "$lib/paramCtrls";
     import DeviceProfile from "./DeviceProfile.svelte";
 
     let {

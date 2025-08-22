@@ -1,6 +1,6 @@
 <script>
     import { LoopInitiator } from '$lib/experiment.svelte.js';
-    import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
+    import { ParamsNotebook } from '$lib/paramCtrls/index.js';
     import { Menu, MenuItem } from '$lib/utils/menu';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";

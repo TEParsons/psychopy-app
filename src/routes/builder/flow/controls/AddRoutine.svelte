@@ -2,7 +2,7 @@
     import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
     import { Menu, MenuItem } from '$lib/utils/menu';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
-    import { ParamsNotebook } from '$lib/utils/paramCtrls/index.js';
+    import { ParamsNotebook } from '$lib/paramCtrls/index.js';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     

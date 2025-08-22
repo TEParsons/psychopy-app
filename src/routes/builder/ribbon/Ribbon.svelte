@@ -21,7 +21,7 @@
     import SavePrompt from "./SavePrompt.svelte"
     import { FindDialog } from "../../../lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "../../../lib/dialogs/deviceManager/index.js"
-    import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
+    import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import PrefsDialog from '../../../lib/dialogs/preferences/PrefsDialog.svelte';
     import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
     import { PavloviaUsers } from '$lib/pavlovia.svelte';

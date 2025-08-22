@@ -3,7 +3,7 @@
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { ParamsNotebook } from "$lib/paramCtrls";
     
     let current = getContext("current");
 

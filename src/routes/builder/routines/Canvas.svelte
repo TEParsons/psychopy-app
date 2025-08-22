@@ -3,7 +3,7 @@
     import Component from './Component.svelte';
     import TimelineHeader from './Timeline.svelte';
     import EntryPoint from './EntryPoint.svelte';
-    import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
+    import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
 
     let {
         routine=undefined

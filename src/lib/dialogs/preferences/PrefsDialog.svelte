@@ -1,6 +1,6 @@
 <script>
     import { HasParams } from "$lib/experiment.svelte";
-    import ParamsDialog from "$lib/utils/paramCtrls/ParamsDialog.svelte";
+    import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
 
     let {
         shown=$bindable()

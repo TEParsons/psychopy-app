@@ -3,7 +3,7 @@
     import Menu from '$lib/utils/menu/Menu.svelte';
     import MenuItem from '$lib/utils/menu/Item.svelte';
     import { getContext } from "svelte"
-    import { ParamsDialog } from "$lib/utils/paramCtrls";
+    import { ParamsDialog } from "$lib/paramCtrls";
     import StaticPeriod from './StaticPeriod.svelte';
     
     let current = getContext("current");

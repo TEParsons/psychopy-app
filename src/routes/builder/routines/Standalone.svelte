@@ -1,5 +1,5 @@
 <script>
-    import { ParamsNotebook } from "$lib/utils/paramCtrls";
+    import { ParamsNotebook } from "$lib/paramCtrls";
     import { Button } from '$lib/utils/buttons';
     import { onMount } from "svelte";
 

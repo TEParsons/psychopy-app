@@ -1,6 +1,6 @@
 <script>
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import { ParamsNotebook } from "$lib/utils/paramCtrls/index.js";
+    import { ParamsNotebook } from "$lib/paramCtrls/index.js";
 
     let {
         /** @prop @type {import("$lib/experiment.svelte.js")<Component|StandaloneRoutine|LoopInitiator>} Element which this dialog edits */
