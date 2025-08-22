@@ -5,8 +5,9 @@
     import { PanelButton } from "$lib/utils/buttons";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/utils/paramCtrls";
-    import { Param } from "$lib/experiment.svelte"
+    import { Device, Param } from "$lib/experiment.svelte"
     import { setContext } from "svelte";
+    import { devices } from "$lib/globals.svelte";
 
     let {
         shown=$bindable()
@@ -68,7 +69,11 @@
     bind:shown={shown}
     onopen={clear}
     buttons={{
-        OK: (evt) => {},
+        OK: (evt) => {
+            // populate
+            devices[param.val] = new Device(selected.device['__name__'], selected.device.profile);
+            devices[param.val].params['name'].val = param.val;
+        },
         CANCEL: (evt) => {}
     }}
     buttonsDisabled={disableBtns}

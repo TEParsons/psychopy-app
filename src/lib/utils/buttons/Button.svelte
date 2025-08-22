@@ -137,6 +137,7 @@
         max-height: 100%;
     }
     button svg {
+        height: 2.25rem;
         aspect-ratio: 1 / 1;
     }
 

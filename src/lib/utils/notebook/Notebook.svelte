@@ -12,7 +12,7 @@
     let pages = $state({
         book: "notebook",
         current: undefined,
-        add: false,
+        buttons: 0,
         all: [],
         data: []
     })
@@ -28,7 +28,7 @@
 
 <div 
     class=notebook
-    style:grid-template-columns="[start] repeat({pages.all.length + (pages.add ? 1 : 0)}, min-content) 1fr [end]"
+    style:grid-template-columns="[start] repeat({pages.all.length + pages.buttons}, min-content) 1fr [end]"
 >
     {@render children?.()}
     <div class=notebook-tab-filler></div>

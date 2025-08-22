@@ -61,6 +61,7 @@
             icon="icons/btn-hamburger.svg"
             label="Menu"
             onclick={() => showMenu = true} 
+            borderless
         />
         <Menu 
             bind:shown={showMenu}
@@ -103,6 +104,7 @@
             icon="icons/btn-new.svg" 
             label="New file" 
             onclick={(evt) => savePrompt.NEW = true}
+            borderless
         />
         <SavePrompt
             bind:shown={savePrompt.NEW}
@@ -112,6 +114,7 @@
             icon="icons/btn-open.svg" 
             label="Open file" 
             onclick={(evt) => savePrompt.OPEN = true} 
+            borderless
         />
         <SavePrompt
             bind:shown={savePrompt.OPEN}
@@ -122,11 +125,13 @@
             label="Save file" 
             onclick={file_save}
             disabled={!current.experiment.history.past.length} 
+            borderless
         />
         <IconButton 
             icon="icons/btn-saveas.svg" 
             label="Save file as"
             onclick={file_save_as} 
+            borderless
         />
     </RibbonSection>
 
@@ -136,17 +141,20 @@
             label="Undo{lastAction}" 
             onclick={undo} 
             disabled={current.file === null || !current.experiment.history.past.length} 
+            borderless
         />
         <IconButton 
             icon="icons/btn-redo.svg" 
             label="Redo {nextAction}" 
             onclick={redo} 
             disabled={current.file === null || !current.experiment.history.future.length} 
+            borderless
         />
         <IconButton 
             icon="icons/btn-find.svg" 
             label="Find" 
             onclick={() => showFindDialog = true}
+            borderless
         />
         <FindDialog
             bind:shown={showFindDialog}
@@ -163,6 +171,7 @@
             icon="icons/btn-devices.svg"
             label="Open the device manager"
             onclick={(evt) => showDeviceMgr = true}
+            borderless
         ></IconButton>
         <DeviceManagerDialog
             bind:shown={showDeviceMgr}
@@ -173,6 +182,7 @@
             label="Experiment settings" 
             onclick={(evt) => showSettingsDlg = true}
             disabled={current.experiment === null}
+            borderless
         />
         {#if current.experiment !== null }
         <ParamsDialog
@@ -293,16 +303,19 @@
             icon="icons/btn-builder.svg" 
             label="Builder view" 
             onclick={new_builder_frame} 
+            borderless
         />
         <IconButton 
             icon="icons/btn-coder.svg" 
             label="Coder view" 
             onclick={new_coder_frame} 
+            borderless
         />
         <IconButton 
             icon="icons/btn-runner.svg" 
             label="Runner view" 
             onclick={new_runner_frame} 
+            borderless
         />
     </RibbonSection>
 </Ribbon>

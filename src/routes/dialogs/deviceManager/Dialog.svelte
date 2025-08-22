@@ -1,10 +1,9 @@
 <script>
     import { Dialog } from "$lib/utils/dialog";
-    import { setContext } from "svelte";
     import DeviceDetails from "./DeviceDetails.svelte";
-    import DeviceProfiles from "./devices.json";
-    import { AddPageButton, Listbook, NotebookPage } from "$lib/utils/notebook";
+    import { ButtonTab, Listbook, NotebookPage } from "$lib/utils/notebook";
     import { Device } from "$lib/experiment.svelte";
+    import { devices } from "$lib/globals.svelte";
     import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
 
     let {
@@ -12,19 +11,8 @@
         shown=$bindable()
     } = $props()
 
-    // state in which to store devices
-    let devices = $state({
-        current: undefined,
-        all: {}
-    })
-    // add each device from the JSON as an object
-    for (let [key, dev] of Object.entries(DeviceProfiles)) {
-        dev['tag'] = dev['__name__']
-        devices.all[key] = new Device(dev['tag'], dev.profile);
-        devices.all[key].fromJSON(dev)
-    }
-
-    setContext("devices", devices)
+    // track selected device
+    let currentDevice = $state.raw(undefined)
 
     let showAddDeviceDialog = $state.raw(false)
 
@@ -38,6 +26,50 @@
             (val) => !val.state
         )
     })
+
+    async function openDevicesFile(evt) {
+        // get file handle from system dialog
+        let handle = await window.showOpenFilePicker({
+            types: [{
+                description: "PsychoPy Devices",
+                accept: {
+                    "application/json": [".json"]
+                }
+            }]
+        });
+        // get file blob from handle
+        let file = await handle[0].getFile();
+        // get data from JSON text
+        let deviceData = JSON.parse(
+            await file.text()
+        )
+        // set data
+        devicesFromJSON(deviceData)
+
+        console.log(`Loaded devices from ${file.name}:`, deviceData);
+    }
+
+    function devicesFromJSON(deviceData) {
+        // reset
+        Object.keys(devices).forEach((key) => delete devices[key])
+        currentDevice = undefined
+        // add each device from the JSON as an object
+        for (let [key, dev] of Object.entries(deviceData)) {
+            // substitute deviceLabel for name
+            if ("deviceLabel" in dev.params) {
+                dev.params.name = dev.params.deviceLabel;
+                delete dev.params.deviceLabel
+            }
+            // populate
+            dev['tag'] = dev['__name__']
+            devices[key] = new Device(dev['tag'], dev.profile);
+            devices[key].fromJSON(dev)
+            // select if nothing selected yet
+            if (currentDevice === undefined) {
+                currentDevice = devices[key]
+            }
+        }
+    }
 </script>
 
 
@@ -51,30 +83,47 @@
         HELP: ""
     }}
     buttonsDisabled={btnsDisabled}
-    shown={shown}
+    bind:shown={shown}
 >
     <div class=container>
         <Listbook>
-            {#each Object.entries(devices.all) as [key, device]}
-            <NotebookPage
-                bind:selected={
-                    () => {return devices.current === device},
-                    (value) => {devices.current = device}
-                }
-                label={device.name} 
-                data={device}
-                close={(evt) => delete devices.all[key]}
-            >
-                <DeviceDetails
-                    device={device}
-                    bind:valid={valid}
-                ></DeviceDetails>
-            </NotebookPage>
+            {#each Object.entries(devices) as [key, device]}
+                <NotebookPage
+                    bind:selected={
+                        () => {return currentDevice === device},
+                        (value) => {currentDevice = device}
+                    }
+                    label={device.name} 
+                    data={device}
+                    close={(evt) => delete devices[key]}
+                >
+                    <DeviceDetails
+                        device={device}
+                        bind:valid={valid}
+                    ></DeviceDetails>
+                </NotebookPage>
             {/each}
-            <AddPageButton
+            <!-- placeholder page -->
+            {#if Object.keys(devices).length === 0}
+            <NotebookPage
+                label=""
+                selected
+            >
+                <div class=placeholder-page>
+                    <p>No devices have been setup.</p>
+                    <p>Click "Add device" to add a new device, or import devices from a .json file.</p>
+                </div>
+            </NotebookPage>
+            {/if}
+            <ButtonTab
                 callback={(evt) => showAddDeviceDialog = true}
                 label="+ Add device"
-            ></AddPageButton>
+            ></ButtonTab>
+            <ButtonTab
+                callback={openDevicesFile}
+                label="⭱ Import devices"
+                tooltip="Import devices from a .json file"
+            ></ButtonTab>
         </Listbook>
     </div>
 
@@ -86,5 +135,10 @@
 <style>
     .container {
         padding: 1rem;
+    }
+    .placeholder-page {
+        padding: 0 1rem;
+        width: 30rem;
+        color: var(--outline)
     }
 </style>

@@ -2,7 +2,7 @@
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
     import { StandaloneRoutine, Routine } from '$lib/experiment.svelte.js';
-    import { Notebook, NotebookPage, AddPageButton } from '$lib/utils/notebook';
+    import { Notebook, NotebookPage, ButtonTab } from '$lib/utils/notebook';
     import { getContext } from "svelte";
     import { Dialog } from '$lib/utils/dialog';
     import { ParamsNotebook } from '$lib/utils/paramCtrls';
@@ -42,7 +42,7 @@
             </NotebookPage>
         {/each}
     {/if}
-    <AddPageButton
+    <ButtonTab
         callback={(evt) => {
             // create blank Routine
             current.inserting = new Routine()
@@ -50,7 +50,7 @@
             showNewRoutineDialog = true
         }}
         tooltip="New Routine..."
-    ></AddPageButton>
+    ></ButtonTab>
 </Notebook>
 
 <!-- dialog for creating a new Routine -->

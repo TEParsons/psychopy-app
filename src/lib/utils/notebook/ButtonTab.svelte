@@ -12,7 +12,7 @@
 
     let siblings = getContext("siblings")
     // tell parent that this button exists
-    siblings.add = true
+    siblings.buttons += 1
 </script>
 
 
