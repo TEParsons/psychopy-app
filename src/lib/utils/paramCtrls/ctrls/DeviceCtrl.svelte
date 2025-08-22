@@ -1,6 +1,7 @@
 <script>
     import { devices } from "$lib/globals.svelte";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager"
+    import { CompactButton } from "$lib/utils/buttons";
 
     let {
         param,
@@ -23,12 +24,14 @@
             }
         }
         // if param.val isn't in options, add it
-        if (!output.includes(param.val)) {
+        if (param.val !== "" && !output.includes(param.val)) {
             output.push($state.snapshot(param.val))
         }
 
         return output
     })
+
+    let showDialog = $state.raw(false)
 </script>
 
 
@@ -38,6 +41,10 @@
     bind:value={param.val}
     style:color={valid.state ? "inherit" : "var(--red)"}
 >
+    <option
+        value=""
+        selected={param.val === ""}
+    >Default</option>
     {#each options as option}
         <option 
             value={option} 
@@ -45,6 +52,16 @@
         >{option}</option>
     {/each}
 </select>
+
+<CompactButton
+    icon="icons/btn-devices.svg"
+    onclick={(evt) => showDialog = true}
+/>
+
+<DeviceManagerDialog
+    bind:shown={showDialog}
+/>
+
 
 <style>
     .param-device-input {
