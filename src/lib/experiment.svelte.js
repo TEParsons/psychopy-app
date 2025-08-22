@@ -331,7 +331,6 @@ export class Routine {
         } else {
             increment = 100;
         }
-        console.log(increment)
         // work out duration to last increment
         let last_increment = Math.floor(this.visualStop / increment) * increment;
         // work out ticks for timeline grid
