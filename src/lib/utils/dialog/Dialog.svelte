@@ -13,7 +13,8 @@
             YES: undefined,
             NO: undefined,
             CANCEL: undefined,
-            HELP: undefined
+            HELP: undefined,
+            EXTRA: [],
         },
         /** @bindable State controlling whether each button is disabled */
         buttonsDisabled={},
@@ -129,6 +130,16 @@
                 horizontal
                 disabled={buttonsDisabled && buttonsDisabled['APPLY']}
             ></Button>
+            {/if}
+            {#if buttons.EXTRA}
+                {#each Object.entries(buttons['EXTRA']) as [label, onclick]}
+                    <Button
+                        label={label}
+                        onclick={onclick}
+                        horizontal
+                        disabled={buttonsDisabled && buttonsDisabled['EXTRA'] && buttonsDisabled['EXTRA'][label]}
+                    />
+                {/each}
             {/if}
             {#if buttons.CANCEL}
             <Button 

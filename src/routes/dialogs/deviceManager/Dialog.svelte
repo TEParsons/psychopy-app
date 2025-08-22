@@ -49,6 +49,31 @@
         console.log(`Loaded devices from ${file.name}:`, deviceData);
     }
 
+    async function saveDevicesFile(evt) {
+        // stringify devices
+        let content = {};
+        for (let [key, device] of Object.entries(devices)) {
+            content[key] = device.toJSON();
+        }
+        content = JSON.stringify(content, null, 4)
+        // open a file picker
+        let handle = await window.showSaveFilePicker({
+            types: [{
+                description: "PsychoPy Devices",
+                accept: {
+                    "application/json": [".json"]
+                }
+            }],
+            suggestedName: "devices.json"
+        });
+        // create file object
+        let file = await handle.createWritable();
+        // write to file
+        file.seek(0);
+        file.write(content);
+        file.close();
+    }
+
     function devicesFromJSON(deviceData) {
         // reset
         Object.keys(devices).forEach((key) => delete devices[key])
@@ -79,6 +104,9 @@
     buttons={{
         OK: () => {},
         APPLY: () => {},
+        EXTRA: {
+            Export: saveDevicesFile
+        },
         CANCEL: () => {},
         HELP: ""
     }}
