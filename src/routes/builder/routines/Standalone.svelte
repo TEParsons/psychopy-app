@@ -56,6 +56,7 @@
         grid-row-start: ctrls;
         gap: 1rem;
         align-items: end;
+        padding-bottom: 2rem;
     }
     .ctrl-gap {
         flex-grow: 1;

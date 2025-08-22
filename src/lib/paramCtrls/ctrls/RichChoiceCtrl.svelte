@@ -11,7 +11,6 @@
     let options = $derived(
         optionsFromParam(param)
     )
-    $inspect(options)
 </script>
 
 <div 

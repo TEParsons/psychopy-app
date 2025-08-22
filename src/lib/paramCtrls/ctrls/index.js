@@ -9,7 +9,8 @@ export { default as MultipleChoiceCtrl } from "./MultipleChoiceCtrl.svelte";
 export { default as TableCtrl } from "./TableCtrl.svelte";
 export { default as ConditionsCtrl } from "./ConditionsCtrl.svelte";
 export { default as DeviceCtrl } from "./DeviceCtrl.svelte";
-export { default as RichChoiceCtrl } from "./RichChoiceCtrl.svelte"
+export { default as RichChoiceCtrl } from "./RichChoiceCtrl.svelte";
+export { default as SurveyCtrl } from "./SurveyCtrl.svelte"
 
 import {
     SingleLineCtrl,
@@ -22,7 +23,7 @@ import {
     BoolCtrl,
     FileCtrl,
     // FontCtrl,
-    // SurveyCtrl,
+    SurveyCtrl,
     // FileListCtrl,
     TableCtrl,
     ConditionsCtrl,
@@ -43,7 +44,7 @@ export var mapping = {
     "bool": BoolCtrl,
     "file": FileCtrl,
     // "font": FontCtrl,
-    // "survey": SurveyCtrl,
+    "survey": SurveyCtrl,
     // "fileList": FileListCtrl,
     "table": TableCtrl,
     "conditions": ConditionsCtrl,
