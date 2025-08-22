@@ -5,7 +5,7 @@
 
     /** @prop @type {string} Name (Start or Stop)*/
     export let name;
-    /** @prop @type {{valueParam: import("$lib/experiment.svelte.js").Param|null, typeParam: import("$lib/experiment.svelte.js").Param|null, expectedParam: import("$lib/experiment.svelte.js").Param|null}}*/
+    /** @prop @type {{valueParam: import("$lib/experiment/experiment.svelte.js").Param|null, typeParam: import("$lib/experiment/experiment.svelte.js").Param|null, expectedParam: import("$lib/experiment/experiment.svelte.js").Param|null}}*/
     export let params;
 </script>
 

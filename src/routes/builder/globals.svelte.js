@@ -1,4 +1,4 @@
-import { Experiment } from "$lib/experiment.svelte.js";
+import { Experiment } from "$lib/experiment/experiment.svelte.js";
 
 
 export let current = $state({

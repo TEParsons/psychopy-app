@@ -1,8 +1,8 @@
 <script>
-    import { Param } from "$lib/experiment.svelte";
+    import { Param } from "$lib/experiment/experiment.svelte";
     import { CompactButton } from "$lib/utils/buttons";
     import { iterateName } from "./utils.js";
-    import { sanitizeJSON } from "$lib/transpiler"
+    import { sanitizeJSON } from "$lib/utils/transpiler"
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {

@@ -5,7 +5,7 @@
     import { PanelButton } from "$lib/utils/buttons";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
-    import { Device, Param } from "$lib/experiment.svelte"
+    import { Device, Param } from "$lib/experiment/experiment.svelte"
     import { setContext } from "svelte";
     import { devices } from "$lib/globals.svelte";
 

@@ -2,7 +2,7 @@
     import ComponentButton from './ComponentButton.svelte';
     import ComponentSection from './Section.svelte';
 
-    import ComponentProfiles from '$lib/components.json';
+    import ComponentProfiles from '$lib/experiment/components.json';
     import RoutineButton from './RoutineButton.svelte';
     import FilterDialog from './FilterDialog.svelte';
     import { CompactButton } from "$lib/utils/buttons";

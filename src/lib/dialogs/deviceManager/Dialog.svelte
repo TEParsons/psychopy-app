@@ -2,7 +2,7 @@
     import { Dialog } from "$lib/utils/dialog";
     import DeviceDetails from "./DeviceDetails.svelte";
     import { ButtonTab, Listbook, NotebookPage } from "$lib/utils/notebook";
-    import { Device } from "$lib/experiment.svelte";
+    import { Device } from "$lib/experiment/experiment.svelte";
     import { devices, python } from "$lib/globals.svelte";
     import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
 

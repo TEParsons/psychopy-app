@@ -1,10 +1,10 @@
 // get component profiles from json file
-import ComponentProfiles from "$lib/components.json"
-import LoopProfiles from "$lib/loops.json"
-import DeviceProfiles from "$lib/devices.json"
+import ComponentProfiles from "$lib/experiment/components.json"
+import LoopProfiles from "$lib/experiment/loops.json"
+import DeviceProfiles from "$lib/experiment/devices.json"
 import PreferencesProfile from "$lib/preferences.json"
 import { devices } from "$lib/globals.svelte"
-import { js2py, py2js } from "$lib/transpiler"
+import { js2py, py2js } from "$lib/utils/transpiler"
 
 
 export class Experiment {

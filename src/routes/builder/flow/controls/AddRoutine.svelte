@@ -1,5 +1,5 @@
 <script>
-    import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment.svelte.js';
+    import { Routine, LoopInitiator, LoopTerminator } from '$lib/experiment/experiment.svelte.js';
     import { Menu, MenuItem } from '$lib/utils/menu';
     import Dialog from '$lib/utils/dialog/Dialog.svelte';
     import { ParamsNotebook } from '$lib/paramCtrls/index.js';

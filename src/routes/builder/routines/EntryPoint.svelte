@@ -1,5 +1,5 @@
 <script>
-    import { Component } from "$lib/experiment.svelte";
+    import { Component } from "$lib/experiment/experiment.svelte";
     import { getContext } from "svelte";
     
     let current = getContext("current");

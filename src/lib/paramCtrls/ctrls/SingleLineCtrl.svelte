@@ -2,7 +2,7 @@
     import { getContext, onDestroy } from "svelte";
 
     let {
-        /** @prop @type {import("$lib/experiment.svelte.js").Param} Param object to which this ctrl pertains */
+        /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
         /** @bindable State tracking whether the value of this ctrl is valid */
         valid=$bindable(),

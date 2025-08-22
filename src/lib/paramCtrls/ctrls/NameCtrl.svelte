@@ -1,6 +1,6 @@
 <script>
     import { getContext } from "svelte";
-    import Namespace from "$lib/namespace.json";
+    import Namespace from "$lib/experiment/namespace.json";
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {

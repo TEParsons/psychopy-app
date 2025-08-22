@@ -3,7 +3,7 @@
     import { ParamsNotebook } from "$lib/paramCtrls/index.js";
 
     let {
-        /** @prop @type {import("$lib/experiment.svelte.js")<Component|StandaloneRoutine|LoopInitiator>} Element which this dialog edits */
+        /** @prop @type {import("$lib/experiment/experiment.svelte.js")<Component|StandaloneRoutine|LoopInitiator>} Element which this dialog edits */
         element,
         /** @bindable State controlling this dialog's visibility */
         shown=$bindable(),

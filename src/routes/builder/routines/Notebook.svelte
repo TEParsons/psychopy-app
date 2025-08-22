@@ -1,7 +1,7 @@
 <script>
     import RoutineCanvas from './Canvas.svelte';
     import StandaloneRoutineCanvas from './Standalone.svelte'
-    import { StandaloneRoutine, Routine } from '$lib/experiment.svelte.js';
+    import { StandaloneRoutine, Routine } from '$lib/experiment/experiment.svelte.js';
     import { Notebook, NotebookPage, ButtonTab } from '$lib/utils/notebook';
     import { getContext } from "svelte";
     import { Dialog } from '$lib/utils/dialog';

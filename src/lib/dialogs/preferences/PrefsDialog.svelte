@@ -1,5 +1,5 @@
 <script>
-    import { HasParams } from "$lib/experiment.svelte";
+    import { HasParams } from "$lib/experiment/experiment.svelte";
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
 
     let {

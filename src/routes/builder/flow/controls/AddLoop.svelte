@@ -1,12 +1,12 @@
 <script>
-    import { LoopInitiator } from '$lib/experiment.svelte.js';
+    import { LoopInitiator } from '$lib/experiment/experiment.svelte.js';
     import { ParamsNotebook } from '$lib/paramCtrls/index.js';
     import { Menu, MenuItem } from '$lib/utils/menu';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import ComponentProfiles from "$lib/components.json";
-    import LoopProfiles from "$lib/loops.json";
+    import ComponentProfiles from "$lib/experiment/components.json";
+    import LoopProfiles from "$lib/experiment/loops.json";
     
     let current = getContext("current");
 
