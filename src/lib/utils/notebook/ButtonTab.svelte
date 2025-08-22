@@ -5,7 +5,8 @@
     let {
         callback,
         tooltip=undefined,
-        label="+"
+        label="+",
+        disabled=false
     } = $props()
 
     let hovered = $state.raw(false)
@@ -25,12 +26,13 @@
     onmouseleave={() => {hovered = false}}
     onfocusin={() => {hovered = true}}
     onfocusout={() => {hovered = false}}
+    disabled={disabled}
 >
     {label}
     {#if tooltip}
         <Tooltip
             bind:shown={hovered}
-            position="bottom"
+            position={siblings.book === "listbook" ? "right" : "bottom"}
         >
             {tooltip}
         </Tooltip>
@@ -38,7 +40,7 @@
 </button>
 
 <style>
-    .add-btn {
+    button {
         position: relative;
         color: var(--outline);
         transition: background .2s, color .2s;
@@ -46,18 +48,22 @@
         z-index: 2;
         border-radius: 0;
     }
-    .add-btn:hover {
+    button:enabled:hover,
+    button:enabled:focus {
         color: var(--blue);
         background-color: var(--base);
     }
+    button:disabled {
+        opacity: 50%;
+    }
 
-    .add-btn.notebook {
+    button.notebook {
         grid-row-start: tabs;
         border-left: 1px solid var(--overlay);
         line-height: 1em;
     }
 
-    .add-btn.listbook {
+    button.listbook {
         grid-column-start: tabs;
         border-top: 1px solid var(--overlay);
         padding: 0.5rem;

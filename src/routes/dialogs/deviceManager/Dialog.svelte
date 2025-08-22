@@ -3,7 +3,7 @@
     import DeviceDetails from "./DeviceDetails.svelte";
     import { ButtonTab, Listbook, NotebookPage } from "$lib/utils/notebook";
     import { Device } from "$lib/experiment.svelte";
-    import { devices } from "$lib/globals.svelte";
+    import { devices, python } from "$lib/globals.svelte";
     import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
 
     let {
@@ -146,6 +146,11 @@
             <ButtonTab
                 callback={(evt) => showAddDeviceDialog = true}
                 label="+ Add device"
+                tooltip={python
+                    ? "Setup a currently connected device"
+                    : "Device setup not available in web-only"
+                }
+                disabled={!python}
             ></ButtonTab>
             <ButtonTab
                 callback={openDevicesFile}
