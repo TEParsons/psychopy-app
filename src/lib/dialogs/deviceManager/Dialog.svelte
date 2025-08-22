@@ -27,9 +27,6 @@
         ),
     }
 
-    let point = $derived(Object.values(devices).map((value) => value.restore.point))
-    $inspect(point)
-
     let btnsDisabled = $derived({
         OK: Object.values(valid).some(
             (val) => !val.state
