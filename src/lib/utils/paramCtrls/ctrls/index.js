@@ -9,6 +9,7 @@ export { default as MultipleChoiceCtrl } from "./MultipleChoiceCtrl.svelte";
 export { default as TableCtrl } from "./TableCtrl.svelte";
 export { default as ConditionsCtrl } from "./ConditionsCtrl.svelte";
 export { default as DeviceCtrl } from "./DeviceCtrl.svelte";
+export { default as RichChoiceCtrl } from "./RichChoiceCtrl.svelte"
 
 import {
     SingleLineCtrl,
@@ -17,7 +18,7 @@ import {
     ChoiceCtrl,
     MultipleChoiceCtrl,
     DeviceCtrl,
-    // RichChoiceCtrl,
+    RichChoiceCtrl,
     BoolCtrl,
     FileCtrl,
     // FontCtrl,
@@ -38,7 +39,7 @@ export var mapping = {
     "choice": ChoiceCtrl,
     "multiChoice": MultipleChoiceCtrl,
     "device": DeviceCtrl,
-    // "richChoice": RichChoiceCtrl,
+    "richChoice": RichChoiceCtrl,
     "bool": BoolCtrl,
     "file": FileCtrl,
     // "font": FontCtrl,
