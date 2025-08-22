@@ -130,4 +130,8 @@
         padding-bottom: 10rem;
         height: 100%;
     }
+    .device-category {
+        padding: 1rem;
+        padding-top: .5rem;
+    }
 </style>
