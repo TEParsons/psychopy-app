@@ -62,6 +62,10 @@ export function optionsFromParam(param) {
         for (let i in param.allowedVals) {
             output[param.allowedVals[i]] = param.allowedLabels[i];
         }
+
+        if (!(param.val in output)) {
+            output[param.val] = param.val
+        }
         
         return output
     }

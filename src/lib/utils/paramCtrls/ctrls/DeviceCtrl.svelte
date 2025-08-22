@@ -22,10 +22,13 @@
                 }
             }
         }
+        // if param.val isn't in options, add it
+        if (!output.includes(param.val)) {
+            output.push($state.snapshot(param.val))
+        }
 
         return output
     })
-
 </script>
 
 
