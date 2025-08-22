@@ -3,6 +3,7 @@
     import { CompactButton, IconButton } from "$lib/utils/buttons"
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
+    import { PavloviaUsers } from "$lib/pavlovia/pavlovia.svelte";
 
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
@@ -23,22 +24,37 @@
         survey: undefined
     });
 
-    let availableSurveys = $state([]);
+    let surveys = $state({
+        available: [],
+        error: undefined
+    });
 
-    function populateSurveys() {
+    async function populateSurveys() {
         // clear surveys
-        availableSurveys.splice(0, availableSurveys.length)
+        surveys.available = []
+        surveys.error = undefined
         // populate
         if (current.user) {
-            // placeholder: example dicts
-            availableSurveys.push({
-                "surveyName": "Daisy Chaining Demo",
-                "surveyId": "<id for Daisy Chaining Demo>"
-            })
-            availableSurveys.push({
-                "surveyName": "Randomisation Demo",
-                "surveyId": "<id for Randomisation Demo>"
-            })
+            // todo: how the hell does fetch work?
+            let resp;
+            try {
+                resp = await fetch(
+                    "https://pavlovia.org/api/v2/surveys",
+                    {
+                        headers: current.user.token
+                    }
+                )
+            } catch (err) {
+                surveys.error = err;
+                return
+            }
+            let data = await resp.json()
+            // if we got any, show them
+            if ("surveys" in data) {
+                for (let survey of data.surveys) {
+                    surveys.available.push(survey)
+                }
+            }
         }
     }
 
@@ -76,15 +92,20 @@
             Below are all of the surveys linked to your Pavlovia account - select the one you want and press OK to add its ID.
         </p>
         <div class=choice-group>
-            {#each availableSurveys as survey}
-            <button
-                class=survey-option
-                onclick={(evt) => selected.survey = survey}
-                class:selected={selected.survey && selected.survey.surveyId === survey.surveyId}
-            >
-                {survey.surveyName}
-            </button>
+            {#each surveys.available as survey}
+                <button
+                    class=survey-option
+                    onclick={(evt) => selected.survey = survey}
+                    class:selected={selected.survey && selected.survey.surveyId === survey.surveyId}
+                >
+                    {survey.surveyName}
+                </button>
             {/each}
+            {#if surveys.error}
+            <p class=error>
+
+            </p>
+            {/if}
         </div>
         <div class=ctrls>
             <IconButton
@@ -140,6 +161,10 @@
         gap: .5rem;
         padding: .5rem;
         padding-bottom: 1.5rem;
+    }
+
+    p.error {
+        color: var(--red);
     }
 
 </style>
