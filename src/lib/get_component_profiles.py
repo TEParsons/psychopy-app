@@ -10,6 +10,8 @@ activatePlugins()
 def default(o):
     if isinstance(o, Path):
         return str(o)
+    if isinstance(o, type):
+        return f"{o.__module__}:{o.__qualname__}"
     if callable(o):
         return o()
 
