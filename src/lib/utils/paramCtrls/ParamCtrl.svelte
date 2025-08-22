@@ -33,9 +33,9 @@
             // equal to something...
             target = String(dep.condition).replace(/==['"](.*?)['"]|==(.*?)/, "$1")
             // convert True/False to true/false
-            if (target === "True") {
+            if (target.trim() === "True") {
                 target = true
-            } else if (target === "False") {
+            } else if (target.trim() === "False") {
                 target = false
             }
             // evaluate

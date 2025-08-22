@@ -1,3 +1,6 @@
+import { python } from "$lib/globals.svelte";
+
+
 /**
  * Iterate a name by +1 (e.g. "field_1" becomes "field_2")
  * 
@@ -28,12 +31,20 @@ export function optionsFromParam(param) {
         let output = {};
         // if either allowed labels or values are a Python function, execute it
         if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
-            // placeholder: include raw value
-            param.allowedVals = [param.allowedVals]
+            if (python) {
+
+            } else {
+                // placeholder: no options to ctrl is disabled
+                param.allowedVals = []
+            }
         }
         if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
-            // placeholder: leave blank
-            param.allowedLabels = [param.allowedLabels]
+            if (python) {
+
+            } else {
+                // placeholder: no options to ctrl is disabled
+                param.allowedLabels = []
+            }
         }
         // if no allowed labels, use allowed values
         if (param.allowedLabels === undefined || param.allowedLabels.length == 0) {

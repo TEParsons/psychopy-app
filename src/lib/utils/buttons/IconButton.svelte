@@ -67,6 +67,7 @@
         ;
     }
     button.borderless {
+        box-shadow: none;
         border-color: transparent;
     }
     button:disabled {
