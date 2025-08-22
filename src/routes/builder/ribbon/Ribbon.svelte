@@ -24,7 +24,7 @@
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import PrefsDialog from '../../../lib/dialogs/preferences/PrefsDialog.svelte';
     import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
-    import { PavloviaUsers } from '$lib/pavlovia.svelte';
+    import { PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
 
     let current = getContext("current");
 
