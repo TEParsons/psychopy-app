@@ -3,6 +3,7 @@ import ComponentProfiles from "$lib/components.json"
 import LoopProfiles from "$lib/loops.json"
 import DeviceProfiles from "$lib/devices.json"
 import PreferencesProfile from "$lib/preferences.json"
+import { devices } from "$lib/globals.svelte"
 import { js2py, py2js } from "$lib/transpiler"
 
 
@@ -98,6 +99,10 @@ export class Experiment {
         for (let loop of Object.values(this.loops)) {
             // add Loop name
             names[loop.name] = loop.params['name']
+        }
+        // iterate through all devices
+        for (let device of Object.values(devices)) {
+            names[device.name] = device.params['name']
         }
         
         return names

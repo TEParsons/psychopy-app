@@ -57,8 +57,12 @@
         }
     }
 
+    let validName = $state({
+        state: false,
+        warning: ""
+    })
     let disableBtns = $derived({
-        OK: String(param.val).length === 0 || !selected.device
+        OK: !validName.state || !selected.device
     })
 
 </script>
@@ -82,6 +86,7 @@
         <ParamCtrl
             name={param.name}
             param={param}
+            bind:valid={validName}
         ></ParamCtrl>
         <div 
             style:margin-bottom="-.5rem"
