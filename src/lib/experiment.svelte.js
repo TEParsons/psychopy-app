@@ -757,12 +757,12 @@ export class HasParams {
     restore = {
         point: undefined,
         set: () => {
-        // update history
-        if (this.exp) {
-            this.exp.history.update(`edit ${this.name}`)
-        }
-        // set restore point
-        this.restore.point = this.toJSON()
+            // update history
+            if (this.exp) {
+                this.exp.history.update(`edit ${this.name}`)
+            }
+            // set restore point
+            this.restore.point = this.toJSON()
         },
         apply: () => {
             // restore backup to clear changes

@@ -18,6 +18,18 @@
 
     let valid = $state({})
 
+    let restore = {
+        set: () => Object.values(devices).forEach(
+            (value) => value.restore.set()
+        ),
+        apply: () => Object.values(devices).forEach(
+            (value) => value.restore.apply()
+        ),
+    }
+
+    let point = $derived(Object.values(devices).map((value) => value.restore.point))
+    $inspect(point)
+
     let btnsDisabled = $derived({
         OK: Object.values(valid).some(
             (val) => !val.state
@@ -89,6 +101,8 @@
             dev['tag'] = dev['__name__']
             devices[key] = new Device(dev['tag'], dev.profile);
             devices[key].fromJSON(dev)
+            // set restore point
+            devices[key].restore.set()
             // select if nothing selected yet
             if (currentDevice === undefined) {
                 currentDevice = devices[key]
@@ -102,15 +116,16 @@
     id="device-manager"
     title="Device manager"
     buttons={{
-        OK: () => {},
-        APPLY: () => {},
+        OK: restore.set,
+        APPLY: restore.set,
         EXTRA: {
             Export: saveDevicesFile
         },
-        CANCEL: () => {},
+        CANCEL: restore.apply,
         HELP: ""
     }}
     buttonsDisabled={btnsDisabled}
+    onopen={restore.set}
     bind:shown={shown}
 >
     <div class=container>
