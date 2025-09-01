@@ -155,9 +155,9 @@
         label="{component.disabled ? "Enable" : "Disable"} Component"
         onclick={(evt) => {
             // update history
-            current.experiment.history.update(`remove ${component.name}`);
+            current.experiment.history.update(`${component.disabled ? "enable" : "disable"} ${component.name}`);
             // disable Component
-            component.params.disabled.val = !component.params.disabled.val;
+            component.params.disabled.val = !component.disabled;
         }}
     />
     <MenuItem 

@@ -69,18 +69,29 @@
         </Tooltip>
     {/if}
     {element.name}
-    <!-- context menu -->
-    <Menu 
-        bind:shown={showContextMenu} 
-        bind:position={contextMenuPos}
-    >
-        <MenuItem 
-            icon="icons/btn-delete.svg"
-            label="Remove"
-            onclick={removeRoutine}
-        />
-    </Menu>
 </button>
+
+<!-- context menu -->
+<Menu 
+    bind:shown={showContextMenu} 
+    bind:position={contextMenuPos}
+>
+    <MenuItem
+        icon="icons/sym-dot-{element.disabled ? "blue" : "light"}.svg"
+        label="{element.disabled ? "Enable" : "Disable"} Routine"
+        onclick={(evt) => {
+            // update history
+            current.experiment.history.update(`${element.disabled ? "enable" : "disable"} ${element.name}`);
+            // disable Routine
+            element.settings.params.disabled.val = !element.disabled;
+        }}
+    />
+    <MenuItem 
+        icon="icons/btn-delete.svg"
+        label="Remove"
+        onclick={removeRoutine}
+    />
+</Menu>
 
 <style>
     .routine {
