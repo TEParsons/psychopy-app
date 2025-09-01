@@ -704,9 +704,16 @@ export class HasParams {
      */
     sortedParams = $derived.by(() => {
         // blank object
-        let sorted = {};
+        let sorted = {
+            uncategorised: {}
+        };
         // iterate through params
         for (let [name, param] of Object.entries(this.params)) {
+            // if no categ, put in uncategorised
+            if (param.categ === null) {
+                sorted.uncategorised[name] = param
+                continue
+            }
             // make sure we have an entry for this categ
             if (!(param.categ in sorted)) {
                 sorted[param.categ] = {}

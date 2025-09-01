@@ -15,21 +15,15 @@
 
 
 <div class=device-details-pnl>
-    <ParamCtrl
-        name="name"
-        param={device.params['name']}
-        bind:valid={valid['name']}
-    ></ParamCtrl>
-    <DeviceProfile 
-        profile={device.profile}
-    ></DeviceProfile>
+    
     <div class=notebook-container>
         <ParamsNotebook
             element={device}
-            hideParams={["name"]}
             bind:valid={valid}
-        >
-        </ParamsNotebook>
+        />
+        <DeviceProfile 
+            profile={device.profile}
+        />
     </div>
 </div>
 
@@ -46,5 +40,6 @@
     }
     .notebook-container {
         margin: -1rem;
+        position: relative;
     }
 </style>

@@ -16,11 +16,28 @@
 </script>
 
 <div class=params-container>
+    <!-- pre-notebook params -->
+    <div 
+        class=uncategorised-params-panel
+    >
+        {#if element.sortedParams.uncategorised}
+            {#each Object.entries(element.sortedParams.uncategorised) as [name, param]}
+                {#if ![...hideParams].includes(name)}
+                    <ParamCtrl 
+                        name={name} 
+                        param={param}
+                        bind:valid={valid[name]}
+                    ></ParamCtrl>
+                {/if}
+            {/each}
+        {/if}
+    </div>
+    <!-- notebook -->
     <Notebook>
         {#each Object.entries(element.sortedParams) as [categ, params]}
             {#if !Object.keys(params).every(
                 (value) => hideParams.includes(value)
-            )}
+            ) && categ !== "uncategorised"}
                 <NotebookPage
                     label={categ}
                     data={element}
@@ -45,7 +62,7 @@
                             ></StartStopCtrl>
                         {/if}
                         <!-- other params -->
-                        {#each [...Object.entries(params)] as [name, param]}
+                        {#each Object.entries(params) as [name, param]}
                             {#if !["startVal", "startType", "startEstim", "stopVal", "stopType", "durationEstim", ...hideParams].includes(name)}
                                 <ParamCtrl 
                                     name={name} 
@@ -71,9 +88,20 @@
         box-sizing: border-box;
         padding: 1rem;
     }
+    .uncategorised-params-panel {
+        display: grid;
+        grid-auto-flow: row;
+        align-content: start;
+        gap: .5rem;
+        width: 100%;
+        z-index: 3;
+    }
     .params-container {
         padding: 1rem;
         height: 100%;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 </style>

@@ -20,6 +20,9 @@
     .device-profile {
         position: relative;
         border-collapse: collapse;
+        margin: 0 1rem;
+        width: calc(100% - 2rem);
+        box-sizing: border-box;
     }
     .device-profile .value,
     .device-profile .key {
