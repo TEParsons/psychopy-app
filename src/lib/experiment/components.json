@@ -2242,10 +2242,8 @@
     "categ": "Device",
     "updates": null,
     "allowedUpdates": null,
-    "allowedVals": [
-     "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend"
-    ],
-    "allowedLabels": [],
+    "allowedVals": "python:///psychopy.experiment.devices:DeviceMixin.addDeviceParams.<locals>.getValues",
+    "allowedLabels": "python:///psychopy.experiment.devices:DeviceMixin.addDeviceParams.<locals>.getLabels",
     "label": "Device",
     "hint": "The named device from Device Manager to use for this Component.",
     "plugin": null,
@@ -2780,16 +2778,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Before Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Before experiment",
+    "label": "Before experiment (Py)",
     "hint": "Code to run before the experiment starts (initialization); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2797,16 +2800,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Begin Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Begin experiment",
+    "label": "Begin experiment (Py)",
     "hint": "Code at the start of the experiment ; right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2814,16 +2822,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Begin Routine",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Begin Routine",
+    "label": "Begin Routine (Py)",
     "hint": "Code to be run at the start of each repeat of the Routine (e.g. each trial); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2831,16 +2844,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Each Frame",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Each frame",
+    "label": "Each frame (Py)",
     "hint": "Code to be run on every video frame during for the duration of this Routine; right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2848,16 +2866,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "End Routine",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "End Routine",
+    "label": "End Routine (Py)",
     "hint": "Code at the end of this repeat of the Routine (e.g. getting/storing responses); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2865,16 +2888,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "End Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "End experiment",
+    "label": "End experiment (Py)",
     "hint": "Code at the end of the entire experiment (e.g. saving files, resetting computer); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['Py', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2882,16 +2910,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Before Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Before JS experiment",
+    "label": "Before experiment (JS)",
     "hint": "Code before the start of the experiment (initialization); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2899,16 +2932,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Begin Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Begin JS experiment",
+    "label": "Begin experiment (JS)",
     "hint": "Code at the start of the experiment (initialization); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2916,16 +2954,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Begin Routine",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "Begin JS Routine",
+    "label": "Begin Routine (JS)",
     "hint": "Code to be run at the start of each repeat of the Routine (e.g. each trial); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2933,7 +2976,7 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "Each Frame",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
@@ -2942,7 +2985,12 @@
     "hint": "Code to be run on every video frame during for the duration of this Routine; right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2950,16 +2998,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "End Routine",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "End JS Routine",
+    "label": "End Routine (JS)",
     "hint": "Code at the end of this repeat of the Routine (e.g. getting/storing responses); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    },
@@ -2967,16 +3020,21 @@
     "val": "",
     "valType": "extendedCode",
     "inputType": "multi",
-    "categ": "Basic",
+    "categ": "End Exp.",
     "updates": "constant",
     "allowedUpdates": [],
     "allowedVals": [],
     "allowedLabels": [],
-    "label": "End JS experiment",
+    "label": "End experiment (JS)",
     "hint": "Code at the end of the entire experiment (e.g. saving files, resetting computer); right-click checks syntax",
     "plugin": null,
     "depends": {
-     "shown": [],
+     "shown": [
+      {
+       "param": "Code Type",
+       "condition": "in ['JS', 'Both', 'Auto->JS']"
+      }
+     ],
      "enabled": []
     }
    }
