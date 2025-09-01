@@ -5,6 +5,7 @@
     import { getContext } from "svelte"
     import { ParamsDialog } from "$lib/paramCtrls";
     import StaticPeriod from './StaticPeriod.svelte';
+    import { Param } from '$lib/experiment/experiment.svelte';
     
     let current = getContext("current");
 
@@ -144,10 +145,30 @@
     bind:shown={showContextMenu} 
     bind:position={contextMenuPos}
 >
+    <MenuItem
+        icon="icons/btn-edit.svg"
+        label="Edit Component"
+        onclick={(evt) => showDialog = true}
+    />
+    <MenuItem
+        icon="icons/sym-dot-{component.disabled ? "blue" : "light"}.svg"
+        label="{component.disabled ? "Enable" : "Disable"} Component"
+        onclick={(evt) => {
+            // update history
+            current.experiment.history.update(`remove ${component.name}`);
+            // disable Component
+            component.params.disabled.val = !component.params.disabled.val;
+        }}
+    />
     <MenuItem 
         icon="icons/btn-delete.svg"
         label="Delete Component"
-        onclick={removeComponent}
+        onclick={(evt) => {
+            // update history
+            current.experiment.history.update(`remove ${component.name}`);
+            // remove from Routine
+            component.routine.removeComponent(component);
+        }}
     />
 </Menu>
 
