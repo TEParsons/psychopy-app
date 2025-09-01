@@ -25,18 +25,19 @@
     import PrefsDialog from '../../../lib/dialogs/preferences/PrefsDialog.svelte';
     import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
     import { PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
+    import ManageProjectsDlg from '$lib/dialogs/projects/manage/ManageProjectsDlg.svelte';
 
     let current = getContext("current");
 
-    let showMenu = $state.raw(false);
-
-    let showSettingsDlg = $state.raw(false);
-    let settingsNotebook;
-
-    let showFindDialog = $state.raw(false);
-
-    let showDeviceMgr = $state.raw(false);
-    let showPrefsDialog = $state.raw(false);
+    let show = $state({
+        menu: false,
+        settingsDlg: false,
+        findDlg: false,
+        deviceMgrDlg: false,
+        prefsDlg: false,
+        browseProjectsDlg: false,
+        manageProjectsDlg: false
+    })
 
     let lastAction = $derived.by(() => {
         if (current.experiment.history.past.length) {
@@ -60,11 +61,11 @@
         <IconButton 
             icon="icons/btn-hamburger.svg"
             label="Menu"
-            onclick={() => showMenu = true} 
+            onclick={() => show.menu = true} 
             borderless
         />
         <Menu 
-            bind:shown={showMenu}
+            bind:shown={show.menu}
         >
             <SubMenu label="File" icon="icons/rbn-file.svg">
                 <MenuItem 
@@ -91,12 +92,12 @@
                 <MenuItem
                     icon="icons/btn-settings.svg"
                     label="Preferences"
-                    onclick={(evt) => {showPrefsDialog = true}}
+                    onclick={(evt) => {show.prefsDlg = true}}
                 ></MenuItem>
             </SubMenu>
         </Menu>
         <PrefsDialog
-            bind:shown={showPrefsDialog}
+            bind:shown={show.prefsDlg}
         ></PrefsDialog>
     </RibbonSection>
     <RibbonSection label=File icon="icons/rbn-file.svg">
@@ -153,11 +154,11 @@
         <IconButton 
             icon="icons/btn-find.svg" 
             label="Find" 
-            onclick={() => showFindDialog = true}
+            onclick={() => show.findDlg = true}
             borderless
         />
         <FindDialog
-            bind:shown={showFindDialog}
+            bind:shown={show.findDlg}
         ></FindDialog>
     </RibbonSection>
     
@@ -170,24 +171,24 @@
         <IconButton
             icon="icons/btn-devices.svg"
             label="Open the device manager"
-            onclick={(evt) => showDeviceMgr = true}
+            onclick={(evt) => show.deviceMgrDlg = true}
             borderless
         ></IconButton>
         <DeviceManagerDialog
-            bind:shown={showDeviceMgr}
+            bind:shown={show.deviceMgrDlg}
         ></DeviceManagerDialog>
 
         <IconButton 
             icon="icons/btn-settings.svg" 
             label="Experiment settings" 
-            onclick={(evt) => showSettingsDlg = true}
+            onclick={(evt) => show.settingsDlg = true}
             disabled={current.experiment === null}
             borderless
         />
         {#if current.experiment !== null }
         <ParamsDialog
             element={current.experiment.settings}
-            bind:shown={showSettingsDlg}
+            bind:shown={show.settingsDlg}
         ></ParamsDialog>
         {/if}
         <SwitchButton 
@@ -272,7 +273,7 @@
             {/if}
         </DropdownButton>
         <DropdownButton
-            label={current.project ? current.project.name : "No project"}
+            label={current.project ? current.project.id : "No project"}
             icon={current.project ? current.project.avatar_url : undefined}
             onclick={(evt) => {
                 if (current.project) {
@@ -288,12 +289,22 @@
                 label="Edit project"
                 icon="icons/btn-edit.svg"
             ></MenuItem>
+            <MenuItem
+                label="Manage local projects..."
+                icon="icons/btn-edit.svg"
+                onclick={(evt) => show.manageProjectsDlg = true}
+            ></MenuItem>
             <MenuSeparator/>
             <MenuItem
                 label="Search projects..."
                 icon="icons/btn-find.svg"
+                onclick={(evt) => show.browseProjectsDlg = true}
             ></MenuItem>
         </DropdownButton>
+        
+        <ManageProjectsDlg 
+            bind:shown={show.manageProjectsDlg}
+        />
     </RibbonSection>
 
     <RibbonGap></RibbonGap>
