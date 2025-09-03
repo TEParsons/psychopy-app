@@ -3,6 +3,7 @@ export { default as MultiLineCtrl } from "./MultiLineCtrl.svelte";
 export { default as NameCtrl } from "./NameCtrl.svelte";
 export { default as BoolCtrl } from "./BoolCtrl.svelte";
 export { default as ChoiceCtrl } from "./ChoiceCtrl.svelte";
+export { default as VersionCtrl } from "./VersionCtrl.svelte";
 export { default as FileCtrl } from "./FileCtrl.svelte";
 export { default as DictCtrl } from "./DictCtrl.svelte";
 export { default as MultipleChoiceCtrl } from "./MultipleChoiceCtrl.svelte";
@@ -18,6 +19,7 @@ import {
     MultiLineCtrl,
     NameCtrl,
     ChoiceCtrl,
+    VersionCtrl,
     MultipleChoiceCtrl,
     DeviceCtrl,
     RichChoiceCtrl,
@@ -39,6 +41,7 @@ export var mapping = {
     "multi": MultiLineCtrl,
     "name": NameCtrl,
     "choice": ChoiceCtrl,
+    "version": VersionCtrl,
     "multiChoice": MultipleChoiceCtrl,
     "device": DeviceCtrl,
     "richChoice": RichChoiceCtrl,

@@ -11252,11 +11252,11 @@
    "Use version": {
     "val": "",
     "valType": "str",
-    "inputType": "choice",
+    "inputType": "version",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
-    "allowedVals": "python:///psychopy.experiment.components.settings:SettingsComponent.__init__.<locals>.getVersions",
+    "allowedVals": "psychopy/psychopy",
     "allowedLabels": [],
     "label": "Use PsychoPy version",
     "hint": "The version of PsychoPy to use when running the experiment.",
@@ -13831,8 +13831,8 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy_bbtk.components.tpad:TPadSoundSensorBackend",
-     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend"
+     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
+     "psychopy_bbtk.components.tpad:TPadSoundSensorBackend"
     ],
     "allowedLabels": [],
     "label": "Device",
