@@ -50,7 +50,7 @@
 
 <div 
     class="entry-point" 
-    style:grid-row-start={index}
+    style:grid-row-start={index >= 0 ? index + 3 : routine.components.length + 3}
     class:active={moving || inserting} 
     class:hovered={hovered}
 >
