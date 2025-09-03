@@ -25,7 +25,7 @@
     class=param-multi-choice-input
     style:color={valid.state ? "inherit" : "var(--red)"}
 >
-    {#each Object.entries(options) as [val, label]}
+    {#each options as [val, label]}
         <input
             type=checkbox
             bind:checked={

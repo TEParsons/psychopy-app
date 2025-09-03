@@ -28,7 +28,7 @@ export function iterateName(name) {
  * @param param Param to get options for
  */
 export function optionsFromParam(param) {
-        let output = {};
+        let output = [];
         // if either allowed labels or values are a Python function, execute it
         if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
             if (python) {
@@ -60,11 +60,15 @@ export function optionsFromParam(param) {
         }
         // add allowed vals & labels to options
         for (let i in param.allowedVals) {
-            output[param.allowedVals[i]] = param.allowedLabels[i];
+            output.push(
+                [param.allowedVals[i], param.allowedLabels[i]]
+            );
         }
-
-        if (!(param.val in output)) {
-            output[param.val] = param.val
+        // add current value if not already present
+        if (!output.some((value) => value[0] === param.val)) {
+            output.push(
+                [param.val, param.val]
+            );
         }
         
         return output

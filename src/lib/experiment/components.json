@@ -11227,15 +11227,15 @@
     }
    },
    "runMode": {
-    "val": 0,
+    "val": false,
     "valType": "code",
     "inputType": "choice",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     0,
-     1
+     false,
+     true
     ],
     "allowedLabels": [
      "Piloting",
@@ -13831,8 +13831,8 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
-     "psychopy_bbtk.components.tpad:TPadSoundSensorBackend"
+     "psychopy_bbtk.components.tpad:TPadSoundSensorBackend",
+     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend"
     ],
     "allowedLabels": [],
     "label": "Device",
@@ -18142,8 +18142,8 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy_bbtk.components.tpad:TPadVisualValidatorBackend",
-     "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend"
+     "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend",
+     "psychopy_bbtk.components.tpad:TPadVisualValidatorBackend"
     ],
     "allowedLabels": [],
     "label": "Device",

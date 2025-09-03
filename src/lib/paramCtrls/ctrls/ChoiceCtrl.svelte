@@ -23,7 +23,7 @@
     bind:value={param.val}
     style:color={valid.state ? "inherit" : "var(--red)"}
 >
-    {#each Object.entries(options) as [val, label]}
+    {#each options as [val, label]}
         <option 
             value={val} 
             selected={param.val === val}

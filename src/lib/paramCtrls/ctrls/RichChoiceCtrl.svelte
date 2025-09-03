@@ -16,7 +16,7 @@
 <div 
     class=param-rich-choice-ctrl
 >
-    {#each Object.entries(options) as [val, details]}
+    {#each options as [val, details]}
     <button
         class=rich-ctrl-item
         class:selected={param.val === val}
