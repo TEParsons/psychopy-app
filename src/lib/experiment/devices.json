@@ -1,4 +1,29 @@
 {
+ "DeviceBackend": {
+  "__class__": "psychopy.experiment.plugins:DeviceBackend",
+  "__name__": "DeviceBackend",
+  "plugin": null,
+  "profile": {},
+  "params": {
+   "name": {
+    "val": "",
+    "valType": "str",
+    "inputType": "name",
+    "categ": null,
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Device label",
+    "hint": "A name to refer to this device by in Device Manager.",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   }
+  }
+ },
  "KeyboardButtonBoxDeviceBackend": {
   "__class__": "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend",
   "__name__": "KeyboardButtonBoxDeviceBackend",
@@ -22,6 +47,135 @@
      "enabled": []
     }
    },
+   "name": {
+    "val": "",
+    "valType": "str",
+    "inputType": "name",
+    "categ": null,
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Device label",
+    "hint": "A name to refer to this device by in Device Manager.",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   }
+  }
+ },
+ "ScreenBufferVisualValidatorBackend": {
+  "__class__": "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend",
+  "__name__": "ScreenBufferVisualValidatorBackend",
+  "plugin": null,
+  "profile": {},
+  "params": {
+   "name": {
+    "val": "",
+    "valType": "str",
+    "inputType": "name",
+    "categ": null,
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Device label",
+    "hint": "A name to refer to this device by in Device Manager.",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   }
+  }
+ },
+ "MicrophoneSoundSensorBackend": {
+  "__class__": "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
+  "__name__": "MicrophoneSoundSensorBackend",
+  "plugin": null,
+  "profile": {},
+  "params": {
+   "threshold": {
+    "val": 0.5,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Device",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Threshold (0-1)",
+    "hint": "Threshold volume (0 for min value in dB range, 1 for max value) above which to register a sound sensor response",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   },
+   "dbRange": {
+    "val": [
+     0,
+     1
+    ],
+    "valType": "list",
+    "inputType": "single",
+    "categ": "Device",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Decibel range",
+    "hint": "What kind of values (dB) would you expect to receive from this device? In other words, how many dB does a threshold of 0 and of 255 correspond to?",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   },
+   "samplingWindow": {
+    "val": 0.03,
+    "valType": "code",
+    "inputType": "single",
+    "categ": "Device",
+    "updates": "constant",
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Sampling window (s)",
+    "hint": "How many seconds to average volume readings across? Bigger windows are less precise, but also less subject to random noise.",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   },
+   "name": {
+    "val": "",
+    "valType": "str",
+    "inputType": "name",
+    "categ": null,
+    "updates": null,
+    "allowedUpdates": null,
+    "allowedVals": [],
+    "allowedLabels": [],
+    "label": "Device label",
+    "hint": "A name to refer to this device by in Device Manager.",
+    "plugin": null,
+    "depends": {
+     "shown": [],
+     "enabled": []
+    }
+   }
+  }
+ },
+ "BasePhotometerDeviceBackend": {
+  "__class__": "psychopy.experiment.monitor:BasePhotometerDeviceBackend",
+  "__name__": "BasePhotometerDeviceBackend",
+  "plugin": null,
+  "profile": {},
+  "params": {
    "name": {
     "val": "",
     "valType": "str",
@@ -244,135 +398,6 @@
      "enabled": []
     }
    },
-   "name": {
-    "val": "",
-    "valType": "str",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Device label",
-    "hint": "A name to refer to this device by in Device Manager.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
- "MicrophoneSoundSensorBackend": {
-  "__class__": "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
-  "__name__": "MicrophoneSoundSensorBackend",
-  "plugin": null,
-  "profile": {},
-  "params": {
-   "threshold": {
-    "val": 0.5,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Device",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Threshold (0-1)",
-    "hint": "Threshold volume (0 for min value in dB range, 1 for max value) above which to register a sound sensor response",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "dbRange": {
-    "val": [
-     0,
-     1
-    ],
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Device",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Decibel range",
-    "hint": "What kind of values (dB) would you expect to receive from this device? In other words, how many dB does a threshold of 0 and of 255 correspond to?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "samplingWindow": {
-    "val": 0.03,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Device",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Sampling window (s)",
-    "hint": "How many seconds to average volume readings across? Bigger windows are less precise, but also less subject to random noise.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "name": {
-    "val": "",
-    "valType": "str",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Device label",
-    "hint": "A name to refer to this device by in Device Manager.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
- "DeviceBackend": {
-  "__class__": "psychopy.experiment.plugins:DeviceBackend",
-  "__name__": "DeviceBackend",
-  "plugin": null,
-  "profile": {},
-  "params": {
-   "name": {
-    "val": "",
-    "valType": "str",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Device label",
-    "hint": "A name to refer to this device by in Device Manager.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
- "ScreenBufferVisualValidatorBackend": {
-  "__class__": "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend",
-  "__name__": "ScreenBufferVisualValidatorBackend",
-  "plugin": null,
-  "profile": {},
-  "params": {
    "name": {
     "val": "",
     "valType": "str",
