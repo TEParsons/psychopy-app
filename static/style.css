@@ -94,6 +94,12 @@ textarea {
     background-color: var(--base);
     border-radius: .25rem;
 }
+select:disabled, 
+option:disabled,
+input:disabled,
+textarea:disabled {
+    opacity: 50%;
+}
 input:enabled:active, 
 input:enabled:focus {
     border-color: var(--blue);
