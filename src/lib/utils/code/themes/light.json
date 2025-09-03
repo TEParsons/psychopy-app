@@ -1,0 +1,23 @@
+{
+    "base": "vs",
+    "inherit": true,
+    "rules": [
+      { "token": "", "foreground": "--text", "background": "--base" },
+      { "token": "invalid", "foreground": "--red" },
+      { "token": "emphasis", "fontStyle": "italic" },
+      { "token": "strong", "fontStyle": "bold" },
+      { "token": "variable", "foreground": "--text" },
+      { "token": "constant", "foreground": "--blue" },
+      { "token": "comment", "foreground": "--green" },
+      { "token": "number", "foreground": "--blue" },
+      { "token": "regexp", "foreground": "--green" },
+      { "token": "type", "foreground": "--blue" },
+      { "token": "key", "foreground": "--orange" },
+      { "token": "attribute.name", "foreground": "--orange" },
+      { "token": "attribute.value", "foreground": "--blue" },
+      { "token": "string", "foreground": "--green" },
+      { "token": "keyword", "foreground": "--blue", "fontStyle": "bold" }
+    ],
+    "colors": {
+    }
+}
