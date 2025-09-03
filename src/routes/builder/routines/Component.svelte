@@ -41,7 +41,7 @@
 </script>
 
 <!-- entry point for this component -->
-<EntryPoint routine={component.routine} index={component.index}></EntryPoint>
+<EntryPoint routine={component.routine} index={component.index + 3}></EntryPoint>
 
 <!-- icon & name -->
 <label 

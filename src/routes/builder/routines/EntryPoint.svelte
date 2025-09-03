@@ -50,6 +50,7 @@
 
 <div 
     class="entry-point" 
+    style:grid-row-start={index}
     class:active={moving || inserting} 
     class:hovered={hovered}
 >
