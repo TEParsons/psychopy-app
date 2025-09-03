@@ -164,9 +164,11 @@
         gap: 1rem;
         border: 1px solid var(--outline);
         border-radius: 1rem;
-        padding: 2rem 1rem;
+        padding: 0 1rem;
         padding-top: 0;
-        min-height: 2rem;
+        min-height: 4rem;
+        margin-top: -0.5px;
+        margin-bottom: 3rem;
     }
     .loop .loop-name {
         position: absolute;
@@ -211,13 +213,12 @@
         border-top: none;
         border-bottom: none;
         border-radius: 0;
-        padding: 4rem 1rem;
     }
     .loop.incomplete .loop-name {
         left: 0;
-        bottom: 50%;
+        bottom: 0;
     }
     .loop.incomplete .loop-arrow {
-        top: calc(50% - 2rem);
+        top: calc(50% - 1rem);
     }
 </style>
