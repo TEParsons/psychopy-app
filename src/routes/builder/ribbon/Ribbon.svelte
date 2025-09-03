@@ -24,7 +24,7 @@
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import PrefsDialog from '../../../lib/dialogs/preferences/PrefsDialog.svelte';
     import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
-    import { PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
+    import { login, logout, PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
     import ManageProjectsDlg from '$lib/dialogs/projects/manage/ManageProjectsDlg.svelte';
 
     let current = getContext("current");
@@ -36,7 +36,8 @@
         deviceMgrDlg: false,
         prefsDlg: false,
         browseProjectsDlg: false,
-        manageProjectsDlg: false
+        manageProjectsDlg: false,
+        pavloviaLoginDlg: false
     })
 
     let lastAction = $derived.by(() => {
@@ -264,11 +265,19 @@
             {#if current.user}
                 <MenuItem
                     label="Logout"
-                    onclick={(evt) => current.user = undefined}
+                    onclick={(evt) => {
+                        logout()
+                        current.user = undefined
+                    }}
                 ></MenuItem>
             {:else}
                 <MenuItem
                     label="Login"
+                    onclick={(evt) => {
+                        login()
+                        // placeholder: need to get username from autheticated session
+                        current.user = PavloviaUsers['ToddOST']
+                    }}
                 ></MenuItem>
             {/if}
         </DropdownButton>
