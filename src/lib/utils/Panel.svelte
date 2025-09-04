@@ -7,7 +7,7 @@
         /** @prop @type {integer} Number of rows to span within the frame */
         vspan=1,
         /** @interface */
-        children
+        children=undefined
     } = $props()
     
     function ondrag(evt) {
@@ -28,7 +28,7 @@
         {title}
     </div>
     <div class="pnl-content">
-        {@render children()}
+        {@render children?.()}
     </div>
 </div>
 

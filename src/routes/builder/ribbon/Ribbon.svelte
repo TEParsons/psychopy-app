@@ -9,10 +9,6 @@
         undo,
         redo,
         // experiment
-        // views
-        new_builder_frame,
-        new_coder_frame,
-        new_runner_frame,
     } from './callbacks.js'
     
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
@@ -322,19 +318,19 @@
         <IconButton 
             icon="icons/btn-builder.svg" 
             label="Builder view" 
-            onclick={new_builder_frame} 
+            onclick={(evt) => window.open("/builder")} 
             borderless
         />
         <IconButton 
             icon="icons/btn-coder.svg" 
             label="Coder view" 
-            onclick={new_coder_frame} 
+            onclick={(evt) => window.open("/coder")} 
             borderless
         />
         <IconButton 
             icon="icons/btn-runner.svg" 
             label="Runner view" 
-            onclick={new_runner_frame} 
+            onclick={(evt) => window.open("/runner")} 
             borderless
         />
     </RibbonSection>

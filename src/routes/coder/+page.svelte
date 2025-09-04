@@ -1,25 +1,47 @@
 <script>
-    import { Notebook, NotebookPage } from "$lib/utils/notebook";
-    import CodeEditor from "$lib/utils/code/CodeEditor.svelte";
+    import { setContext } from "svelte";
+    import { current } from "./globals.svelte";
 
-    let pages = $state({
-        current: undefined,
-        all: {
-            "untitled.py": "for n in y:\n    print(n)"
-        }
-    })
+    import CoderRibbon from "./ribbon/Ribbon.svelte";
+    import { CoderNotebook } from "./notebook";
+    import Frame from "$lib/utils/Frame.svelte";
+    import Panel from "$lib/utils/Panel.svelte";
+    
+
+    // reference current in context for ease of access
+    setContext("current", current)
 
 </script>
 
-<Notebook>
-    {#each Object.keys(pages.all) as name}
-        <NotebookPage
-            label={name}
-        >
-            <CodeEditor
-                theme=psychopy-light
-                bind:value={pages.all[name]}
-            ></CodeEditor>
-        </NotebookPage>
-    {/each}
-</Notebook>
+<Frame
+    rows={3} 
+    cols={5}
+>
+    {#snippet ribbon()}
+        <CoderRibbon />
+    {/snippet}
+    <Panel
+        title=Files
+        hspan={1}
+        vspan={2}
+    ></Panel>
+    <Panel
+        title=Editor 
+        hspan={3} 
+        vspan={2}
+    >
+        <CoderNotebook />
+    </Panel>
+    <Panel
+        title=Outline
+        hspan={1}
+        vspan={2}
+    ></Panel>
+    <Panel
+        title=Console
+        hspan={5}
+        vspan={1}
+    >
+        
+    </Panel>
+</Frame>

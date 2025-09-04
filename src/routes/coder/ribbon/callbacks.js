@@ -1,17 +1,17 @@
 import { projects } from '$lib/globals.svelte.js';
 import { current } from '../globals.svelte.js';
-import xmlFormat from 'xml-formatter';
 
 
 /* File */
 
 export function file_new() {
-    // clear current file
-    current.file = null;
-    // clear experiment
-    current.experiment.reset()
-    // focus trial
-    current.routine = current.experiment.routines['trial']
+    // add new tab with blank file
+    current.pages.push({
+        file: "untitled.py",
+        content: ""
+    })
+    // focus new tab
+    current.tab = current.pages.length - 1
 }
 
 export async function file_open() {
@@ -112,3 +112,17 @@ export function redo() {
 }
 
 /* Experiment */
+
+
+
+/* Views */
+
+export function new_builder_frame() {
+    window.open("/builder");
+}
+export function new_coder_frame() {
+    window.open("/coder");
+}
+export function new_runner_frame() {
+    window.open("/runner");
+}

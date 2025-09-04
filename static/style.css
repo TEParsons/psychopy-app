@@ -69,6 +69,7 @@
         /* defaults */
         color: var(--text);
         background-color: var(--base);
+        font-family: var(--body);
     }   
 }
 
@@ -78,7 +79,6 @@ body {
 }
 
 * {
-    font-family: var(--body);
     transition: border-color .2s, box-shadow .2s;
 }
 
@@ -133,6 +133,7 @@ button {
     outline: none;
     border: none;
     color: var(--text);
+    font-family: var(--body);
 }
 
 svg {

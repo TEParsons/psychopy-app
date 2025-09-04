@@ -15,6 +15,7 @@
 
 	let {
 		value=$bindable(),
+		handle=$bindable(),
 		language='python',
 		theme='vs-light'
 	} = $props();
@@ -29,7 +30,6 @@
 			monaco = await loader.init();
 
 			// setup themes
-			console.log(sanitize(LightTheme))
 			monaco.editor.defineTheme('psychopy-light', sanitize(LightTheme));
 			monaco.editor.defineTheme('psychopy-dark', sanitize(DarkTheme));
 
@@ -38,11 +38,13 @@
 				value,
 				language,
 				theme,
+				fontFamily: "JetBrains Mono",
 				automaticLayout: true,
 				overviewRulerLanes: 0,
 				overviewRulerBorder: false,
 				wordWrap: 'on'
 			});
+			handle = editor;
 
 			editor.onDidChangeModelContent((e) => {
 				if (e.isFlush) {
