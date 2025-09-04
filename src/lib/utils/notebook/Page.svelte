@@ -1,6 +1,7 @@
 <script>
     import { onMount, onDestroy, getContext } from 'svelte';
-    import Tooltip from '../tooltip/Tooltip.svelte';
+    import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
+    import Menu from '$lib/utils/menu/Menu.svelte';
 
     let {
         /** @prop @type {String} Label for this page's tab */
@@ -17,7 +18,9 @@
         /** @prop @type {any} Arbitrary data relating to this page */
         data={},
         /** @interface @type {Array<HTMLElement>} Contents of this page */
-        children=undefined
+        children=undefined,
+        /** @interface @type {Array<HTMLElement>} Menu with which to replace the default context menu on this tab */
+        contextMenu=undefined
     } = $props()
 
     // get context
@@ -57,15 +60,36 @@
     })
 
     let closeHovered = $state.raw(false)
+
+    let contextMenuParams = $state({
+        pos: {
+            x: undefined,
+            y: undefined
+        },
+        show: false
+    })
+
 </script>
 
 <!-- tab button for this page -->
+<Menu
+    bind:shown={contextMenuParams.show}
+    bind:position={contextMenuParams.pos}
+>
+    {@render contextMenu?.()}
+</Menu>
 <button
     class="notebook-tab"
     class:current={selected}
     class:listbook={siblings.book === "listbook"}
     class:notebook={siblings.book === "notebook"}
     onclick={() => selected = true}
+    oncontextmenu={(evt) => {
+        evt.preventDefault();
+        contextMenuParams.pos.x = evt.pageX;
+        contextMenuParams.pos.y = evt.pageY;
+        contextMenuParams.show = true;
+    }}
     ondragover={() => selected = true}
     bind:this={handle}
 >
@@ -117,6 +141,7 @@
 <style>
     .notebook-tab {
         display: grid;
+        position: relative;
         grid-template-columns: [icon] min-content [label] 1fr [close] min-content;
         gap: .5rem;
         border: none;

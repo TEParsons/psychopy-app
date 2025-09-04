@@ -9,7 +9,7 @@
             x: undefined,
             y: undefined
         }),
-        children
+        children=undefined
     } = $props()
 
     // handle of this menu's div element (for checking clicks)
@@ -37,7 +37,7 @@
         class=menu
         transition:slide
     >
-        {@render children()}
+        {@render children?.()}
     </div>
 {/if}
 
