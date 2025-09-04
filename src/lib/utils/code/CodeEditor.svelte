@@ -89,9 +89,8 @@
 
 <style>
 	.container {
-		width: 100%;
-		height: 600px;
-		padding: 0;
-		border-radius: 50px;
+		width: calc(100% + 1rem);
+		height: calc(100% + 1rem);
+		margin: -0.5rem;
 	}
 </style>

@@ -216,7 +216,7 @@
         overflow-y: auto;
         width: 100%;
         overflow-x: auto;
-        padding: .5rem .5rem 3rem .5rem;
+        padding: .5rem;
         box-sizing: border-box;
         background-color: var(--base);
         z-index: 1;
