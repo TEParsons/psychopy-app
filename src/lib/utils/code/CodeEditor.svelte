@@ -33,7 +33,7 @@
                 value,
                 language,
                 theme,
-                // fontFamily: "JetBrains Mono", // for some reason this breaks caret position?
+                fontFamily: "JetBrains Mono",
                 automaticLayout: true,
                 overviewRulerLanes: 0,
                 overviewRulerBorder: false,
@@ -50,6 +50,10 @@
                 canUndo = editor.getModel().canUndo();
                 canRedo = editor.getModel().canRedo();
             });
+            // remeasure fonts once the editor has loaded
+            document.fonts.ready.then(() => {
+                monaco.editor.remeasureFonts()
+            })
         })();
     });
 
