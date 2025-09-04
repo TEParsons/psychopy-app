@@ -4,7 +4,9 @@ export let current = $state({
             label: "untitled.py",
             file: undefined,
             content: "for n in y:\n    print(n)",
-            editor: undefined
+            editor: undefined,
+            canUndo: false,
+            canRedo: false,
         },
         {
             label: "lexical_decision_task_lastrun.py",
@@ -1298,7 +1300,9 @@ if __name__ == '__main__':
     saveData(thisExp=thisExp)
     quit(thisExp=thisExp, win=win)
             `,
-            editor: undefined
+            editor: undefined,
+            canUndo: false,
+            canRedo: false,
         }
     ],
     tab: 0

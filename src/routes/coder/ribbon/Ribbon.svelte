@@ -50,6 +50,20 @@
 
     <RibbonSection label=Edit icon="icons/rbn-edit.svg">
         <IconButton 
+            icon="icons/btn-undo.svg" 
+            label="Undo"
+            onclick={() => current.pages[current.tab].editor.getModel().undo()} 
+            disabled={!(current.pages[current.tab] && current.pages[current.tab].canUndo)} 
+            borderless
+        />
+        <IconButton 
+            icon="icons/btn-redo.svg" 
+            label="Redo" 
+            onclick={() => current.pages[current.tab].editor.getModel().redo()} 
+            disabled={!(current.pages[current.tab] && current.pages[current.tab].canRedo)} 
+            borderless
+        />
+        <IconButton 
             icon="icons/btn-find.svg" 
             label="Find" 
             onclick={(evt) => current.pages[current.tab].editor.trigger(

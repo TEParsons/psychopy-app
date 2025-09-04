@@ -23,7 +23,9 @@
             <CodeEditor
                 theme=psychopy-light
                 bind:value={page.content}
-                bind:handle={page.editor}
+                bind:editor={page.editor}
+                bind:canUndo={page.canUndo}
+                bind:canRedo={page.canRedo}
             ></CodeEditor>
         </NotebookPage>
     {/each}

@@ -2,95 +2,89 @@
 
 
 <script>
-	import loader from '@monaco-editor/loader';
-	import { onDestroy, onMount } from 'svelte';
+    import loader from '@monaco-editor/loader';
+    import { onDestroy, onMount } from 'svelte';
 
-	import LightTheme from "./themes/light.json";
-	import DarkTheme from "./themes/dark.json";
+    import LightTheme from "./themes/light.json";
+    import DarkTheme from "./themes/dark.json";
     import { sanitize } from './themes/utils';
 
-	let editor;
-	let monaco;
-	let editorContainer;
+    let {
+        value=$bindable(),
+        editor=$bindable(),
+        canUndo=$bindable(),
+        canRedo=$bindable(),
+        language='python',
+        theme='vs-light'
+    } = $props();
 
-	let {
-		value=$bindable(),
-		handle=$bindable(),
-		language='python',
-		theme='vs-light'
-	} = $props();
+    let monaco;
+    let container;
 
-	onMount(() => {
-		(async () => {
-			// Remove the next two lines to load the monaco editor from a CDN
-			// see https://www.npmjs.com/package/@monaco-editor/loader#config
-			const monacoEditor = await import('monaco-editor');
-			loader.config({ monaco: monacoEditor.default });
+    onMount(() => {
+        (async () => {
+            // initialise monaco loader
+            monaco = await loader.init();
+            // setup themes
+            monaco.editor.defineTheme('psychopy-light', sanitize(LightTheme));
+            monaco.editor.defineTheme('psychopy-dark', sanitize(DarkTheme));
+            // initialise editor
+            editor = monaco.editor.create(container, {
+                value,
+                language,
+                theme,
+                // fontFamily: "JetBrains Mono", // for some reason this breaks caret position?
+                automaticLayout: true,
+                overviewRulerLanes: 0,
+                overviewRulerBorder: false,
+                wordWrap: 'on',
+                minimap: {enabled: false}
+            });
+            // connect editor value to bound value
+            editor.onDidChangeModelContent((e) => {
+                if (!e.isFlush) {
+                    const updatedValue = editor?.getValue() ?? '';
+                    value = updatedValue;
+                }
+                // update undo/redo bindables
+                canUndo = editor.getModel().canUndo();
+                canRedo = editor.getModel().canRedo();
+            });
+        })();
+    });
 
-			monaco = await loader.init();
+    $effect(() => {
+        if (value) {
+            if (editor) {
+                // only do this if the editor doesn't have focus (as a focused editor will already update the value)
+                if (!editor.hasWidgetFocus()) {
+                    // update editor value
+                    if (editor?.getValue() ?? ' ' !== value) {
+                        editor?.setValue(value);
+                    }
+                }
+            }
+        } else {
+            // make sure there's always at least 1 char
+            editor?.setValue(' ');
+        }
+    });
 
-			// setup themes
-			monaco.editor.defineTheme('psychopy-light', sanitize(LightTheme));
-			monaco.editor.defineTheme('psychopy-dark', sanitize(DarkTheme));
-
-			// Your monaco instance is ready, let's display some code!
-			editor = monaco.editor.create(editorContainer, {
-				value,
-				language,
-				theme,
-				fontFamily: "JetBrains Mono",
-				automaticLayout: true,
-				overviewRulerLanes: 0,
-				overviewRulerBorder: false,
-				wordWrap: 'on',
-				minimap: {enabled: false}
-			});
-			handle = editor;
-
-			editor.onDidChangeModelContent((e) => {
-				if (e.isFlush) {
-					// true if setValue call
-					//console.log('setValue call');
-					/* editor.setValue(value); */
-				} else {
-					// console.log('user input');
-					const updatedValue = editor?.getValue() ?? ' ';
-					value = updatedValue;
-				}
-			});
-		})();
-	});
-
-	$effect(() => {
-		if (value) {
-			if (editor) {
-				// check if the editor is focused
-				if (editor.hasWidgetFocus()) {
-					// let the user edit with no interference
-				} else {
-					if (editor?.getValue() ?? ' ' !== value) {
-						editor?.setValue(value);
-					}
-				}
-			}
-		}
-		if (value === '') {
-			editor?.setValue(' ');
-		}
-	});
-
-	onDestroy(() => {
-		monaco?.editor.getModels().forEach((model) => model.dispose());
-		editor?.dispose();
-	});
+    onDestroy(() => {
+        // unload models on destroy
+        monaco?.editor.getModels().forEach(
+            (model) => model.dispose()
+        );
+        editor?.dispose();
+    });
 </script>
 
-<div class="container" bind:this={editorContainer}></div>
+<div class="container" bind:this={container}></div>
 
 <style>
-	.container {
-		width: calc(100% + 1rem);
-		height: calc(100% + 1rem);
-		margin: -0.5rem;
-	}
+    .container {
+        width: calc(100% + 1rem);
+        height: calc(100% + 1rem);
+        margin: -0.5rem;
+    }
 </style>
