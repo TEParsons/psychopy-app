@@ -42,7 +42,8 @@
 				automaticLayout: true,
 				overviewRulerLanes: 0,
 				overviewRulerBorder: false,
-				wordWrap: 'on'
+				wordWrap: 'on',
+				minimap: {enabled: false}
 			});
 			handle = editor;
 
