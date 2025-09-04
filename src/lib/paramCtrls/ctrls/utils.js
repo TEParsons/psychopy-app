@@ -73,3 +73,20 @@ export function optionsFromParam(param) {
         
         return output
     }
+
+export function mimeTypesFromParam(param) {
+    let types = []
+    // do we have mime types from the param?
+    if (Array.isArray(param.allowedVals) && Array.isArray(param.allowedLabels) && param.allowedVals.length === param.allowedLabels.length) {
+        // iterate through types
+        for (let i in param.allowedVals) {
+            // append mime type object
+            types.push({
+                description: param.allowedLabels[i],
+                accept: param.allowedVals[i]
+            })
+        }
+    }
+
+    return types
+}

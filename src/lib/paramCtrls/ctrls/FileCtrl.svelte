@@ -1,6 +1,7 @@
 <script>
     import SingleLineCtrl from "./SingleLineCtrl.svelte"
     import { Button, CompactButton } from "$lib/utils/buttons"
+    import { mimeTypesFromParam } from "./utils";
 
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
@@ -15,15 +16,7 @@
 
     async function getFile(evt) {
         // do we have mime types from the param?
-        let types = []
-        if (Array.isArray(param.allowedVals) && Array.isArray(param.allowedLabels) && param.allowedVals.length === param.allowedLabels.length) {
-            for (let i in param.allowedVals) {
-                types.push({
-                    description: param.allowedLabels[i],
-                    accept: param.allowedVals[i]
-                })
-            }
-        }
+        let types = mimeTypesFromParam(param)
         // get file handle from system dialog
         let handle = await window.showOpenFilePicker({
             types: types

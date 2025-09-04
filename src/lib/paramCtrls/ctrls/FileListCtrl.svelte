@@ -1,9 +1,9 @@
 <script>
     import { Param } from "$lib/experiment/experiment.svelte";
     import { CompactButton } from "$lib/utils/buttons";
-    import { iterateName } from "./utils.js";
     import { sanitizeJSON } from "$lib/utils/transpiler"
     import FileCtrl from "./FileCtrl.svelte";
+    import { mimeTypesFromParam } from "./utils";
 
     let {
         param,
@@ -35,6 +35,12 @@
             item.val = val;
             item.valType = "str"
             items.push(item)
+            $effect(() => {
+                param.val[i] = item.val;
+                if (typeof item.val === "object") {
+                    console.log(param.val.flat())
+                }
+            })
         }
         
         return items
@@ -71,7 +77,27 @@
         />
     {/each}
     <div class=gap></div>
-    <div class=gap></div>
+    <CompactButton 
+            icon="icons/btn-add-many.svg"
+            onclick={async (evt) => {
+                // do we have mime types from the param?
+                let types = mimeTypesFromParam(param)
+                // get file handle from system dialog
+                let handles = await window.showOpenFilePicker({
+                    types: types,
+                    multiple: true
+                });
+                // get all files
+                for (let handle of handles) {
+                    // get file blob from handle
+                    let file = await handle.getFile();
+                    // get name from blob
+                    param.val.push(file.name)
+                }
+            }}
+            tooltip="Add multiple items"
+            disabled={disabled}
+    />
     <CompactButton
         icon="icons/btn-add.svg"
         onclick={(evt) => {
