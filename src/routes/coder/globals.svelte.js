@@ -1,12 +1,14 @@
 export let current = $state({
     pages: [
         {
-            file: "untitled.py",
+            label: "untitled.py",
+            file: undefined,
             content: "for n in y:\n    print(n)",
             editor: undefined
         },
         {
-            file: "lexical_decision_task_lastrun.py",
+            label: "lexical_decision_task_lastrun.py",
+            file: "F://throwaway/lexical_decision_task/lexical_decision_task_lastrun.py",
             content: `
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-

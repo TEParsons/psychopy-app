@@ -7,8 +7,10 @@ import { current } from '../globals.svelte.js';
 export function file_new() {
     // add new tab with blank file
     current.pages.push({
-        file: "untitled.py",
-        content: ""
+        label: "untitled.py",
+        file: undefined,
+        content: "for n in y:\n    print(n)",
+        editor: undefined
     })
     // focus new tab
     current.tab = current.pages.length - 1

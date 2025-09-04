@@ -5,7 +5,7 @@
 
     let {
         /** @prop @type {String} Label for this page's tab */
-        label,
+        label=$bindable(),
         /** @prop @type {String|undefined} Path to an icon for this page's tab */
         icon=undefined,
         /** @binding Control whether this page is selected */
@@ -69,6 +69,8 @@
         show: false
     })
 
+    let renaming = $state.raw(false)
+
 </script>
 
 <!-- tab button for this page -->
@@ -90,6 +92,7 @@
         contextMenuParams.pos.y = evt.pageY;
         contextMenuParams.show = true;
     }}
+    ondblclick={(evt) => renaming = true}
     ondragover={() => selected = true}
     bind:this={handle}
 >
@@ -98,9 +101,22 @@
             <use xlink:href={icon}></use>
         </svg>
     {/if}
-    <span class=label>
-        {label}
-    </span>
+    {#if renaming}
+        <input 
+            class=label 
+            bind:value={label} 
+            onkeydown={(evt) => {
+                if (["Enter", "Escape"].includes(evt.key)) {
+                    renaming = false
+                }
+            }}
+            onfocusout={(evt) => renaming = false}
+        />
+    {:else}
+        <span class=label>
+            {label}
+        </span>
+    {/if}
     {#if close !== undefined}
         <div
             class=close-btn

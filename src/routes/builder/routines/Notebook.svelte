@@ -29,9 +29,12 @@
                     () => {return current.routine === routine},
                     (value) => {current.routine = routine}
                 }
+                bind:label={
+                    () => routine.name,
+                    (value) => routine.settings.params['name'].val = value
+                }
                 close={() => delete current.experiment.routines[name]}
                 closeTooltip="Delete {name}"
-                label={routine.name} 
                 data={routine}
             >
                 {#if routine instanceof Routine}
