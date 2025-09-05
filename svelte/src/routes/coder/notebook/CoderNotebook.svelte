@@ -4,7 +4,7 @@
     import CodeEditor from "$lib/utils/code/CodeEditor.svelte";
 
     var media = $state({
-        prefersColorScheme: "dark"
+        prefersColorScheme: "light"
     });
     onMount(() => {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {

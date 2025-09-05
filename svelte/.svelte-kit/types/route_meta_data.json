@@ -1,0 +1,15 @@
+{
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/builder": [
+		"src/routes/+layout.js"
+	],
+	"/coder": [
+		"src/routes/+layout.js"
+	],
+	"/runner": [
+		"src/routes/+layout.js"
+	]
+}
