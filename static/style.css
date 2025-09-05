@@ -39,7 +39,7 @@
     /* defaults */
     color: var(--text);
     background-color: var(--base);
-    font-family: Noto Color Emoji, var(--body);
+    font-family: var(--body);
     font-size: 10pt;
 }
 
@@ -69,7 +69,6 @@
         /* defaults */
         color: var(--text);
         background-color: var(--base);
-        font-family: var(--body);
     }   
 }
 
@@ -79,6 +78,7 @@ body {
 }
 
 * {
+    font-variant-emoji: Noto Color Emoji;
     transition: border-color .2s, box-shadow .2s;
 }
 
