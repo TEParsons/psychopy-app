@@ -4,10 +4,7 @@
 <script>
     import loader from '@monaco-editor/loader';
     import { onDestroy, onMount } from 'svelte';
-
-    import LightTheme from "./themes/light.json";
-    import DarkTheme from "./themes/dark.json";
-    import { sanitize } from './themes/utils';
+    import themes from "./themes"
 
     let {
         value=$bindable(),
@@ -15,7 +12,7 @@
         canUndo=$bindable(),
         canRedo=$bindable(),
         language='python',
-        theme='vs-light'
+        theme='psychopy-light'
     } = $props();
 
     let monaco;
@@ -26,14 +23,19 @@
             // initialise monaco loader
             monaco = await loader.init();
             // setup themes
-            monaco.editor.defineTheme('psychopy-light', sanitize(LightTheme));
-            monaco.editor.defineTheme('psychopy-dark', sanitize(DarkTheme));
+            for (let [themeName, themeSpec] of Object.entries(themes)) {
+                monaco.editor.defineTheme(themeName, themeSpec);
+            }
             // initialise editor
             editor = monaco.editor.create(container, {
                 value,
                 language,
                 theme,
                 fontFamily: "JetBrains Mono",
+                colorDecorators: false,
+                lineHeight: 1.6,
+                renderLineHighlight: "gutter",
+                'bracketPairColorization.enabled': false,
                 automaticLayout: true,
                 overviewRulerLanes: 0,
                 overviewRulerBorder: false,

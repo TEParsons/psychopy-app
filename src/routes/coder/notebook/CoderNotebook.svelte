@@ -1,7 +1,17 @@
 <script>
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import { ButtonTab, Notebook, NotebookPage } from "$lib/utils/notebook";
     import CodeEditor from "$lib/utils/code/CodeEditor.svelte";
+
+    var media = $state({
+        prefersColorScheme: "dark"
+    });
+    onMount(() => {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            media.prefersColorScheme = event.matches ? "dark" : "light";
+        });
+    })
+    
 
     let current = getContext("current")
 </script>
@@ -21,7 +31,7 @@
             }
         >
             <CodeEditor
-                theme=psychopy-light
+                theme="psychopy-{media.prefersColorScheme}"
                 bind:value={page.content}
                 bind:editor={page.editor}
                 bind:canUndo={page.canUndo}
