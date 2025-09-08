@@ -14,7 +14,7 @@
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
-    import { python } from "$lib/globals.svelte.js";
+    import { liaison } from "$lib/globals.svelte.js";
     import SavePrompt from "./SavePrompt.svelte"
     import { FindDialog } from "$lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
@@ -166,15 +166,17 @@
             icon="icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
-        <IconButton
-            icon="icons/btn-devices.svg"
-            label="Open the device manager"
-            onclick={(evt) => show.deviceMgrDlg = true}
-            borderless
-        ></IconButton>
-        <DeviceManagerDialog
-            bind:shown={show.deviceMgrDlg}
-        ></DeviceManagerDialog>
+        {#if liaison}
+            <IconButton
+                icon="icons/btn-devices.svg"
+                label="Open the device manager"
+                onclick={(evt) => show.deviceMgrDlg = true}
+                borderless
+            ></IconButton>
+            <DeviceManagerDialog
+                bind:shown={show.deviceMgrDlg}
+            ></DeviceManagerDialog>
+        {/if}
 
         <IconButton 
             icon="icons/btn-settings.svg" 
@@ -205,7 +207,7 @@
         />        
     </RibbonSection>
 
-    {#if python}
+    {#if liaison}
         <RibbonSection label=Desktop icon="icons/rbn-desktop.svg">
                 <IconButton 
                     icon="icons/btn-compilepy.svg" 
@@ -241,28 +243,13 @@
         </RibbonSection>
     {/if}
 
-    <!-- <RibbonSection id=desktop label=Desktop icon="icons/rbn-desktop.svg">
-        <IconButton id="ribbon-btn-compilepy" icon="icons/btn-compilepy.svg" label="Compile to Python" />
-        <IconButton id="ribbon-btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}" icon="icons/btn-{$experiment.pilotMode ? "pilotpy" : "runpy"}.svg" label="{$experiment.pilotMode ? "Pilot" : "Run"} in Python" />
-    </RibbonSection> -->
-
     <!-- <RibbonSection id=browser label=Browser icon="icons/rbn-browser.svg">
-        <IconButton 
-            id="ribbon-btn-compilejs" 
-            icon="icons/btn-compilejs.svg" 
-            label="Compile to JavaScript" 
-        />
-        <IconButton 
-            id="ribbon-btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}" 
-            icon="icons/btn-{$experiment.pilotMode ? "pilotjs" : "runjs"}.svg" 
-            label="{$experiment.pilotMode ? "Pilot" : "Run"} in browser" 
-        />
         <IconButton 
             id="ribbon-btn-sync" 
             icon="icons/btn-sync.svg" 
             label="Sync to Pavlovia" 
         />
-    </RibbonSection> -->
+    -->
 
     <RibbonSection label=Pavlovia icon="icons/rbn-pavlovia.svg">
         <DropdownButton

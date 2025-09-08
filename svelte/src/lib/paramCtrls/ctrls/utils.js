@@ -1,4 +1,4 @@
-import { python } from "$lib/globals.svelte";
+import { liaison } from "$lib/globals.svelte";
 
 
 /**
@@ -31,7 +31,7 @@ export function optionsFromParam(param) {
         let output = [];
         // if either allowed labels or values are a Python function, execute it
         if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
-            if (python) {
+            if (liaison) {
 
             } else {
                 // placeholder: no options to ctrl is disabled
@@ -39,7 +39,7 @@ export function optionsFromParam(param) {
             }
         }
         if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
-            if (python) {
+            if (liaison) {
 
             } else {
                 // placeholder: no options to ctrl is disabled
