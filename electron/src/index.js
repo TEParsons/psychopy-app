@@ -10,6 +10,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   // create splash
   var splash = new BrowserWindow({
+      icon: path.join(__dirname, 'favicon@2x.png'),
       title:"PsychoPy",
       width: 720, 
       height: 400,
@@ -24,6 +25,7 @@ const createWindow = () => {
 
   // create the browser window.
   const win = new BrowserWindow({
+    icon: path.join(__dirname, 'favicon@2x.png'),
     width: 1080,
     height: 720,
     show: false,
