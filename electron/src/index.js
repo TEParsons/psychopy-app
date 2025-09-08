@@ -40,15 +40,13 @@ const createWindow = () => {
       win.show();
       win.maximize();
       win.focus();
+      win.webContents.openDevTools();
       clearInterval(interval);
     }
   }, 10)  
   
   // and load the app
   win.loadURL('http://localhost:5173/builder');
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
 };
 
 

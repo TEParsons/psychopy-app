@@ -4,13 +4,14 @@
 <script>
     import loader from '@monaco-editor/loader';
     import { onDestroy, onMount } from 'svelte';
-    import themes from "./themes"
+    import themes from "./themes";
 
     let {
         value=$bindable(),
         editor=$bindable(),
         canUndo=$bindable(),
         canRedo=$bindable(),
+        resize="none",
         language='python',
         theme='psychopy-light'
     } = $props();
@@ -76,21 +77,28 @@
         }
     });
 
-    onDestroy(() => {
-        // unload models on destroy
-        monaco?.editor.getModels().forEach(
-            (model) => model.dispose()
-        );
-        editor?.dispose();
-    });
+    // // this meant the editor would unload when hidden (we hide it in Components)
+    // onDestroy(() => {
+    //     // unload models on destroy
+    //     monaco?.editor.getModels().forEach(
+    //         (model) => model.dispose()
+    //     );
+    //     editor?.dispose();
+    // });
 </script>
 
-<div class="container" bind:this={container}></div>
+<div 
+    class="container" 
+    bind:this={container}
+    style:resize={resize}
+></div>
 
 <style>
     .container {
         width: calc(100% + 1rem);
         height: calc(100% + 1rem);
+        min-height: 10rem;
         margin: -0.5rem;
+        overflow: auto;
     }
 </style>

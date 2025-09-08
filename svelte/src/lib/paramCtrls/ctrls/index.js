@@ -12,11 +12,13 @@ export { default as TableCtrl } from "./TableCtrl.svelte";
 export { default as ConditionsCtrl } from "./ConditionsCtrl.svelte";
 export { default as DeviceCtrl } from "./DeviceCtrl.svelte";
 export { default as RichChoiceCtrl } from "./RichChoiceCtrl.svelte";
-export { default as SurveyCtrl } from "./SurveyCtrl.svelte"
+export { default as SurveyCtrl } from "./SurveyCtrl.svelte";
+export { default as CodeCtrl } from "./CodeCtrl.svelte"
 
 import {
     SingleLineCtrl,
     MultiLineCtrl,
+    CodeCtrl,
     NameCtrl,
     ChoiceCtrl,
     VersionCtrl,
@@ -39,6 +41,7 @@ import {
 export var mapping = {
     "single": SingleLineCtrl,
     "multi": MultiLineCtrl,
+    "code": CodeCtrl,
     "name": NameCtrl,
     "choice": ChoiceCtrl,
     "version": VersionCtrl,

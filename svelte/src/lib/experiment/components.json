@@ -9,7 +9,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\aperture\\aperture.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\aperture\\aperture.png",
   "tooltip": "Aperture: restrict the drawing of stimuli to a given region",
   "version": "0.0.0",
   "beta": false,
@@ -456,7 +456,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\polygon\\polygon.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\polygon\\polygon.png",
   "tooltip": "Polygon: any regular polygon (line, triangle, square...circle)",
   "version": "0.0.0",
   "beta": false,
@@ -1053,7 +1053,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\brush\\brush.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\brush\\brush.png",
   "tooltip": "Brush: a drawing tool",
   "version": "0.0.0",
   "beta": false,
@@ -1396,7 +1396,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\button\\button.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\button\\button.png",
   "tooltip": "Button: A clickable textbox",
   "version": "2021.1.0",
   "beta": true,
@@ -1806,7 +1806,7 @@
    "callback": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Basic",
     "updates": "constant",
     "allowedUpdates": null,
@@ -2099,7 +2099,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\buttonBox\\buttonBox.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\buttonBox\\buttonBox.png",
   "tooltip": "Button Box: Get input from a button box",
   "version": "0.0.0",
   "beta": true,
@@ -2243,9 +2243,7 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend",
-     "psychopy_cedrus.components.lumina:LuminaButtonBoxBackend",
-     "psychopy_bbtk.components.tpad:TPadButtonBoxBackend"
+     "psychopy.experiment.components.buttonBox:KeyboardButtonBoxDeviceBackend"
     ],
     "allowedLabels": [],
     "label": "Device",
@@ -2460,7 +2458,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\camera\\webcam.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\camera\\webcam.png",
   "tooltip": "Webcam: Record video from a webcam.",
   "version": "2022.2.0",
   "beta": false,
@@ -2715,7 +2713,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\code\\code.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\code\\code.png",
   "tooltip": "Code: insert python commands into an experiment",
   "version": "0.0.0",
   "beta": false,
@@ -2781,11 +2779,11 @@
    "Before Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Before Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "Before experiment (Py)",
     "hint": "Code to run before the experiment starts (initialization); right-click checks syntax",
@@ -2803,11 +2801,11 @@
    "Begin Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Begin Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "Begin experiment (Py)",
     "hint": "Code at the start of the experiment ; right-click checks syntax",
@@ -2825,11 +2823,11 @@
    "Begin Routine": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Begin Routine",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "Begin Routine (Py)",
     "hint": "Code to be run at the start of each repeat of the Routine (e.g. each trial); right-click checks syntax",
@@ -2847,11 +2845,11 @@
    "Each Frame": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Each Frame",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "Each frame (Py)",
     "hint": "Code to be run on every video frame during for the duration of this Routine; right-click checks syntax",
@@ -2869,11 +2867,11 @@
    "End Routine": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "End Routine",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "End Routine (Py)",
     "hint": "Code at the end of this repeat of the Routine (e.g. getting/storing responses); right-click checks syntax",
@@ -2891,11 +2889,11 @@
    "End Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "End Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "python",
     "allowedLabels": [],
     "label": "End experiment (Py)",
     "hint": "Code at the end of the entire experiment (e.g. saving files, resetting computer); right-click checks syntax",
@@ -2913,11 +2911,11 @@
    "Before JS Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Before Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "Before experiment (JS)",
     "hint": "Code before the start of the experiment (initialization); right-click checks syntax",
@@ -2940,11 +2938,11 @@
    "Begin JS Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Begin Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "Begin experiment (JS)",
     "hint": "Code at the start of the experiment (initialization); right-click checks syntax",
@@ -2967,11 +2965,11 @@
    "Begin JS Routine": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Begin Routine",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "Begin Routine (JS)",
     "hint": "Code to be run at the start of each repeat of the Routine (e.g. each trial); right-click checks syntax",
@@ -2994,11 +2992,11 @@
    "Each JS Frame": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "Each Frame",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "Each JS frame",
     "hint": "Code to be run on every video frame during for the duration of this Routine; right-click checks syntax",
@@ -3021,11 +3019,11 @@
    "End JS Routine": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "End Routine",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "End Routine (JS)",
     "hint": "Code at the end of this repeat of the Routine (e.g. getting/storing responses); right-click checks syntax",
@@ -3048,11 +3046,11 @@
    "End JS Experiment": {
     "val": "",
     "valType": "extendedCode",
-    "inputType": "multi",
+    "inputType": "code",
     "categ": "End Exp.",
     "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
+    "allowedUpdates": null,
+    "allowedVals": "javascript",
     "allowedLabels": [],
     "label": "End experiment (JS)",
     "hint": "Code at the end of the entire experiment (e.g. saving files, resetting computer); right-click checks syntax",
@@ -3084,7 +3082,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\dots\\dots.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\dots\\dots.png",
   "tooltip": "Dots: Random Dot Kinematogram",
   "version": "0.0.0",
   "beta": false,
@@ -3688,7 +3686,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\eyetracker_record\\eyetracker_record.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\eyetracker_record\\eyetracker_record.png",
   "tooltip": "Start and / or Stop recording data from the eye tracker",
   "version": "2021.2.0",
   "beta": false,
@@ -3931,7 +3929,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\form\\form.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\form\\form.png",
   "tooltip": "Form: a Psychopy survey tool",
   "version": "2020.2.0",
   "beta": false,
@@ -4512,7 +4510,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\grating\\grating.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\grating\\grating.png",
   "tooltip": "Grating: present cyclic textures, prebuilt or from a file",
   "version": "0.0.0",
   "beta": false,
@@ -5116,7 +5114,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\image\\image.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\image\\image.png",
   "tooltip": "Image: present images (bmp, jpg, tif...)",
   "version": "0.0.0",
   "beta": false,
@@ -5680,7 +5678,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\joyButtons\\joyButtons.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\joyButtons\\joyButtons.png",
   "tooltip": "JoyButtons: check and record joystick/gamepad button presses",
   "version": "0.0.0",
   "beta": false,
@@ -5994,7 +5992,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\joystick\\joystick.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\joystick\\joystick.png",
   "tooltip": "Joystick: query joystick position and buttons",
   "version": "0.0.0",
   "beta": false,
@@ -6326,7 +6324,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\keyboard\\keyboard.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\keyboard\\keyboard.png",
   "tooltip": "Keyboard: check and record keypresses",
   "version": "0.0.0",
   "beta": false,
@@ -6661,7 +6659,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\microphone\\microphone.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\microphone\\microphone.png",
   "tooltip": "Microphone: basic sound capture (fixed onset & duration), okay for spoken words",
   "version": "2021.2.0",
   "beta": false,
@@ -6838,13 +6836,11 @@
     "allowedUpdates": null,
     "allowedVals": [
      "none",
-     "google",
-     "Whisper"
+     "google"
     ],
     "allowedLabels": [
      "None",
-     "Google",
-     "OpenAI Whisper"
+     "Google"
     ],
     "label": "Transcription backend",
     "hint": "What transcription service to use to transcribe audio?",
@@ -7159,7 +7155,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\mouse\\mouse.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\mouse\\mouse.png",
   "tooltip": "Mouse: query mouse position and buttons",
   "version": "0.0.0",
   "beta": false,
@@ -7515,7 +7511,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\movie\\movie.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\movie\\movie.png",
   "tooltip": "Movie: play movie files",
   "version": "0.0.0",
   "beta": false,
@@ -8032,7 +8028,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\panorama\\panorama.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\panorama\\panorama.png",
   "tooltip": "Panorama: Present a panoramic image (such as from a phone camera in Panorama mode) on screen.",
   "version": "2023.1.0",
   "beta": true,
@@ -8637,7 +8633,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\parallelOut\\parallel.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\parallelOut\\parallel.png",
   "tooltip": "Parallel out: send signals from the parallel port",
   "version": "0.0.0",
   "beta": false,
@@ -8938,7 +8934,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\progress\\progress.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\progress\\progress.png",
   "tooltip": "Progress: Present a progress bar, with values ranging from 0 to 1.",
   "version": "2023.2.0",
   "beta": true,
@@ -9450,7 +9446,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\resourceManager\\resource_manager.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\resourceManager\\resource_manager.png",
   "tooltip": "Pre-load some resources into memory so that components using them can start without having to load first",
   "version": "0.0.0",
   "beta": true,
@@ -9687,7 +9683,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\roi\\eyetracker_roi.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\roi\\eyetracker_roi.png",
   "tooltip": "Region Of Interest: Define a region of interest for use with eyetrackers",
   "version": "2021.2.0",
   "beta": false,
@@ -10233,7 +10229,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\routineSettings\\routineSettings.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\routineSettings\\routineSettings.png",
   "tooltip": "Settings for this Routine.",
   "version": "2023.2.0",
   "beta": false,
@@ -10527,7 +10523,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\serialOut\\serial.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\serialOut\\serial.png",
   "tooltip": "Serial out: send signals from a serial port",
   "version": "2022.2.0",
   "beta": false,
@@ -11041,7 +11037,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\settings\\settings.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\settings\\settings.png",
   "tooltip": "Edit settings for this experiment",
   "version": "0.0.0",
   "beta": false,
@@ -11227,15 +11223,15 @@
     }
    },
    "runMode": {
-    "val": false,
+    "val": 0,
     "valType": "code",
     "inputType": "choice",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     false,
-     true
+     0,
+     1
     ],
     "allowedLabels": [
      "Piloting",
@@ -11252,11 +11248,11 @@
    "Use version": {
     "val": "",
     "valType": "str",
-    "inputType": "version",
+    "inputType": "choice",
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
-    "allowedVals": "psychopy/psychopy",
+    "allowedVals": "python:///psychopy.experiment.components.settings:SettingsComponent.__init__.<locals>.getVersions",
     "allowedLabels": [],
     "label": "Use PsychoPy version",
     "hint": "The version of PsychoPy to use when running the experiment.",
@@ -12668,7 +12664,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\slider\\slider.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\slider\\slider.png",
   "tooltip": "Slider: A simple, flexible object for getting ratings",
   "version": "0.0.0",
   "beta": false,
@@ -13359,7 +13355,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\sound\\sound.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\sound\\sound.png",
   "tooltip": "Sound: play recorded files or generated sounds",
   "version": "0.0.0",
   "beta": false,
@@ -13687,7 +13683,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\soundsensor\\soundsensor.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\soundsensor\\soundsensor.png",
   "tooltip": "Voice Key: Get input from a microphone as simple true/false values",
   "version": "0.0.0",
   "beta": true,
@@ -13831,7 +13827,6 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy_bbtk.components.tpad:TPadSoundSensorBackend",
      "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend"
     ],
     "allowedLabels": [],
@@ -14013,7 +14008,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\static\\static.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\static\\static.png",
   "tooltip": "Static: Static screen period (e.g. an ISI). Useful for pre-loading stimuli.",
   "version": "0.0.0",
   "beta": false,
@@ -14247,7 +14242,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\text\\text.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\text\\text.png",
   "tooltip": "Text: present text stimuli",
   "version": "0.0.0",
   "beta": false,
@@ -14771,7 +14766,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\textbox\\textbox.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\textbox\\textbox.png",
   "tooltip": "Textbox: present text stimuli but cooler",
   "version": "2020.2.0",
   "beta": false,
@@ -15598,7 +15593,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\unknown\\unknown.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\unknown\\unknown.png",
   "tooltip": "Unknown: A component that is not known by the current installed version of PsychoPy\n(most likely from the future)",
   "version": "0.0.0",
   "beta": false,
@@ -15797,7 +15792,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\unknownPlugin\\unknownPlugin.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\unknownPlugin\\unknownPlugin.png",
   "tooltip": "Unknown: A component which comes from a plugin which you do not have installed & activated.",
   "version": "0.0.0",
   "beta": false,
@@ -15996,7 +15991,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\components\\variable\\variable.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\components\\variable\\variable.png",
   "tooltip": "Variable: create a new variable",
   "version": "0.0.0",
   "beta": false,
@@ -16326,1483 +16321,6 @@
    }
   }
  },
- "CedrusButtonBoxComponent": {
-  "__class__": "psychopy_cedrus.components.cedrusBox:CedrusButtonBoxComponent",
-  "__name__": "CedrusButtonBoxComponent",
-  "categories": [
-   "Responses"
-  ],
-  "targets": [
-   "PsychoPy"
-  ],
-  "plugin": "psychopy-cedrus",
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\venv310\\lib\\site-packages\\psychopy_cedrus\\components\\cedrusBox\\cedrusBox.png",
-  "tooltip": "Cedrus Button Box: Legacy support for old experiment using an RB Series Cedrus box.",
-  "version": "0.0.0",
-  "beta": false,
-  "validatorClasses": [],
-  "hidden": true,
-  "params": {
-   "name": {
-    "val": "buttonBox",
-    "valType": "code",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Name",
-    "hint": "Name of this Component (alphanumeric or _, no spaces)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startVal": {
-    "val": 0.0,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Start",
-    "hint": "When does the Component start?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected start (s)",
-    "hint": "(Optional) expected start (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startType": {
-    "val": "time (s)",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Start type",
-    "hint": "How do you want to define your start point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopVal": {
-    "val": 1.0,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Stop",
-    "hint": "When does the Component end? (blank is endless)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "durationEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected duration (s)",
-    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopType": {
-    "val": "duration (s)",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "duration (s)",
-     "duration (frames)",
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Stop type",
-    "hint": "How do you want to define your end point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "forceEndRoutine": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Force end of Routine",
-    "hint": "Should a response force the end of the Routine (e.g end the trial)?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "registerOn": {
-    "val": "press",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [
-     "press",
-     "release"
-    ],
-    "allowedLabels": [],
-    "label": "Register keypress on...",
-    "hint": "When should the keypress be registered? As soon as pressed, or when released?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "allowedKeys": {
-    "val": "",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Allowed keys",
-    "hint": "Keys to be read (blank for any) or key numbers separated by commas",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "store": {
-    "val": "first key",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [
-     "last key",
-     "first key",
-     "all keys",
-     "nothing"
-    ],
-    "allowedLabels": [],
-    "label": "Store",
-    "hint": "Choose which (if any) responses to store at the end of a trial",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "storeCorrect": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Store correct",
-    "hint": "Do you want to save the response as correct/incorrect?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "correctAns": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Correct answer",
-    "hint": "What is the 'correct' response? NB, buttons are labelled 0 to 6 on a 7-button box. Enter 'None' (no quotes) if withholding a response is correct. Might be helpful to add a correctAns column and use $correctAns to compare to the key press.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": [
-      {
-       "param": "storeCorrect",
-       "condition": "== True"
-      }
-     ]
-    }
-   },
-   "saveStartStop": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Save onset/offset times",
-    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "syncScreenRefresh": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Sync timing with screen",
-    "hint": "A reaction time to a visual stimulus should be based on when the screen flipped",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "disabled": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Disable Component",
-    "hint": "Disable this Component",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "discard previous": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Discard previous",
-    "hint": "Do you want to discard all responses occurring before the onset of this Component?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "deviceNumber": {
-    "val": 0,
-    "valType": "int",
-    "inputType": "spin",
-    "categ": "Hardware",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "deviceNumber",
-    "hint": "Device number, if you have multiple devices which one do you want (0, 1, 2...)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "useBoxTimer": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Hardware",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [
-     true,
-     false
-    ],
-    "allowedLabels": [],
-    "label": "useBoxTimer",
-    "hint": "According to Cedrus the response box timer has a drift - use with caution!",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
- "PatchComponent": {
-  "__class__": "psychopy_legacy.components.patch:PatchComponent",
-  "__name__": "PatchComponent",
-  "categories": [
-   "Stimuli"
-  ],
-  "targets": [
-   "PsychoPy"
-  ],
-  "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy-plugins\\psychopy-legacy\\psychopy_legacy\\components\\patch\\patch.png",
-  "tooltip": "Patch: present images (bmp, jpg, tif...) or textures like gratings",
-  "version": "0.0.0",
-  "beta": false,
-  "validatorClasses": [
-   "VisualValidatorRoutine"
-  ],
-  "hidden": false,
-  "params": {
-   "name": {
-    "val": "patch",
-    "valType": "code",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Name",
-    "hint": "Name of this Component (alphanumeric or _, no spaces)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startVal": {
-    "val": 0.0,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Start",
-    "hint": "When does the Component start?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected start (s)",
-    "hint": "(Optional) expected start (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startType": {
-    "val": "time (s)",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Start type",
-    "hint": "How do you want to define your start point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopVal": {
-    "val": 1.0,
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Stop",
-    "hint": "When does the Component end? (blank is endless)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "durationEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected duration (s)",
-    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopType": {
-    "val": "duration (s)",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "duration (s)",
-     "duration (frames)",
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Stop type",
-    "hint": "How do you want to define your end point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "color": {
-    "val": "$[1,1,1]",
-    "valType": "color",
-    "inputType": "color",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Foreground color",
-    "hint": "Foreground color of this stimulus (e.g. $[1,1,0], red )",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "fillColor": {
-    "val": "",
-    "valType": "color",
-    "inputType": "color",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Fill color",
-    "hint": "Fill color of this stimulus (e.g. $[1,1,0], red )",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "borderColor": {
-    "val": "",
-    "valType": "color",
-    "inputType": "color",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Border color",
-    "hint": "Border color of this stimulus (e.g. $[1,1,0], red )",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "colorSpace": {
-    "val": "rgb",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": null,
-    "allowedVals": [
-     "rgb",
-     "dkl",
-     "lms",
-     "hsv"
-    ],
-    "allowedLabels": [],
-    "label": "Color space",
-    "hint": "In what format (color space) have you specified the colors? (rgb, dkl, lms, hsv)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "opacity": {
-    "val": "",
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Opacity",
-    "hint": "Opacity of the stimulus (1=opaque, 0=fully transparent, 0.5=translucent). Leave blank for each color to have its own opacity (recommended if any color is None).",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "size": {
-    "val": [
-     0.5,
-     0.5
-    ],
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Layout",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Size [w,h]",
-    "hint": "Size of this stimulus (either a single value or x,y pair, e.g. 2.5, [1,2] ",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "pos": {
-    "val": [
-     0,
-     0
-    ],
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Layout",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Position [x,y]",
-    "hint": "Position of this stimulus (e.g. [1,2] )",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "units": {
-    "val": "from exp settings",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Layout",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "from exp settings",
-     "deg",
-     "cm",
-     "pix",
-     "norm",
-     "height",
-     "degFlatPos",
-     "degFlat"
-    ],
-    "allowedLabels": [],
-    "label": "Spatial units",
-    "hint": "Units of dimensions for this stimulus",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "ori": {
-    "val": 0,
-    "valType": "num",
-    "inputType": "spin",
-    "categ": "Layout",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [
-     -360,
-     360
-    ],
-    "allowedLabels": [],
-    "label": "Orientation",
-    "hint": "Orientation of this stimulus (in deg)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "saveStartStop": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Save onset/offset times",
-    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "syncScreenRefresh": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Sync timing with screen refresh",
-    "hint": "Synchronize times with screen refresh (good for visual stimuli and responses based on them)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "disabled": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Disable Component",
-    "hint": "Disable this Component",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "contrast": {
-    "val": 1,
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Appearance",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Contrast",
-    "hint": "Contrast of the stimulus (1.0=unchanged contrast, 0.5=decrease contrast, 0.0=uniform/no contrast, -0.5=slightly inverted, -1.0=totally inverted)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "validator": {
-    "val": "",
-    "valType": "code",
-    "inputType": "choice",
-    "categ": "Testing",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": "python:///psychopy.experiment.components._base:BaseComponent.getAllValidatorRoutineVals",
-    "allowedLabels": "python:///psychopy.experiment.components._base:BaseComponent.getAllValidatorRoutineLabels",
-    "label": "Validate with...",
-    "hint": "Name of validator Component/Routine to use to check the timing of this stimulus.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "image": {
-    "val": "sin",
-    "valType": "file",
-    "inputType": "file",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Image/tex",
-    "hint": "The image to be displayed - 'sin','sqr'... or a filename (including path)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "mask": {
-    "val": "None",
-    "valType": "str",
-    "inputType": "single",
-    "categ": "Texture",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Mask",
-    "hint": "An image to define the alpha mask (ie shape)- gauss, circle... or a filename (including path)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "sf": {
-    "val": "None",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Texture",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Spatial frequency",
-    "hint": "Spatial frequency of image repeats across the patch, e.g. 4 or [2,3]",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "phase": {
-    "val": 0.0,
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Texture",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Phase (in cycles)",
-    "hint": "Spatial positioning of the image on the patch (in range 0-1.0)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "texture resolution": {
-    "val": "128",
-    "valType": "num",
-    "inputType": "choice",
-    "categ": "Texture",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [
-     "32",
-     "64",
-     "128",
-     "256",
-     "512"
-    ],
-    "allowedLabels": [],
-    "label": "Texture resolution",
-    "hint": "Resolution of the texture for standard ones such as sin, sqr etc. For most cases a value of 256 pixels will suffice",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "interpolate": {
-    "val": "linear",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Texture",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [
-     "linear",
-     "nearest"
-    ],
-    "allowedLabels": [],
-    "label": "Interpolate",
-    "hint": "How should the image be interpolated if/when rescaled",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
- "RatingScaleComponent": {
-  "__class__": "psychopy_legacy.components.ratingScale:RatingScaleComponent",
-  "__name__": "RatingScaleComponent",
-  "categories": [
-   "Responses"
-  ],
-  "targets": [
-   "PsychoPy"
-  ],
-  "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy-plugins\\psychopy-legacy\\psychopy_legacy\\components\\ratingScale\\ratingscale.png",
-  "tooltip": "Rating scale: obtain numerical or categorical responses",
-  "version": "0.0.0",
-  "beta": false,
-  "validatorClasses": [],
-  "hidden": false,
-  "params": {
-   "name": {
-    "val": "rating",
-    "valType": "code",
-    "inputType": "name",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Name",
-    "hint": "Name of this Component (alphanumeric or _, no spaces)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "visualAnalogScale": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Visual analog scale",
-    "hint": "Show a continuous visual analog scale; returns 0.00 to 1.00; takes precedence over numeric scale or categorical choices",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "categoryChoices": {
-    "val": "",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Category choices",
-    "hint": "A list of categories (non-numeric alternatives) to present, space or comma-separated; these take precedence over a numeric scale",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "scaleDescription": {
-    "val": "",
-    "valType": "str",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Scale description",
-    "hint": "Brief instructions, such as a description of the scale numbers as seen by the subject.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "low": {
-    "val": "1",
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Lowest value",
-    "hint": "Lowest rating (low end of the scale); not used for categories.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "high": {
-    "val": "7",
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Highest value",
-    "hint": "Highest rating (top end of the scale); not used for categories.",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "labels": {
-    "val": "",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Labels",
-    "hint": "Labels for the ends of the scale, separated by commas",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "markerStart": {
-    "val": "",
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Marker start",
-    "hint": "initial position for the marker",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "size": {
-    "val": "1.0",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Layout",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Size",
-    "hint": "Size of this stimulus (either a single value or x,y pair, e.g. 2.5, [1,2] ",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "pos": {
-    "val": "0, -0.4",
-    "valType": "list",
-    "inputType": "single",
-    "categ": "Layout",
-    "updates": "constant",
-    "allowedUpdates": [
-     "constant",
-     "set every repeat",
-     "set every frame"
-    ],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Position [x,y]",
-    "hint": "Position of this stimulus (e.g. [1,2] )",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "tickHeight": {
-    "val": "",
-    "valType": "num",
-    "inputType": "single",
-    "categ": "Interface",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Tick height",
-    "hint": "height of tick marks (1 is upward, 0 is hidden, -1 is downward)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startType": {
-    "val": "time (s)",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Start type",
-    "hint": "How do you want to define your start point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopType": {
-    "val": "condition",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [
-     "duration (s)",
-     "duration (frames)",
-     "time (s)",
-     "frame N",
-     "condition"
-    ],
-    "allowedLabels": [],
-    "label": "Stop type",
-    "hint": "How do you want to define your end point?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startVal": {
-    "val": "0.0",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Start",
-    "hint": "When does the Component start?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "stopVal": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Stop",
-    "hint": "When does the Component end? (blank is endless)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "startEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected start (s)",
-    "hint": "(Optional) expected start (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "durationEstim": {
-    "val": "",
-    "valType": "code",
-    "inputType": "single",
-    "categ": "Basic",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Expected duration (s)",
-    "hint": "(Optional) expected duration (s), purely for representing in the timeline",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "saveStartStop": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Save onset/offset times",
-    "hint": "Store the onset/offset times in the data file (as well as in the log file).",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "syncScreenRefresh": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Sync timing with screen refresh",
-    "hint": "Synchronize times with screen refresh (good for visual stimuli and responses based on them)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "disabled": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": null,
-    "updates": null,
-    "allowedUpdates": null,
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Disable Component",
-    "hint": "Disable this Component",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "marker": {
-    "val": "triangle",
-    "valType": "str",
-    "inputType": "choice",
-    "categ": "Interface",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [
-     "triangle",
-     "circle",
-     "glow",
-     "slider",
-     "hover"
-    ],
-    "allowedLabels": [],
-    "label": "Marker type",
-    "hint": "Style for the marker: triangle, circle, glow, slider, hover",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "singleClick": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Interface",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Single click",
-    "hint": "Should clicking the line accept that rating (without needing to confirm via 'accept')?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "disappear": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Interface",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Disappear",
-    "hint": "Hide the scale when a rating has been accepted; False to remain on-screen",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "showAccept": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Interface",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Show accept",
-    "hint": "Should the accept button by visible?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "storeRating": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Store rating",
-    "hint": "store the rating",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "storeRatingTime": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Store rating time",
-    "hint": "store the time taken to make the choice (in seconds)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "storeHistory": {
-    "val": false,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Data",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Store history",
-    "hint": "store the history of (selection, time)",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "forceEndRoutine": {
-    "val": true,
-    "valType": "bool",
-    "inputType": "bool",
-    "categ": "Basic",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Force end of Routine",
-    "hint": "Should accepting a rating cause the end of the Routine (e.g. trial)?",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   },
-   "customize_everything": {
-    "val": "",
-    "valType": "code",
-    "inputType": "multi",
-    "categ": "Custom",
-    "updates": "constant",
-    "allowedUpdates": [],
-    "allowedVals": [],
-    "allowedLabels": [],
-    "label": "Customize everything :",
-    "hint": "Use this text to create the rating scale as you would in a code Component; overrides all dialog settings except time parameters, forceEndRoutine, storeRatingTime, storeRating",
-    "plugin": null,
-    "depends": {
-     "shown": [],
-     "enabled": []
-    }
-   }
-  }
- },
  "BaseStandaloneRoutine": {
   "__class__": "psychopy.experiment.routines._base:BaseStandaloneRoutine",
   "__name__": "BaseStandaloneRoutine",
@@ -17811,7 +16329,7 @@
   ],
   "targets": [],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
   "tooltip": "",
   "version": "0.0.0",
   "beta": false,
@@ -17899,7 +16417,7 @@
   ],
   "targets": [],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
   "tooltip": "",
   "version": "0.0.0",
   "beta": false,
@@ -18004,7 +16522,7 @@
   ],
   "targets": [],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
   "tooltip": "",
   "version": "0.0.0",
   "beta": false,
@@ -18111,7 +16629,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\visualValidator\\visual_validator.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\visualValidator\\visual_validator.png",
   "tooltip": "Use a light sensor to confirm that visual stimuli are presented when they should be.",
   "version": "2025.1.0",
   "beta": false,
@@ -18142,8 +16660,7 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend",
-     "psychopy_bbtk.components.tpad:TPadVisualValidatorBackend"
+     "psychopy.experiment.routines.visualValidator:ScreenBufferVisualValidatorBackend"
     ],
     "allowedLabels": [],
     "label": "Device",
@@ -18339,7 +16856,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\audioValidator\\audio_validator.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\audioValidator\\audio_validator.png",
   "tooltip": "Use a sound sensor to confirm that audio stimuli are presented when they should be.",
   "version": "2025.1.0",
   "beta": false,
@@ -18370,8 +16887,7 @@
     "updates": null,
     "allowedUpdates": null,
     "allowedVals": [
-     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend",
-     "psychopy_bbtk.components.tpad:TPadAudioValidatorBackend"
+     "psychopy.experiment.components.soundsensor:MicrophoneSoundSensorBackend"
     ],
     "allowedLabels": [],
     "label": "Device",
@@ -18443,7 +16959,7 @@
   ],
   "targets": [],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\unknown\\unknown.png",
   "tooltip": "Unknown routine",
   "version": "0.0.0",
   "beta": false,
@@ -18533,7 +17049,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\eyetracker_calibrate\\eyetracker_calib.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\eyetracker_calibrate\\eyetracker_calib.png",
   "tooltip": "Calibration routine for eyetrackers",
   "version": "2021.2.0",
   "beta": true,
@@ -19050,7 +17566,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\counterbalance\\counterbalance.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\counterbalance\\counterbalance.png",
   "tooltip": "Counterbalance Routine: use the Shelf to choose a value taking into account previous runs of this experiment.",
   "version": "0.0.0",
   "beta": true,
@@ -19281,7 +17797,7 @@
    "PsychoPy"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\eyetracker_validate\\eyetracker_valid.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\eyetracker_validate\\eyetracker_valid.png",
   "tooltip": "Validation routine for eyetrackers",
   "version": "2021.2.0",
   "beta": true,
@@ -19783,7 +18299,7 @@
    "PsychoJS"
   ],
   "plugin": null,
-  "iconFile": "C:\\Users\\Todd\\Documents\\GitHub\\psychopy\\psychopy\\experiment\\routines\\pavlovia_survey\\survey.png",
+  "iconFile": "F:\\GitHub\\psychopy\\psychopy\\experiment\\routines\\pavlovia_survey\\survey.png",
   "tooltip": "Run a SurveyJS survey in Pavlovia",
   "version": "2023.1.0",
   "beta": false,
