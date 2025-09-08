@@ -3,8 +3,11 @@
     import DeviceDetails from "./DeviceDetails.svelte";
     import { ButtonTab, Listbook, NotebookPage } from "$lib/utils/notebook";
     import { Device } from "$lib/experiment/experiment.svelte";
-    import { devices, liaison } from "$lib/globals.svelte";
+    import { devices, electron } from "$lib/globals.svelte";
     import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
+    import { onMount } from "svelte";
+
+    $inspect(devices)
 
     let {
         /** @bindable @type {boolean} State controlling when this dialog is shown */
@@ -35,6 +38,41 @@
             (val) => !val.state
         )
     })
+
+    onMount(async () => {
+        if (!electron) {
+            // do nothing if not in an electron context
+            return
+        }
+        // get devices file path
+        let path = await electron.paths.devices();
+        // get text from devices.json file
+        let content = await electron.files.load(path);
+        // parse JSON
+        let deviceData = JSON.parse(content)
+        // set data
+        devicesFromJSON(deviceData)
+
+        console.log(`Loaded devices from ${path}:`, deviceData);
+    })
+
+    async function saveDevices(evt) {
+        if (!electron) {
+            // do nothing if not in an electron context
+            return
+        }
+        // get devices as JSON
+        let deviceData = {};
+        for (let [key, device] of Object.entries(devices)) {
+            deviceData[key] = device.toJSON();
+        }
+        // stringify
+        let content = JSON.stringify(deviceData, null, 4);
+        // get devices file path
+        let path = await window.electron.paths.devices();
+        // save
+        await electron.files.save(path, content);
+    }
 
     async function openDevicesFile(evt) {
         // get file handle from system dialog
@@ -113,8 +151,18 @@
     id="device-manager"
     title="Device manager"
     buttons={{
-        OK: restore.set,
-        APPLY: restore.set,
+        OK: evt => {
+            // set restore point
+            restore.set();
+            // save JSON
+            saveDevices();
+        },
+        APPLY: evt => {
+            // set restore point
+            restore.set();
+            // save JSON
+            saveDevices();
+        },
         EXTRA: {
             Export: saveDevicesFile
         },
@@ -158,11 +206,11 @@
             <ButtonTab
                 callback={(evt) => showAddDeviceDialog = true}
                 label="+ Add device"
-                tooltip={liaison
+                tooltip={electron
                     ? "Setup a currently connected device"
                     : "Device setup not available in web-only"
                 }
-                disabled={!liaison}
+                disabled={!electron}
             ></ButtonTab>
             <ButtonTab
                 callback={openDevicesFile}

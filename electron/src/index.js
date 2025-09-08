@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
+const fs = require("fs");
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -88,3 +89,14 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
+/* handlers which can be invoked by electron */
+
+// paths
+ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json"))
+ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json"))
+ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json"))
+// file interface
+ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'}))
+ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8'}))

@@ -14,7 +14,7 @@
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
-    import { liaison } from "$lib/globals.svelte.js";
+    import { electron } from "$lib/globals.svelte.js";
     import SavePrompt from "./SavePrompt.svelte"
     import { FindDialog } from "$lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
@@ -166,7 +166,7 @@
             icon="icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
-        {#if liaison}
+        {#if electron}
             <IconButton
                 icon="icons/btn-devices.svg"
                 label="Open the device manager"
@@ -207,7 +207,7 @@
         />        
     </RibbonSection>
 
-    {#if liaison}
+    {#if electron}
         <RibbonSection label=Desktop icon="icons/rbn-desktop.svg">
                 <IconButton 
                     icon="icons/btn-compilepy.svg" 

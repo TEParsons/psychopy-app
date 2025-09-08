@@ -6,14 +6,16 @@
 
 
 <table class=device-profile>
-    <tbody>
-        {#each Object.entries(profile) as [key, val]}
-        <tr>
-            <th class=key>{key}</th>
-            <td class=value>{val}</td>
-        </tr>
-        {/each}
-    </tbody>
+    {#if profile}
+        <tbody>
+            {#each Object.entries(profile) as [key, val]}
+            <tr>
+                <th class=key>{key}</th>
+                <td class=value>{val}</td>
+            </tr>
+            {/each}
+        </tbody>
+    {/if}
 </table>
 
 <style>
