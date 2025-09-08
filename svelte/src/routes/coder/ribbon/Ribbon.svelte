@@ -8,11 +8,10 @@
         // experiment
     } from './callbacks.js'
     
-    import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
-    import { IconButton, DropdownButton } from '$lib/utils/buttons';
-    import { login, logout, PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
+    import { IconButton, } from '$lib/utils/buttons';
+    import { UserCtrl } from '$lib/pavlovia/pavlovia.svelte';
 
     let current = getContext("current");
 
@@ -78,55 +77,7 @@
     </RibbonSection>
 
     <RibbonSection label=Pavlovia icon="icons/rbn-pavlovia.svg">
-        <DropdownButton
-            label={current.user ? current.user.name : "No user"}
-            icon={current.user ? current.user.avatar_url : undefined}
-            onclick={(evt) => {
-                if (current.user) {
-                    window.open(current.user.web_url)
-                }
-            }}
-        >
-            <MenuItem
-                label="Edit user..."
-                icon="icons/btn-edit.svg"
-            ></MenuItem>
-            <SubMenu
-                label="Switch user..."
-            >
-                {#each Object.values(PavloviaUsers) as user}
-                    <MenuItem
-                        label={user.name}
-                        icon={user.avatar_url}
-                        onclick={(evt) => current.user = user}
-                    ></MenuItem>
-                {/each}
-                <MenuSeparator/>
-                <MenuItem
-                    label="New user..."
-                    icon="icons/btn-new.svg"
-                ></MenuItem>
-            </SubMenu>
-            <MenuSeparator/>
-            {#if current.user}
-                <MenuItem
-                    label="Logout"
-                    onclick={(evt) => {
-                        logout()
-                        current.user = undefined
-                    }}
-                ></MenuItem>
-            {:else}
-                <MenuItem
-                    label="Login"
-                    onclick={(evt) => {
-                        login()
-                        // placeholder: need to get username from autheticated session
-                        current.user = PavloviaUsers['ToddOST']
-                    }}
-                ></MenuItem>
-            {/if}
-        </DropdownButton>
+        <UserCtrl />
     </RibbonSection>
 
     <RibbonGap></RibbonGap>

@@ -3,7 +3,7 @@
     import { CompactButton, IconButton } from "$lib/utils/buttons"
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import { PavloviaUsers } from "$lib/pavlovia/pavlovia.svelte";
+    import { users } from "$lib/pavlovia/pavlovia.svelte";
 
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */

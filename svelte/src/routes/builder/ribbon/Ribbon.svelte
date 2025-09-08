@@ -11,7 +11,7 @@
         // experiment
     } from './callbacks.js'
     
-    import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
+    import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
     import { electron } from "$lib/globals.svelte.js";
@@ -20,9 +20,8 @@
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
-    import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
-    import { login, logout, PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
-    import ManageProjectsDlg from '$lib/dialogs/projects/manage/ManageProjectsDlg.svelte';
+    import { IconButton, SwitchButton } from '$lib/utils/buttons';
+    import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
 
     let current = getContext("current");
 
@@ -32,9 +31,6 @@
         findDlg: false,
         deviceMgrDlg: false,
         prefsDlg: false,
-        browseProjectsDlg: false,
-        manageProjectsDlg: false,
-        pavloviaLoginDlg: false
     })
 
     let lastAction = $derived.by(() => {
@@ -252,88 +248,8 @@
     -->
 
     <RibbonSection label=Pavlovia icon="icons/rbn-pavlovia.svg">
-        <DropdownButton
-            label={current.user ? current.user.name : "No user"}
-            icon={current.user ? current.user.avatar_url : undefined}
-            onclick={(evt) => {
-                if (current.user) {
-                    window.open(current.user.web_url)
-                }
-            }}
-        >
-            <MenuItem
-                label="Edit user..."
-                icon="icons/btn-edit.svg"
-            ></MenuItem>
-            <SubMenu
-                label="Switch user..."
-            >
-                {#each Object.values(PavloviaUsers) as user}
-                    <MenuItem
-                        label={user.name}
-                        icon={user.avatar_url}
-                        onclick={(evt) => current.user = user}
-                    ></MenuItem>
-                {/each}
-                <MenuSeparator/>
-                <MenuItem
-                    label="New user..."
-                    icon="icons/btn-new.svg"
-                ></MenuItem>
-            </SubMenu>
-            <MenuSeparator/>
-            {#if current.user}
-                <MenuItem
-                    label="Logout"
-                    onclick={(evt) => {
-                        logout()
-                        current.user = undefined
-                    }}
-                ></MenuItem>
-            {:else}
-                <MenuItem
-                    label="Login"
-                    onclick={(evt) => {
-                        login()
-                        // placeholder: need to get username from autheticated session
-                        current.user = PavloviaUsers['ToddOST']
-                    }}
-                ></MenuItem>
-            {/if}
-        </DropdownButton>
-        <DropdownButton
-            label={current.project ? current.project.id : "No project"}
-            icon={current.project ? current.project.avatar_url : undefined}
-            onclick={(evt) => {
-                if (current.project) {
-                    window.open(current.project.web_url)
-                }
-            }}
-        >
-            <MenuItem
-                label="New project"
-                icon="icons/btn-add.svg"
-            ></MenuItem>
-            <MenuItem
-                label="Edit project"
-                icon="icons/btn-edit.svg"
-            ></MenuItem>
-            <MenuItem
-                label="Manage local projects..."
-                icon="icons/btn-edit.svg"
-                onclick={(evt) => show.manageProjectsDlg = true}
-            ></MenuItem>
-            <MenuSeparator/>
-            <MenuItem
-                label="Search projects..."
-                icon="icons/btn-find.svg"
-                onclick={(evt) => show.browseProjectsDlg = true}
-            ></MenuItem>
-        </DropdownButton>
-        
-        <ManageProjectsDlg 
-            bind:shown={show.manageProjectsDlg}
-        />
+        <UserCtrl />
+        <ProjectCtrl />
     </RibbonSection>
 
     <RibbonGap></RibbonGap>

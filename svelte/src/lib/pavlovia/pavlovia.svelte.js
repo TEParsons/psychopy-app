@@ -1,7 +1,28 @@
-import { randint, randof } from "$lib/utils/tools/random";
+export { default as UserCtrl } from "./UserCtrl.svelte";
+export { default as ProjectCtrl } from "./ProjectCtrl.svelte";
 
-export { default as PavloviaUsers } from "./users.json";
-export { default as PavloviaProjects } from "./projects.json";
+import { randint, randof } from "$lib/utils/tools/random";
+import { electron } from "$lib/globals.svelte";
+
+export var users = $state({});
+export var projects = $state({});
+
+export async function loadProjects() {
+    // no saved users if not in electron
+    if (!electron) {
+        return
+    }
+    // get file path
+    let file = await electron.paths.pavlovia.projects();
+    // get file contents
+    let content = await electron.files.load(file);
+    // parse JSON
+    let data = JSON.parse(content);
+    // apply
+    Object.assign(users, data)
+
+    return users
+}
 
 export var auth = $state({
     root: "https://gitlab.pavlovia.org/",
