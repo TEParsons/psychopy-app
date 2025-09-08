@@ -89,7 +89,11 @@
         return true
     })
 
-    let showTooltip = $state.raw(false)
+    let showTooltip = $state.raw(false);
+
+    let grow = $derived(
+        ["code", "multi"].includes(param.inputType)
+    )
 </script>
 
 {#if shown && param.inputType !== "hidden"}
@@ -97,6 +101,7 @@
         class=param-ctrl 
         id={name}
         style:grid-template-rows={inline ? "[label] min-content [warning] min-content" : "[label] min-content [ctrl] auto [warning] min-content"}
+        style:flex-grow={grow ? 1 : 0}
     >
         <label 
             class=param-label 
@@ -180,7 +185,8 @@
         display: flex;
         gap: .5rem;
         flex-direction: row;
-        align-items: center;
+        align-items: stretch;
+        height: 100%;
     }
 
     .warning {

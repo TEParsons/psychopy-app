@@ -13,6 +13,11 @@
     } = $props();
 
     let pageIndex = $state()
+
+    // horizontal layout for CodeComponent
+    let horizontal = $derived(
+        element.tag === "CodeComponent"
+    )
 </script>
 
 <div class=params-container>
@@ -46,7 +51,11 @@
                         (value) => {pageIndex = categ}
                     }
                 >
-                    <div class=params-panel>
+                    <div 
+                        class=params-panel
+                        style:flex-direction={horizontal ? "row" : "column"}
+                        style:width={horizontal ? "65rem" : "45rem"}
+                    >
                         <!-- start ctrl, if needed -->
                         {#if "startVal" in params}
                             <StartStopCtrl
@@ -80,13 +89,13 @@
 
 <style>
     .params-panel {
-        display: grid;
-        grid-auto-flow: row;
-        align-content: start;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
         gap: 1rem;
-        width: 45rem;
         box-sizing: border-box;
         padding: 1rem;
+        height: 100%;
     }
     .uncategorised-params-panel {
         display: grid;
