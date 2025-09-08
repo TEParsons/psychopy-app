@@ -27,15 +27,33 @@ const createWindow = () => {
     height: 720,
     show: false,
   });
-  
   win.removeMenu();
+  // start the app
+  // placeholder: currently doing this via mprocs, could it be started here?
+  // load the app
+  win.loadURL('http://localhost:5173/builder');
+  // spin up Python process
+  // let py = spawn(
+  //   "python", [
+  //     "F://GitHub/psychopy/psychopy/liaison.py",
+  //     "localhost:1234"
+  //   ]
+  // );
   // switch to window after 5s (or when ready, if longer)
-  let mintime = false;
-  let ready = false;
-  setTimeout(() => mintime = true, 5000)
-  win.once('ready-to-show', () => ready = true);
+  let ready = {
+    win: false,
+    py: true,
+    mintime: false
+  }
+  // after 5s, mark that minimum splash time has passed
+  setTimeout(() => ready.mintime = true, 5000)
+  // when the window has loaded, mark that it's ready
+  win.once('ready-to-show', () => ready.win = true);
+  // when the Python process has started, mark that it's ready
+  // placeholder
+  // when everything is ready, show the app
   let interval = setInterval(() => {
-    if (ready && mintime) {
+    if (Object.values(ready).every(val => val)) {
       splash.close();
       win.show();
       win.maximize();
@@ -43,10 +61,7 @@ const createWindow = () => {
       win.webContents.openDevTools();
       clearInterval(interval);
     }
-  }, 10)  
-  
-  // and load the app
-  win.loadURL('http://localhost:5173/builder');
+  }, 10)
 };
 
 
