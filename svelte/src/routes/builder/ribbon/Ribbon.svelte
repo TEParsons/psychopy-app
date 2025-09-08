@@ -14,11 +14,12 @@
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
+    import { python } from "$lib/globals.svelte.js";
     import SavePrompt from "./SavePrompt.svelte"
-    import { FindDialog } from "../../../lib/dialogs/find/index.js";
-    import { DeviceManagerDialog } from "../../../lib/dialogs/deviceManager/index.js"
+    import { FindDialog } from "$lib/dialogs/find/index.js";
+    import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
-    import PrefsDialog from '../../../lib/dialogs/preferences/PrefsDialog.svelte';
+    import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
     import { IconButton, DropdownButton, SwitchButton } from '$lib/utils/buttons';
     import { login, logout, PavloviaUsers } from '$lib/pavlovia/pavlovia.svelte';
     import ManageProjectsDlg from '$lib/dialogs/projects/manage/ManageProjectsDlg.svelte';
@@ -203,6 +204,42 @@
             disabled={current.experiment === null}
         />        
     </RibbonSection>
+
+    {#if python}
+        <RibbonSection label=Desktop icon="icons/rbn-desktop.svg">
+                <IconButton 
+                    icon="icons/btn-compilepy.svg" 
+                    label="Write experiment as a .py file" 
+                    onclick={(evt) => console.log("COMPILE PY")}
+                    disabled={current.experiment === null}
+                    borderless
+                />
+                <IconButton 
+                    icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
+                    label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
+                    onclick={(evt) => console.log("RUN PY")}
+                    disabled={current.experiment === null}
+                    borderless
+                />
+        </RibbonSection>
+
+        <RibbonSection label=Browser icon="icons/rbn-browser.svg">
+            <IconButton 
+                    icon="icons/btn-compilejs.svg" 
+                    label="Write experiment as a .js file" 
+                    onclick={(evt) => console.log("COMPILE JS")}
+                    disabled={current.experiment === null}
+                    borderless
+                />
+                <IconButton 
+                    icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
+                    label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment in browser" 
+                    onclick={(evt) => console.log("RUN JS")}
+                    disabled={current.experiment === null}
+                    borderless
+                />
+        </RibbonSection>
+    {/if}
 
     <!-- <RibbonSection id=desktop label=Desktop icon="icons/rbn-desktop.svg">
         <IconButton id="ribbon-btn-compilepy" icon="icons/btn-compilepy.svg" label="Compile to Python" />

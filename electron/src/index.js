@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -26,23 +26,19 @@ const createWindow = () => {
     width: 1080,
     height: 720,
     show: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
   win.removeMenu();
   // start the app
   // placeholder: currently doing this via mprocs, could it be started here?
   // load the app
   win.loadURL('http://localhost:5173/builder');
-  // spin up Python process
-  // let py = spawn(
-  //   "python", [
-  //     "F://GitHub/psychopy/psychopy/liaison.py",
-  //     "localhost:1234"
-  //   ]
-  // );
   // switch to window after 5s (or when ready, if longer)
   let ready = {
     win: false,
-    py: true,
+    py: false,
     mintime: false
   }
   // after 5s, mark that minimum splash time has passed
@@ -50,7 +46,7 @@ const createWindow = () => {
   // when the window has loaded, mark that it's ready
   win.once('ready-to-show', () => ready.win = true);
   // when the Python process has started, mark that it's ready
-  // placeholder
+  ipcMain.handle('python-ready', async (evt, value) => ready.py = value)
   // when everything is ready, show the app
   let interval = setInterval(() => {
     if (Object.values(ready).every(val => val)) {

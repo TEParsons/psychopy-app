@@ -5,7 +5,7 @@
         /** @prop @type {string|undefined} Icon for this section, if any */
         icon=undefined,
         /** @interface */
-        children
+        children=undefined
     } = $props()
     
 </script>
@@ -13,7 +13,7 @@
 <div
     class=ribbon-section
 >
-    {@render children()}
+    {@render children?.()}
     <div
         class=ribbon-section-label
     >
