@@ -27,35 +27,33 @@
     let siblings = getContext("siblings")
     // get own handle
     let handle;
-    // get own index
-    let index = $derived(siblings.all.indexOf(handle))
 
-    // update parent on selection
+    
     $effect(() => {
+        // if siblings not initialised yet, do nothing
+        if (siblings.selected === undefined) {
+            return
+        }
+        // show self if no page is shown
+        if (siblings.selected.index === undefined) {
+            selected = true;
+            siblings.selected.index = handle;
+        }
+        // update parent on selection
         if (selected) {
-            siblings.current = index;
+            siblings.selected.data = data;
+            siblings.selected.page = children;
         }
     })
     
     // register self with notebook on mount
     onMount(() => {
         siblings.all.push(handle)
-        siblings.data.push(data)
-    })
-    // show self if no page is shown
-    $effect(() => {
-        if (siblings.current === undefined) {
-            siblings.current = index;
-            selected = true;
-        }
     })
     // unregister on destroy
     onDestroy(() => {
-        if (siblings.all[index] !== undefined) {
-            delete siblings.all[index]
-        }
-        if (siblings.data[index] !== undefined) {
-            delete siblings.data[index]
+        if (siblings.all[siblings.all.indexOf(handle)] !== undefined) {
+            delete siblings.all[siblings.all.indexOf(handle)]
         }
     })
 
@@ -80,12 +78,13 @@
 >
     {@render contextMenu?.()}
 </Menu>
+
 <button
     class="notebook-tab"
     class:current={selected}
     class:listbook={siblings.book === "listbook"}
     class:notebook={siblings.book === "notebook"}
-    onclick={() => selected = true}
+    onclick={evt => selected = true}
     oncontextmenu={(evt) => {
         evt.preventDefault();
         contextMenuParams.pos.x = evt.pageX;
@@ -125,7 +124,7 @@
                 // do close method
                 close(evt);
                 // select default tab
-                siblings.current = undefined;
+                siblings.selected.index = undefined;
             }}
             onmouseenter={() => {closeHovered = true}}
             onmouseleave={() => {closeHovered = false}}
@@ -144,15 +143,6 @@
         </div>
     {/if}
 </button>
-{#if selected}
-    <div 
-        class="notebook-page"
-        class:listbook={siblings.book === "listbook"}
-        class:notebook={siblings.book === "notebook"}
-    >
-        {@render children?.()}
-    </div>
-{/if}
 
 <style>
     .notebook-tab {

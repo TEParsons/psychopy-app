@@ -9,39 +9,66 @@
     } = $props()
 
     let pages = $state({
+        selected: {
+            index: undefined,
+            data: undefined,
+            page: undefined
+        },
         book: "listbook",
-        current: undefined,
-        buttons: 0,
         all: [],
-        data: []
     })
+    $inspect(pages)
 
     setContext("siblings", pages)
     $effect(() => {
-        onselect(pages.current, pages.data[pages.current])
+        onselect(pages.selected.index, pages.selected.data)
     })
 
 </script>
-
 <div 
     class=listbook
-    style:grid-template-rows="[start] repeat({pages.all.length + pages.buttons}, min-content) 1fr [end]"
 >
-    {@render children?.()}
-    <div class=listbook-tab-filler></div>
+    <div class=listbook-tabs>
+        {@render children?.()}
+    </div>
+    <div class=listbook-page>
+        {@render pages.selected.page?.()}
+    </div>
 </div>
 
 <style>
     .listbook {
         display: grid;
-        grid-template-columns: [tabs] max-content [pages] auto;
+        grid-template-columns: [tabs] min-content [page] auto;
         gap: 0;
         justify-items: stretch;
-        align-items: stretch;
+        align-items: start;
         margin: auto;
         height: 100%;
     }
-    .listbook-tab-filler {
+
+    .listbook-tabs {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-x: hidden;
+        overflow-y: auto;
         grid-column-start: tabs;
+        margin-right: -1px;
+        height: 100%;
+    }
+
+    .listbook-page {
+        position: relative;
+        height: auto;
+        overflow-y: auto;
+        width: 100%;
+        overflow-x: auto;
+        padding: .5rem;
+        box-sizing: border-box;
+        background-color: var(--base);
+        z-index: 1;
+        border: 1px solid var(--overlay);
+        grid-column-start: page;
     }
 </style>

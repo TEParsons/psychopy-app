@@ -7,8 +7,6 @@
     import AddDeviceDialog from "./addDevice/AddDeviceDialog.svelte";
     import { onMount } from "svelte";
 
-    $inspect(devices)
-
     let {
         /** @bindable @type {boolean} State controlling when this dialog is shown */
         shown=$bindable()

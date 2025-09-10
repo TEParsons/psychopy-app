@@ -10,41 +10,66 @@
     } = $props()
 
     let pages = $state({
-        book: "notebook",
-        current: undefined,
-        buttons: 0,
+        selected: {
+            index: undefined,
+            data: undefined,
+            page: undefined
+        },
+        book: "listbook",
         all: [],
-        data: []
     })
+    $inspect(pages)
 
     setContext("siblings", pages)
     $effect(() => {
-        onselect(pages.current, pages.data[pages.current])
+        onselect(pages.selected.index, pages.selected.data)
     })
-
-    let addHovered = $state.raw(false)
-
 </script>
 
 <div 
     class=notebook
-    style:grid-template-columns="[start] repeat({pages.all.length + pages.buttons}, min-content) 1fr [end]"
 >
-    {@render children?.()}
-    <div class=notebook-tab-filler></div>
+    <div class=notebook-tabs>
+        {@render children?.()}
+    </div>
+    <div class=notebook-page>
+        {@render pages.selected.page?.()}
+    </div>
 </div>
 
 <style>
     .notebook {
         display: grid;
-        grid-template-rows: [tabs] max-content [pages] auto;
+        grid-template-rows: [tabs] min-content [page] auto;
         gap: 0;
         justify-items: start;
         align-items: stretch;
         margin: auto;
         height: 100%;
     }
-    .notebook-tab-filler {
+
+    .notebook-tabs {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
         grid-row-start: tabs;
+        margin-bottom: -1px;
+        width: 100%;
+    }
+
+    .notebook-page {
+        position: relative;
+        height: auto;
+        overflow-y: auto;
+        width: 100%;
+        overflow-x: auto;
+        padding: .5rem;
+        box-sizing: border-box;
+        background-color: var(--base);
+        z-index: 1;
+        border: 1px solid var(--overlay);
+        grid-row-start: page;
     }
 </style>
