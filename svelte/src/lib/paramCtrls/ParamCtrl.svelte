@@ -1,6 +1,7 @@
 <script>
     import { mapping } from "./ctrls";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
+    import { current } from "../../routes/builder/globals.svelte";
 
     let {
         name,
@@ -132,6 +133,9 @@
             >
                 {#each param.allowedUpdates as ud}
                     <option value={ud}>{ud}</option>
+                {/each}
+                {#each current.experiment.updateTargets as ud}
+                    <option value="set during: {ud.name}">set during: {ud.name}</option>
                 {/each}
             </select>
         {/if}

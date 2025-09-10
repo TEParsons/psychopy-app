@@ -181,6 +181,21 @@ export class Experiment {
     pilotMode = $derived(this.settings.params['runMode'].val)
 
     /**
+     * List of all Static Components in this Experiment
+     */
+    updateTargets = $derived.by(() => {
+        let targets = [];
+        // iterate through Routines
+        for (let rt of Object.values(this.routines)) {
+            targets.push(
+                ...rt.updateTargets
+            )
+        }
+
+        return targets
+    })
+
+    /**
      * Get this Experiment as a JSON string.
      */
     toJSON() {
@@ -389,6 +404,21 @@ export class Routine {
 
         return results
     }
+
+    /**
+     * List of all Static Components in this Experiment
+     */
+    updateTargets = $derived.by(() => {
+        let targets = [];
+        // iterate through Routines
+        for (let comp of this.components) {
+            if (comp.tag === "StaticComponent") {
+                targets.push(comp)
+            }
+        }
+
+        return targets
+    })
 
     addComponent(comp) {
         // add to Components array
@@ -838,69 +868,79 @@ export class HasParams {
         let results = []
 
         for (let param of Object.values(this.params)) {
-            // get a static copy of param value
-            let val = $state.snapshot(param.val)
-            // if ignoring case, convert val and term to lowercase
-            if (!caseSensitive) {
-                val = String(val).toLowerCase()
-                searchTerm = String(searchTerm).toLowerCase()
+            // always look in param val
+            let targets = [
+                $state.snapshot(param.val)
+            ]
+            // look in updates too if it's "set during:"
+            if (String(param.updates).includes("set during:")) {
+                targets.push(
+                    $state.snapshot(param.updates)
+                )
             }
-            // placeholders for match details
-            let found = {
-                got: false,
-                index: undefined,
-                text: undefined
-            }
-            // use different method if using regex...
-            if (useRegex) {
-                // do a regex match
-                let reMatch = val.match(searchTerm)
-                // if found, get indices and string
-                if (reMatch) {
-                    found.got = true
-                    found.index = reMatch.index
-                    found.text = reMatch[0]
+            for (let val of targets) {
+                // if ignoring case, convert val and term to lowercase
+                if (!caseSensitive) {
+                    val = String(val).toLowerCase()
+                    searchTerm = String(searchTerm).toLowerCase()
                 }
-            } else {
-                // do a simple string match
-                if (val.includes(searchTerm)) {
-                    // if found, store text and index
-                    found.got = true
-                    found.index = val.indexOf(searchTerm)
-                    found.text = searchTerm
+                // placeholders for match details
+                let found = {
+                    got: false,
+                    index: undefined,
+                    text: undefined
                 }
-            }
-            // construct match object if found
-            if (found.got) {
-                // store information on text found
-                let match = {
-                    breadcrumbs: {},
-                    text: {
-                        before: val.slice(0, found.index),
-                        text: found.text,
-                        after: val.slice(found.index + found.text.length)
+                // use different method if using regex...
+                if (useRegex) {
+                    // do a regex match
+                    let reMatch = val.match(searchTerm)
+                    // if found, get indices and string
+                    if (reMatch) {
+                        found.got = true
+                        found.index = reMatch.index
+                        found.text = reMatch[0]
+                    }
+                } else {
+                    // do a simple string match
+                    if (val.includes(searchTerm)) {
+                        // if found, store text and index
+                        found.got = true
+                        found.index = val.indexOf(searchTerm)
+                        found.text = searchTerm
                     }
                 }
-                // add breadcrumbs
-                if (this instanceof Component) {
-                    match.breadcrumbs = {
-                        param: param,
-                        component: this,
-                        routine: this.routine
+                // construct match object if found
+                if (found.got) {
+                    // store information on text found
+                    let match = {
+                        breadcrumbs: {},
+                        text: {
+                            before: val.slice(0, found.index),
+                            text: found.text,
+                            after: val.slice(found.index + found.text.length)
+                        }
                     }
-                } else if (this instanceof StandaloneRoutine) {
-                    match.breadcrumbs = {
-                        param: param,
-                        routine: this
+                    // add breadcrumbs
+                    if (this instanceof Component) {
+                        match.breadcrumbs = {
+                            param: param,
+                            component: this,
+                            routine: this.routine
+                        }
+                    } else if (this instanceof StandaloneRoutine) {
+                        match.breadcrumbs = {
+                            param: param,
+                            routine: this
+                        }
+                    } else if (this instanceof LoopInitiator) {
+                        match.breadcrumbs = {
+                            param: param,
+                            loop: this
+                        }
                     }
-                } else if (this instanceof LoopInitiator) {
-                    match.breadcrumbs = {
-                        param: param,
-                        loop: this
-                    }
+                    // add to results
+                    results.push(match)
                 }
-                // add to results
-                results.push(match)
             }
         }
 
@@ -1130,6 +1170,17 @@ export class StandaloneRoutine extends HasParams {
             }
         }
     }
+
+    /**
+     * Mimicks Routine.updateTargets, but as StandaloneRoutine has no children,
+     * returns `[this]` if this Routine can be an update target (which currently
+     *  none can)
+     */
+    updateTargets = $derived.by(() => {
+        let targets = [];
+
+        return targets
+    })
 }
 
 export class Flow {
