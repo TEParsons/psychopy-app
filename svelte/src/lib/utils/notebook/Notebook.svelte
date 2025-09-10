@@ -15,7 +15,7 @@
             data: undefined,
             page: undefined
         },
-        book: "listbook",
+        book: "notebook",
         all: [],
     })
     $inspect(pages)

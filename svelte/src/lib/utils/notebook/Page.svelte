@@ -200,28 +200,4 @@
         background-color: var(--mantle);
         background: var(--mantle) linear-gradient(transparent 0%, transparent 75%, rgba(0, 0, 0, 0.01) 100%);
     }
-    .notebook-page {
-        position: relative;
-        height: auto;
-        overflow-y: auto;
-        width: 100%;
-        overflow-x: auto;
-        padding: .5rem;
-        box-sizing: border-box;
-        background-color: var(--base);
-        z-index: 1;
-        border: 1px solid var(--overlay);
-    }
-    .notebook-page.notebook {
-        grid-row-start: pages;
-        grid-column-start: start;
-        grid-column-end: end;
-    }
-    .notebook-page.listbook {
-        grid-column-start: pages;
-        grid-row-start: start;
-        grid-row-end: end;
-    }
-    
-
 </style>
