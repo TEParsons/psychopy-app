@@ -15,16 +15,13 @@
 
 
 <div class=device-details-pnl>
-    
-    <div class=notebook-container>
-        <ParamsNotebook
-            element={device}
-            bind:valid={valid}
-        />
-        <DeviceProfile 
-            profile={device.profile}
-        />
-    </div>
+    <ParamsNotebook
+        element={device}
+        bind:valid={valid}
+    />
+    <DeviceProfile 
+        profile={device.profile}
+    />
 </div>
 
 <style>
@@ -36,10 +33,8 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        padding: 1rem;
-    }
-    .notebook-container {
-        margin: -1rem;
+        justify-content: start;
+        box-sizing: border-box;
         position: relative;
     }
 </style>

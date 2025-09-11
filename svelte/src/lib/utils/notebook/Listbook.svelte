@@ -61,7 +61,7 @@
         position: relative;
         height: auto;
         overflow-y: auto;
-        width: 100%;
+        height: 100%;
         overflow-x: auto;
         padding: .5rem;
         box-sizing: border-box;

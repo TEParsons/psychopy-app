@@ -12,6 +12,10 @@
         shown=$bindable()
     } = $props()
 
+    function className(name) {
+        return name.match(/(?<=\.)\w+$/)[0]
+    }
+
     // track selected device
     let currentDevice = $state.raw(undefined)
 
@@ -131,7 +135,7 @@
                 delete dev.params.deviceLabel
             }
             // populate
-            dev['tag'] = dev['__name__']
+            dev['tag'] = className(dev.__cls__)
             devices[key] = new Device(dev['tag'], dev.profile);
             devices[key].fromJSON(dev)
             // set restore point
@@ -226,6 +230,8 @@
 <style>
     .container {
         padding: 1rem;
+        height: 100%;
+        box-sizing: border-box;
     }
     .placeholder-page {
         padding: 0 1rem;

@@ -19,6 +19,9 @@
 
         return name;
     }
+    function className(name) {
+        return name.match(/(?<=\.)\w+$/)[0]
+    }
     let selected = $state({
         device: undefined
     })
@@ -38,6 +41,14 @@
      * Reset this dialog 
      */
     async function populate(evt) {
+        // no name
+        param.val = ""
+        // nothing selected
+        selected.device = undefined;
+        // close all panels
+        for (let key in panelsOpen) {
+            panelsOpen[key] = false;
+        }
         // get devices from Python
         let resp = await python.liaison.send({
             object: "DeviceManager",
@@ -47,14 +58,6 @@
         availableDevices.profiles = resp.result;
         // mark as done
         availableDevices.pending = false;
-        // nothing selected
-        selected.device = undefined;
-        // no name
-        param.val = ""
-        // close all panels
-        for (let key in panelsOpen) {
-            panelsOpen[key] = false;
-        }
     }
 
     let validName = $state({
@@ -75,7 +78,7 @@
     buttons={{
         OK: (evt) => {
             // populate
-            devices[param.val] = new Device(selected.device['__name__'], selected.device.profile);
+            devices[param.val] = new Device(className(selected.device.deviceClass) + "Backend", selected.device.profile);
             devices[param.val].params['name'].val = param.val;
         },
         CANCEL: (evt) => {}
@@ -97,7 +100,7 @@
             {#if !availableDevices.pending}
                 {#each Object.entries(availableDevices.profiles) as [deviceType, profiles]}
                     <PanelButton
-                        label={titleCase(deviceType.match(/(?<=\.)\w+$/)[0])}
+                        label={titleCase(className(deviceType))}
                         bind:open={panelsOpen[deviceType]}
                     >
                         <div class=device-category>

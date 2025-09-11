@@ -96,6 +96,7 @@
         box-sizing: border-box;
         padding: 1rem;
         height: 100%;
+        min-height: 10rem;
     }
     .uncategorised-params-panel {
         display: grid;
