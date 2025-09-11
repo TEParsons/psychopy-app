@@ -43,7 +43,18 @@ export function startPython() {
         // resolve promise
         python.socket = new WebSocket(`ws://${python.liaison.address}`);
         // listen for Python connection
-        python.socket.onopen = evt => console.log(`Opened websocket on ws://${python.liaison.address}`)
+        python.socket.onopen = evt => {
+          // log open
+          console.log(`Opened websocket on ws://${python.liaison.address}`);
+          // initialise DeviceManager
+          python.liaison.send({
+            'object': "DeviceManager",
+            'method': "init"
+          }).then(evt => python.liaison.send({
+            'object': "DeviceManager",
+            'method': "registerMethods"
+          }))
+        }
         python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}`)
         python.socket.onerror = evt => console.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // listen for messages
@@ -67,12 +78,11 @@ function send(msg, timeout=1000) {
   )
 
   function check(resolve, reject) {
-    console.log("Checking...")
     setTimeout(() => {
       if (resp !== undefined) {
         let data = JSON.parse(resp.data)
-        message(python.output.liaison, "RESP", data.result)
-        resolve(data.result)
+        message(python.output.liaison, "RESP", data)
+        resolve(data)
       } else {
         check(resolve, reject)
       }

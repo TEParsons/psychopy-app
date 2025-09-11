@@ -1,13 +1,12 @@
 <script>
     import { Dialog } from "$lib/utils/dialog";
     
-    import DeviceProfiles from "../devices.json";
     import { PanelButton } from "$lib/utils/buttons";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
     import { Device, Param } from "$lib/experiment/experiment.svelte"
-    import { setContext } from "svelte";
-    import { devices } from "$lib/globals.svelte";
+    import { onMount, setContext } from "svelte";
+    import { devices, python } from "$lib/globals.svelte";
 
     let {
         shown=$bindable()
@@ -20,21 +19,6 @@
 
         return name;
     }
-
-    let sortedProfiles = $derived.by(() => {
-        let output = {};
-        
-        for (let [key, val] of Object.entries(DeviceProfiles)) {
-            // make sure class key exists in output
-            if (!(val.__name__ in output)) {
-                output[val.__name__] = {}
-            }
-            // add device
-            output[val.__name__][key] = val
-        }
-
-        return output
-    })
     let selected = $state({
         device: undefined
     })
@@ -45,8 +29,24 @@
 
     let panelsOpen = $state({})
 
-    /** Reset this dialog */
-    export function clear(evt) {
+    let availableDevices = $state({
+        pending: true,
+        profiles: {}
+    });
+
+    /** 
+     * Reset this dialog 
+     */
+    async function populate(evt) {
+        // get devices from Python
+        let resp = await python.liaison.send({
+            object: "DeviceManager",
+            method: "getAvailableDevices"
+        })
+        // populate profiles array
+        availableDevices.profiles = resp.result;
+        // mark as done
+        availableDevices.pending = false;
         // nothing selected
         selected.device = undefined;
         // no name
@@ -71,7 +71,7 @@
     id=add-device
     title="Add device..."
     bind:shown={shown}
-    onopen={clear}
+    onopen={populate}
     buttons={{
         OK: (evt) => {
             // populate
@@ -94,21 +94,25 @@
             Available devices
         </div>
         <div class=devices-list>
-            {#each Object.entries(sortedProfiles) as [deviceType, profiles]}
-                <PanelButton
-                    label={titleCase(deviceType)}
-                    bind:open={panelsOpen[deviceType]}
-                >
-                    <div class=device-category>
-                        {#each Object.entries(profiles) as [key, device]}
-                            <DeviceListItem
-                                key={key}
-                                device={device}
-                            ></DeviceListItem>
-                        {/each}
-                    </div>
-                </PanelButton>
-            {/each}
+            {#if !availableDevices.pending}
+                {#each Object.entries(availableDevices.profiles) as [deviceType, profiles]}
+                    <PanelButton
+                        label={titleCase(deviceType.match(/(?<=\.)\w+$/)[0])}
+                        bind:open={panelsOpen[deviceType]}
+                    >
+                        <div class=device-category>
+                            {#each Object.entries(profiles) as [key, device]}
+                                <DeviceListItem
+                                    key={key}
+                                    device={device}
+                                ></DeviceListItem>
+                            {/each}
+                        </div>
+                    </PanelButton>
+                {/each}
+            {:else}
+                <div class=loading-msg>Scanning devices...</div>
+            {/if}
         </div>
     </div>
 </Dialog>
@@ -133,5 +137,8 @@
     .device-category {
         padding: 1rem;
         padding-top: .5rem;
+    }
+    .loading-msg {
+        padding: 1rem;
     }
 </style>

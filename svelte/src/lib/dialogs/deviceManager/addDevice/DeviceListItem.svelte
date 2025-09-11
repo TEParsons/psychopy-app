@@ -38,7 +38,7 @@
         onfocusout={() => hovered = false}
         role=none
     >
-        {device.profile.deviceName}
+        {device.deviceName}
     </label>
     {#if hovered}
         <div 
@@ -46,7 +46,7 @@
             transition:fade
         >
             <DeviceProfile
-                profile={device.profile}
+                profile={device}
             ></DeviceProfile>
         </div>
     {/if}
