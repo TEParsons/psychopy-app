@@ -18,7 +18,6 @@
         book: "notebook",
         all: [],
     })
-    $inspect(pages)
 
     setContext("siblings", pages)
     $effect(() => {

@@ -17,7 +17,6 @@
         book: "listbook",
         all: [],
     })
-    $inspect(pages)
 
     setContext("siblings", pages)
     $effect(() => {
