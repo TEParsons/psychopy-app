@@ -1,7 +1,7 @@
 const { ipcRenderer, contextBridge } = require('electron');
-// const fs = require("fs");
 
 
+// details about Electron process
 const electron = {
   paths: {
     devices: () => ipcRenderer.invoke("electron.paths.devices").then(resp => resp),
@@ -17,5 +17,12 @@ const electron = {
 };
 contextBridge.exposeInMainWorld('electron', electron)
 
-// placeholder: call this when Python has started
-ipcRenderer.invoke("python-ready", true)
+// details about Python process
+let python = {
+  details: () => ipcRenderer.invoke("python.details").then(resp => resp),
+  output: () => ipcRenderer.invoke("python.output").then(resp => resp),
+  liaison: {
+    send: (message) => ipcRenderer.invoke("python.liaison.send", message).then(resp => resp)
+  }
+}
+contextBridge.exposeInMainWorld('python', python)

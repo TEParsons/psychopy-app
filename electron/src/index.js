@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
+const { python, startPython } = require("./python.js");
+
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -38,26 +40,29 @@ const createWindow = () => {
   // placeholder: currently doing this via mprocs, could it be started here?
   // load the app
   win.loadURL('http://localhost:5173/builder');
+  // start python
+  startPython();
   // switch to window after 5s (or when ready, if longer)
   let ready = {
     win: false,
-    py: false,
     mintime: false
   }
   // after 5s, mark that minimum splash time has passed
   setTimeout(() => ready.mintime = true, 5000)
   // when the window has loaded, mark that it's ready
   win.once('ready-to-show', () => ready.win = true);
-  // when the Python process has started, mark that it's ready
-  ipcMain.handle('python-ready', async (evt, value) => ready.py = value)
   // when everything is ready, show the app
   let interval = setInterval(() => {
     if (Object.values(ready).every(val => val)) {
+      // close the splash screen
       splash.close();
+      // show the app
       win.show();
       win.maximize();
       win.focus();
+      // OPTIONAL show dev tools
       win.webContents.openDevTools();
+      // stop waiting
       clearInterval(interval);
     }
   }, 10)
@@ -95,6 +100,10 @@ app.on('window-all-closed', () => {
 
 /* handlers which can be invoked by electron */
 
+// python
+ipcMain.handle("python.details", (evt) => python.details)
+ipcMain.handle("python.liaison.send", (evt, message) => python.liaison.send(message))
+ipcMain.handle("python.output", (evt) => python.output)
 // paths
 ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json"))
 ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json"))
