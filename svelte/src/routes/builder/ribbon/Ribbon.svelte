@@ -9,7 +9,7 @@
         undo,
         redo,
         // experiment
-    } from './callbacks.js'
+    } from './callbacks.svelte.js'
     
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';

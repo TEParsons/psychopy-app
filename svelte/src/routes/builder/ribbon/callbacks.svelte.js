@@ -8,7 +8,11 @@ import path from "path-browserify";
 
 export function file_new() {
     // clear current file
-    current.file = null;
+    current.file = {
+        name: "untitled.psyexp",
+        stem: "untitled",
+        file: undefined
+    };
     // clear experiment
     current.experiment.reset()
     // focus trial
@@ -36,7 +40,7 @@ export async function file_open() {
         current.file = {
             name: path.basename(file[0]),
             stem: path.basename(file[0], ".psyexp"),
-            file: file
+            file: file[0]
         }
     } else {
         // get file handle from system dialog
@@ -94,7 +98,7 @@ export async function file_save() {
     // diverge here based on whether there is a current file...
     if (current.file.file) {
         if (electron) {
-            await electron.files.save(current.file.file, content)
+            await electron.files.save($state.snapshot(current.file.file), content)
         } else {
             // get file writable from handle
             let file = await current.file.file.createWritable();
