@@ -32,34 +32,13 @@
 
     let panelsOpen = $state({})
 
-    let availableDevices = $state({
-        pending: true,
-        profiles: {}
-    });
-
-    /** 
-     * Reset this dialog 
-     */
-    async function populate(evt) {
-        // no name
-        param.val = ""
-        // nothing selected
-        selected.device = undefined;
-        // close all panels
-        for (let key in panelsOpen) {
-            panelsOpen[key] = false;
-        }
-        // get devices from Python
-        let resp = await python.liaison.send({
-            command: "call",
+    async function getAvailableDevices() {
+        return await python.liaison.send({
+            command: "run",
             args: [
-                "psychopy.hardware:DeviceManager.getAvailableDevices"
+                "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
             ]
-        }, 10000)
-        // populate profiles array
-        availableDevices.profiles = resp;
-        // mark as done
-        availableDevices.pending = false;
+        }, 20000)
     }
 
     let validName = $state({
@@ -76,7 +55,16 @@
     id=add-device
     title="Add device..."
     bind:shown={shown}
-    onopen={populate}
+    onopen={evt => {
+        // no name
+        param.val = ""
+        // nothing selected
+        selected.device = undefined;
+        // close all panels
+        for (let key in panelsOpen) {
+            panelsOpen[key] = false;
+        }
+    }}
     buttons={{
         OK: (evt) => {
             // populate
@@ -104,7 +92,7 @@
                     <div class=loading-msg>Scanning devices...</div>
                 {/snippet}
 
-                {#each Object.entries(availableDevices.profiles) as [deviceType, profiles]}
+                {#each Object.entries(await getAvailableDevices()) as [deviceType, profiles]}
                     <PanelButton
                         label={titleCase(className(deviceType))}
                         bind:open={panelsOpen[deviceType]}

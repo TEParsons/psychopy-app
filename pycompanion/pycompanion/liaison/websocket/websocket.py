@@ -34,10 +34,17 @@ class WebsocketLiaison(BaseLiaison):
                     # parse it from JSON
                     message = json.loads(message)
                     # process it
-                    resp = {
-                        'response': self.process_command(message['command']),
-                        'id': message['id'],
-                    }
+                    try:
+                        resp = {
+                            'response': self.process_command(message['command']),
+                            'id': message['id'],
+                        }
+                    except Exception as err:
+                        # send errors to the websocket
+                        resp = {
+                            'error': str(err),
+                            'id': message['id'],
+                        }
                     # make sure resp is a JSON string
                     if not isinstance(resp, str):
                         try:

@@ -3,7 +3,7 @@ import re
 
 
 RE_IMPORT_STRING = re.compile(
-    r"^([\w\d_]+)(\.[\w\d_]+)*(:[\w\d_]+)?$"
+    r"^([\w\d_]+)(\.[\w\d_]+)*(:[\w\d_]+)?(\.[\w\d_]+)*$"
 )
 RE_RESOLVE_STRING = re.compile(
     r"^\$([\w\d_]+)(\.[\w\d_]+)*$"

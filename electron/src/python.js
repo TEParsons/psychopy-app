@@ -113,15 +113,19 @@ async function send(msg, timeout=1000) {
       // if ID matches, store and stop listening
       message(python.output.liaison, "RESP", data)
       python.socket.removeEventListener("message", lsnr)
-      // resolve to response
-      resolve(data.response)
+      // resolve or reject
+      if ("response" in data) {
+        resolve(data.response)
+      } else {
+        reject(data.error)
+      }
     }
     // listen for reply
     python.socket.addEventListener("message", lsnr)
     // timeout after
     setTimeout(evt => reject(evt), timeout)
   }).catch(reason => {
-    console.log("Message failed to send:", msg, reason)
+    console.log("Command failed:", msg, reason)
   })
 }
 
