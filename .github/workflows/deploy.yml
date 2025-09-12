@@ -11,15 +11,15 @@ jobs:
       uses: actions/checkout@v4
     - name: Install Node.js
       uses: actions/setup-node@v4
-      cwd: /svelte
+      working-directory: ./svelte
       with:
         node-version: 20
         cache: npm
     - name: Install dependencies
-      cwd: /svelte
+      working-directory: ./svelte
       run: npm i
     - name: build
-      cwd: /svelte
+      working-directory: ./svelte
       env:
         BASE_PATH: '/psychopy-svelte'
       run: |
