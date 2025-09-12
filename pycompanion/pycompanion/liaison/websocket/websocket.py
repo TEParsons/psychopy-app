@@ -7,6 +7,27 @@ from ..base import BaseLiaison
 from ..constants import START_MARKER, STOP_MARKER
 
 
+class LiaisonJSONEncoder(json.JSONEncoder):
+    """
+    JSON encoder which calls the `getJSON` method of an object (if it has one) to convert to a
+    string before JSONifying.
+    """
+    def default(self, o):
+        try:
+            # if object has a getJSON method, use it
+            if hasattr(o, "getJSON"):
+                return o.getJSON()
+        except:
+            # if there's an error in the getJSON method, continue so we can try regular encoding
+            pass
+
+        # otherwise behave as normal
+        try:
+            return json.JSONEncoder.default(self, o=o)
+        except TypeError:
+            return str(o)
+
+
 class WebsocketLiaison(BaseLiaison):
     def __init__(self, host="localhost", port="8001", companion=None):
         BaseLiaison.__init__(self, companion)
@@ -48,7 +69,7 @@ class WebsocketLiaison(BaseLiaison):
                     # make sure resp is a JSON string
                     if not isinstance(resp, str):
                         try:
-                            resp = json.dumps(resp)
+                            resp = json.dumps(resp, cls=LiaisonJSONEncoder)
                         except:
                             resp = str(resp)
                     # send response
@@ -89,7 +110,7 @@ class WebsocketLiaison(BaseLiaison):
         # make sure message is a JSON string
         if not isinstance(message, str):
             try:
-                message = json.dumps(message)
+                message = json.dumps(message, cls=LiaisonJSONEncoder)
             except:
                 message = str(message)
         # send
@@ -119,7 +140,7 @@ def send_message(liaison, message, timeout=1):
     """
     # make sure message is a JSON string
     if not isinstance(message, str):
-        message = json.dumps(message)
+        message = json.dumps(message, cls=LiaisonJSONEncoder)
     # connect and send
     with connect(f"ws://{liaison.host}:{liaison.port}") as com:
         # send message
