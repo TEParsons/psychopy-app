@@ -1,8 +1,6 @@
 // get component profiles from json file
-import ComponentProfiles from "$lib/experiment/components.json"
-import LoopProfiles from "$lib/experiment/loops.json"
-import DeviceProfiles from "$lib/experiment/devices.json"
-import PreferencesProfile from "$lib/preferences.json"
+
+import { componentProfiles, loopProfiles, deviceProfiles, preferencesProfile } from "./profiles.svelte";
 import { devices } from "$lib/globals.svelte"
 import { js2py, py2js } from "$lib/utils/transpiler"
 
@@ -821,19 +819,19 @@ export class HasParams {
     reset() {
         // get template
         let template
-        if (this.tag in ComponentProfiles) {
-            template = ComponentProfiles[this.tag]
-        } else if (this.tag in LoopProfiles) {
-            template = LoopProfiles[this.tag]
-        } else if (this.tag in DeviceProfiles) {
-            template = DeviceProfiles[this.tag]
+        if (this.tag in componentProfiles) {
+            template = componentProfiles[this.tag]
+        } else if (this.tag in loopProfiles) {
+            template = loopProfiles[this.tag]
+        } else if (this.tag in deviceProfiles) {
+            template = deviceProfiles[this.tag]
         } else if (this.tag === "Preferences") {
-            template = PreferencesProfile
+            template = preferencesProfile
         } else {
             console.warn(
                 `Failed to find template for ${this.tag}, reverting to UnknownComponent`
             )
-            template = ComponentProfiles["UnknownComponent"]
+            template = componentProfiles["UnknownComponent"]
         }
         // set plugin
         this.plugin = template.plugin;
