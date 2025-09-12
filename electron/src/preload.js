@@ -13,6 +13,8 @@ const electron = {
   files: {
     load: (file) => ipcRenderer.invoke("electron.files.load", file).then(resp => resp),
     save: (file, content) => ipcRenderer.invoke("electron.files.save", file, content).then(resp => resp),
+    openDialog: (options) => ipcRenderer.invoke("electron.files.openDialog", options).then(resp => resp),
+    saveDialog: (options) => ipcRenderer.invoke("electron.files.saveDialog", options).then(resp => resp),
   }
 };
 contextBridge.exposeInMainWorld('electron', electron)

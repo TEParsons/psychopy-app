@@ -1,6 +1,7 @@
-import { projects } from '$lib/globals.svelte.js';
+import { electron, projects } from '$lib/globals.svelte.js';
 import { current } from '../globals.svelte.js';
 import xmlFormat from 'xml-formatter';
+import path from "path-browserify";
 
 
 /* File */
@@ -15,25 +16,55 @@ export function file_new() {
 }
 
 export async function file_open() {
-    // get file handle from system dialog
-    let handle = await window.showOpenFilePicker({
-        types: [{
-            description: "PsychoPy Experiments",
-            accept: {
-                "application/xml": [".psyexp"]
-            }
-        }]
-    });
-    // set current file from result
-    current.file = handle[0]
-    // get file blob from handle
-    let file = await handle[0].getFile();
+    let content
+    if (electron) {
+        // get file path from electron dialog
+        let file = await electron.files.openDialog({
+            properties: ["openFile"],
+            filters: [
+                { name: "PsychoPy Experiments", extensions: ["psyexp"] },
+                { name: 'All Files', extensions: ["*"] }
+            ]
+        })
+        // abort if no file
+        if (file === undefined) {
+            return
+        }
+        // read content
+        content = await electron.files.load(file[0])
+        // populate current.file
+        current.file = {
+            name: path.basename(file[0]),
+            stem: path.basename(file[0], ".psyexp"),
+            file: file
+        }
+    } else {
+        // get file handle from system dialog
+        let handle = await window.showOpenFilePicker({
+            types: [{
+                description: "PsychoPy Experiments",
+                accept: {
+                    "application/xml": [".psyexp"]
+                }
+            }]
+        });
+        // get file blob from handle
+        let file = await handle[0].getFile();
+        // get content from blob
+        content = await file.text()
+        // populate current.file
+        current.file = {
+            name: file.name,
+            stem: file.name.replace(".psyexp", ""),
+            file: file
+        }
+    }
     // load xml
     let xml_parser = new DOMParser()
-    let document = xml_parser.parseFromString(await file.text(), "application/xml");
+    let document = xml_parser.parseFromString(content, "application/xml");
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment.fromXML(file.name.replace(".psyexp", ""), node);
+    current.experiment.fromXML(current.file.stem, node);
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
@@ -42,14 +73,14 @@ export async function file_open() {
     // is file a known project?
     for (let project of Object.values(projects)) {
         // placeholder: how do we query local folder?
-        if (project.id.endsWith(file.name.replace(".psyexp", ""))) {
+        if (project.id.endsWith(current.file.stem)) {
             current.project = project
         }
     }
     // mark as no longer modified
     current.experiment.history.clear()
 
-    console.log(`Loaded experiment ${file.name}:`, current.experiment);
+    console.log(`Loaded experiment '${current.file.name}':`, current.experiment);
 }
 
 export async function file_save() {
@@ -61,35 +92,66 @@ export async function file_save() {
     // make human readable
     content = xmlFormat(content)
     // diverge here based on whether there is a current file...
-    if (current.file) {
-        // get file writable from handle
-        let handle = current.file
-        let file = await handle.createWritable();
-        // write to file
-        file.seek(0);
-        file.write(content);
-        file.close();
+    if (current.file.file) {
+        if (electron) {
+            await electron.files.save(current.file.file, content)
+        } else {
+            // get file writable from handle
+            let file = await current.file.file.createWritable();
+            // write to file
+            file.seek(0);
+            file.write(content);
+            file.close();
+        }
         // mark as no longer modified
         current.experiment.history.clear()
     } else {
-        await file_save_as()
+        return file_save_as()
     }
-    
 }
 
 export async function file_save_as() {
-    // open a file picker
-    let handle = await window.showSaveFilePicker({
-        types: [{
-            description: "PsychoPy Experiment",
-            accept: {
-                "application/xml": [".psyexp"]
-            }
-        }],
-        suggestedName: current.experiment.filename + ".psyexp"
-    });
-    // set current file from result
-    current.file = handle;
+    if (electron) {
+        // get file path from electron dialog
+        let file = await electron.files.saveDialog({
+            defaultPath: current.experiment.filename,
+            filters: [
+                { name: "PsychoPy Experiments", extensions: ["psyexp"] },
+                { name: 'All Files', extensions: ["*"] }
+            ]
+        })
+        console.log(file)
+        // abort if no file
+        if (file === undefined) {
+            return
+        }
+        // populate current.file
+        current.file = {
+            name: path.basename(file[0]),
+            stem: path.basename(file[0], ".psyexp"),
+            file: file
+        }
+    } else {
+        // open a file picker
+        let handle = await window.showSaveFilePicker({
+            types: [{
+                description: "PsychoPy Experiment",
+                accept: {
+                    "application/xml": [".psyexp"]
+                }
+            }],
+            suggestedName: current.experiment.filename + ".psyexp"
+        });
+        // get file blob from handle
+        let file = await handle[0].getFile();
+        // populate current.file
+        current.file = {
+            name: file.name,
+            stem: file.name.replace(".psyexp", ""),
+            file: file
+        }
+    }
+    
     // save
     await file_save()
 }

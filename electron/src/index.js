@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
@@ -8,6 +8,8 @@ const { python, startPython } = require("./python.js");
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+var win;
 
 const createWindow = () => {
   // create splash
@@ -26,7 +28,7 @@ const createWindow = () => {
   splash.show();
 
   // create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
     width: 1080,
     height: 720,
@@ -111,5 +113,7 @@ ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData
 ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json"))
 ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json"))
 // file interface
+ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options))
+ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options))
 ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'}))
 ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8'}))

@@ -139,11 +139,11 @@
     id="loop-{element.name}" 
     title={element.name}
     bind:shown={showDialog} 
-    onopen={() => element.restore.set()}
+    onopen={() => element.initiator.restore.set()}
     buttons={{
         OK: (evt) => {}, 
-        APPLY: (evt) => element.restore.set(),
-        CANCEL: (evt) => element.restore.apply(), 
+        APPLY: (evt) => element.initiator.restore.set(),
+        CANCEL: (evt) => element.initiator.restore.apply(), 
     }}
     buttonsDisabled={btnsDisabled}
 >
