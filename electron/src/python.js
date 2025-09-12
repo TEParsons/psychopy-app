@@ -93,21 +93,34 @@ export async function startPython() {
 }
 
 function send(msg, timeout=1000) {
+  // generate random ID
+  let msgid = crypto.randomUUID()
+  // send message with ident
   python.socket.send(
-    JSON.stringify(msg)
+    JSON.stringify({
+      command: msg,
+      id: msgid
+    })
   );
 
   return new Promise((resolve, reject) => {
+    // define listener to find reply then remove itself
+    let lsnr = evt => {
+      // parse reply
+      let data = JSON.parse(evt.data)
+      // check ID
+      console.log(data)
+      if (data.id !== msgid) {
+        return
+      }
+      // if ID matches, store and stop listening
+      message(python.output.liaison, "RESP", data)
+      python.socket.removeEventListener("message", lsnr)
+      // resolve to response
+      resolve(data.response)
+    }
     // listen for reply
-    python.socket.addEventListener(
-      "message", evt => {
-        // parse reply
-        let data = JSON.parse(evt.data)
-        message(python.output.liaison, "RESP", data)
-        // resolve
-        resolve(data)
-      }, {once: true}
-    )
+    python.socket.addEventListener("message", lsnr)
     // timeout after
     setTimeout(evt => reject(evt), timeout)
   })

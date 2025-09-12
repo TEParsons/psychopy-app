@@ -32,9 +32,12 @@ class WebsocketLiaison(BaseLiaison):
                     # store message
                     self.messages.append(message)
                     # parse it from JSON
-                    command = json.loads(message)
+                    message = json.loads(message)
                     # process it
-                    resp = self.process_command(command)
+                    resp = {
+                        'response': self.process_command(message['command']),
+                        'id': message['id'],
+                    }
                     # make sure resp is a JSON string
                     if not isinstance(resp, str):
                         try:
