@@ -1,4 +1,4 @@
-import { electron } from "$lib/globals.svelte";
+import { electron, python } from "$lib/globals.svelte";
 
 
 /**
@@ -27,22 +27,32 @@ export function iterateName(name) {
  * 
  * @param param Param to get options for
  */
-export function optionsFromParam(param) {
+export async function optionsFromParam(param) {
         let output = [];
         // if either allowed labels or values are a Python function, execute it
         if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
-            if (electron) {
-
+            if (python) {
+                param.allowedVals = await python.liaison.send({
+                    command: "run",
+                    args: [param.allowedVals.replace("python:///", "")]
+                }, 10000).catch(
+                    (reason) => console.log(`Failed to get allowedVals for param ${param.name} (${param.allowedVals}, ${reason})`)
+                )
             } else {
-                // placeholder: no options to ctrl is disabled
+                // disable ctrl
                 param.allowedVals = []
             }
         }
         if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
-            if (electron) {
-
+            if (python) {
+                param.allowedLabels = await python.liaison.send({
+                    command: "run",
+                    args: [param.allowedLabels.replace("python:///", "")]
+                }, 10000).catch(
+                    (reason) => console.log(`Failed to get allowedLabels for param ${param.name} (${param.allowedLabels}, ${reason})`)
+                )
             } else {
-                // placeholder: no options to ctrl is disabled
+                // disable ctrl
                 param.allowedLabels = []
             }
         }

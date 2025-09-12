@@ -134,7 +134,15 @@ class Companion:
         any
             Output from the function
         """
-        return self.resolve(fcn)(
+        try:
+            caller = self.resolve(fcn)
+        except:
+            try:
+                caller = self.resolve_import(fcn)
+            except:
+                raise NameError(f"Could not find function {fcn}.")
+
+        return caller(
             *[self.actualize(arg) for arg in args], 
             **{self.actualize(key): self.actualize(arg) for key, arg in kwargs.items()}
         )

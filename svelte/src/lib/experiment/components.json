@@ -11252,7 +11252,7 @@
     "categ": "Basic",
     "updates": null,
     "allowedUpdates": null,
-    "allowedVals": "python:///psychopy.experiment.components.settings:SettingsComponent.__init__.<locals>.getVersions",
+    "allowedVals": "python:///psychopy.experiment.components.settings:getVersions",
     "allowedLabels": [],
     "label": "Use PsychoPy version",
     "hint": "The version of PsychoPy to use when running the experiment.",

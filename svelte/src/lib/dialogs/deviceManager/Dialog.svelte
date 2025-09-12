@@ -71,7 +71,7 @@
         // stringify
         let content = JSON.stringify(deviceData, null, 4);
         // get devices file path
-        let path = await window.electron.paths.devices();
+        let path = await electron.paths.devices();
         // save
         await electron.files.save(path, content);
     }

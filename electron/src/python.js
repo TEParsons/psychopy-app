@@ -14,7 +14,7 @@ function message(target, flag, evt) {
     target.push(msg);
   }
   // log message
-  console.log(flag, msg);
+  // console.log(flag, msg);
 }
 
 function getConstants() {
@@ -65,19 +65,13 @@ export async function startPython() {
       if (decoder.decode(evt) === `${python.liaison.constants.START_MARKER}@${python.liaison.address}`) {
         // log started
         console.log("Liaison started")
-        // resolve promise
+        // open a websocket
         python.socket = new WebSocket(`ws://${python.liaison.address}`);
         // listen for websocket events
         python.socket.onopen = evt => {
           console.log(`Opened websocket on ws://${python.liaison.address}`);
-          // import device manager
-          python.liaison.send({
-            command: "register",
-            kwargs: {
-              name: "DeviceManager",
-              target: "psychopy.hardware:DeviceManager"
-            }
-          })
+          // resolve ready promise
+          python.liaison.ready.resolve();
         }
         python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}`)
         python.socket.onerror = evt => console.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
@@ -89,10 +83,14 @@ export async function startPython() {
         )
       }
     })
+    // reject after 1s
+    setTimeout(evt => python.liaison.ready.reject(evt), 1000)
   })
 }
 
-function send(msg, timeout=1000) {
+async function send(msg, timeout=1000) {
+  // wait for liaison to exist before sending messages
+  await python.liaison.ready.promise
   // generate random ID
   let msgid = crypto.randomUUID()
   // send message with ident
@@ -109,7 +107,6 @@ function send(msg, timeout=1000) {
       // parse reply
       let data = JSON.parse(evt.data)
       // check ID
-      console.log(data)
       if (data.id !== msgid) {
         return
       }
@@ -123,6 +120,8 @@ function send(msg, timeout=1000) {
     python.socket.addEventListener("message", lsnr)
     // timeout after
     setTimeout(evt => reject(evt), timeout)
+  }).catch(reason => {
+    console.log("Message failed to send:", msg, reason)
   })
 }
 
@@ -141,7 +140,7 @@ export const python = {
     address: "localhost:8002",
     constants: undefined,
     send: send,
-    alive: false
+    ready: Promise.withResolvers(),
   },
   socket: undefined,
   process: undefined

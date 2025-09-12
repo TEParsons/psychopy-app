@@ -51,9 +51,9 @@
         }
         // get devices from Python
         let resp = await python.liaison.send({
-            command: "run",
+            command: "call",
             args: [
-                "DeviceManager.getAvailableDevices"
+                "psychopy.hardware:DeviceManager.getAvailableDevices"
             ]
         }, 10000)
         // populate profiles array
@@ -99,7 +99,11 @@
             Available devices
         </div>
         <div class=devices-list>
-            {#if !availableDevices.pending}
+            <svelte:boundary>
+                {#snippet pending()}
+                    <div class=loading-msg>Scanning devices...</div>
+                {/snippet}
+
                 {#each Object.entries(availableDevices.profiles) as [deviceType, profiles]}
                     <PanelButton
                         label={titleCase(className(deviceType))}
@@ -115,9 +119,7 @@
                         </div>
                     </PanelButton>
                 {/each}
-            {:else}
-                <div class=loading-msg>Scanning devices...</div>
-            {/if}
+            </svelte:boundary>
         </div>
     </div>
 </Dialog>
