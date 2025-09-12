@@ -215,7 +215,10 @@
                 <IconButton 
                     icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
                     label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                    onclick={(evt) => console.log("RUN PY")}
+                    onclick={evt => python.runScript(
+                        "W:/My Drive/Throwaway/PsychoPy3 Demos/Experiments/BART/bart.py", 
+                        ...(current.experiment.pilotMode ? ["---pilot"] : [])
+                    )}
                     disabled={current.experiment === null}
                     borderless
                 />

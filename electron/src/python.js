@@ -129,12 +129,39 @@ async function send(msg, timeout=1000) {
   })
 }
 
+
+function runScript(file, ...args) {
+  // spawn a process
+  let script = proc.spawn(python.details.executable, [
+    file, ...args
+  ], {cwd: path.dirname(file)})
+  // log stdout
+  script.stdout.on(
+    "data", evt => console.log("STDOUT", decoder.decode(evt))
+  )
+  script.stderr.on(
+    "data", evt => console.log("STDERR", decoder.decode(evt))
+  )
+  // return a promise linked to its state
+  return new Promise((resolve, reject) => {
+    script.onclose = evt => {
+      console.log(`Finished running ${file}`);
+      resolve(evt);
+    }
+    script.onerror = evt => {
+      console.log(`Failed to run ${file}`);
+      reject(evt);
+    }
+  })
+}
+
 // array with information about/from Python
 export const python = {
   details: {
     executable: path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..", ".venv/Scripts/python.exe"),
     alive: false,
   },
+  runScript: runScript,
   output: {
     stdout: [],
     stderr: [],

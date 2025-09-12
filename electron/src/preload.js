@@ -24,6 +24,7 @@ let python = {
   liaison: {
     constants: () => ipcRenderer.invoke("python.liaison.constants").then(resp => resp),
     send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp)
-  }
+  },
+  runScript: (file, ...args) => ipcRenderer.invoke("python.runScript", file, ...args).then(resp => resp)
 }
 contextBridge.exposeInMainWorld('python', python)

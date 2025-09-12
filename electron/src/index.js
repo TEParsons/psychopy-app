@@ -105,6 +105,7 @@ ipcMain.handle("python.details", (evt) => python.details)
 ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants)
 ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))
 ipcMain.handle("python.output", (evt) => python.output)
+ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
 // paths
 ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json"))
 ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json"))
