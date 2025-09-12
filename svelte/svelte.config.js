@@ -20,7 +20,12 @@ const config = {
 		},
 		prerender: {
 			entries: ['*'],  
-		},
+		}
+	},
+	compilerOptions: {
+		experimental: {
+			async: true
+		}
 	}
 };
 
