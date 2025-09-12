@@ -1,4 +1,6 @@
 import proc from "child_process";
+import path from "path";
+import { fileURLToPath } from 'url';
 const decoder = new TextDecoder();
 
 function message(target, flag, evt) {
@@ -95,7 +97,7 @@ function send(msg, timeout=1000) {
 // array with information about/from Python
 export const python = {
   details: {
-    executable: "C:/Users/Todd/Documents/GitHub/psychopy/venv310/Scripts/python.exe",  // placeholder: use system python for now
+    executable: path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..", ".venv/Scripts/python.exe"),
     alive: false,
   },
   output: {
