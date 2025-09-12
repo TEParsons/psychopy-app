@@ -11,7 +11,6 @@ jobs:
       uses: actions/checkout@v4
     - name: Install Node.js
       uses: actions/setup-node@v4
-      working-directory: ./svelte
       with:
         node-version: 20
         cache: npm
