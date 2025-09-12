@@ -14,7 +14,7 @@
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
-    import { electron } from "$lib/globals.svelte.js";
+    import { electron, python } from "$lib/globals.svelte.js";
     import SavePrompt from "./SavePrompt.svelte"
     import { FindDialog } from "$lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"

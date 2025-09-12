@@ -51,11 +51,13 @@
         }
         // get devices from Python
         let resp = await python.liaison.send({
-            object: "DeviceManager",
-            method: "getAvailableDevices"
-        })
+            command: "run",
+            args: [
+                "DeviceManager.getAvailableDevices"
+            ]
+        }, 10000)
         // populate profiles array
-        availableDevices.profiles = resp.result;
+        availableDevices.profiles = resp;
         // mark as done
         availableDevices.pending = false;
     }

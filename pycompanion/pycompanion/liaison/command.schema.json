@@ -1,0 +1,31 @@
+{
+    "title": "Liaison Command",
+    "description": "Accepted structure for a command received by a liaison",
+    "type": "object",
+    "properties": {
+        "command": {
+            "title": "Command",
+            "description": "Name of the command (`Companion` method) to execute",
+            "type": "string",
+            "enum": [
+                "get",
+                "init",
+                "run",
+                "register"
+            ]
+        },
+        "args": {
+            "title": "Arguments",
+            "description": "Positional arguments to pass to the command",
+            "type": "array"
+        },
+        "kwargs": {
+            "title": "Keyword Arguments",
+            "description": "Named arguments to pass to the command",
+            "type": "object"
+        }
+    },
+    "required": [
+        "command"
+    ]
+}

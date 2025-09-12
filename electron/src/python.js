@@ -17,10 +17,33 @@ function message(target, flag, evt) {
   console.log(flag, msg);
 }
 
-export function startPython() {
+function getConstants() {
+  // run module
+  let constants = proc.spawn(python.details.executable, [
+    "-m", "pycompanion.liaison.constants"
+  ])
+  // create promise to await response
+  return new Promise((resolve, reject) => {
+    // resolved to the returned value...
+    constants.stdout.once(
+      "data", evt => resolve(
+        // ...parsed as a JSON
+        JSON.parse(
+          decoder.decode(evt)
+        )
+      )
+    )
+    // timeout after 1s
+    setTimeout(evt => reject(evt), 1000)
+  })
+}
+
+export async function startPython() {
+  // get constants
+  python.liaison.constants = await getConstants();
   // spawn a Python process
   python.process = proc.spawn(python.details.executable, [
-  "-m", "psychopy.session", "--host", python.liaison.address
+    "-m", "pycompanion.liaison.websocket", python.liaison.address
   ])
   // add listener to know when process exits
   python.process.on("exit", evt => {
@@ -39,23 +62,22 @@ export function startPython() {
     python.details.alive = true;
     // add listener for Liaison waking up
     python.process.stdout.on("data", evt => {
-      if (decoder.decode(evt) === `LIAISON.CONNECTED@${python.liaison.address}`) {
+      if (decoder.decode(evt) === `${python.liaison.constants.START_MARKER}@${python.liaison.address}`) {
         // log started
         console.log("Liaison started")
         // resolve promise
         python.socket = new WebSocket(`ws://${python.liaison.address}`);
-        // listen for Python connection
+        // listen for websocket events
         python.socket.onopen = evt => {
-          // log open
           console.log(`Opened websocket on ws://${python.liaison.address}`);
-          // initialise DeviceManager
+          // import device manager
           python.liaison.send({
-            'object': "DeviceManager",
-            'method': "init"
-          }).then(evt => python.liaison.send({
-            'object': "DeviceManager",
-            'method': "registerMethods"
-          }))
+            command: "register",
+            kwargs: {
+              name: "DeviceManager",
+              target: "psychopy.hardware:DeviceManager"
+            }
+          })
         }
         python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}`)
         python.socket.onerror = evt => console.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
@@ -74,24 +96,21 @@ function send(msg, timeout=1000) {
   python.socket.send(
     JSON.stringify(msg)
   );
-  let resp;
-  python.socket.addEventListener(
-    "message", evt => resp = evt, {once: true}
-  )
 
-  function check(resolve, reject) {
-    setTimeout(() => {
-      if (resp !== undefined) {
-        let data = JSON.parse(resp.data)
+  return new Promise((resolve, reject) => {
+    // listen for reply
+    python.socket.addEventListener(
+      "message", evt => {
+        // parse reply
+        let data = JSON.parse(evt.data)
         message(python.output.liaison, "RESP", data)
+        // resolve
         resolve(data)
-      } else {
-        check(resolve, reject)
-      }
-    }, 100)
-  }
-  
-  return new Promise(check)
+      }, {once: true}
+    )
+    // timeout after
+    setTimeout(evt => reject(evt), timeout)
+  })
 }
 
 // array with information about/from Python
@@ -107,6 +126,7 @@ export const python = {
   },
   liaison: {
     address: "localhost:8002",
+    constants: undefined,
     send: send,
     alive: false
   },

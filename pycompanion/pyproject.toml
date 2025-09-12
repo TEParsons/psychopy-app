@@ -1,0 +1,12 @@
+[project]
+name = "pycompanion"
+version = "0.0.0"
+
+dependencies = [
+    "jsonschema"
+]
+
+[project.optional-dependencies]
+websocket = [
+    "websockets"
+]

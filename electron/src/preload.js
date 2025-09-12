@@ -22,7 +22,8 @@ let python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
   liaison: {
-    send: (message) => ipcRenderer.invoke("python.liaison.send", message).then(resp => resp)
+    constants: () => ipcRenderer.invoke("python.liaison.constants").then(resp => resp),
+    send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp)
   }
 }
 contextBridge.exposeInMainWorld('python', python)

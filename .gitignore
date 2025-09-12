@@ -7,6 +7,8 @@ node_modules
 .wrangler
 /build
 **/.svelte-kit
+__pycache__
+*.egg-info
 
 # OS
 .DS_Store

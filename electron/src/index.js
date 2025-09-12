@@ -102,7 +102,8 @@ app.on('window-all-closed', () => {
 
 // python
 ipcMain.handle("python.details", (evt) => python.details)
-ipcMain.handle("python.liaison.send", (evt, message) => python.liaison.send(message))
+ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants)
+ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))
 ipcMain.handle("python.output", (evt) => python.output)
 // paths
 ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json"))
