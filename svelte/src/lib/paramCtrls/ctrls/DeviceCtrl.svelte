@@ -1,5 +1,5 @@
 <script>
-    import { devices } from "$lib/globals.svelte";
+    import { devices, python } from "$lib/globals.svelte";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager"
     import { CompactButton } from "$lib/utils/buttons";
 
@@ -53,14 +53,16 @@
     {/each}
 </select>
 
-<CompactButton
-    icon="icons/btn-devices.svg"
-    onclick={(evt) => showDialog = true}
-/>
+{#if python}
+    <CompactButton
+        icon="icons/btn-devices.svg"
+        onclick={(evt) => showDialog = true}
+    />
 
-<DeviceManagerDialog
-    bind:shown={showDialog}
-/>
+    <DeviceManagerDialog
+        bind:shown={showDialog}
+    />
+{/if}
 
 
 <style>
