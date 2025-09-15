@@ -123,9 +123,7 @@ async function send(msg, timeout=1000) {
     // listen for reply
     python.socket.addEventListener("message", lsnr)
     // timeout after
-    setTimeout(evt => reject(evt), timeout)
-  }).catch(reason => {
-    console.log("Command failed:", msg, reason)
+    setTimeout(evt => reject(`Message timed out: ${JSON.stringify(msg, undefined, 4)}`), timeout)
   })
 }
 

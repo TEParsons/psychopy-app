@@ -1,7 +1,7 @@
 <script>
     import { Dialog } from "$lib/utils/dialog";
     
-    import { PanelButton } from "$lib/utils/buttons";
+    import { CompactButton, PanelButton } from "$lib/utils/buttons";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
     import { Device, Param } from "$lib/experiment/experiment.svelte"
@@ -32,13 +32,23 @@
 
     let panelsOpen = $state({})
 
-    async function getAvailableDevices() {
-        return await python.liaison.send({
+    let timeout = $state.raw(60000)
+    let availableDevices = $state.raw(
+        python.liaison.send({
             command: "run",
             args: [
                 "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
             ]
-        }, 20000)
+        }, timeout)
+    )
+    async function updateAvailableDevices() {
+        availableDevices = python.liaison.send({
+            command: "run",
+            args: [
+                "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
+            ]
+        }, timeout)
+        console.log(availableDevices)
     }
 
     let validName = $state({
@@ -82,17 +92,16 @@
             bind:valid={validName}
         ></ParamCtrl>
         <div 
+            class=label
             style:margin-bottom="-.5rem"
         >
             Available devices
         </div>
         <div class=devices-list>
-            <svelte:boundary>
-                {#snippet pending()}
-                    <div class=loading-msg>Scanning devices...</div>
-                {/snippet}
-
-                {#each Object.entries(await getAvailableDevices()) as [deviceType, profiles]}
+            {#await availableDevices}
+                <div class=loading-msg>Scanning devices...</div>
+            {:then result}
+                {#each Object.entries(result) as [deviceType, profiles]}
                     <PanelButton
                         label={titleCase(className(deviceType))}
                         bind:open={panelsOpen[deviceType]}
@@ -107,7 +116,28 @@
                         </div>
                     </PanelButton>
                 {/each}
-            </svelte:boundary>
+            {:catch error}
+                    <div class=timeout-msg>
+                        <p>Getting available devices took longer than expected.</p>
+                        <pre>
+{error}
+                        </pre>
+                        
+                        <p>Try again with a longer wait time (in milliseconds)?</p>
+                        <div class=retry>
+                            <input 
+                                type=number 
+                                style:flex-grow={1}
+                                bind:value={timeout} 
+                            />
+                            <CompactButton
+                                icon="icons/btn-refresh.svg"
+                                tooltip=Retry
+                                onclick={updateAvailableDevices}
+                            />
+                        </div>
+                    </div>
+            {/await}
         </div>
     </div>
 </Dialog>
@@ -135,5 +165,23 @@
     }
     .loading-msg {
         padding: 1rem;
+    }
+
+    .timeout-msg {
+        padding: 1rem;
+    }
+    .timeout-msg pre {
+        overflow: auto;
+    }
+    .timeout-msg .retry {
+        display: flex;
+        flex-direction: row;
+        gap: .5rem;
+    }
+
+    .label {
+        display: flex;
+        flex-direction: row;
+        align-items: space-between;
     }
 </style>

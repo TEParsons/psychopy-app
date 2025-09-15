@@ -139,3 +139,7 @@ button {
 svg {
     aspect-ratio: 1/1;
 }
+
+pre, code {
+    font-family: var(--mono);
+}
