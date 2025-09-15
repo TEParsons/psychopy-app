@@ -48,7 +48,6 @@
                 "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
             ]
         }, timeout)
-        console.log(availableDevices)
     }
 
     let validName = $state({
@@ -95,7 +94,12 @@
             class=label
             style:margin-bottom="-.5rem"
         >
-            Available devices
+            <span style:flex-grow={1}>Available devices</span>
+            <CompactButton
+                icon="icons/btn-refresh.svg"
+                tooltip=Refresh
+                onclick={updateAvailableDevices}
+            />
         </div>
         <div class=devices-list>
             {#await availableDevices}
@@ -182,6 +186,7 @@
     .label {
         display: flex;
         flex-direction: row;
-        align-items: space-between;
+        gap: .5rem;
+        align-items: end;
     }
 </style>
