@@ -223,10 +223,8 @@ export async function compilePython() {
 }
 
 export async function runPython() {
-    console.log("boutta compile")
     // write Python script
     let target = await compilePython();
-    console.log("compiled", target)
     // run script
     await python.runScript(
         target, 
