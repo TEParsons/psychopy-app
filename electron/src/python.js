@@ -130,7 +130,7 @@ async function send(msg, timeout=1000) {
 
 function runScript(file, ...args) {
   // spawn a process
-  let script = proc.spawn(python.details.executable, [
+  let script = proc.execFile(python.details.executable, [
     file, ...args
   ], {cwd: path.dirname(file)})
   // log stdout
@@ -142,14 +142,18 @@ function runScript(file, ...args) {
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
-    script.onclose = evt => {
-      console.log(`Finished running ${file}`);
-      resolve(evt);
-    }
-    script.onerror = evt => {
-      console.log(`Failed to run ${file}`);
-      reject(evt);
-    }
+    script.on(
+      "exit", evt => {
+        console.log(`Finished running ${file}`);
+        resolve(evt);
+      }
+    )
+    script.on(
+      "error", err => {
+        console.log(`Failed to run ${file}: ${err.message}`);
+        reject(evt.message);
+      }
+    )
   })
 }
 
