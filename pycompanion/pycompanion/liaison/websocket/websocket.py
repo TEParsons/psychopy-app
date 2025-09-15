@@ -2,6 +2,7 @@ import sys
 import asyncio
 import websockets
 import json
+import traceback
 from websockets.sync.client import connect
 from ..base import BaseLiaison
 from ..constants import START_MARKER, STOP_MARKER
@@ -63,7 +64,7 @@ class WebsocketLiaison(BaseLiaison):
                     except Exception as err:
                         # send errors to the websocket
                         resp = {
-                            'error': str(err),
+                            'error': traceback.format_exception(err),
                             'id': message['id'],
                         }
                     # make sure resp is a JSON string
@@ -84,6 +85,9 @@ class WebsocketLiaison(BaseLiaison):
                     self.com = None
                     # kill
                     self.stop()
+                except Exception as err:
+                    sys.stdout.write(traceback.format_exception(err))
+                    sys.stsout.flush()
         
         async def run():
             # create future

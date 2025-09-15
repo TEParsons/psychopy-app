@@ -16,30 +16,51 @@
         children=undefined,
     } = $props()
 
-    let showTooltip = $state(false)
-</script>       
+    let showTooltip = $state(false);
 
-<button
-    disabled={disabled} 
-    onclick={onclick}
-    onmouseenter={() => {showTooltip = true}}
-    onmouseleave={() => {showTooltip = false}}
-    onfocusin={() => {showTooltip = true}}
-    onfocusout={() => {showTooltip = false}}
-    class:borderless={borderless}
->
-    <svg>
-        <use xlink:href={icon}></use>
-    </svg>
-    <Tooltip
-        bind:shown={showTooltip}
-        position="bottom"
+    let awaiting = $state.raw()
+</script>
+
+{#snippet button()}
+    <button
+        disabled={disabled} 
+        onclick={evt => awaiting = onclick(evt)}
+        onmouseenter={() => {showTooltip = true}}
+        onmouseleave={() => {showTooltip = false}}
+        onfocusin={() => {showTooltip = true}}
+        onfocusout={() => {showTooltip = false}}
+        class:borderless={borderless}
     >
-        {label}
-    </Tooltip>
+        <svg>
+            <use xlink:href={icon}></use>
+        </svg>
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom"
+        >
+            {label}
+        </Tooltip>
 
-    {@render children?.()}
-</button>
+        {@render children?.()}
+    </button>
+{/snippet}
+
+{#await awaiting}
+    <button
+        class:borderless={borderless}
+        disabled
+    >
+        <svg>
+            <use xlink:href="icons/sym-pending.svg" ></use>
+        </svg>
+        {@render children?.()}
+    </button>
+{:then}
+    {@render button()}
+{:catch}
+    {@render button()}
+{/await}
+
 
 
 <style>

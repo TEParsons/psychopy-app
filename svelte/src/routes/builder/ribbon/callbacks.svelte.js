@@ -1,4 +1,4 @@
-import { electron, projects } from '$lib/globals.svelte.js';
+import { electron, projects, python } from '$lib/globals.svelte.js';
 import { current } from '../globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
@@ -124,7 +124,6 @@ export async function file_save_as() {
                 { name: 'All Files', extensions: ["*"] }
             ]
         })
-        console.log(file)
         // abort if no file
         if (file === undefined) {
             return
@@ -158,6 +157,8 @@ export async function file_save_as() {
     
     // save
     await file_save()
+
+    return current.file
 }
 
 /* Edit */
@@ -178,3 +179,59 @@ export function redo() {
 }
 
 /* Experiment */
+
+export async function compilePython() {
+    // if no file, save as
+    if (current.file === undefined) {
+        await file_save_as()
+        // if cancelled save, cancel compile
+        if (current.file === undefined) {
+            return
+        }
+    }
+    // apply JSON to a Python Experiment object
+    await python.liaison.send({
+        command: "init",
+        args: [
+            "currentExperiment",
+            "psychopy.experiment:Experiment.fromJSON",
+            $state.snapshot(current.experiment.filename),
+            $state.snapshot(current.experiment.toJSON())
+        ]
+    }, 10000).catch(
+        reason => console.log(reason)
+    )
+    // call that object's writeScript method
+    let script = await python.liaison.send({
+        command: "run",
+        args: [
+            "currentExperiment.writeScript",
+        ],
+        kwargs: {
+            target: "PsychoPy", 
+            modular: true
+        }
+    }, 10000).catch(
+        reason => console.log(reason)
+    )
+    // construct output path
+    let target = current.file.stem + ".py"
+    // save to python file
+    electron.files.save(target, script)
+
+    return target
+}
+
+export async function runPython() {
+    console.log("boutta compile")
+    // write Python script
+    let target = await compilePython();
+    console.log("compiled", target)
+    // run script
+    await python.runScript(
+        target, 
+        ...(current.experiment.pilotMode ? ["---pilot"] : [])
+    )
+
+    return true
+}

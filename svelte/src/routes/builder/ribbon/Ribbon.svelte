@@ -9,6 +9,8 @@
         undo,
         redo,
         // experiment
+        compilePython,
+        runPython
     } from './callbacks.svelte.js'
     
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
@@ -31,6 +33,10 @@
         findDlg: false,
         deviceMgrDlg: false,
         prefsDlg: false,
+    })
+
+    let awaiting = $state({
+        compilepy: Promise.resolve("")
     })
 
     let lastAction = $derived.by(() => {
@@ -205,23 +211,21 @@
 
     {#if electron}
         <RibbonSection label=Desktop icon="icons/rbn-desktop.svg">
-                <IconButton 
-                    icon="icons/btn-compilepy.svg" 
-                    label="Write experiment as a .py file" 
-                    onclick={(evt) => console.log("COMPILE PY")}
-                    disabled={current.experiment === null}
-                    borderless
-                />
-                <IconButton 
-                    icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
-                    label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                    onclick={evt => python.runScript(
-                        "W:/My Drive/Throwaway/PsychoPy3 Demos/Experiments/BART/bart.py", 
-                        ...(current.experiment.pilotMode ? ["---pilot"] : [])
-                    )}
-                    disabled={current.experiment === null}
-                    borderless
-                />
+            <IconButton 
+                icon="icons/btn-compilepy.svg" 
+                label="Write experiment as a .py file" 
+                onclick={compilePython}
+                disabled={current.experiment === null}
+                borderless
+            />
+
+            <IconButton 
+                icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
+                label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
+                onclick={runPython}
+                disabled={current.experiment === null}
+                borderless
+            />
         </RibbonSection>
 
         <RibbonSection label=Browser icon="icons/rbn-browser.svg">

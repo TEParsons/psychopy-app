@@ -73,7 +73,7 @@ export async function startPython() {
           // resolve ready promise
           python.liaison.ready.resolve();
         }
-        python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}`)
+        python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
         python.socket.onerror = evt => console.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // listen for messages
         python.socket.onmessage = evt => message(python.output.liaison, "MESSAGE")

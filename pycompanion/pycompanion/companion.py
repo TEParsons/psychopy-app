@@ -86,7 +86,10 @@ class Companion:
         target : str
             A string of attribute/key references starting with a name in this Companion's namespace
         """
-        return eval(target, self.namespace)
+        if target.split(".")[0] in self.namespace:
+            return eval(target, self.namespace)
+        else:
+            return self.resolve_import(target)
     
     def initialize(self, name, cls, *args, **kwargs):
         """
@@ -96,6 +99,8 @@ class Companion:
         ----------
         name : str
             String to refer to the registered object by later.
+        cls : str
+            Import path to the class to initialise (or callable to use as a constructor)
         args : list
             Arguments to initialize the object with - each will be passed to `.actualize` first
         kwargs : dict
@@ -134,15 +139,7 @@ class Companion:
         any
             Output from the function
         """
-        try:
-            caller = self.resolve(fcn)
-        except:
-            try:
-                caller = self.resolve_import(fcn)
-            except:
-                raise NameError(f"Could not find function {fcn}.")
-
-        return caller(
+        return self.resolve(fcn)(
             *[self.actualize(arg) for arg in args], 
             **{self.actualize(key): self.actualize(arg) for key, arg in kwargs.items()}
         )
