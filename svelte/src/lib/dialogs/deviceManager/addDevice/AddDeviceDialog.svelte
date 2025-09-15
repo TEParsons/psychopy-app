@@ -1,7 +1,7 @@
 <script>
     import { Dialog } from "$lib/utils/dialog";
     
-    import { CompactButton, PanelButton } from "$lib/utils/buttons";
+    import { CompactButton, PanelButton, RadioGroup } from "$lib/utils/buttons";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
     import { Device, Param } from "$lib/experiment/experiment.svelte"
@@ -105,21 +105,24 @@
             {#await availableDevices}
                 <div class=loading-msg>Scanning devices...</div>
             {:then result}
-                {#each Object.entries(result) as [deviceType, profiles]}
-                    <PanelButton
-                        label={titleCase(className(deviceType))}
-                        bind:open={panelsOpen[deviceType]}
-                    >
-                        <div class=device-category>
-                            {#each Object.entries(profiles) as [key, device]}
-                                <DeviceListItem
-                                    key={key}
-                                    device={device}
-                                ></DeviceListItem>
-                            {/each}
-                        </div>
-                    </PanelButton>
-                {/each}
+                <RadioGroup
+                    bind:value={selected.device}
+                >
+                    {#each Object.entries(result) as [deviceType, profiles]}
+                        <PanelButton
+                            label={titleCase(className(deviceType))}
+                            bind:open={panelsOpen[deviceType]}
+                        >
+                            <div class=device-category>
+                                {#each Object.values(profiles) as device}
+                                    <DeviceListItem
+                                        device={device}
+                                    />
+                                {/each}
+                            </div>
+                        </PanelButton>
+                    {/each}
+                </RadioGroup>
             {:catch error}
                     <div class=timeout-msg>
                         <p>Getting available devices took longer than expected.</p>
@@ -164,6 +167,9 @@
         height: 100%;
     }
     .device-category {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
         padding: 1rem;
         padding-top: .5rem;
     }

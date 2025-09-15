@@ -2,9 +2,9 @@
     import { getContext, onDestroy } from "svelte";
     import DeviceProfile from "../DeviceProfile.svelte";
     import { fade } from "svelte/transition";
+    import { RadioButton } from "$lib/utils/buttons";
 
     let {
-        key,
         device
     } = $props()
 
@@ -23,23 +23,23 @@
 <div
     class=device-list-item
 >
-    <input 
-        id="device-{key}"
-        type="radio" 
-        name="device" 
-        value={key}
-        onclick={() => selected.device = device}
+    <RadioButton
+        label={device.deviceName}
+        value={device}
     />
-    <label 
-        for="device-{key}"
+    <svg
+        class=info
+        style:opacity={hovered ? 1 : 0.25}
         onmouseenter={() => hovered = true}
         onmouseleave={() => hovered = false}
         onfocusin={() => hovered = true}
         onfocusout={() => hovered = false}
         role=none
     >
-        {device.deviceName}
-    </label>
+        <use xlink:href="icons/sym-info.svg" />
+    </svg>
+        
+
     {#if hovered}
         <div 
             class=details-panel
@@ -56,6 +56,19 @@
 <style>
     .device-list-item {
         position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: .5rem;
+    }
+    .info {
+        height: 1.5rem;
+        width: 1.5rem;
+        padding: .25rem;
+        box-sizing: border-box;
+        background-color: var(--outline);
+        color: var(--base);
+        border-radius: 50%;
     }
     .details-panel {
         position: absolute;
