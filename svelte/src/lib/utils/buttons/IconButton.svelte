@@ -51,7 +51,7 @@
         disabled
     >
         <svg>
-            <use xlink:href="icons/sym-pending.svg" ></use>
+            <use xlink:href="icons/sym-pending.svg#animation" ></use>
         </svg>
         {@render children?.()}
     </button>
