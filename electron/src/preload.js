@@ -6,6 +6,7 @@ const electron = {
   paths: {
     devices: () => ipcRenderer.invoke("electron.paths.devices").then(resp => resp),
     pavlovia: {
+      dir: () => ipcRenderer.invoke("electron.paths.pavlovia").then(resp => resp),
       users: () => ipcRenderer.invoke("electron.paths.pavlovia.users").then(resp => resp),
       projects: () => ipcRenderer.invoke("electron.paths.pavlovia.projects").then(resp => resp),
     }
@@ -13,6 +14,8 @@ const electron = {
   files: {
     load: (file) => ipcRenderer.invoke("electron.files.load", file).then(resp => resp),
     save: (file, content) => ipcRenderer.invoke("electron.files.save", file, content).then(resp => resp),
+    exists: (file) => ipcRenderer.invoke("electron.files.exists", file).then(resp => resp),
+    mkdir: (path, recursive=true) => ipcRenderer.invoke("electron.files.mkdir", path, recursive).then(resp => resp),
     openDialog: (options) => ipcRenderer.invoke("electron.files.openDialog", options).then(resp => resp),
     saveDialog: (options) => ipcRenderer.invoke("electron.files.saveDialog", options).then(resp => resp),
   }

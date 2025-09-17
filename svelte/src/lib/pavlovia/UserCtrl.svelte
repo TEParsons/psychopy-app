@@ -14,6 +14,15 @@
         }
         // get file path
         let file = await electron.paths.pavlovia.users();
+        let dir = await electron.paths.pavlovia.dir();
+        // make sure pavlovia folder exists
+        if (!(await electron.files.exists(dir))) {
+            await electron.files.mkdir(dir);
+        }
+        // make sure users.json exists
+        if (!(await electron.files.exists(file))) {
+            await electron.files.save(file, "{}");
+        }
         // get file contents
         let content = await electron.files.load(file);
         // parse JSON

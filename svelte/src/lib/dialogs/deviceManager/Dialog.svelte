@@ -47,15 +47,19 @@
             return
         }
         // get devices file path
-        let path = await electron.paths.devices();
+        let file = await electron.paths.devices();
+        // make sure devices.json exists
+        if (!(await electron.files.exists(file))) {
+            await electron.files.save(file, "{}");
+        }
         // get text from devices.json file
-        let content = await electron.files.load(path);
+        let content = await electron.files.load(file);
         // parse JSON
         let deviceData = JSON.parse(content)
         // set data
         devicesFromJSON(deviceData)
 
-        console.log(`Loaded devices from ${path}:`, deviceData);
+        console.log(`Loaded devices from ${file}:`, deviceData);
     })
 
     async function saveDevices(evt) {
