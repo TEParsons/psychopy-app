@@ -34,3 +34,5 @@ vite.config.ts.timestamp-*
 # Throwaway scripts
 scratch.*
 mprocs.log
+
+pycompanion/build
