@@ -102,18 +102,29 @@ app.on('window-all-closed', () => {
 
 /* handlers which can be invoked by electron */
 
-// python
-ipcMain.handle("python.details", (evt) => python.details)
-ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants)
-ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))
-ipcMain.handle("python.output", (evt) => python.output)
-ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
-// paths
-ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json"))
-ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json"))
-ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json"))
-// file interface
-ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options))
-ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options))
-ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'}))
-ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8'}))
+const handlers = {
+  electron: {
+      paths: {
+        devices: () => ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json")),
+        pavlovia: {
+          users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json")),
+          projects: ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json")),
+        }
+      },
+      files: {
+        load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'})),
+        save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8'})),
+        openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options)),
+        saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options)),
+      }
+  },
+  python: {
+    details: () => ipcMain.handle("python.details", (evt) => python.details),
+    output: () => ipcMain.handle("python.output", (evt) => python.output),
+    liaison: {
+      constants: ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants),
+      send: ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))
+    },
+    runScript: ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
+  }
+};
