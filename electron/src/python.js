@@ -167,7 +167,7 @@ function installPython() {
     proc.execSync("uv python find 3.10")
   )
   // install PsychoPy and pycompanion
-  proc.execSync(`uv pip install git+https://github.com/TEParsons/psychopy@dev-rf-app-optional --python ${executable}`)
+  proc.execSync(`uv pip install git+https://github.com/psychopy/psychopy@dev --python ${executable}`)
   proc.execSync(`uv pip install -e ../pycompanion --python ${executable}`)
 
   return executable

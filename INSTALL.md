@@ -24,7 +24,7 @@ Setup a Python environment:
 ```
 cd electron
 uv venv --python 3.10 --clear
-uv pip install git+https://github.com/TEParsons/psychopy@dev-rf-app-optional
+uv pip install git+https://github.com/psychopy/psychopy@dev
 uv pip install -e ../pycompanion
 cd ..
 ```
