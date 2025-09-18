@@ -1,22 +1,52 @@
-To install, navigate to this folder in terminal and then run:
+# To install
 
+Install UV to handle Python environments:
+https://docs.astral.sh/uv/getting-started/installation
+
+Install Node.js:
+https://nodejs.org/en/download/
+
+Install NPM dependencies for the svelte side of things:
 ```
 cd svelte
 npm i
 cd ..
+```
+
+Install NPM dependencies for the electron side of things:
+```
 cd electron
 npm i
 cd ..
 ```
 
-To run, navigate again to this folder in terminal and then run:
-```
-mprocs
-```
-First run will take longer as it needs to install Python packages - to install these manually, run:
+Setup a Python environment:
 ```
 cd electron
 uv venv --python 3.10 --clear
 uv pip install git+https://github.com/TEParsons/psychopy@dev-rf-app-optional
 uv pip install -e ../pycompanion
+cd ..
+```
+
+# To run
+
+If you have mprocs installed and added to path, you can just call:
+
+```
+mprocs
+```
+
+Otherwise, you'll need to create two terminals. In one, call:
+
+```
+cd svelte
+npm run dev
+```
+
+...and in the other, call:
+
+```
+cd electron
+npm start
 ```
