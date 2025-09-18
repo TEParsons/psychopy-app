@@ -33,14 +33,14 @@ const createWindow = () => {
 
   // array which tracks which requirements are ready
   let ready = {
-    svelte: true,
+    svelte: false,
     win: false,
     mintime: false
   };
 
   // start the svelte side of things
   svelte = proc.exec("npm run dev", { cwd: "../svelte" });
-  svelte.on("message", evt => console.log(evt));
+  svelte.on("spawn", evt => ready.svelte = true);
   // create a window showing builder
   let id = newWindow("builder", false);
   windows[id].once('ready-to-show', evt => ready.win = true);
