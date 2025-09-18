@@ -3,7 +3,6 @@ const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
 const proc = require("child_process")
-const { randomUUID } = require('node:crypto');
 
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -84,17 +83,15 @@ function newWindow(target, show=true) {
   // show when ready (if requested)
   if (show) {
     win.once("ready-to-show", evt => {
-      windows[id].show();
-      windows[id].maximize();
-      windows[id].focus();
+      win.show();
+      win.maximize();
+      win.focus();
     })
   }
-  // generate an id
-  let id = randomUUID();
   // store handle against id
-  windows[id] = win;
+  windows[win.webContents.id] = win;
 
-  return id
+  return win.webContents.id
 }
 
 
@@ -148,8 +145,8 @@ const handlers = {
       save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8', mode: 0o777})),
       exists: ipcMain.handle("electron.files.exists", (evt, file) => fs.existsSync(file)),
       mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
-      openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options)),
-      saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options)),
+      openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(windows[evt.sender.id], options)),
+      saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(windows[evt.sender.id], options)),
     }
   },
   python: {
