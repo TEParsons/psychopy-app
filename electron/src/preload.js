@@ -3,6 +3,10 @@ const { ipcRenderer, contextBridge } = require('electron');
 
 // details about Electron process
 const electron = {
+  windows: {
+    new: (target) => ipcRenderer.invoke("electron.windows.new", target).then(resp => resp),
+    close: (id) => ipcRenderer.invoke("electron.windows.close", id).then(resp => resp),
+  },
   paths: {
     devices: () => ipcRenderer.invoke("electron.paths.devices").then(resp => resp),
     pavlovia: {
@@ -23,7 +27,7 @@ const electron = {
 contextBridge.exposeInMainWorld('electron', electron)
 
 // details about Python process
-let python = {
+const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
   liaison: {

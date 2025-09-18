@@ -2,6 +2,8 @@ const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
+const proc = require("child_process")
+const { randomUUID } = require('node:crypto');
 
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -9,7 +11,9 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-var win;
+var svelte;
+var windows = {};
+
 
 const createWindow = () => {
   // create splash
@@ -27,8 +31,45 @@ const createWindow = () => {
   splash.center();
   splash.show();
 
-  // create the browser window.
-  win = new BrowserWindow({
+  // array which tracks which requirements are ready
+  let ready = {
+    svelte: true,
+    win: false,
+    mintime: false
+  };
+
+  // start the svelte side of things
+  svelte = proc.exec("npm run dev", { cwd: "../svelte" });
+  svelte.on("message", evt => console.log(evt));
+  // create a window showing builder
+  let id = newWindow("builder", false);
+  windows[id].once('ready-to-show', evt => ready.win = true);
+  // set a minimum load time so that the splash screen is at least shown
+  setTimeout(() => ready.mintime = true, 2000);
+  // start python
+  startPython();
+
+  // when everything is ready, show the app
+  let interval = setInterval(() => {
+    if (Object.values(ready).every(val => val)) {
+      // close the splash screen
+      splash.close();
+      // show the app
+      windows[id].show();
+      windows[id].maximize();
+      windows[id].focus();
+      // OPTIONAL show dev tools
+      windows[id].webContents.openDevTools();
+      // stop waiting
+      clearInterval(interval);
+    }
+  }, 10)
+};
+
+
+function newWindow(target, show=true) {
+  // create window
+  let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
     width: 1080,
     height: 720,
@@ -38,37 +79,23 @@ const createWindow = () => {
     }
   });
   win.removeMenu();
-  // start the app
-  // placeholder: currently doing this via mprocs, could it be started here?
-  // load the app
-  win.loadURL('http://localhost:5173/builder');
-  // start python
-  startPython();
-  // switch to window after 5s (or when ready, if longer)
-  let ready = {
-    win: false,
-    mintime: false
+  // load target URL
+  win.loadURL(`http://localhost:5173/${target}`);
+  // show when ready (if requested)
+  if (show) {
+    win.once("ready-to-show", evt => {
+      windows[id].show();
+      windows[id].maximize();
+      windows[id].focus();
+    })
   }
-  // after 5s, mark that minimum splash time has passed
-  setTimeout(() => ready.mintime = true, 5000)
-  // when the window has loaded, mark that it's ready
-  win.once('ready-to-show', () => ready.win = true);
-  // when everything is ready, show the app
-  let interval = setInterval(() => {
-    if (Object.values(ready).every(val => val)) {
-      // close the splash screen
-      splash.close();
-      // show the app
-      win.show();
-      win.maximize();
-      win.focus();
-      // OPTIONAL show dev tools
-      win.webContents.openDevTools();
-      // stop waiting
-      clearInterval(interval);
-    }
-  }, 10)
-};
+  // generate an id
+  let id = randomUUID();
+  // store handle against id
+  windows[id] = win;
+
+  return id
+}
 
 
 
@@ -104,22 +131,26 @@ app.on('window-all-closed', () => {
 
 const handlers = {
   electron: {
-      paths: {
-        devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json")),
-        pavlovia: {
-          dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia")),
-          users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json")),
-          projects: ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json")),
-        }
-      },
-      files: {
-        load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'})),
-        save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8', mode: 0o777})),
-        exists: ipcMain.handle("electron.files.exists", (evt, file) => fs.existsSync(file)),
-        mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
-        openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options)),
-        saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options)),
+    windows: {
+      new: ipcMain.handle("electron.windows.new", (evt, target) => newWindow(target)),
+      close: ipcMain.handle("electron.windows.close", (evt, id) => windows[id].close()),
+    },
+    paths: {
+      devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json")),
+      pavlovia: {
+        dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia")),
+        users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json")),
+        projects: ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json")),
       }
+    },
+    files: {
+      load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'})),
+      save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8', mode: 0o777})),
+      exists: ipcMain.handle("electron.files.exists", (evt, file) => fs.existsSync(file)),
+      mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
+      openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(win, options)),
+      saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(win, options)),
+    }
   },
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),

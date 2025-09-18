@@ -233,3 +233,13 @@ export async function runPython() {
 
     return true
 }
+
+/** Views */
+
+export function newWindow(target) {
+    if (electron) {
+        return electron.windows.new(target);
+    } else {
+        return window.open(`/${target}`)
+    }
+}
