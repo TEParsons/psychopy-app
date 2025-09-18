@@ -49,7 +49,7 @@ export async function startPython() {
   // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
-      console.log(`Python process stopped, reason: ${evt.message}`);
+      console.log(`Python process stopped, reason: ${evt?.message}`);
       // mark dead
       python.details.alive = false
   })

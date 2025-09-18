@@ -10,7 +10,13 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-var svelte;
+var svelte = {
+  address: {
+    host: "localhost",
+    port: 8003,
+  },
+  process: undefined
+};
 var windows = {};
 
 
@@ -38,8 +44,8 @@ const createWindow = () => {
   };
 
   // start the svelte side of things
-  svelte = proc.exec("npm run dev", { cwd: "../svelte" });
-  svelte.on("spawn", evt => ready.svelte = true);
+  svelte.process = proc.exec(`npm run dev -- --host=${svelte.address.host} --port=${svelte.address.port}`, { cwd: "../svelte" });
+  svelte.process.on("spawn", evt => ready.svelte = true);
   // create a window showing builder
   let id = newWindow("builder", false);
   windows[id].once('ready-to-show', evt => ready.win = true);
@@ -79,7 +85,7 @@ function newWindow(target, show=true) {
   });
   win.removeMenu();
   // load target URL
-  win.loadURL(`http://localhost:5173/${target}`);
+  win.loadURL(`http://${svelte.address.host}:${svelte.address.port}/${target}`);
   // show when ready (if requested)
   if (show) {
     win.once("ready-to-show", evt => {
@@ -119,6 +125,12 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+app.on("quit", (evt, code) => {
+  // close svelte
+  svelte.process.kill(0);
+  // close python
+  python.process.kill(0);
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
