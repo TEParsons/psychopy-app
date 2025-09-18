@@ -31,20 +31,7 @@ cd ..
 
 # To run
 
-If you have mprocs installed and added to path, you can just call:
-
-```
-mprocs
-```
-
-Otherwise, you'll need to create two terminals. In one, call:
-
-```
-cd svelte
-npm run dev
-```
-
-...and in the other, call:
+Call:
 
 ```
 cd electron
