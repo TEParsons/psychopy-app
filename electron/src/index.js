@@ -39,16 +39,17 @@ const createWindow = () => {
   // array which tracks which requirements are ready
   let ready = {
     svelte: false,
-    win: false,
     mintime: false
   };
 
   // start the svelte side of things
   svelte.process = proc.exec(`npm run dev -- --host=${svelte.address.host} --port=${svelte.address.port}`, { cwd: "../svelte" });
-  svelte.process.on("spawn", evt => ready.svelte = true);
-  // create a window showing builder
-  let id = newWindow("builder", false);
-  windows[id].once('ready-to-show', evt => ready.win = true);
+  svelte.process.stdout.on("data", msg => {
+    // mark as ready once we have the all clear from vite
+    if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
+      ready.svelte = true;
+    }
+  })
   // set a minimum load time so that the splash screen is at least shown
   setTimeout(() => ready.mintime = true, 2000);
   // start python
@@ -59,10 +60,8 @@ const createWindow = () => {
     if (Object.values(ready).every(val => val)) {
       // close the splash screen
       splash.close();
-      // show the app
-      windows[id].show();
-      windows[id].maximize();
-      windows[id].focus();
+      // load a builder window
+      let id = newWindow("builder");
       // OPTIONAL show dev tools
       windows[id].webContents.openDevTools();
       // stop waiting
@@ -72,7 +71,7 @@ const createWindow = () => {
 };
 
 
-function newWindow(target, show=true) {
+function newWindow(target=null, show=true) {
   // create window
   let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),

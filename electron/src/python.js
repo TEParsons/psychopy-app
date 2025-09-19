@@ -1,8 +1,8 @@
-import { app } from "electron";
 import proc from "child_process";
 import path from "path";
-import { fileURLToPath } from 'url';
 const decoder = new TextDecoder();
+import { uv, installPython } from "./install.js"
+
 
 function message(target, flag, evt) {
   let msg = evt;
@@ -40,6 +40,9 @@ function getConstants() {
 }
 
 export async function startPython() {
+  // uncomment the line below on first run (when packaged, the installer will handle this)
+  // await python.install()
+  
   // get constants
   python.liaison.constants = await getConstants();
   // spawn a Python process
@@ -159,46 +162,16 @@ function runScript(file, ...args) {
 }
 
 
-function installPython() {
-  // use uv to make a venv
-  proc.execSync("uv venv --python 3.10 --clear")
-  // get executable path
-  let executable = decoder.decode(
-    proc.execSync("uv python find 3.10")
-  )
-  // install PsychoPy and pycompanion
-  proc.execSync(`uv pip install git+https://github.com/psychopy/psychopy@dev --python ${executable}`)
-  proc.execSync(`uv pip install -e ../pycompanion --python ${executable}`)
-
-  return executable
-}
-
-
-function getExecutable() {
-  // get path of executable
-  let executable = decoder.decode(
-    proc.execSync("uv python find 3.10")
-  )
-  // get path of system executable
-  let systemExecutable = decoder.decode(
-    proc.execSync("uv python find 3.10 --system")
-  )
-  // if using system executable, we need to install a venv
-  if (systemExecutable === executable) {
-    executable = installPython()
-  }
-  
-  return executable.trim()
-}
-
-
 // array with information about/from Python
 export const python = {
   details: {
-    executable: getExecutable(),
+    executable: decoder.decode(
+      proc.execSync(`${uv.executable} python find 3.10`)
+    ).trim(),
     alive: false,
   },
   runScript: runScript,
+  install: installPython,
   output: {
     stdout: [],
     stderr: [],
