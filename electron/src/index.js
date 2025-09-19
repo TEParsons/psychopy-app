@@ -58,12 +58,10 @@ const createWindow = () => {
   // when everything is ready, show the app
   let interval = setInterval(() => {
     if (Object.values(ready).every(val => val)) {
+      // load a builder window
+      newWindow("builder");
       // close the splash screen
       splash.close();
-      // load a builder window
-      let id = newWindow("builder");
-      // OPTIONAL show dev tools
-      windows[id].webContents.openDevTools();
       // stop waiting
       clearInterval(interval);
     }
@@ -91,6 +89,8 @@ function newWindow(target=null, show=true) {
       win.show();
       win.maximize();
       win.focus();
+      // OPTIONAL show dev tools
+      win.webContents.openDevTools();
     })
   }
   // store handle against id
@@ -163,6 +163,12 @@ const handlers = {
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
     output: ipcMain.handle("python.output", (evt) => python.output),
+    shell: {
+      list: ipcMain.handle("python.shell.list", () => Object.keys(python.shell.shells)),
+      send: ipcMain.handle("python.shell.send", (evt, id, msg) => python.shell.send(id, msg)),
+      open: ipcMain.handle("python.shell.open", (evt) => python.shell.open()),
+      close: ipcMain.handle("python.shell.close", (evt, id) => python.shell.close(id))
+    },
     liaison: {
       constants: ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants),
       send: ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))

@@ -30,6 +30,12 @@ contextBridge.exposeInMainWorld('electron', electron)
 const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
+  shell: {
+    list: () => ipcRenderer.invoke("python.shell.list").then(resp => resp),
+    send: (id, msg) => ipcRenderer.invoke("python.shell.send", id, msg).then(resp => resp),
+    open: () => ipcRenderer.invoke("python.shell.open").then(resp => resp),
+    close: (id) => ipcRenderer.invoke("python.shell.close", id).then(resp => resp)
+  },
   liaison: {
     constants: () => ipcRenderer.invoke("python.liaison.constants").then(resp => resp),
     send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp)

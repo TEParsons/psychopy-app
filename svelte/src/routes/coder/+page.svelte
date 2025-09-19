@@ -6,6 +6,7 @@
     import { CoderNotebook } from "./notebook";
     import Frame from "$lib/utils/Frame.svelte";
     import Panel from "$lib/utils/Panel.svelte";
+    import ShellNotebook from "./shell/ShellNotebook.svelte";
     
 
     // reference current in context for ease of access
@@ -42,6 +43,6 @@
         hspan={5}
         vspan={1}
     >
-        
+        <ShellNotebook />
     </Panel>
 </Frame>

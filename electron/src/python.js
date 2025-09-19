@@ -2,6 +2,7 @@ import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
 import { uv, installPython } from "./install.js"
+import { randomUUID } from "node:crypto";
 
 
 function message(target, flag, evt) {
@@ -162,6 +163,77 @@ function runScript(file, ...args) {
 }
 
 
+class PythonShell {
+
+  tokens = {
+    stdout: {
+      start: "###START-STDOUT###",
+      stop: "###END-STDOUT###"
+    },
+    stderr: {
+      start: "###START-STDERR###",
+      stop: "###END-STDERR###"
+    },
+  }
+
+  constructor() {
+    // create process
+    this.process = proc.spawn(
+      python.details.executable, 
+      ['-i'],
+      { shell: true }
+    );
+    this.send("import sys")
+  }
+
+  send(msg, timeout=2000) {
+    let thusfar = {
+      message: [],
+      stdout: false,
+      stderr: false
+    };
+
+    // listen for returned values
+    let promise = new Promise((resolve, reject) => {
+      for (let src of ["stdout", "stderr"]) {
+        this.process[src].on("data", resp => {
+          // decode
+          let value = decoder.decode(resp)
+          // sanitize
+          let safevalue = value
+            .replaceAll(this.tokens[src].stop, "")
+            .replaceAll(">>> ", "")
+            .trim()
+          // store sanitized value
+          if (safevalue) {
+            thusfar.message.push(safevalue)
+          }
+          // stop listening if end of input
+          if (value.includes(this.tokens[src].stop)) {
+            thusfar[src] = true
+            this.process[src].removeAllListeners()
+          }
+          // if done, resolve
+          if (thusfar.stdout && thusfar.stderr) {
+            resolve(thusfar.message)
+          }
+        })
+      }
+
+      setTimeout(evt => {
+        resolve(thusfar.message)
+      }, timeout)
+    })
+    // send message
+    this.process.stdin.write(
+      `${msg}\nprint("${this.tokens.stdout.stop}", file=sys.stdout)\nprint("${this.tokens.stderr.stop}", file=sys.stderr)\n`
+    );
+    
+    return promise
+  }
+}
+
+
 // array with information about/from Python
 export const python = {
   details: {
@@ -182,6 +254,20 @@ export const python = {
     constants: undefined,
     send: send,
     ready: Promise.withResolvers(),
+  },
+  shell: {
+    shells: {},
+    send: (id, msg) => python.shell.shells[id].send(msg), 
+    open: () => {
+      let id = randomUUID();
+      python.shell.shells[id] = new PythonShell();
+
+      return id
+    },
+    close: id => {
+      python.shell.shells[id].close();
+      delete python.shell.shells[id];
+    }
   },
   socket: undefined,
   process: undefined
