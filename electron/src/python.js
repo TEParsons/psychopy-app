@@ -224,6 +224,10 @@ class PythonShell {
         resolve(thusfar.message)
       }, timeout)
     })
+    // store message for return
+    thusfar.message.push(
+      `>> ${msg}`
+    )
     // send message
     this.process.stdin.write(
       `${msg}\nprint("${this.tokens.stdout.stop}", file=sys.stdout)\nprint("${this.tokens.stderr.stop}", file=sys.stderr)\n`
