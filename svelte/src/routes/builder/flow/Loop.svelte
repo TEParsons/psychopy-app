@@ -167,7 +167,6 @@
         padding: 0 1rem;
         padding-top: 0;
         min-height: 4rem;
-        margin-top: -0.5px;
         margin-bottom: 3rem;
     }
     .loop .loop-name {

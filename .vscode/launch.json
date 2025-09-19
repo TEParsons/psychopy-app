@@ -1,25 +1,11 @@
 {
     "configurations": [    
         {
-            "name": "Launch Electron",
+            "name": "PsychopPy Svelte",
             "request": "launch",
             "cwd": "${workspaceFolder}/electron",
             "runtimeArgs": [
                 "start"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "name": "Launch Svelte",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/svelte",
-            "runtimeArgs": [
-                "run",
-                "dev"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
