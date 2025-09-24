@@ -2,8 +2,7 @@ const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
-const proc = require("child_process")
-
+const proc = require("child_process");
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -131,9 +130,39 @@ app.on("quit", (evt, code) => {
   python.process.kill(0);
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
 
+function getFileTree(folder) {
+  let output = [];
+
+  try {
+    for (let item of fs.readdirSync(folder, { recursive: false })) {
+      // construct absolute path
+      let abspath = path.join(folder, item);
+      // get stats
+      let stats = fs.statSync(abspath);
+      // construct details
+      let details = {
+        relpath: item,
+        abspath: abspath,
+      }
+      if (stats.isDirectory()) {
+        // if directory, recursively get children
+        details.children = getFileTree(abspath)
+      } else {
+        // if file, get size
+        details.size = stats.size / 1000000
+      }
+      // append
+      output.push(details)
+    }
+  } catch(err) {
+    console.error(err)
+
+    return output
+  }
+
+  return output
+}
 
 /* handlers which can be invoked by electron */
 
@@ -144,6 +173,8 @@ const handlers = {
       close: ipcMain.handle("electron.windows.close", (evt, id) => windows[id].close()),
     },
     paths: {
+      documents: ipcMain.handle("electron.paths.documents", (evt) => app.getPath("documents")),
+      user: ipcMain.handle("electron.paths.user", (evt) => path.join(app.getPath("appData"), "psychopy3")),
       devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json")),
       pavlovia: {
         dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia")),
@@ -158,6 +189,7 @@ const handlers = {
       mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
       openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(windows[evt.sender.id], options)),
       saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(windows[evt.sender.id], options)),
+      scandir: ipcMain.handle("electron.files.scandir", (evt, root) => getFileTree(root))
     }
   },
   python: {

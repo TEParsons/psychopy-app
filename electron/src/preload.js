@@ -8,6 +8,8 @@ const electron = {
     close: (id) => ipcRenderer.invoke("electron.windows.close", id).then(resp => resp),
   },
   paths: {
+    documents: () => ipcRenderer.invoke("electron.paths.documents").then(resp => resp),
+    user: () => ipcRenderer.invoke("electron.paths.user").then(resp => resp),
     devices: () => ipcRenderer.invoke("electron.paths.devices").then(resp => resp),
     pavlovia: {
       dir: () => ipcRenderer.invoke("electron.paths.pavlovia").then(resp => resp),
@@ -22,6 +24,7 @@ const electron = {
     mkdir: (path, recursive=true) => ipcRenderer.invoke("electron.files.mkdir", path, recursive).then(resp => resp),
     openDialog: (options) => ipcRenderer.invoke("electron.files.openDialog", options).then(resp => resp),
     saveDialog: (options) => ipcRenderer.invoke("electron.files.saveDialog", options).then(resp => resp),
+    scandir: (root) => ipcRenderer.invoke("electron.files.scandir", root).then(resp => resp)
   }
 };
 contextBridge.exposeInMainWorld('electron', electron)

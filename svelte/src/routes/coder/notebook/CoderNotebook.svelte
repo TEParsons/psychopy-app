@@ -11,7 +11,6 @@
             media.prefersColorScheme = event.matches ? "dark" : "light";
         });
     })
-    
 
     let current = getContext("current")
 </script>
@@ -22,10 +21,10 @@
             bind:label={page.label}
             close={(evt) => current.pages.splice(i, 1)}
             bind:selected={
-                () => current.tab === i,
+                () => current.tab === parseInt(i),
                 (val) => {
                     if (val) {
-                        current.tab = i
+                        current.tab = parseInt(i)
                     }
                 }
             }
@@ -40,15 +39,7 @@
         </NotebookPage>
     {/each}
     <ButtonTab
-        callback={(evt) => {
-            // add new tab with blank file
-            current.pages.push({
-                file: "untitled.py",
-                content: ""
-            })
-            // focus new tab
-            current.tab = $state.snapshot(current.pages.length) - 1
-        }}
+        callback={current.newFile}
         tooltip="New file..."
     ></ButtonTab>
 </Notebook>

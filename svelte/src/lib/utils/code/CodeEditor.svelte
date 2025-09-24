@@ -95,6 +95,8 @@
 
 <style>
     .container {
+        height: calc(100% + 1rem - .5px);
+        width: calc(100% + 1rem - 1px);
         min-height: 10rem;
         margin: -0.5rem;
         overflow: auto;
