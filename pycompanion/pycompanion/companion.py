@@ -21,7 +21,8 @@ class Companion:
             'init': self.initialize,
             'run': self.call,
             'register': self.register,
-            'store': self.store
+            'store': self.store,
+            'ping': self.ping
         }
     
     @staticmethod
@@ -193,4 +194,16 @@ class Companion:
             True if value was stored successfully
         """
         self.namespace[name] = value
+    
+    def ping(self):
+        """
+        Returns the word "pong". Allows servers to test whether they're alive, or send routine 
+        messages to keep the connection alive.
+
+        Returns
+        -------
+        str
+            The word "pong"
+        """
+        return "pong"
         

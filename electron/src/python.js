@@ -90,6 +90,20 @@ export async function startPython() {
     })
     // initial commands to run once Liaison is ready
     python.liaison.ready.promise.then(evt => {
+      // start a ping pong to keep the connection alive
+      setInterval(
+        () => {
+          python.liaison.send(
+            {
+              command: "ping"
+            }, 
+            30000
+          ).catch(
+            err => console.error(`Liaison isn't responding (sent a ping and didn't receive a pong within 30s)`)
+          )
+        }, 
+        30000
+      )
       // activate plugins
       python.liaison.send({
         command: "run",
