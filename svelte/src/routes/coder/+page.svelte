@@ -7,6 +7,7 @@
     import Frame from "$lib/utils/Frame.svelte";
     import Panel from "$lib/utils/Panel.svelte";
     import ShellNotebook from "./shell/ShellNotebook.svelte";
+    import { electron, python } from "$lib/globals.svelte";
     
 
     // reference current in context for ease of access
@@ -14,6 +15,7 @@
 
 </script>
 
+<title>PsychoPy Coder</title>
 <Frame
     rows={3} 
     cols={5}
@@ -21,28 +23,32 @@
     {#snippet ribbon()}
         <CoderRibbon />
     {/snippet}
-    <Panel
-        title=Files
-        hspan={1}
-        vspan={2}
-    ></Panel>
+    {#if electron}
+        <Panel
+            title=Files
+            hspan={1}
+            vspan={2}
+        ></Panel>
+    {/if}
     <Panel
         title=Editor 
-        hspan={3} 
-        vspan={2}
+        hspan={electron ? 3 : 4} 
+        vspan={python ? 2 : 3}
     >
         <CoderNotebook />
     </Panel>
     <Panel
         title=Outline
         hspan={1}
-        vspan={2}
+        vspan={python ? 2 : 3}
     ></Panel>
-    <Panel
-        title=Console
-        hspan={5}
-        vspan={1}
-    >
-        <ShellNotebook />
-    </Panel>
+    {#if python}
+        <Panel
+            title=Console
+            hspan={5}
+            vspan={1}
+        >
+            <ShellNotebook />
+        </Panel>
+    {/if}
 </Frame>

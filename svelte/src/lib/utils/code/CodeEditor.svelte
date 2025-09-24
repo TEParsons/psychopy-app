@@ -95,10 +95,9 @@
 
 <style>
     .container {
-        width: calc(100% + 1rem);
-        height: calc(100% + 1rem);
         min-height: 10rem;
         margin: -0.5rem;
         overflow: auto;
+        box-sizing: border-box;
     }
 </style>
