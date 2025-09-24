@@ -88,6 +88,14 @@ export async function startPython() {
         )
       }
     })
+    // initial commands to run once Liaison is ready
+    python.liaison.ready.promise.then(evt => {
+      // activate plugins
+      python.liaison.send({
+        command: "run",
+        args: ["psychopy.plugins:activatePlugins"]
+      }, 10000)
+    })
     // reject after 1s
     setTimeout(evt => python.liaison.ready.reject(evt), 1000)
   })
