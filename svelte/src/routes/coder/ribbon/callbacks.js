@@ -1,4 +1,4 @@
-import { projects } from '$lib/globals.svelte.js';
+import { electron, python, projects } from '$lib/globals.svelte.js';
 import { current } from '../globals.svelte.js';
 
 
@@ -119,12 +119,11 @@ export function redo() {
 
 /* Views */
 
-export function new_builder_frame() {
-    window.open("/builder");
-}
-export function new_coder_frame() {
-    window.open("/coder");
-}
-export function new_runner_frame() {
-    window.open("/runner");
+
+export function newWindow(target) {
+    if (electron) {
+        return electron.windows.new(target);
+    } else {
+        return window.open(`/${target}`)
+    }
 }

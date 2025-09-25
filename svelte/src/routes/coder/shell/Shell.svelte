@@ -1,5 +1,7 @@
 <script>
     import { python } from "$lib/globals.svelte.js";
+    import { CompactButton } from "$lib/utils/buttons";
+    import { CodeOutput } from "$lib/utils/code";
     import { onMount } from "svelte";
 
     let {
@@ -7,21 +9,24 @@
     } = $props()
 
     let output = $state({
-        handle: undefined,
-        content: []
+        content: ""
     })
 
     let message = $state.raw("");
 </script>
 
 <div class=shell-ctrl>
-    <pre
-        bind:this={output.handle}
+    <CodeOutput
+        bind:value={output.content}
     >
-        {#each output.content as line}
-            <code>{line}</code>
-        {/each}
-    </pre>
+        {#snippet ctrls()}
+            <CompactButton
+                icon="icons/btn-clear.svg"
+                onclick={evt => output.content = ""}
+                tooltip="Clear output"
+            />
+        {/snippet}
+    </CodeOutput>
     <input 
         type=text
         bind:value={message}
@@ -33,7 +38,7 @@
                 message = ""
                 // show resp
                 resp.then(
-                    resp => output.content.push(...resp)
+                    resp => output.content += resp.join("\n") + "\n"
                 ).catch(
                     err => console.log(err)
                 )
@@ -43,14 +48,6 @@
 </div>
 
 <style>
-    pre {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        overflow-y: auto;
-        overflow-anchor: auto;
-    }
-
     input {
         font-family: var(--mono);
     }

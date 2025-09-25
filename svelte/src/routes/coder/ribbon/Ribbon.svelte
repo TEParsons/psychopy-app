@@ -5,6 +5,7 @@
         file_open,
         file_save,
         file_save_as,
+        newWindow,
         // experiment
     } from './callbacks.js'
     
@@ -86,19 +87,19 @@
         <IconButton 
             icon="icons/btn-builder.svg" 
             label="Builder view" 
-            onclick={(evt) => window.open("/builder")} 
+            onclick={(evt) => newWindow("builder")} 
             borderless
         />
         <IconButton 
             icon="icons/btn-coder.svg" 
             label="Coder view" 
-            onclick={(evt) => window.open("/coder")} 
+            onclick={(evt) => newWindow("coder")} 
             borderless
         />
         <IconButton 
             icon="icons/btn-runner.svg" 
             label="Runner view" 
-            onclick={(evt) => window.open("/runner")} 
+            onclick={(evt) => newWindow("runner")} 
             borderless
         />
     </RibbonSection>

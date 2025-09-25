@@ -52,7 +52,6 @@
         box-shadow: 
             inset -1px -1px 2px rgba(0, 0, 0, 0.025)
         ;
-        height: 100%;
 
         display: grid;
         align-items: center;
