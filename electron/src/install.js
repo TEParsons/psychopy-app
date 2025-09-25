@@ -11,10 +11,16 @@ let decoder = new TextDecoder();
 let __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 
-async function installUV() {
+export var uv = {
+    dir: path.join(".", ".uv"),
+    executable: path.join(".", ".uv", "uv"),
+}
+
+
+export async function installUV() {
     // if installed, update
-    if (fs.existsSync(path.join(".", "uv", "uv"))) {
-        // proc.execSync(`${uv.executable} self update`)
+    if (fs.existsSync(uv.executable)) {
+        proc.execSync(`${uv.executable} self update`)
         return true
     }
     // map installers to system architectures
@@ -50,42 +56,22 @@ async function installUV() {
             fs.unlink(zipfile, err => {if (err) throw err})
         }
     )
+
+    return uv.executable
 }
 
 
-export var uv = {
-    install: installUV,
-    dir: path.join(".", ".uv"),
-    executable: path.join(".", ".uv", "uv"),
-}
-
-export async function installPython(version="3.10", label="2025.2") {
-    // make sure uv is installed first
-    await uv.install()
-    
-    // do we have a python venv for this version?
-    let found = true
-    try {
-        proc.execSync(`${uv.executable} python find ${path.join(".venvs", label)}`)
-    } catch (err) {
-        found = false
-    }
-    // start start
-    console.log(`${found ? "Updating" : "Installing"} Python...`)
-    // if uv gives an error, there's no executable yet, so make one
-    if (!found) {
-        // make a new venv
-        proc.execSync(`${uv.executable} venv --python ${version} --clear ${path.join(".venvs", label)}`)
-    }
+export function installPython(version="3.10", label="2025.2") {
+    // make a new venv
+    proc.execSync(`${uv.executable} venv --python ${version} --clear ${path.join(".venvs", label)}`)
     // get executable
     let executable = decoder.decode(
         proc.execSync(`${uv.executable} python find ${path.join(".venvs", label)}`)
     ).trim()
     // install PsychoPy and pycompanion
-    proc.execSync(`${uv.executable} pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
+    proc.execSync(`${uv.executable} pip install -e f:/GitHub/psychopy --python "${executable}"`)
+    // proc.execSync(`${uv.executable} pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
     proc.execSync(`${uv.executable} pip install -e ../pycompanion --python "${executable}"`)
-    // log finished
-    console.log(`Finished ${found ? "updating" : "installing"} Python at ${executable}`)
 
     return executable
 }

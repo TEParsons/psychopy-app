@@ -1,7 +1,7 @@
 import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
-import { uv, installPython } from "./install.js"
+import { installUV, installPython } from "./install.js"
 import { randomUUID } from "node:crypto";
 
 
@@ -41,12 +41,10 @@ function getConstants() {
 }
 
 export async function startPython() {
-  // uncomment the line below on first run (when packaged, the installer will handle this)
-  python.details.executable = await python.install()
   // log start
   console.log("Starting Python...")
   // get constants
-  python.liaison.constants = await getConstants();
+  python.liaison.constants = await getConstants().catch(err => console.log(err));
   // spawn a Python process
   python.process = proc.spawn(python.details.executable, [
     "-m", "pycompanion.liaison.websocket", python.liaison.address
@@ -114,10 +112,6 @@ export async function startPython() {
     // reject after 1s
     setTimeout(evt => python.liaison.ready.reject(evt), 1000)
   })
-  // log ready
-  console.log("Python started")
-
-  return true
 }
 
 async function send(msg, timeout=1000) {
@@ -272,7 +266,10 @@ export const python = {
     alive: false,
   },
   runScript: runScript,
-  install: installPython,
+  install: {
+    uv: installUV,
+    python: installPython
+  },
   output: {
     stdout: [],
     stderr: [],

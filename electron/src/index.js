@@ -4,6 +4,13 @@ const fs = require("fs");
 const { python, startPython } = require("./python.js");
 const proc = require("child_process");
 
+let decoder = new TextDecoder();
+
+version = {
+  major: "2025.2",
+  minor: "1"
+}
+
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -19,7 +26,19 @@ var svelte = {
 var windows = {};
 
 
-const createWindow = () => {
+const createWindow = async () => {
+  // make sure we have uv
+  let uv = await python.install.uv()
+  // try to get Python executable
+  try {
+    python.details.executable = decoder.decode(
+      proc.execSync(`${uv} python find ${path.join(".venvs", version.major)}`)
+    ).trim()
+  } catch (err) {
+    console.log("No Python venv found, installing...")
+    python.install.python("3.10", version.major)
+    console.log("Installed Python")
+  }
   // create splash
   var splash = new BrowserWindow({
       icon: path.join(__dirname, 'favicon@2x.png'),
@@ -38,8 +57,7 @@ const createWindow = () => {
   // array which tracks which requirements are ready
   let ready = {
     svelte: false,
-    mintime: false,
-    python: false
+    mintime: false
   };
 
   // start the svelte side of things
@@ -51,9 +69,9 @@ const createWindow = () => {
     }
   })
   // set a minimum load time so that the splash screen is at least shown
-  setTimeout(() => ready.mintime = true, 2000);
+  setTimeout(() => ready.mintime = true, 1000);
   // start python
-  startPython().then(resp => ready.python = true);
+  startPython()
 
   // when everything is ready, show the app
   let interval = setInterval(() => {
