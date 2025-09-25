@@ -18,19 +18,25 @@
 <div 
     class=param-rich-choice-ctrl
 >
-    {#each options as [val, details]}
-    <button
-        class=rich-ctrl-item
-        class:selected={param.val === val}
-        onclick={(evt) => param.val = val}
-    >
-        <b>{details.label}</b>
-        <p>{details.body}</p>
-        {#if details.link}
-        <a href={details.link}>{details.linkText}</a>
-        {/if}
-    </button>
-    {/each}
+    {#await optionsFromParam(param)}
+        Loading...
+    {:then options}
+        {#each options as [val, details]}
+            <button
+                class=rich-ctrl-item
+                class:selected={param.val === val}
+                onclick={(evt) => param.val = val}
+            >
+                <b>{details.label}</b>
+                <p>{details.body}</p>
+                {#if details.link}
+                <a href={details.link}>{details.linkText}</a>
+                {/if}
+            </button>
+        {/each}
+    {:catch}
+        Failed to load options.
+    {/await}
 </div>
 
 <style>

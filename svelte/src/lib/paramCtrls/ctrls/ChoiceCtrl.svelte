@@ -10,37 +10,32 @@
     } = $props()
 </script>
 
-<svelte:boundary>
-    {#snippet pending()}
-        <div
-            class=param-choice-placeholder
-        >
-            Loading options...
-        </div>
-    {/snippet}
-    <select 
-        class=param-choice-input
-        disabled={disabled || param.allowedVals.length == 1} 
-        bind:value={param.val}
-        style:color={valid.state ? "inherit" : "var(--red)"}
-    >
-        {#each await optionsFromParam(param) as [val, label]}
+
+<select 
+    class=param-choice-input
+    disabled={disabled || param.allowedVals.length == 1} 
+    bind:value={param.val}
+    style:color={valid.state ? "inherit" : "var(--red)"}
+>
+    {#await optionsFromParam(param)}
+        <option>Loading...</option>
+    {:then options}
+        {#each options as [val, label]}
             <option 
                 value={val} 
                 selected={param.val === val}
             >{label}</option>
         {/each}
-    </select>
-</svelte:boundary>
+    {:catch}
+        <option 
+            value={param.val} 
+            selected
+        >{param.val}</option>
+    {/await}
+</select>
+
 
 <style>
-    .param-choice-placeholder {
-        border: 1px solid var(--overlay);
-        padding: .5rem 1rem;
-        border-radius: .25rem;
-        flex-grow: 1;
-        color: var(--outline);
-    }
     .param-choice-input {
         flex-grow: 1;
     }

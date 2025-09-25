@@ -8,16 +8,6 @@
         disabled=false,
         validate = (param) => !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
     } = $props()
-
-
-    // construct options live from the param's allowedVals and allowedLabels attributes
-    let options = $derived(
-        optionsFromParam(param)
-    )
-
-    $effect(() => {
-        valid.state = validate(param)
-    })
     
 </script>
 
@@ -25,25 +15,32 @@
     class=param-multi-choice-input
     style:color={valid.state ? "inherit" : "var(--red)"}
 >
-    {#each options as [val, label]}
-        <input
-            type=checkbox
-            bind:checked={
-                () => param.val.includes(val),
-                (value) => {
-                    if (value && !param.val.includes(val)) {
-                        // if checked and value isn't in param, add it
-                        param.val.push(val)
-                    } else if (!value && param.val.includes(val)) {
-                        // if unchecked and value is in param, remove it
-                        param.val.splice(param.val.indexOf(val), 1)
+    {#await optionsFromParam(param)}
+        Loading...
+    {:then options}
+        {#each options as [val, label]}
+            <input
+                type=checkbox
+                bind:checked={
+                    () => param.val.includes(val),
+                    (value) => {
+                        if (value && !param.val.includes(val)) {
+                            // if checked and value isn't in param, add it
+                            param.val.push(val)
+                        } else if (!value && param.val.includes(val)) {
+                            // if unchecked and value is in param, remove it
+                            param.val.splice(param.val.indexOf(val), 1)
+                        }
                     }
                 }
-            }
-            disabled={disabled}
-        />
-        {label}
-    {/each}
+                disabled={disabled}
+            />
+            {label}
+        {/each}
+    {:catch}
+        Failed to load options.
+    {/await}
+    
 </div>
 
 <style>
