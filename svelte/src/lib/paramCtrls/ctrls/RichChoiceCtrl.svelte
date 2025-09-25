@@ -8,9 +8,11 @@
         valid=$bindable()
     } = $props()
 
-    let options = $derived(
-        optionsFromParam(param)
-    )
+    let options = $state.raw([])
+
+    $effect(() => {
+        optionsFromParam(param).then(resp => options = resp)
+    })
 </script>
 
 <div 
