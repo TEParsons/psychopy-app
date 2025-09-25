@@ -38,7 +38,8 @@ const createWindow = () => {
   // array which tracks which requirements are ready
   let ready = {
     svelte: false,
-    mintime: false
+    mintime: false,
+    python: false
   };
 
   // start the svelte side of things
@@ -52,7 +53,7 @@ const createWindow = () => {
   // set a minimum load time so that the splash screen is at least shown
   setTimeout(() => ready.mintime = true, 2000);
   // start python
-  startPython();
+  startPython().then(resp => ready.python = true);
 
   // when everything is ready, show the app
   let interval = setInterval(() => {

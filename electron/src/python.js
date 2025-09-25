@@ -42,8 +42,9 @@ function getConstants() {
 
 export async function startPython() {
   // uncomment the line below on first run (when packaged, the installer will handle this)
-  // await python.install()
-  
+  python.details.executable = await python.install()
+  // log start
+  console.log("Starting Python...")
   // get constants
   python.liaison.constants = await getConstants();
   // spawn a Python process
@@ -113,6 +114,10 @@ export async function startPython() {
     // reject after 1s
     setTimeout(evt => python.liaison.ready.reject(evt), 1000)
   })
+  // log ready
+  console.log("Python started")
+
+  return true
 }
 
 async function send(msg, timeout=1000) {
@@ -263,9 +268,7 @@ class PythonShell {
 // array with information about/from Python
 export const python = {
   details: {
-    executable: decoder.decode(
-      proc.execSync(`${uv.executable} python find 3.10`)
-    ).trim(),
+    executable: undefined,
     alive: false,
   },
   runScript: runScript,
