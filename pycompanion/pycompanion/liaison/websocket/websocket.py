@@ -100,19 +100,20 @@ class WebsocketLiaison(BaseLiaison):
             future = self.loop.create_future()
             # await future to continuously serve
             async with websockets.serve(process_messages, self.host, self.port, compression=None) as self.com:
+                # post start message in stdout
+                sys.stdout.write(f"{START_MARKER}@{self.host}:{self.port}")
+                sys.stdout.flush()
+                # wait until closed
                 await future
-
-        # post start message in stdout
-        sys.stdout.write(f"{START_MARKER}@{self.host}:{self.port}")
-        sys.stdout.flush()
+                # post stop message in stdout
+                sys.stdout.write(f"{STOP_MARKER}@{self.host}:{self.port}")
+                sys.stdout.flush()
+        
         # run loop until complete
         self.loop.run_until_complete(
             run()
         )
-        # post stop message in stdout
-        sys.stdout.write(f"{STOP_MARKER}@{self.host}:{self.port}")
-        sys.stdout.flush()
-    
+
     def stop(self):
         self.alive = False
     

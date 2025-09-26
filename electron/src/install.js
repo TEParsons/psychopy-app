@@ -87,8 +87,9 @@ export function installPython(version="3.10", folder=path.join(app.getPath("appD
             proc.execSync(`"${uv.executable}" python find "${folder}"`)
         ).trim()
         // install PsychoPy and pycompanion
-        proc.execSync(`"${uv.executable}" pip install f:/GitHub/psychopy --python "${executable}"`)
-        // proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
+        // proc.execSync(`"${uv.executable}" pip install -e f:/GitHub/psychopy --python "${executable}"`)
+        // proc.execSync(`"${uv.executable}" pip install -e ../pycompanion[websocket] --python "${executable}"`)
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
         proc.execSync(`"${uv.executable}" pip install ../pycompanion[websocket] --python "${executable}"`)
     }
     
