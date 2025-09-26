@@ -34,10 +34,11 @@ const createWindow = async () => {
     python.details.executable = decoder.decode(
       proc.execSync(`${uv} python find ${path.join(".venvs", version.major)}`)
     ).trim()
+    console.log(`Using Python at: ${python.details.executable}`)
   } catch (err) {
     console.log("No Python venv found, installing...")
-    python.install.python("3.10", version.major)
-    console.log("Installed Python")
+    python.details.executable = python.install.python("3.10", version.major)
+    console.log(`Using Python at: ${python.details.executable}`)
   }
   // create splash
   var splash = new BrowserWindow({

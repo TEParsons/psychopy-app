@@ -71,7 +71,7 @@ export function installPython(version="3.10", label="2025.2") {
     // install PsychoPy and pycompanion
     proc.execSync(`${uv.executable} pip install -e f:/GitHub/psychopy --python "${executable}"`)
     // proc.execSync(`${uv.executable} pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
-    proc.execSync(`${uv.executable} pip install -e ../pycompanion --python "${executable}"`)
+    proc.execSync(`${uv.executable} pip install -e ../pycompanion[websocket] --python "${executable}"`)
 
     return executable
 }
