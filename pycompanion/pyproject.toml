@@ -10,3 +10,6 @@ dependencies = [
 websocket = [
     "websockets"
 ]
+
+[tool.setuptools.package-data]
+"pycompanion.liaison" = ["*.schema.json"]

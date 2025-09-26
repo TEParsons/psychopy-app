@@ -1,3 +1,4 @@
+import { app }  from 'electron';
 import proc from "child_process";
 import { platform , arch } from "process";
 import path from "path";
@@ -12,15 +13,19 @@ let __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 
 export var uv = {
-    dir: path.join(".", ".uv"),
-    executable: path.join(".", ".uv", "uv"),
+    dir: path.join(app.getPath("appData"), "psychopy4", ".uv"),
+    executable: path.join(app.getPath("appData"), "psychopy4", ".uv", "uv"),
 }
 
 
 export async function installUV() {
+    // make sure folder exists
+    fs.mkdirSync(uv.dir, {
+        recursive: true
+    })
     // if installed, update
     if (fs.existsSync(uv.executable)) {
-        proc.execSync(`${uv.executable} self update`)
+        // proc.execSync(`${uv.executable} self update`)
         return true
     }
     // map installers to system architectures
@@ -45,12 +50,12 @@ export async function installUV() {
         resp => resp.blob()
     ).then(
         async blob => {
-            let zipfile = path.join(".", ".uv.zip");
+            let zipfile = path.join(uv.dir, ".uv.zip");
             // write zip file
             fs.writeFileSync(zipfile, await blob.bytes());
             // extract zip file
             await extract(zipfile, {
-                dir: path.join(path.dirname(__dirname), ".uv")
+                dir: uv.dir
             })
             // delete zip file
             fs.unlink(zipfile, err => {if (err) throw err})
@@ -61,17 +66,31 @@ export async function installUV() {
 }
 
 
-export function installPython(version="3.10", label="2025.2") {
-    // make a new venv
-    proc.execSync(`${uv.executable} venv --python ${version} --clear ${path.join(".venvs", label)}`)
-    // get executable
-    let executable = decoder.decode(
-        proc.execSync(`${uv.executable} python find ${path.join(".venvs", label)}`)
-    ).trim()
-    // install PsychoPy and pycompanion
-    proc.execSync(`${uv.executable} pip install -e f:/GitHub/psychopy --python "${executable}"`)
-    // proc.execSync(`${uv.executable} pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
-    proc.execSync(`${uv.executable} pip install -e ../pycompanion[websocket] --python "${executable}"`)
-
+export function installPython(version="3.10", folder=path.join(app.getPath("appData"), "psychopy4", ".venvs", "2025.2")) {
+    // make sure folder exists
+    fs.mkdirSync(folder, {
+        recursive: true
+    })
+    // try to find executable
+    let executable
+    try { 
+        executable = decoder.decode(
+            proc.execSync(`"${uv.executable}" python find "${folder}"`)
+        ).trim()
+    } catch (err) {
+        // install python if none found
+        console.log("No Python venv found for this version, installing...")
+        // make a new venv
+        proc.execSync(`"${uv.executable}" venv --python ${version} --clear "${folder}"`)
+        // get executable
+        executable = decoder.decode(
+            proc.execSync(`"${uv.executable}" python find "${folder}"`)
+        ).trim()
+        // install PsychoPy and pycompanion
+        proc.execSync(`"${uv.executable}" pip install f:/GitHub/psychopy --python "${executable}"`)
+        // proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
+        proc.execSync(`"${uv.executable}" pip install ../pycompanion[websocket] --python "${executable}"`)
+    }
+    
     return executable
 }

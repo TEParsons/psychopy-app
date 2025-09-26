@@ -2,6 +2,7 @@ const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
+const { uv } = require("./install.js");
 const proc = require("child_process");
 
 let decoder = new TextDecoder();
@@ -26,21 +27,13 @@ var svelte = {
 var windows = {};
 
 
-const createWindow = () => {
+const createWindow = async () => {
   // make sure we have uv
-  // let uv = await python.install.uv()
-  let uv = path.join(".uv", "uv")
+  uv.executable = await python.install.uv()
   // try to get Python executable
-  try {
-    python.details.executable = decoder.decode(
-      proc.execSync(`${uv} python find ${path.join(".venvs", version.major)}`)
-    ).trim()
-    console.log(`Using Python at: ${python.details.executable}`)
-  } catch (err) {
-    console.log("No Python venv found, installing...")
-    python.details.executable = python.install.python("3.10", version.major)
-    console.log(`Using Python at: ${python.details.executable}`)
-  }
+  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.major)
+  python.details.executable = python.install.python("3.10", python.details.dir)
+  console.log(`Using Python at: ${python.details.executable}`)
   // create splash
   var splash = new BrowserWindow({
       icon: path.join(__dirname, 'favicon@2x.png'),

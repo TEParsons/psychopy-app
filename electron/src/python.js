@@ -1,7 +1,8 @@
 import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
-import { installUV, installPython } from "./install.js"
+import { app } from "electron";
+import { uv, installUV, installPython } from "./install.js"
 import { randomUUID } from "node:crypto";
 
 
@@ -49,15 +50,15 @@ export async function startPython() {
   python.process = proc.spawn(python.details.executable, [
     "-m", "pycompanion.liaison.websocket", python.liaison.address
   ])
-  // add listener to know when process exits
+  // add listener for errors
+  python.process.stderr.on("data", evt => message(python.output.stderr, "STDERR", evt))
+    // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
       console.log(`Python process stopped, reason: ${evt?.message}`);
       // mark dead
       python.details.alive = false
   })
-  // add listener for errors
-  python.process.stderr.on("data", evt => message(python.output.stderr, "STDERR", evt))
   // actions to take on spawn
   python.process.on("spawn", evt => {
     // log started
@@ -271,6 +272,7 @@ class PythonShell {
 export const python = {
   details: {
     executable: undefined,
+    dir: undefined,
     alive: false,
   },
   runScript: runScript,
