@@ -119,6 +119,8 @@ export async function startPython() {
 async function send(msg, timeout=1000) {
   // wait for liaison to exist before sending messages
   await python.liaison.ready.promise
+  // wait for other messages to finish
+  await Promise.all(python.liaison.pending)
   // generate random ID
   let msgid = crypto.randomUUID()
   // send message with ident
@@ -128,8 +130,8 @@ async function send(msg, timeout=1000) {
       id: msgid
     })
   );
-
-  return new Promise((resolve, reject) => {
+  // create promise to await a reply
+  let promise = new Promise((resolve, reject) => {
     // define listener to find reply then remove itself
     let lsnr = evt => {
       // parse reply
@@ -153,6 +155,10 @@ async function send(msg, timeout=1000) {
     // timeout after
     setTimeout(evt => reject(`Message timed out: ${JSON.stringify(msg, undefined, 4)}`), timeout)
   })
+  // store promise in liaison pending
+  python.liaison.pending.push(promise)
+  
+  return promise
 }
 
 
@@ -282,6 +288,7 @@ export const python = {
     constants: undefined,
     send: send,
     ready: Promise.withResolvers(),
+    pending: []
   },
   shell: {
     shells: {},
