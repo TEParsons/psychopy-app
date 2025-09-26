@@ -76,9 +76,15 @@ class WebsocketLiaison(BaseLiaison):
                     # send response
                     await websocket.send(resp)
                 except json.JSONDecodeError as err:
+                    # send error
+                    sys.stdout.write(traceback.format_exception(err))
+                    sys.stsout.flush()
                     # store error as a message
                     self.messages.append(err)
                 except (websockets.ConnectionClosedOK, websockets.ConnectionClosedError) as err:
+                    # send error
+                    sys.stdout.write(traceback.format_exception(err))
+                    sys.stsout.flush()
                     # store end message / error as a message
                     self.messages.append(err)
                     # clear ref to websocket

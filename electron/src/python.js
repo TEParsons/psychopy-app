@@ -36,7 +36,7 @@ function getConstants() {
       )
     )
     // timeout after 1s
-    setTimeout(evt => reject(evt), 1000)
+    setTimeout(evt => reject("Getting Liaison constants timed out"), 1000)
   })
 }
 
@@ -44,7 +44,7 @@ export async function startPython() {
   // log start
   console.log("Starting Python...")
   // get constants
-  python.liaison.constants = await getConstants().catch(err => console.log(err));
+  python.liaison.constants = await getConstants().catch(err => console.error(err));
   // spawn a Python process
   python.process = proc.spawn(python.details.executable, [
     "-m", "pycompanion.liaison.websocket", python.liaison.address
@@ -107,10 +107,12 @@ export async function startPython() {
       python.liaison.send({
         command: "run",
         args: ["psychopy.plugins:activatePlugins"]
-      }, 10000)
-    })
-    // reject after 1s
-    setTimeout(evt => python.liaison.ready.reject(evt), 1000)
+      }, 10000).catch(
+        err => console.error(`Failed to activate plugins: ${err}`)
+      )
+    }).catch(
+      err => console.error(`Liaison timed out: ${err}`)
+    )
   })
 }
 
