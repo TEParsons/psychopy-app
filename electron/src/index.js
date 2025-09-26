@@ -26,9 +26,10 @@ var svelte = {
 var windows = {};
 
 
-const createWindow = async () => {
+const createWindow = () => {
   // make sure we have uv
-  let uv = await python.install.uv()
+  // let uv = await python.install.uv()
+  let uv = path.join(".uv", "uv")
   // try to get Python executable
   try {
     python.details.executable = decoder.decode(
