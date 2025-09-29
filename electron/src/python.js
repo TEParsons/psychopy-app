@@ -163,17 +163,19 @@ async function send(msg, timeout=1000) {
 }
 
 
-function runScript(file, ...args) {
+function runScript(file, executable, ...args) {
+  // if not given, use default executable
+  executable = executable || python.details.executable;
   // spawn a process
-  let script = proc.execFile(python.details.executable, [
+  let script = proc.execFile(executable, [
     file, ...args
   ], {cwd: path.dirname(file)})
   // log stdout
   script.stdout.on(
-    "data", evt => console.log("STDOUT", decoder.decode(evt))
+    "data", evt => console.log("STDOUT", evt)
   )
   script.stderr.on(
-    "data", evt => console.log("STDERR", decoder.decode(evt))
+    "data", evt => console.log("STDERR", evt)
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
@@ -280,6 +282,7 @@ export const python = {
     uv: installUV,
     python: installPython
   },
+  start: startPython,
   output: {
     stdout: [],
     stderr: [],

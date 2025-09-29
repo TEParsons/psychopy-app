@@ -32,7 +32,7 @@ const createWindow = async () => {
   uv.executable = await python.install.uv()
   // try to get Python executable
   python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.major)
-  python.details.executable = python.install.python("3.10", python.details.dir)
+  python.details.executable = python.install.python({python: "3.10", psychopy: "2025.2"})
   console.log(`Using Python at: ${python.details.executable}`)
   // create splash
   var splash = new BrowserWindow({
@@ -66,7 +66,7 @@ const createWindow = async () => {
   // set a minimum load time so that the splash screen is at least shown
   setTimeout(() => ready.mintime = true, 1000);
   // start python
-  startPython()
+  python.start()
 
   // when everything is ready, show the app
   let interval = setInterval(() => {
@@ -209,6 +209,8 @@ const handlers = {
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
     output: ipcMain.handle("python.output", (evt) => python.output),
+    install: ipcMain.handle("python.install", (evt, version, folder) => python.install.python(version, folder)),
+    isInstalled: ipcMain.handle("python.isInstalled", (evt, version, folder) => python.install.isInstalled(version, folder)),
     shell: {
       list: ipcMain.handle("python.shell.list", () => Object.keys(python.shell.shells)),
       send: ipcMain.handle("python.shell.send", (evt, id, msg) => python.shell.send(id, msg)),

@@ -20,7 +20,8 @@
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
     import { electron, python } from "$lib/globals.svelte.js";
-    import SavePrompt from "./SavePrompt.svelte"
+    import SavePrompt from "./SavePrompt.svelte";
+    import InstallPrompt from "./InstallPrompt.svelte"
     import { FindDialog } from "$lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
@@ -53,9 +54,11 @@
         }
     })
 
-    let savePrompt = $state({
+    let prompts = $state({
         NEW: false,
-        OPEN: false
+        OPEN: false,
+        PYCOMPILE: false,
+        PYRUN: false
     });
 </script>
 
@@ -107,21 +110,21 @@
         <IconButton 
             icon="icons/btn-new.svg" 
             label="New file" 
-            onclick={(evt) => savePrompt.NEW = true}
+            onclick={(evt) => prompts.NEW = true}
             borderless
         />
         <SavePrompt
-            bind:shown={savePrompt.NEW}
+            bind:shown={prompts.NEW}
             action={file_new}
         />  
         <IconButton 
             icon="icons/btn-open.svg" 
             label="Open file" 
-            onclick={(evt) => savePrompt.OPEN = true} 
+            onclick={(evt) => prompts.OPEN = true} 
             borderless
         />
         <SavePrompt
-            bind:shown={savePrompt.OPEN}
+            bind:shown={prompts.OPEN}
             action={file_open}
         />
         <IconButton 
@@ -217,18 +220,25 @@
             <IconButton 
                 icon="icons/btn-compilepy.svg" 
                 label="Write experiment as a .py file" 
-                onclick={compilePython}
+                onclick={evt => prompts.PYCOMPILE = true}
                 disabled={current.experiment === null}
                 borderless
             />
-
+            <InstallPrompt
+                bind:shown={prompts.PYCOMPILE}
+                action={compilePython}
+            /> 
             <IconButton 
                 icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
                 label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                onclick={runPython}
+                onclick={evt => prompts.PYRUN = true}
                 disabled={current.experiment === null}
                 borderless
             />
+            <InstallPrompt
+                bind:shown={prompts.PYRUN}
+                action={runPython}
+            /> 
         </RibbonSection>
 
         <RibbonSection label=Browser icon="icons/rbn-browser.svg">

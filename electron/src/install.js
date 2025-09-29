@@ -66,7 +66,15 @@ export async function installUV() {
 }
 
 
-export function installPython(version="3.10", folder=path.join(app.getPath("appData"), "psychopy4", ".venvs", "2025.2")) {
+export function installPython(
+    version={python: "3.10", psychopy: "2025.2"}, 
+    folder=path.join(app.getPath("appData"), "psychopy4", ".venvs")
+) {
+    // make sure version has necessary keys
+    version.python = version.python || "3.10"
+    version.psychopy = version.psychopy || "2025.2"
+    // get specific folder for this version
+    folder = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.psychopy)
     // make sure folder exists
     fs.mkdirSync(folder, {
         recursive: true
@@ -81,16 +89,19 @@ export function installPython(version="3.10", folder=path.join(app.getPath("appD
         // install python if none found
         console.log("No Python venv found for this version, installing...")
         // make a new venv
-        proc.execSync(`"${uv.executable}" venv --python ${version} --clear "${folder}"`)
+        proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
         // get executable
         executable = decoder.decode(
             proc.execSync(`"${uv.executable}" python find "${folder}"`)
         ).trim()
         // install PsychoPy and pycompanion
-        // proc.execSync(`"${uv.executable}" pip install -e f:/GitHub/psychopy --python "${executable}"`)
         // proc.execSync(`"${uv.executable}" pip install -e ../pycompanion[websocket] --python "${executable}"`)
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
         proc.execSync(`"${uv.executable}" pip install ../pycompanion[websocket] --python "${executable}"`)
+        if (version.psychopy === "dev") {
+            proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
+        } else {
+            proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${executable}"`)
+        }
     }
     
     return executable

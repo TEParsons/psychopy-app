@@ -222,12 +222,13 @@ export async function compilePython() {
     return target
 }
 
-export async function runPython() {
+export async function runPython(executable) {
     // write Python script
     let target = await compilePython();
     // run script
     await python.runScript(
         target, 
+        executable || python.details.executable(),
         ...(current.experiment.pilotMode ? ["---pilot"] : [])
     )
 
