@@ -8,7 +8,7 @@ const proc = require("child_process");
 let decoder = new TextDecoder();
 
 version = {
-  major: "2025.2",
+  major: "dev",
   minor: "1"
 }
 
@@ -32,7 +32,7 @@ const createWindow = async () => {
   uv.executable = await python.install.uv()
   // try to get Python executable
   python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.major)
-  python.details.executable = python.install.python({python: "3.10", psychopy: "2025.2"})
+  python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
   console.log(`Using Python at: ${python.details.executable}`)
   // create splash
   var splash = new BrowserWindow({

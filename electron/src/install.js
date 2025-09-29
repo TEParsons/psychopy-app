@@ -67,12 +67,12 @@ export async function installUV() {
 
 
 export function installPython(
-    version={python: "3.10", psychopy: "2025.2"}, 
+    version={python: "3.10", psychopy: "dev"}, 
     folder=path.join(app.getPath("appData"), "psychopy4", ".venvs")
 ) {
     // make sure version has necessary keys
     version.python = version.python || "3.10"
-    version.psychopy = version.psychopy || "2025.2"
+    version.psychopy = version.psychopy || "dev"
     // get specific folder for this version
     folder = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.psychopy)
     // make sure folder exists
