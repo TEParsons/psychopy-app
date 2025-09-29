@@ -5,7 +5,8 @@
     import ComponentProfiles from '$lib/experiment/components.json';
     import RoutineButton from './RoutineButton.svelte';
     import FilterDialog from './FilterDialog.svelte';
-    import { CompactButton, Button } from "$lib/utils/buttons";
+    import { CompactButton } from "$lib/utils/buttons";
+    import { PluginManagerDlg } from "$lib/dialogs/pluginManager"
     import { electron, python } from "$lib/globals.svelte";
 
     let profiles = $state({
@@ -78,11 +79,19 @@
     })
 
     let showFilterDlg = $state.raw(false);
+    let showPluginMgr = $state.raw(false);
     let filter = $state()
 </script>
 <div id="components">
     <div class=ctrls>
-        <div class=gap></div>
+        <CompactButton
+            icon="icons/btn-add.svg"
+            tooltip="Get more..."
+            onclick={evt => showPluginMgr = true}
+        />
+        <PluginManagerDlg 
+            bind:shown={showPluginMgr}
+        />
         <CompactButton
             icon="icons/btn-refresh.svg"
             tooltip="Reload Components"
@@ -139,14 +148,12 @@
 
 
 <style>
-    .gap {
-        flex-grow: 1;
-    }
     .ctrls {
         padding: .5rem;
         display: flex;
         gap: .5rem;
         border-bottom: 1px solid var(--overlay);
+        justify-content: end;
     }
 
     .message {

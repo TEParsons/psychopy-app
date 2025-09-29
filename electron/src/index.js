@@ -82,7 +82,7 @@ const createWindow = async () => {
 };
 
 
-function newWindow(target=null, show=true) {
+function newWindow(target=null, show=true, debug=true) {
   // create window
   let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
@@ -102,8 +102,10 @@ function newWindow(target=null, show=true) {
       win.show();
       win.maximize();
       win.focus();
-      // OPTIONAL show dev tools
-      win.webContents.openDevTools();
+      // show dev tools if debugging
+      if (debug) {
+        win.webContents.openDevTools();
+      }
     })
   }
   // store handle against id
