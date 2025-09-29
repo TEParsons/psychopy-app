@@ -106,3 +106,59 @@ export function installPython(
     
     return executable
 }
+
+
+export function installPackage(name, executable) {
+    return proc.execSync(`"${uv.executable}" pip install ${name} --python "${executable}"`)
+}
+
+
+export function getPackages(executable) {
+    // get package list from pip
+    let resp = decoder.decode(
+        proc.execSync(`"${uv.executable}" pip list --python "${executable}"`)
+    )
+    // parse it
+    let output = {}
+    for (let [match, name, version] of resp.matchAll(/([\w\d\-]+)\s+([\w\d\-\.]+)/g)) {
+        // skip header
+        if (name === "Package" || name.match(/^-+$/)) {
+            continue
+        }
+        output[name] = version
+    }
+
+    return output
+}
+
+
+export function getEnvironments(
+    folder=path.join(app.getPath("appData"), "psychopy4", ".venvs")
+) {
+    let output = {}
+    // iterate through subfolders in the venvs folder
+    for (let subfolder of fs.readdirSync(folder)) {
+        let executable
+        let ppyVersion
+        try {
+            // look for an executable in this folder
+            executable = decoder.decode(
+                proc.execSync(`"${uv.executable}" python find "${path.join(folder, subfolder)}"`)
+            ).trim()
+            // get version of PsychoPy
+            ppyVersion = decoder.decode(
+                proc.execSync(`"${uv.executable}" pip show psychopy --python "${executable}"`)
+            ).match(/Version: (\d+\.\d+\.\d+)/)[1]
+        } catch (err) {
+            // skip if none found
+            continue
+        }
+        // store
+        output[subfolder] = {
+            executable: executable,
+            version: ppyVersion
+        }
+    }
+    
+    return output
+}

@@ -1,9 +1,11 @@
 <script>
     import { CompactButton, Button } from "$lib/utils/buttons";
     import { getContext } from "svelte";
+    import { python } from "$lib/globals.svelte";
 
     let {
-        plugin
+        plugin,
+        executable=$bindable()
     } = $props()
 
     let siblings = getContext("siblings")
@@ -15,7 +17,9 @@
     })
 
     function install(evt) {
-        // todo
+        siblings.installed = python.install.package(plugin.pipname, executable.current).then(
+            resp => python.install.getPackages(executable.current)
+        );
     }
 </script>
 
@@ -27,13 +31,17 @@
     <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
     <div class=plugin-name>{plugin.name}</div>
     <code class=plugin-pipname>{plugin.pipname}</code>
-    {#if !siblings.installed.includes(plugin.pipname)}
-        <CompactButton
-            tooltip="Install"
-            icon="icons/btn-download.svg"
-            onclick={install}
-        />
-    {/if}
+    {#await siblings.installed}
+        ...
+    {:then packages}
+        {#if !Object.keys(packages).includes(plugin.pipname)}
+            <CompactButton
+                tooltip="Install"
+                icon="icons/btn-download.svg"
+                onclick={install}
+            />
+        {/if}
+    {/await}
 </div>
 
 {#snippet page()}
@@ -42,14 +50,18 @@
             <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
             <a href="{plugin.homepage}" class=plugin-name>{plugin.name}</a>
             <code class=plugin-pipname>{plugin.pipname}</code>
-            {#if !siblings.installed.includes(plugin.pipname)}
-                <Button
-                    label="Install"
-                    icon="icons/btn-download.svg"
-                    onclick={evt => {}}
-                    horizontal
-                />
-            {/if}
+            {#await siblings.installed}
+                ...
+            {:then packages}
+                {#if !Object.keys(packages).includes(plugin.pipname)}
+                    <Button
+                        label="Install"
+                        icon="icons/btn-download.svg"
+                        onclick={install}
+                        horizontal
+                    />
+                {/if}
+            {/await}
         </div>
         {#each (plugin.description || "").split("\n") as line}
             <p>{line}</p>

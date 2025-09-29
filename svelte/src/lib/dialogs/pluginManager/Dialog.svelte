@@ -2,6 +2,7 @@
     import { Notebook, NotebookPage } from "$lib/utils/notebook";
     import { Dialog } from "$lib/utils/dialog";
     import Plugins from "./plugins/PluginsPanel.svelte"
+    import { python } from "$lib/globals.svelte"
 
     let {
         shown=$bindable()
@@ -11,6 +12,14 @@
         current: undefined
     });
 
+    let executable = $state({
+        default: undefined,
+        current: undefined
+    })
+    python.details().then(resp => {
+        executable.default = resp.executable;
+        executable.current = resp.executable;
+    })
 </script>
 
 
@@ -22,24 +31,64 @@
     }}
     bind:shown={shown}
 >
-    <Notebook>
-        <NotebookPage
-            label="Plugins"
-            bind:selected={
-                () => pages.current === "plugins",
-                value => pages.current = "plugins"
-            }
-        >
-            <Plugins />
-        </NotebookPage>
-        <NotebookPage
-            label="Packages"
-            bind:selected={
-                () => pages.current === "packages",
-                value => pages.current = "packages"
-            }
-        >
-            
-        </NotebookPage>
-    </Notebook>
+    <div class=container>
+        <div class=environment-ctrl>
+            Python environment:
+            <select bind:value={executable.current}>
+                {#await python.install.getEnvironments()}
+                    <option>
+                        Scanning Python environments...
+                    </option>
+                {:then environments}
+                    {#each Object.entries(environments) as [label, details]}
+                        <option value={details.executable}>
+                            {label}
+                            {#if details.executable === executable.default}
+                            (default)
+                            {/if}
+                        </option>
+                    {/each}
+                {:catch err}
+                    <option>{err}</option>
+                {/await}
+                
+            </select>
+        </div>
+        <Notebook>
+            <NotebookPage
+                label="Plugins"
+                bind:selected={
+                    () => pages.current === "plugins",
+                    value => pages.current = "plugins"
+                }
+            >
+                <Plugins bind:executable={executable} />
+            </NotebookPage>
+            <NotebookPage
+                label="Packages"
+                bind:selected={
+                    () => pages.current === "packages",
+                    value => pages.current = "packages"
+                }
+            >
+                
+            </NotebookPage>
+        </Notebook>
+    </div>
 </Dialog>
+
+<style>
+    .container {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+        height: 100%;
+        gap: 1rem;
+        padding: 1rem;
+        box-sizing: border-box;
+        align-items: stretch;
+    }
+    .environment-ctrl {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

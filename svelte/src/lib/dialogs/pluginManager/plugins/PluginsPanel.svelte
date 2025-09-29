@@ -1,18 +1,27 @@
 <script>
     import PluginItem from "./PluginItem.svelte";
-    import { electron } from "$lib/globals.svelte";
+    import { electron, python } from "$lib/globals.svelte";
 
     // todo: this will be a fetch call, but we need to setup cors on psychopy.org
     import plugins from "../plugins.json";
-    import { setContext } from "svelte";
-    import plugin from "@sveltejs/adapter-static";
+    import { setContext, untrack } from "svelte";
+
+    let {
+        executable=$bindable()
+    } = $props()
 
     let children = $state({
         selected: undefined,
-        installed: [],
+        installed: {},
         all: []
     });
     setContext("siblings", children)
+
+    $effect(() => {
+        if (executable.current) {
+            children.installed = python.install.getPackages(executable.current)
+        }
+    })
 
     let searchterm = $state.raw("");
     let matches = $derived.by(() => {
@@ -45,7 +54,10 @@
             <div class=plugins-list>
                 {#each plugins as profile}
                     {#if matches.includes(profile.pipname)}
-                        <PluginItem plugin={profile} />
+                        <PluginItem 
+                            plugin={profile} 
+                            bind:executable={executable} 
+                        />
                     {/if}
                 {/each}
             </div>

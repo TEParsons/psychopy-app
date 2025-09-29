@@ -33,7 +33,12 @@ contextBridge.exposeInMainWorld('electron', electron)
 const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
-  install: (version, folder) => ipcRenderer.invoke("python.install", version, folder).then(resp => resp),
+  install: {
+    python: (version, folder) => ipcRenderer.invoke("python.install.python", version, folder).then(resp => resp),
+    package: (name, executable) => ipcRenderer.invoke("python.install.package", name, executable).then(resp => resp),
+    getEnvironments: (folder) => ipcRenderer.invoke("python.install.getEnvironments", folder).then(resp => resp),
+    getPackages: (executable) => ipcRenderer.invoke("python.install.getPackages", executable).then(resp => resp),
+  },
   shell: {
     list: () => ipcRenderer.invoke("python.shell.list").then(resp => resp),
     send: (id, msg) => ipcRenderer.invoke("python.shell.send", id, msg).then(resp => resp),
