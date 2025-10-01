@@ -5,6 +5,7 @@
 
     let {
         plugin,
+        installed=$bindable(),
         executable=$bindable()
     } = $props()
 
@@ -24,58 +25,42 @@
 </script>
 
 <!-- this is drawn or not drawn according to selection -->
-{#snippet page(installed)}
-    {#snippet pageContent(installed)}
-        <div class=plugin-page>
-            <div class=title>
-                <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
-                <a href="{plugin.homepage}" class=plugin-name>{plugin.name}</a>
-                <code class=plugin-pipname>{plugin.pipname}</code>
-                <div class=plugin-install-btn>
-                    {#if !installed}
-                        <Button
-                            label="Install"
-                            icon="icons/btn-download.svg"
-                            onclick={install}
-                            awaiting={siblings.installed}
-                            horizontal
-                        />
-                    {/if}
-                </div>
+{#snippet page()}
+    <div class=plugin-page>
+        <div class=title>
+            <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
+            <a href="{plugin.homepage}" class=plugin-name>{plugin.name}</a>
+            <code class=plugin-pipname>{plugin.pipname}</code>
+            <div class=plugin-install-btn>
+                {#if !installed}
+                    <Button
+                        label="Install"
+                        icon="icons/btn-download.svg"
+                        onclick={install}
+                        awaiting={siblings.installed}
+                        horizontal
+                    />
+                {/if}
             </div>
-            {#each (plugin.description || "").split("\n") as line}
-                <p>{line}</p>
-            {/each}
         </div>
-    {/snippet}
-
-    <!-- draw content with installed flag -->
-    {#await siblings.installed}
-        {@render pageContent(undefined)}
-    {:then packages}
-        {@render pageContent(Object.keys(packages).includes(plugin.pipname))}
-    {/await}
+        {#each (plugin.description || "").split("\n") as line}
+            <p>{line}</p>
+        {/each}
+    </div>
 {/snippet}
 
 
-{#snippet item(installed)}
-    <button 
-        class=plugin-item
-        onclick={evt => siblings.selected = page}
-        style:background-color={installed ? "var(--base)" : "var(--mantle)"}
-    >
-        <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
-        <div class=plugin-name>{plugin.name}</div>
-        <code class=plugin-pipname>{plugin.pipname}</code>
-        <div class=plugin-install-btn></div>
-    </button>
-{/snippet}
 
-{#await siblings.installed}
-    {@render item(undefined)}
-{:then packages}
-    {@render item(Object.keys(packages).includes(plugin.pipname))}
-{/await}
+<button 
+    class=plugin-item
+    onclick={evt => siblings.selected = page}
+    style:background-color={installed ? "var(--base)" : "var(--mantle)"}
+>
+    <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
+    <div class=plugin-name>{plugin.name}</div>
+    <code class=plugin-pipname>{plugin.pipname}</code>
+    <div class=plugin-install-btn></div>
+</button>
 
 <style>
     .plugin-item, .plugin-page .title {

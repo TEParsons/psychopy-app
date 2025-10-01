@@ -28,9 +28,9 @@
         let output = [];
         for (let profile of plugins) {
             if (
-                profile.name.includes(searchterm) ||
-                profile.pipname.includes(searchterm) || 
-                profile.description.includes(searchterm) || 
+                profile.name.toLowerCase().includes(searchterm.toLowerCase()) ||
+                profile.pipname.toLowerCase().includes(searchterm.toLowerCase()) || 
+                profile.description.toLowerCase().includes(searchterm.toLowerCase()) || 
                 profile.keywords.includes(searchterm) ||
                 searchterm === ""
             ) {
@@ -51,22 +51,33 @@
     <div class=plugins-ctrl>
         <div class=plugin-list-ctrl>
             <input type=search bind:value={searchterm} />
-            <div class=plugins-list>
-                {#each plugins as profile}
-                    {#if matches.includes(profile.pipname)}
-                        <PluginItem 
-                            plugin={profile} 
-                            bind:executable={executable} 
-                        />
-                    {/if}
-                {/each}
-            </div>
+            {#await python.install.getPackages(executable.current)}
+                Scanning...
+            {:then installed}
+                <div class=plugins-list>
+                    {#each plugins.sort(
+                        // installed packages at the top
+                        (x, y) => +Object.keys(installed).includes(y.pipname) - +Object.keys(installed).includes(x.pipname)
+                    ) as profile}
+                        {#if matches.includes(profile.pipname)}
+                            <PluginItem 
+                                plugin={profile} 
+                                installed={Object.keys(installed).includes(profile.pipname)}
+                                bind:executable={executable} 
+                            />
+                        {/if}
+                    {/each}
+                </div>
+            {:catch}
+                Failed
+            {/await}
+    
+            
         </div>
         <div class=selected-plugin>
             {@render children.selected?.()}
         </div>
     </div>
-    
 {:catch err}
     <div class=message>
         Failed to load plugins:
