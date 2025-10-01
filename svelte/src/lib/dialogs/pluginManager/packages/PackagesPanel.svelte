@@ -77,7 +77,11 @@
             <!-- installed packages first -->
             {#each Object.keys(installed) as name}
                 {#if matches(searchterm, name)}
-                    <PackageItem name={name} installed />
+                    {#await checkPyPi(name)}
+                        Loading
+                    {:then profile}
+                        <PackageItem profile={profile} installed />
+                    {/await}
                 {/if}
             {/each}
             <!-- if search matches a pypi package, include that too -->
@@ -85,11 +89,11 @@
                 {#await checkPyPi(searchterm).then(resp => resp)}
                     Searching PyPi...
                 {:then profile}
-                    {#if profile?.info}
-                        <PackageItem name={profile.info.name} />
+                    {#if profile}
+                        <PackageItem profile={profile} />
                     {/if}
                 {:catch err}
-                    {err}
+                    {""}
                 {/await}
             {/if}
         {:catch}

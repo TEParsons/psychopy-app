@@ -4,7 +4,7 @@
     var decoder = new TextDecoder();
 
     let {
-        name,
+        profile,
         installed=$bindable()
     } = $props()
 
@@ -18,17 +18,10 @@
 </script>
 
 {#snippet page()}
-    {#await fetch(`https://pypi.org/pypi/${name}/json`).then(resp => resp.json())}
-        Loading...
-    {:then profile}
-        <h2><code>{name}</code></h2>
-        <div class=package-desc>
-            {@html marked(profile.info.description)}
-        </div>
-        {console.log(profile)}
-    {:catch err}
-        Failed to fetch information about {name}: {err}
-    {/await}
+    <h2><code>{profile.info.name}</code></h2>
+    <div class=package-desc>
+        {@html marked(profile.info.description)}
+    </div>
 {/snippet}
 
 <button 
@@ -37,7 +30,7 @@
     class:selected={siblings.selected === page}
     onclick={evt => siblings.selected = page}
 >
-    {name}
+    {profile.info.name}
 </button>
 
 <style>
