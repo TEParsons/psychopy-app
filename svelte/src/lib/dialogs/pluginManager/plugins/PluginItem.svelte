@@ -53,8 +53,8 @@
 
 <button 
     class=plugin-item
+    class:selected={siblings.selected === page}
     onclick={evt => siblings.selected = page}
-    style:background-color={installed ? "var(--base)" : "var(--mantle)"}
 >
     <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
     <div class=plugin-name>{plugin.name}</div>
@@ -87,6 +87,9 @@
         padding: 1rem;
         box-sizing: border-box;
         background-color: var(--base);
+    }
+    .plugin-item.selected {
+        border: 1px solid var(--blue);
     }
 
     .plugin-name {
