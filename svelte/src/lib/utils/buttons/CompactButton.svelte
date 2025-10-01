@@ -8,6 +8,8 @@
         onclick,
         /** @prop @type {string|undefined} Hover text for this button, if any */
         tooltip = undefined,
+        /** Are we awaiting execution of this button? */
+        awaiting=$bindable(false),
         /** @prop @type {boolean} Disable this button */
         disabled = false
     } = $props()
@@ -34,7 +36,13 @@
     {/if}
     {#if icon}
     <svg>
-        <use xlink:href={icon}></use>
+        {#await awaiting}
+            <use xlink:href="icons/sym-pending.svg#animation" ></use>
+        {:then}
+            <use xlink:href={icon}></use>
+        {:catch}
+            <use xlink:href={icon}></use>
+        {/await}
     </svg>
     {/if}
 </button>

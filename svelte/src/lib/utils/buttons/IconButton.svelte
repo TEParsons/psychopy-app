@@ -12,55 +12,43 @@
         disabled=false,
         /** @prop @type {boolean} Only show border when hovered (looks better in the ribbon) */
         borderless=false,
+        /** Are we awaiting execution of this button? */
+        awaiting=$bindable(false),
         /** @interface */
         children=undefined,
     } = $props()
 
     let showTooltip = $state(false);
-
-    let awaiting = $state.raw()
 </script>
 
-{#snippet button()}
-    <button
-        disabled={disabled} 
-        onclick={evt => awaiting = onclick(evt)}
-        onmouseenter={() => {showTooltip = true}}
-        onmouseleave={() => {showTooltip = false}}
-        onfocusin={() => {showTooltip = true}}
-        onfocusout={() => {showTooltip = false}}
-        class:borderless={borderless}
-    >
-        <svg>
-            <use xlink:href={icon}></use>
-        </svg>
-        <Tooltip
-            bind:shown={showTooltip}
-            position="bottom"
-        >
-            {label}
-        </Tooltip>
 
-        {@render children?.()}
-    </button>
-{/snippet}
-
-{#await awaiting}
-    <button
-        class:borderless={borderless}
-        disabled
-    >
-        <svg>
+<button
+    disabled={disabled} 
+    onclick={evt => awaiting = onclick(evt)}
+    onmouseenter={() => {showTooltip = true}}
+    onmouseleave={() => {showTooltip = false}}
+    onfocusin={() => {showTooltip = true}}
+    onfocusout={() => {showTooltip = false}}
+    class:borderless={borderless}
+>
+    <svg>
+        {#await awaiting}
             <use xlink:href="icons/sym-pending.svg#animation" ></use>
-        </svg>
-        {@render children?.()}
-    </button>
-{:then}
-    {@render button()}
-{:catch}
-    {@render button()}
-{/await}
+        {:then}
+            <use xlink:href={icon}></use>
+        {:catch}
+            <use xlink:href={icon}></use>
+        {/await}
+    </svg>
+    <Tooltip
+        bind:shown={showTooltip}
+        position="bottom"
+    >
+        {label}
+    </Tooltip>
 
+    {@render children?.()}
+</button>
 
 
 <style>

@@ -20,6 +20,8 @@
         horizontal = false,
         /** @prop @type {boolean} Set the layout of this button to vertical */
         vertical = false,
+        /** @prop @type {boolean} Are we awaiting execution of this button? */
+        awaiting=$bindable(),
         /** @prop @type {boolean} Disable this button */
         disabled = false
     } = $props()
@@ -52,7 +54,13 @@
     <svg 
         class=icon
     >
-        <use xlink:href={icon}></use>
+        {#await awaiting}
+            <use xlink:href="icons/sym-pending.svg#animation" ></use>
+        {:then}
+            <use xlink:href={icon}></use>
+        {:catch}
+            <use xlink:href={icon}></use>
+        {/await}
     </svg>
     {/if}
     <span

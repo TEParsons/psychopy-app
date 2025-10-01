@@ -23,67 +23,85 @@
     }
 </script>
 
-<div 
-    class=plugin-item
-    onclick={evt => siblings.selected = page}
-    aria-role="button"
->
-    <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
-    <div class=plugin-name>{plugin.name}</div>
-    <code class=plugin-pipname>{plugin.pipname}</code>
-    {#await siblings.installed}
-        ...
-    {:then packages}
-        {#if !Object.keys(packages).includes(plugin.pipname)}
-            <CompactButton
-                tooltip="Install"
-                icon="icons/btn-download.svg"
-                onclick={install}
-            />
-        {/if}
-    {/await}
-</div>
-
-{#snippet page()}
-    <div class=plugin-page>
-        <div class=title>
-            <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
-            <a href="{plugin.homepage}" class=plugin-name>{plugin.name}</a>
-            <code class=plugin-pipname>{plugin.pipname}</code>
-            {#await siblings.installed}
-                ...
-            {:then packages}
-                {#if !Object.keys(packages).includes(plugin.pipname)}
-                    <Button
-                        label="Install"
-                        icon="icons/btn-download.svg"
-                        onclick={install}
-                        horizontal
-                    />
-                {/if}
-            {/await}
+<!-- this is drawn or not drawn according to selection -->
+{#snippet page(installed)}
+    {#snippet pageContent(installed)}
+        <div class=plugin-page>
+            <div class=title>
+                <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
+                <a href="{plugin.homepage}" class=plugin-name>{plugin.name}</a>
+                <code class=plugin-pipname>{plugin.pipname}</code>
+                <div class=plugin-install-btn>
+                    {#if !installed}
+                        <Button
+                            label="Install"
+                            icon="icons/btn-download.svg"
+                            onclick={install}
+                            awaiting={siblings.installed}
+                            horizontal
+                        />
+                    {/if}
+                </div>
+            </div>
+            {#each (plugin.description || "").split("\n") as line}
+                <p>{line}</p>
+            {/each}
         </div>
-        {#each (plugin.description || "").split("\n") as line}
-            <p>{line}</p>
-        {/each}
-    </div>
+    {/snippet}
+
+    <!-- draw content with installed flag -->
+    {#await siblings.installed}
+        {@render pageContent(undefined)}
+    {:then packages}
+        {@render pageContent(Object.keys(packages).includes(plugin.pipname))}
+    {/await}
 {/snippet}
+
+
+{#snippet item(installed)}
+    <button 
+        class=plugin-item
+        onclick={evt => siblings.selected = page}
+        style:background-color={installed ? "var(--base)" : "var(--mantle)"}
+    >
+        <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
+        <div class=plugin-name>{plugin.name}</div>
+        <code class=plugin-pipname>{plugin.pipname}</code>
+        <div class=plugin-install-btn></div>
+    </button>
+{/snippet}
+
+{#await siblings.installed}
+    {@render item(undefined)}
+{:then packages}
+    {@render item(Object.keys(packages).includes(plugin.pipname))}
+{/await}
 
 <style>
     .plugin-item, .plugin-page .title {
         display: grid;
-        grid-template-columns: [avatar] min-content [start] 1fr [button] min-content [end];
-        grid-template-rows: [start] min-content 1fr [end];
-        align-items: start;
+        position: relative;
+        grid-template-columns: [avatar] min-content [start] 1fr [end];
+        grid-template-rows: [start] min-content min-content [button] 1fr [end];
+        align-items: center;
+        align-content: start;
+        justify-items: start;
+        justify-content: start;
         gap: 0 1rem;
         width: 100%;
     }
 
+    .plugin-install-btn {
+        margin-top: .5rem;
+        grid-row-start: button;
+        grid-column-start: start;
+    }
     .plugin-item {
         border: 1px solid var(--overlay);
         border-radius: .5rem;
         padding: 1rem;
         box-sizing: border-box;
+        background-color: var(--base);
     }
 
     .plugin-name {
@@ -91,7 +109,8 @@
         text-decoration: none;
         color: var(--text);
         font-size: 1.25rem;
-        grid-column: start / end;
+        grid-column: start / button;
+        text-align: left;
     }
     .plugin-item .plugin-name {
         font-size: 1.25rem;
@@ -106,7 +125,7 @@
 
     .plugin-avatar {
         border-radius: .5rem;
-        grid-row: start/ end;
+        grid-row: start / end;
     }
     .plugin-item .plugin-avatar {
         width: 4rem;
