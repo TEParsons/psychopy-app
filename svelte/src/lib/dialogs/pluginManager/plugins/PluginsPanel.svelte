@@ -1,10 +1,7 @@
 <script>
     import PluginItem from "./PluginItem.svelte";
     import { electron, python } from "$lib/globals.svelte";
-
-    // todo: this will be a fetch call, but we need to setup cors on psychopy.org
-    import plugins from "../plugins.json";
-    import { setContext, untrack } from "svelte";
+    import { onMount, setContext, untrack } from "svelte";
 
     let {
         executable=$bindable()
@@ -24,42 +21,35 @@
     })
 
     let searchterm = $state.raw("");
-    let matches = $derived.by(() => {
-        let output = [];
-        for (let profile of plugins) {
-            if (
-                profile.name.toLowerCase().includes(searchterm.toLowerCase()) ||
-                profile.pipname.toLowerCase().includes(searchterm.toLowerCase()) || 
-                profile.description.toLowerCase().includes(searchterm.toLowerCase()) || 
-                profile.keywords.includes(searchterm) ||
-                searchterm === ""
-            ) {
-                output.push(profile.pipname)
-            }
-        }
-        return output
 
-    })
+    function matches(term, profile) {
+        return (
+            profile.name.toLowerCase().includes(term.toLowerCase()) ||
+            profile.pipname.toLowerCase().includes(term.toLowerCase()) || 
+            profile.description.toLowerCase().includes(term.toLowerCase()) || 
+            profile.keywords.includes(term) ||
+            term === ""
+        )
+    }
+
 </script>
 
 
-{#await plugins}
-    <div class=message>
-        Loading plugins...
-    </div>
+{#await fetch("api/plugins").then(resp => resp.json())}
+    Getting plugins...
 {:then plugins}
     <div class=plugins-ctrl>
         <div class=plugin-list-ctrl>
             <input type=search bind:value={searchterm} />
             {#await python.install.getPackages(executable.current)}
-                Scanning...
+                Checking installed...
             {:then installed}
                 <div class=plugins-list>
                     {#each plugins.sort(
                         // installed packages at the top
                         (x, y) => +Object.keys(installed).includes(y.pipname) - +Object.keys(installed).includes(x.pipname)
                     ) as profile}
-                        {#if matches.includes(profile.pipname)}
+                        {#if matches(searchterm, profile)}
                             <PluginItem 
                                 plugin={profile} 
                                 installed={Object.keys(installed).includes(profile.pipname)}
@@ -71,22 +61,13 @@
             {:catch}
                 Failed
             {/await}
-    
-            
         </div>
         <div class=selected-plugin>
             {@render children.selected?.()}
         </div>
     </div>
-{:catch err}
-    <div class=message>
-        Failed to load plugins:
-        <pre>
-            {#each String(err).split("\n") as line}
-            <code>{line}</code>
-            {/each}
-        </pre>
-    </div>
+{:catch}
+    Failed
 {/await}
 
 

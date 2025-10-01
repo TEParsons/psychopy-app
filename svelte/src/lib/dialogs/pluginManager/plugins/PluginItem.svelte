@@ -54,6 +54,7 @@
 <button 
     class=plugin-item
     class:selected={siblings.selected === page}
+    class:installed={installed}
     onclick={evt => siblings.selected = page}
 >
     <img class=plugin-avatar src={plugin.icon} alt={plugin.pipname} />
@@ -86,10 +87,13 @@
         border-radius: .5rem;
         padding: 1rem;
         box-sizing: border-box;
-        background-color: var(--base);
+        background-color: var(--mantle);
     }
     .plugin-item.selected {
         border: 1px solid var(--blue);
+    }
+    .plugin-item.installed {
+        background-color: var(--base)
     }
 
     .plugin-name {

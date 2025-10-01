@@ -1,7 +1,8 @@
 <script>
     import { Notebook, NotebookPage } from "$lib/utils/notebook";
     import { Dialog } from "$lib/utils/dialog";
-    import Plugins from "./plugins/PluginsPanel.svelte"
+    import PluginsPanel from "./plugins/PluginsPanel.svelte";
+    import PackagesPanel from "./packages/PackagesPanel.svelte";
     import { python } from "$lib/globals.svelte"
 
     let {
@@ -62,7 +63,7 @@
                     value => pages.current = "plugins"
                 }
             >
-                <Plugins bind:executable={executable} />
+                <PluginsPanel bind:executable={executable} />
             </NotebookPage>
             <NotebookPage
                 label="Packages"
@@ -71,7 +72,7 @@
                     value => pages.current = "packages"
                 }
             >
-                
+                <PackagesPanel bind:executable={executable} />
             </NotebookPage>
         </Notebook>
     </div>
