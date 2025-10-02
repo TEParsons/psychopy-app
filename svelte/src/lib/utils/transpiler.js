@@ -22,12 +22,15 @@ export function py2js(val) {
     if (val === "False") {
         val = false
     }
+    // handle XML-ised newlines
+    if (typeof val === "string") {
+        val = val.replaceAll("&#10;", "\n")
+    }
     // recursively parse a JSON
     if (String(val).startsWith("{") && String(val).endsWith("}")) {
         val = JSON.parse(
             sanitizeJSON(val)
         )
-        
     }
 
     return val
