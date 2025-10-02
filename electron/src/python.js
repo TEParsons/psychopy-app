@@ -148,13 +148,13 @@ async function send(msg, timeout=1000) {
       if ("response" in data) {
         resolve(data.response)
       } else {
-        reject(data.error)
+        resolve(data.error)
       }
     }
     // listen for reply
     python.socket.addEventListener("message", lsnr)
     // timeout after
-    setTimeout(evt => reject(`Message timed out: ${JSON.stringify(msg, undefined, 4)}`), timeout)
+    setTimeout(evt => resolve(`Message timed out: ${JSON.stringify(msg, undefined, 4)}`), timeout)
   })
   // store promise in liaison pending
   python.liaison.pending.push(promise)
