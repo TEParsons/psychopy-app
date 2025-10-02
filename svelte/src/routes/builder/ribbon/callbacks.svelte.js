@@ -228,7 +228,7 @@ export async function runPython(executable) {
     // run script
     await python.runScript(
         target, 
-        executable || python.details.executable(),
+        executable || await python.details().then(resp => resp.executable),
         ...(current.experiment.pilotMode ? ["---pilot"] : [])
     )
 
