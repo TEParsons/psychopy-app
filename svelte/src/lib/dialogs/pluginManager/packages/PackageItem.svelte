@@ -20,7 +20,7 @@
 {#snippet page()}
     <h2><code>{profile.info.name}</code></h2>
     <div class=package-desc>
-        {@html marked(profile.info.description)}
+        {@html marked(profile.info.description || "")}
     </div>
 {/snippet}
 

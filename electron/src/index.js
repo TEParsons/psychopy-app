@@ -216,6 +216,7 @@ const handlers = {
       package: ipcMain.handle("python.install.package", (evt, name, executable) => python.install.package(name, executable)),
       getEnvironments: ipcMain.handle("python.install.getEnvironments", (evt, folder) => python.install.getEnvironments(folder)),
       getPackages: ipcMain.handle("python.install.getPackages", (evt, executable) => python.install.getPackages(executable)),
+      getPackageDetails: ipcMain.handle("python.install.getPackageDetails", (evt, executable, name) => python.install.getPackageDetails(executable, name))
     },
     isInstalled: ipcMain.handle("python.isInstalled", (evt, version, folder) => python.install.isInstalled(version, folder)),
     shell: {

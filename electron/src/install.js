@@ -116,19 +116,50 @@ export function installPackage(name, executable) {
 export function getPackages(executable) {
     // get package list from pip
     let resp = decoder.decode(
-        proc.execSync(`"${uv.executable}" pip list --python "${executable}"`)
+        proc.execSync(`"${uv.executable}" pip list --python "${executable}" --format json`)
     )
     // parse it
-    let output = {}
-    for (let [match, name, version] of resp.matchAll(/([\w\d\-]+)\s+([\w\d\-\.]+)/g)) {
-        // skip header
-        if (name === "Package" || name.match(/^-+$/)) {
-            continue
-        }
-        output[name] = version
-    }
+    let output = Object.fromEntries(
+        JSON.parse(resp).map(val => [val.name, val.version])
+    )
 
     return output
+}
+
+
+export async function getPackageDetails(executable, name) {
+    // use pip show to get details
+    let resp = decoder.decode(
+        proc.execSync(`"${uv.executable}" pip show ${name} --python "${executable}"`)
+    );
+    // parse as an object
+    let local = Object.fromEntries(
+        resp.matchAll(/^(.*?): (.*?)$/gm).map(val => [val[1], val[2]])
+    );
+    // coerce to PyPi esque format
+    let pypi = {
+        info: {
+            name: local.Name,
+            version: local.Version,
+            requires_dist: local.Requires
+        },
+        releases: {
+            [local.Version]: []
+        }
+    }
+    // get package from pypi if possible
+    let online
+    try {
+        // request
+        online = await fetch(`https://pypi.org/pypi/${name}/json`, { cache: "force-cache" }).then(resp => resp.json());
+    } catch {
+        // fail silently
+        online = {}
+    }
+    // apply to existing info object
+    Object.assign(pypi, online)
+
+    return pypi
 }
 
 

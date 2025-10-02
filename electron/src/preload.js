@@ -38,6 +38,7 @@ const python = {
     package: (name, executable) => ipcRenderer.invoke("python.install.package", name, executable).then(resp => resp),
     getEnvironments: (folder) => ipcRenderer.invoke("python.install.getEnvironments", folder).then(resp => resp),
     getPackages: (executable) => ipcRenderer.invoke("python.install.getPackages", executable).then(resp => resp),
+    getPackageDetails: (executable, name) => ipcRenderer.invoke("python.install.getPackageDetails", executable, name).then(resp => resp),
   },
   shell: {
     list: () => ipcRenderer.invoke("python.shell.list").then(resp => resp),

@@ -28,18 +28,6 @@
             }
         }
     )
-    // populate it asynchronously
-    async function getIndex(source) {
-        let raw = await source.text()
-
-        for (let match of raw.matchAll(
-            /\<a href\=".*?"\>(.*?)\<\/a\>/g
-        )) {
-            if (!pypi.includes(match[1])) {
-                pypi.push(match[1])
-            }
-        }
-    }
 
     $effect(() => {
         if (executable.current) {
@@ -77,8 +65,8 @@
             <!-- installed packages first -->
             {#each Object.keys(installed) as name}
                 {#if matches(searchterm, name)}
-                    {#await checkPyPi(name)}
-                        Loading
+                    {#await python.install.getPackageDetails(executable.current, name)}
+                        <div>Loading...</div>
                     {:then profile}
                         <PackageItem profile={profile} installed />
                     {/await}

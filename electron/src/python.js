@@ -2,7 +2,7 @@ import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
 import { app } from "electron";
-import { uv, installUV, installPython, installPackage, getEnvironments, getPackages } from "./install.js"
+import { uv, installUV, installPython, installPackage, getEnvironments, getPackages, getPackageDetails } from "./install.js"
 import { randomUUID } from "node:crypto";
 
 
@@ -283,7 +283,8 @@ export const python = {
     python: installPython,
     package: installPackage,
     getEnvironments: getEnvironments,
-    getPackages: getPackages
+    getPackages: getPackages,
+    getPackageDetails: getPackageDetails
   },
   start: startPython,
   output: {
