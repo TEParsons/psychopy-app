@@ -229,7 +229,7 @@ export async function runPython(executable) {
     await python.runScript(
         target, 
         executable || await python.details().then(resp => resp.executable),
-        ...(current.experiment.pilotMode ? ["---pilot"] : [])
+        ...(current.experiment.pilotMode ? ["--pilot"] : [])
     )
 
     return true
