@@ -1,8 +1,9 @@
 // get component profiles from json file
 
 import { componentProfiles, loopProfiles, deviceProfiles, preferencesProfile } from "./profiles.svelte";
-import { devices } from "$lib/globals.svelte"
-import { js2py, py2js } from "$lib/utils/transpiler"
+import { devices } from "$lib/globals.svelte";
+import { js2py, py2js } from "$lib/utils/transpiler";
+import path from "path-browserify";
 
 
 export class Experiment {
@@ -118,6 +119,16 @@ export class Experiment {
         this.reset()
         // set filename
         this.filename = filename;
+    }
+
+    /** 
+     * Get a path relative to this experiment's root folder 
+     */
+    relativePath(value) {
+        // get experiment root folder
+        let root = path.dirname(this.filename.replaceAll("\\", path.sep))
+        
+        return path.join(root, value)
     }
 
     /**
