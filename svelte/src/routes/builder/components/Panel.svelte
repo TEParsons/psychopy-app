@@ -84,19 +84,21 @@
 </script>
 <div id="components">
     <div class=ctrls>
-        <CompactButton
-            icon="icons/btn-add.svg"
-            tooltip="Get more..."
-            onclick={evt => showPluginMgr = true}
-        />
-        <PluginManagerDlg 
-            bind:shown={showPluginMgr}
-        />
-        <CompactButton
-            icon="icons/btn-refresh.svg"
-            tooltip="Reload Components"
-            onclick={loadComponents}
-        />
+        {#if python}
+            <CompactButton
+                icon="icons/btn-add.svg"
+                tooltip="Get more..."
+                onclick={evt => showPluginMgr = true}
+            />
+            <PluginManagerDlg 
+                bind:shown={showPluginMgr}
+            />
+            <CompactButton
+                icon="icons/btn-refresh.svg"
+                tooltip="Reload Components"
+                onclick={loadComponents}
+            />
+        {/if}
         <CompactButton
             icon="icons/btn-filter.svg"
             tooltip="Filter..."
