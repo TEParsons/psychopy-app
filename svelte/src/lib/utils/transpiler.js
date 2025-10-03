@@ -6,6 +6,9 @@ export function js2py(val) {
     if (val === false || val === "false") {
         val = "False"
     }
+    if (val === null) {
+        val = "None"
+    }
     // recursively jsonise a dict
     if (val instanceof Object) {
         val = JSON.stringify(val)
@@ -21,6 +24,9 @@ export function py2js(val) {
     }
     if (val === "False") {
         val = false
+    }
+    if (val === "None") {
+        val = null
     }
     // handle XML-ised newlines
     if (typeof val === "string") {
