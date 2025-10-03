@@ -224,7 +224,11 @@ export async function compilePython() {
     // construct output path
     let target = current.file.stem + ".py"
     // save to python file
-    electron.files.save(target, script)
+    if (typeof script === "string") {
+        electron.files.save(target, script)
+    } else {
+        console.error(script)
+    }
 
     return target
 }

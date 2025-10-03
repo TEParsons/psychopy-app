@@ -77,7 +77,7 @@
     buttons={{
         OK: (evt) => {
             // populate
-            devices[param.val] = new Device(className(selected.device.deviceClass) + "Backend", selected.device.profile);
+            devices[param.val] = new Device(className(selected.device.deviceClass) + "Backend", selected.device);
             devices[param.val].params['name'].val = param.val;
         },
         CANCEL: (evt) => {}
@@ -109,18 +109,20 @@
                     bind:value={selected.device}
                 >
                     {#each Object.entries(result) as [deviceType, profiles]}
-                        <PanelButton
-                            label={titleCase(className(deviceType))}
-                            bind:open={panelsOpen[deviceType]}
-                        >
-                            <div class=device-category>
-                                {#each Object.values(profiles) as device}
-                                    <DeviceListItem
-                                        device={device}
-                                    />
-                                {/each}
-                            </div>
-                        </PanelButton>
+                        {#if profiles.length}
+                            <PanelButton
+                                label={titleCase(className(deviceType))}
+                                bind:open={panelsOpen[deviceType]}
+                            >
+                                <div class=device-category>
+                                    {#each Object.values(profiles) as device}
+                                        <DeviceListItem
+                                            device={device}
+                                        />
+                                    {/each}
+                                </div>
+                            </PanelButton>
+                        {/if}
                     {/each}
                 </RadioGroup>
             {:catch error}
