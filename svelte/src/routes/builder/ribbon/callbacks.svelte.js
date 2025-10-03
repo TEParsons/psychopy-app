@@ -189,6 +189,13 @@ export async function compilePython() {
             return
         }
     }
+    // point to devices json
+    await python.liaison.send({
+        command: "run",
+        args: ["prefs.setDevicesFile", await electron.paths.devices()]
+    }, 10000).catch(
+        err => console.error(`Failed to set devices file: ${err}`)
+    )
     // apply JSON to a Python Experiment object
     await python.liaison.send({
         command: "init",
@@ -199,7 +206,7 @@ export async function compilePython() {
             $state.snapshot(current.experiment.toJSON())
         ]
     }, 10000).catch(
-        reason => console.log(reason)
+        reason => console.error(reason)
     )
     // call that object's writeScript method
     let script = await python.liaison.send({
@@ -212,7 +219,7 @@ export async function compilePython() {
             modular: true
         }
     }, 10000).catch(
-        reason => console.log(reason)
+        reason => console.error(reason)
     )
     // construct output path
     let target = current.file.stem + ".py"

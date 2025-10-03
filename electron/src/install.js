@@ -68,13 +68,13 @@ export async function installUV() {
 
 export function installPython(
     version={python: "3.10", psychopy: "dev"}, 
-    folder=path.join(app.getPath("appData"), "psychopy4", ".venvs")
+    folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     // make sure version has necessary keys
     version.python = version.python || "3.10"
     version.psychopy = version.psychopy || "dev"
     // get specific folder for this version
-    folder = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.psychopy)
+    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy)
     // make sure folder exists
     fs.mkdirSync(folder, {
         recursive: true
@@ -164,10 +164,10 @@ export async function getPackageDetails(executable, name) {
 
 
 export function getEnvironments(
-    folder=path.join(app.getPath("appData"), "psychopy4", ".venvs")
+    folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     let output = {}
-    // iterate through subfolders in the venvs folder
+    // iterate through subfolders in the python folder
     for (let subfolder of fs.readdirSync(folder)) {
         let executable
         let ppyVersion

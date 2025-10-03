@@ -13,7 +13,7 @@
     } = $props()
 
     function className(name) {
-        return name.match(/(?<=\.)\w+$/)[0]
+        return String(name).match(/(?<=\.)\w+$/)?.[0]
     }
 
     // track selected device
@@ -139,8 +139,10 @@
                 delete dev.params.deviceLabel
             }
             // populate
-            dev['tag'] = className(dev.__cls__)
-            devices[key] = new Device(dev['tag'], dev.profile);
+            if (dev.tag === undefined && dev.__class__) {
+                dev.tag = className(dev.__class__)
+            }
+            devices[key] = new Device(dev.tag, dev.profile);
             devices[key].fromJSON(dev)
             // set restore point
             devices[key].restore.set()

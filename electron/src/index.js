@@ -26,12 +26,15 @@ var svelte = {
 };
 var windows = {};
 
+// redirect app gubbins to a subfolder so it's distinct from user data
+app.setPath("userData", path.join(app.getPath("userData"), ".node"))
+
 
 const createWindow = async () => {
   // make sure we have uv
   uv.executable = await python.install.uv()
   // try to get Python executable
-  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".venvs", version.major)
+  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
   python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
   console.log(`Using Python at: ${python.details.executable}`)
   // create splash
@@ -190,12 +193,12 @@ const handlers = {
     },
     paths: {
       documents: ipcMain.handle("electron.paths.documents", (evt) => app.getPath("documents")),
-      user: ipcMain.handle("electron.paths.user", (evt) => path.join(app.getPath("appData"), "psychopy3")),
-      devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy3", "devices.json")),
+      user: ipcMain.handle("electron.paths.user", (evt) => path.join(app.getPath("appData"), "psychopy4")),
+      devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy4", "devices.json")),
       pavlovia: {
-        dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia")),
-        users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "users.json")),
-        projects: ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy3", "pavlovia", "projects.json")),
+        dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy4", "pavlovia")),
+        users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy4", "pavlovia", "users.json")),
+        projects: ipcMain.handle("electron.paths.pavlovia.projects", (evt) => path.join(app.getPath("appData"), "psychopy4", "pavlovia", "projects.json")),
       }
     },
     files: {
@@ -235,10 +238,10 @@ const handlers = {
 
 // make sure user folder exists
 if (!fs.existsSync(
-  path.join(app.getPath("appData"), "psychopy3")
+  path.join(app.getPath("appData"), "psychopy4")
 )) {
   fs.mkdirSync(
-    path.join(app.getPath("appData"), "psychopy3"),
+    path.join(app.getPath("appData"), "psychopy4"),
     { recursive: true }
   )
 }

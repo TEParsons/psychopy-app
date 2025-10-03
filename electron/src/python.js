@@ -104,6 +104,13 @@ export async function startPython() {
         }, 
         30000
       )
+      // setup prefs
+      python.liaison.send({
+        command: "register",
+        args: ["prefs", "psychopy.preferences:prefs"]
+      }, 10000).catch(
+        err => console.error(`Failed to load prefs: ${err}`)
+      )
       // activate plugins
       python.liaison.send({
         command: "run",

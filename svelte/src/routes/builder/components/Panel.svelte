@@ -2,7 +2,7 @@
     import ComponentButton from './ComponentButton.svelte';
     import ComponentSection from './Section.svelte';
 
-    import ComponentProfiles from '$lib/experiment/components.json';
+    import { componentProfiles } from '$lib/experiment/profiles.svelte';
     import RoutineButton from './RoutineButton.svelte';
     import FilterDialog from './FilterDialog.svelte';
     import { CompactButton } from "$lib/utils/buttons";
@@ -12,7 +12,7 @@
     let profiles = $state({
         promise: undefined,
         error: undefined,
-        all: {},
+        all: componentProfiles,
     })
 
     function loadComponents(evt) {
@@ -24,7 +24,7 @@
             }, 10000)
             // store response on success
             profiles.promise.then(
-                data => profiles.all = data
+                data => Object.assign(profiles.all, data)
             )
             // store error on fail
             profiles.promise.catch(
@@ -32,7 +32,7 @@
             )
         } else {
             // if in web-only mode, use stored profiles
-            profiles.all = ComponentProfiles
+            profiles.all = componentProfiles
         }
     }
     // load once on init

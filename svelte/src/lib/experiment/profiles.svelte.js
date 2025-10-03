@@ -1,4 +1,10 @@
-export { default as componentProfiles } from "$lib/experiment/components.json";
-export { default as loopProfiles } from "$lib/experiment/loops.json";
-export { default as deviceProfiles } from "$lib/experiment/devices.json";
-export { default as preferencesProfile } from "$lib/preferences.json";
+import ComponentProfiles from "$lib/experiment/components.json";
+import LoopProfiles from "$lib/experiment/loops.json";
+import DeviceProfiles from "$lib/experiment/devices.json";
+import PreferencesProfile from "$lib/preferences.json";
+
+
+export var componentProfiles = $state(ComponentProfiles);
+export var loopProfiles = $state(LoopProfiles);
+export var deviceProfiles = $state(DeviceProfiles);
+export var preferencesProfile = $state(PreferencesProfile);
