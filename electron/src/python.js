@@ -37,7 +37,7 @@ function getConstants() {
       )
     )
     // timeout after 1s
-    setTimeout(evt => reject("Getting Liaison constants timed out"), 1000)
+    setTimeout(evt => reject("Getting Liaison constants timed out"), 10000)
   })
 }
 
