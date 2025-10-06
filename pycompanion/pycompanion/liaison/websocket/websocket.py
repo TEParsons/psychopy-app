@@ -59,13 +59,13 @@ class WebsocketLiaison(BaseLiaison):
                     try:
                         resp = {
                             'response': self.process_command(message['command']),
-                            'id': message['id'],
+                            'evt': message,
                         }
                     except Exception as err:
                         # send errors to the websocket
                         resp = {
                             'error': traceback.format_exception(err),
-                            'id': message['id'],
+                            'evt': message
                         }
                     # make sure resp is a JSON string
                     if not isinstance(resp, str):

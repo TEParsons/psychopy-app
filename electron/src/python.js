@@ -145,7 +145,7 @@ async function send(msg, timeout=1000) {
       // parse reply
       let data = JSON.parse(evt.data)
       // check ID
-      if (data.id !== msgid) {
+      if (data.evt.id !== msgid) {
         return
       }
       // if ID matches, store and stop listening
@@ -155,7 +155,7 @@ async function send(msg, timeout=1000) {
       if ("response" in data) {
         resolve(data.response)
       } else {
-        resolve(data.error)
+        resolve(data)
       }
     }
     // listen for reply
