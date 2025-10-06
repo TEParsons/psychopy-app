@@ -53,55 +53,57 @@
         {/if}
     </div>
     <!-- notebook -->
-    <Notebook>
-        {#each Object.entries(element.sortedParams).sort(
-            (left, right) => (categOrder[left[0]] || 0) - (categOrder[right[0]] || 0)
-        ) as [categ, params]}
-            {#if !Object.keys(params).every(
-                (value) => hideParams.includes(value)
-            ) && categ !== "uncategorised"}
-                <NotebookPage
-                    label={categ}
-                    data={element}
-                    bind:selected={
-                        () => {return pageIndex === categ},
-                        (value) => {pageIndex = categ}
-                    }
-                >
-                    <div 
-                        class=params-panel
-                        style:flex-direction={horizontal ? "row" : "column"}
-                        style:width={horizontal ? "65rem" : "45rem"}
+    {#if Object.keys(element.sortedParams).filter(value => value !== "uncategorised").length}
+        <Notebook>
+            {#each Object.entries(element.sortedParams).sort(
+                (left, right) => (categOrder[left[0]] || 0) - (categOrder[right[0]] || 0)
+            ) as [categ, params]}
+                {#if !Object.keys(params).every(
+                    (value) => hideParams.includes(value)
+                ) && categ !== "uncategorised"}
+                    <NotebookPage
+                        label={categ}
+                        data={element}
+                        bind:selected={
+                            () => {return pageIndex === categ},
+                            (value) => {pageIndex = categ}
+                        }
                     >
-                        <!-- start ctrl, if needed -->
-                        {#if "startVal" in params}
-                            <StartStopCtrl
-                                name=Start
-                                params={element.startParams}
-                            ></StartStopCtrl>
-                        {/if}
-                        <!-- stop ctrl, if needed -->
-                        {#if "stopVal" in params}
-                            <StartStopCtrl
-                                name=Stop
-                                params={element.stopParams}
-                            ></StartStopCtrl>
-                        {/if}
-                        <!-- other params -->
-                        {#each Object.entries(params) as [name, param]}
-                            {#if !["startVal", "startType", "startEstim", "stopVal", "stopType", "durationEstim", ...hideParams].includes(name)}
-                                <ParamCtrl 
-                                    name={name} 
-                                    param={param}
-                                    bind:valid={valid[name]}
-                                ></ParamCtrl>
+                        <div 
+                            class=params-panel
+                            style:flex-direction={horizontal ? "row" : "column"}
+                            style:width={horizontal ? "65rem" : "45rem"}
+                        >
+                            <!-- start ctrl, if needed -->
+                            {#if "startVal" in params}
+                                <StartStopCtrl
+                                    name=Start
+                                    params={element.startParams}
+                                ></StartStopCtrl>
                             {/if}
-                        {/each}
-                    </div>
-                </NotebookPage>
-            {/if}
-        {/each}
-    </Notebook>
+                            <!-- stop ctrl, if needed -->
+                            {#if "stopVal" in params}
+                                <StartStopCtrl
+                                    name=Stop
+                                    params={element.stopParams}
+                                ></StartStopCtrl>
+                            {/if}
+                            <!-- other params -->
+                            {#each Object.entries(params) as [name, param]}
+                                {#if !["startVal", "startType", "startEstim", "stopVal", "stopType", "durationEstim", ...hideParams].includes(name)}
+                                    <ParamCtrl 
+                                        name={name} 
+                                        param={param}
+                                        bind:valid={valid[name]}
+                                    ></ParamCtrl>
+                                {/if}
+                            {/each}
+                        </div>
+                    </NotebookPage>
+                {/if}
+            {/each}
+        </Notebook>
+    {/if}
 </div>
 
 <style>
