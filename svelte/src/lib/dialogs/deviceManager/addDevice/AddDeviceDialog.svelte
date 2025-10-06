@@ -33,22 +33,25 @@
     let panelsOpen = $state({})
 
     let timeout = $state.raw(60000)
-    let availableDevices = $state.raw(
-        python.liaison.send({
+    let promises = $state({
+        backends: python.liaison.send({
             command: "run",
             args: [
-                "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
+                "psychopy.experiment.devices:DeviceBackend.getBackendProfiles"
             ]
-        }, timeout)
-    )
-    async function updateAvailableDevices() {
-        availableDevices = python.liaison.send({
+        }, 5000)
+    })
+
+    function refresh(evt) {
+        promises.backends = python.liaison.send({
             command: "run",
             args: [
-                "psychopy.hardware.manager:DeviceManager.getAvailableDevices"
+                "psychopy.experiment.devices:DeviceBackend.getBackendProfiles"
             ]
-        }, timeout)
+        }, 5000)
     }
+
+    onMount(refresh)
 
     let validName = $state({
         state: false,
@@ -77,7 +80,7 @@
     buttons={{
         OK: (evt) => {
             // populate
-            devices[param.val] = new Device(className(selected.device.deviceClass) + "Backend", selected.device);
+            devices[param.val] = new Device(selected.device.backend.__name__, selected.device.device);
             devices[param.val].params['name'].val = param.val;
         },
         CANCEL: (evt) => {}
@@ -98,55 +101,68 @@
             <CompactButton
                 icon="icons/btn-refresh.svg"
                 tooltip=Refresh
-                onclick={updateAvailableDevices}
+                onclick={refresh}
             />
         </div>
         <div class=devices-list>
-            {#await availableDevices}
-                <div class=loading-msg>Scanning devices...</div>
-            {:then result}
-                <RadioGroup
-                    bind:value={selected.device}
-                >
-                    {#each Object.entries(result) as [deviceType, profiles]}
-                        {#if profiles.length}
-                            <PanelButton
-                                label={titleCase(className(deviceType))}
-                                bind:open={panelsOpen[deviceType]}
-                            >
-                                <div class=device-category>
-                                    {#each Object.values(profiles) as device}
-                                        <DeviceListItem
-                                            device={device}
-                                        />
-                                    {/each}
-                                </div>
-                            </PanelButton>
-                        {/if}
-                    {/each}
-                </RadioGroup>
-            {:catch error}
-                    <div class=timeout-msg>
-                        <p>Getting available devices took longer than expected.</p>
-                        <pre>
-{error}
-                        </pre>
-                        
-                        <p>Try again with a longer wait time (in milliseconds)?</p>
-                        <div class=retry>
-                            <input 
-                                type=number 
-                                style:flex-grow={1}
-                                bind:value={timeout} 
-                            />
-                            <CompactButton
-                                icon="icons/btn-refresh.svg"
-                                tooltip=Retry
-                                onclick={updateAvailableDevices}
-                            />
-                        </div>
+            <RadioGroup
+                bind:value={selected.device}
+            >
+                {#await promises.backends}
+                    <div class=loading-msg>
+                        Getting device backends...
                     </div>
-            {/await}
+                {:then backends}
+                    {#each backends as backend}
+                        {#await python.liaison.send({
+                            command: "run",
+                            args: [`${backend.__class__}.getAvailableDevices`]
+                        }, timeout)}
+                            <PanelButton
+                                label="Getting {backend.label} devices..."
+                                open={false}
+                            />
+                        {:then profiles}
+                            {#if profiles.length}
+                                <PanelButton
+                                    label={backend.label}
+                                    bind:open={panelsOpen[backend.__name__]}
+                                >
+                                    <div class=device-category>
+                                        {#each Object.values(profiles) as device}
+                                            <DeviceListItem
+                                                device={device}
+                                                backend={backend}
+                                            />
+                                        {/each}
+                                    </div>
+                                </PanelButton>
+                            {/if}
+                        {:catch error}
+                            <div class=timeout-msg>
+                                <p>Getting available devices took longer than expected.</p>
+                                <pre>
+{error}
+                                </pre>
+                                
+                                <p>Try again with a longer wait time (in milliseconds)?</p>
+                                <div class=retry>
+                                    <input 
+                                        type=number 
+                                        style:flex-grow={1}
+                                        bind:value={timeout} 
+                                    />
+                                    <CompactButton
+                                        icon="icons/btn-refresh.svg"
+                                        tooltip=Retry
+                                        onclick={refresh}
+                                    />
+                                </div>
+                            </div>
+                        {/await}
+                    {/each}
+                {/await}
+            </RadioGroup>
         </div>
     </div>
 </Dialog>

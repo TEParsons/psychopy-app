@@ -6,14 +6,15 @@
     import { Info } from "$lib/utils/tooltip";
 
     let {
-        device
+        device,
+        backend
     } = $props()
 
     let selected = getContext("selected");
 
     onDestroy(() => {
         // clear selected device if selected and destroyed
-        if (selected.device === device) {
+        if (selected.device?.device === device) {
             selected.device = undefined;
         }
     })
@@ -24,7 +25,10 @@
 >
     <RadioButton
         label={device.deviceName}
-        value={device}
+        value={{
+            device: device,
+            backend: backend
+        }}
     />
     <Info>
         <div 
