@@ -18,6 +18,21 @@
     let horizontal = $derived(
         element.tag === "CodeComponent"
     )
+
+    // define order of categories (any not in here are 0)
+    let categOrder = {
+        // put these categories at the beginning
+        Basic: -5, 
+        Layout: -4, 
+        Appearance: -3, 
+        Formatting: -2, 
+        Texture: -1,
+        // put these categories at the end
+        Data: 1,
+        Custom: 2, 
+        Hardware: 3, 
+        Testing: 4
+    }
 </script>
 
 <div class=params-container>
@@ -39,7 +54,9 @@
     </div>
     <!-- notebook -->
     <Notebook>
-        {#each Object.entries(element.sortedParams) as [categ, params]}
+        {#each Object.entries(element.sortedParams).sort(
+            (left, right) => (categOrder[left[0]] || 0) - (categOrder[right[0]] || 0)
+        ) as [categ, params]}
             {#if !Object.keys(params).every(
                 (value) => hideParams.includes(value)
             ) && categ !== "uncategorised"}
