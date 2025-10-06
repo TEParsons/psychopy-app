@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans:ital,wght@0,400,700;0,400,700");
-@import url("https://fonts.googleapis.com/css?family=JetBrains+Mono:ital,wght@0,400,700;0,400,700");
-@import url('https://fonts.googleapis.com/css2?family=Noto+Colr+Emoji+Glyf');
+@import url("./fonts/Nunito.css");
+@import url("./fonts/NotoSans.css");
+@import url("./fonts/JetBrainsMono.css");
+@import url('./fonts/NotoColorEmoji.css');
 
 :root {
     /* colors */
@@ -31,10 +32,12 @@
     --text-on-overlay: var(--text);
     --text-on-outline: var(--hltext);
     /* fonts */
-    --body: Noto Sans;
-    --heading: Noto Sans;
-    --mono: JetBrains Mono;
-    --script: Indie Flower;
+    --branded: Nunito;
+    --emoji: Noto Color Emoji;
+    --body: Noto Sans, var(--emoji);
+    --heading: Noto Sans, var(--emoji);
+    --mono: JetBrains Mono, var(--emoji);
+    
 
     /* defaults */
     color: var(--text);
