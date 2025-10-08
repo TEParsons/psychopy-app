@@ -13,9 +13,9 @@ version = {
 }
 
 // handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  app.quit();
-}
+// if (require('electron-squirrel-startup')) {
+//   app.quit();
+// }
 
 var svelte = {
   address: {
@@ -59,7 +59,7 @@ const createWindow = async () => {
   };
 
   // start the svelte side of things
-  svelte.process = proc.exec(`npm run dev -- --host=${svelte.address.host} --port=${svelte.address.port}`, { cwd: "../svelte" });
+  svelte.process = proc.exec(`npm run svelte:dev -- --host=${svelte.address.host} --port=${svelte.address.port}`);
   svelte.process.stdout.on("data", msg => {
     // mark as ready once we have the all clear from vite
     if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {

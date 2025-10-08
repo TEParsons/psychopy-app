@@ -96,7 +96,7 @@ export function installPython(
         ).trim()
         // install PsychoPy and pycompanion
         // proc.execSync(`"${uv.executable}" pip install -e ../pycompanion[websocket] --python "${executable}"`)
-        proc.execSync(`"${uv.executable}" pip install ../pycompanion[websocket] --python "${executable}"`)
+        proc.execSync(`"${uv.executable}" pip install ./pycompanion[websocket] --python "${executable}"`)
         if (version.psychopy === "dev") {
             proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
         } else {

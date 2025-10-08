@@ -42,7 +42,7 @@
         <div class=plugin-list-ctrl>
             <input type=search bind:value={searchterm} />
             {#await python.install.getPackages(executable.current)}
-                Checking installed...
+                <div class=message>Checking installed...</div>
             {:then installed}
                 <div class=plugins-list>
                     {#each plugins.sort(
@@ -67,7 +67,7 @@
         </div>
     </div>
 {:catch}
-    Failed
+    <div class=message>Failed</div>
 {/await}
 
 

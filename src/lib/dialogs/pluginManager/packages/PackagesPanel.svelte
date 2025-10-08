@@ -60,7 +60,7 @@
     <div class=packages-list>
         <input type=search bind:value={searchterm} />
         {#await python.install.getPackages(executable.current)}
-            Scanning...
+            <div class=message>Scanning...</div>
         {:then installed}
             <!-- installed packages first -->
             {#each Object.keys(installed) as name}
@@ -85,7 +85,7 @@
                 {/await}
             {/if}
         {:catch}
-            Failed
+            <div class=message>Failed</div>
         {/await}
     </div>
     <div class=package-details>

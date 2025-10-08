@@ -1,11 +1,27 @@
 {
-    "configurations": [    
+    "configurations": [
         {
-            "name": "PsychopPy Svelte",
+            "name": "PsychoPy4 (browser)",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "svelte:dev",
+                "--",
+                "--open"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "PsychopPy4 (app)",
             "request": "launch",
             "cwd": "${workspaceFolder}/electron",
             "runtimeArgs": [
-                "start"
+                "run",
+                "electron:start"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
@@ -14,5 +30,4 @@
             "type": "node"
         }
     ]
-
 }

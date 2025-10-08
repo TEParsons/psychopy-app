@@ -15,10 +15,8 @@ jobs:
         node-version: 20
         cache: npm
     - name: Install dependencies
-      working-directory: ./svelte
       run: npm i
     - name: build
-      working-directory: ./svelte
       env:
         BASE_PATH: '/psychopy-svelte'
       run: |
@@ -26,7 +24,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v3
       with:
-        path: 'svelte/build/'
+        path: 'build/'
 
   deploy:
     needs: build
