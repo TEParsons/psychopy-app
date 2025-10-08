@@ -30,7 +30,7 @@ var windows = {
 app.setPath("userData", path.join(app.getPath("appData"), "psychopy4", ".node"))
 
 
-const createWindow = async () => {
+const createWindow = () => {
   // create splash
   windows.splash = new BrowserWindow({
       icon: path.join(__dirname, 'favicon@2x.png'),
@@ -45,13 +45,20 @@ const createWindow = async () => {
   windows.splash.loadFile(path.join(__dirname, 'splash.html'));
   windows.splash.center();
   windows.splash.show();
-  // make sure we have uv
-  uv.executable = await python.install.uv()
-  // try to get Python executable
-  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
-  python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
-  console.log(`Using Python at: ${python.details.executable}`)
-
+  // setup uv/python
+  python.install.uv().then(
+    resp => {
+      // store UV executable once we've got it
+      uv.executable = resp
+      // try to get Python executable
+      python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
+      python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
+      // report Python executable
+      console.log(`Using Python at: ${python.details.executable}`)
+      // start python
+      python.start()
+    }
+  )
   // array which tracks which requirements are ready
   let ready = {
     svelte: false,
@@ -68,8 +75,6 @@ const createWindow = async () => {
   })
   // set a minimum load time so that the splash screen is at least shown
   setTimeout(() => ready.mintime = true, 1000);
-  // start python
-  python.start()
 
   // when everything is ready, show the app
   let interval = setInterval(() => {

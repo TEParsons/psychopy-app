@@ -138,12 +138,17 @@ async function send(msg, timeout=1000) {
       id: msgid
     })
   );
+  // console.log("SENT", {
+  //   command: msg,
+  //   id: msgid
+  // })
   // create promise to await a reply
   let promise = new Promise((resolve, reject) => {
     // define listener to find reply then remove itself
     let lsnr = evt => {
       // parse reply
       let data = JSON.parse(evt.data)
+      // console.log("RECEIVED", data.evt)
       // check ID
       if (data.evt.id !== msgid) {
         return
