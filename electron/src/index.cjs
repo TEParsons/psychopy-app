@@ -4,6 +4,9 @@ const fs = require("fs");
 const { python, startPython } = require("./python.js");
 const { uv } = require("./install.js");
 const proc = require("child_process");
+const { VelopackApp } = require('velopack');
+
+VelopackApp.build().run();
 
 let decoder = new TextDecoder();
 
@@ -11,11 +14,6 @@ version = {
   major: "dev",
   minor: "1"
 }
-
-// handle creating/removing shortcuts on Windows when installing/uninstalling.
-// if (require('electron-squirrel-startup')) {
-//   app.quit();
-// }
 
 var svelte = {
   address: {

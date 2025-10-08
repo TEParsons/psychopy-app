@@ -1,11 +1,11 @@
 {
-  "name": "psychopy4",
-  "productName": "PsychoPy 4",
-  "version": "1.0.0",
-  "description": "Open-source package for creating experiments in behavioral science.",
-  "main": "electron/src/index.cjs",
-  "type": "module",
-  "scripts": {
+	"name": "psychopy4",
+	"productName": "PsychoPy 4",
+	"version": "1.0.0",
+	"description": "Open-source package for creating experiments in behavioral science.",
+	"main": "electron/src/index.cjs",
+	"type": "module",
+	"scripts": {
 		"svelte:dev": "vite dev",
 		"svelte:build": "vite build",
 		"svelte:preview": "vite preview",
@@ -16,23 +16,25 @@
 		"electron:package": "electron-forge package",
 		"electron:make": "electron-forge make",
 		"electron:publish": "electron-forge publish",
-		"electron:lint": "echo \"No linting configured\""
+		"electron:lint": "echo \"No linting configured\"",
+		"velopack:pack": "vpk pack --packId OpenScienceTools.PsychoPy4 --packVersion %npm_package_version% --packDir ./dist-electron/win-unpacked --mainExe PsychoPy4.exe --outputDir ./releases"
 	},
-  "devDependencies": {
-    "@electron-forge/cli": "^7.8.3",
-    "@electron-forge/maker-deb": "^7.8.3",
-    "@electron-forge/maker-rpm": "^7.8.3",
-    "@electron-forge/maker-squirrel": "^7.8.3",
-    "@electron-forge/maker-zip": "^7.8.3",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
-    "@electron-forge/plugin-fuses": "^7.8.3",
-    "@electron/fuses": "^1.8.0",
-    "electron": "38.0.0",
+	"devDependencies": {
+		"@electron-forge/cli": "^7.8.3",
+		"@electron-forge/maker-deb": "^7.8.3",
+		"@electron-forge/maker-rpm": "^7.8.3",
+		"@electron-forge/maker-zip": "^7.8.3",
+		"@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
+		"@electron-forge/plugin-fuses": "^7.8.3",
+		"@electron/fuses": "^1.8.0",
 		"@fontsource/fira-mono": "^5.0.0",
 		"@neoconfetti/svelte": "^2.0.0",
 		"@sveltejs/adapter-auto": "^4.0.0",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"electron": "38.0.0",
+		"electron-maker-velopack": "^1.0.4",
+		"electron-prebuilt-compile": "^8.2.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
@@ -41,12 +43,13 @@
 	"dependencies": {
 		"@monaco-editor/loader": "^1.5.0",
 		"@sveltejs/adapter-static": "^3.0.9",
+		"extract-zip": "2.0.1",
 		"json-schema-default": "^1.0.2",
 		"jsonschema": "^1.5.0",
+		"marked": "^16.3.0",
 		"monaco-editor": "^0.52.2",
 		"path-browserify": "^1.0.1",
 		"xml-formatter": "^3.6.5",
-    "extract-zip": "2.0.1",
-    "marked": "^16.3.0"
+		"velopack": "^0.0.1350-g3ba32af"
 	}
 }

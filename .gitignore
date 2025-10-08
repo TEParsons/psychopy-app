@@ -37,3 +37,4 @@ scratch.*
 mprocs.log
 
 pycompanion/build
+out/
