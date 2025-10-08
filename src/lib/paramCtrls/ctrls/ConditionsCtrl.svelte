@@ -26,30 +26,34 @@
         bind:valid={valid}
     ></TableCtrl>
     <div class=output>
-        {#await python.liaison.send({
-            command: "run",
-            args: [
-                "psychopy.data.utils:importConditions"
-            ],
-            kwargs: {
-                fileName: current.experiment.relativePath(param.val),
-                returnFieldNames: true
-            }
-        })}
-            Loading...
-        {:then conditions}
-            {conditions[0].length} conditions, with {conditions[1].length} parameters 
-            <Info>
-                <div 
-                    class=more-info
-                    transition:slide={{axis: "x", delay: 0.5}}
-                >
-                    {conditions[1].join(", ")}
-                </div>
-            </Info>
-        {:catch err}
-            {""}
-        {/await}
+        {#if param.val}
+            {#await python.liaison.send({
+                command: "run",
+                args: [
+                    "psychopy.data.utils:importConditions"
+                ],
+                kwargs: {
+                    fileName: current.experiment.relativePath(param.val),
+                    returnFieldNames: true
+                }
+            })}
+                Loading...
+            {:then conditions}
+                {#if conditions}
+                    {conditions[0].length} conditions, with {conditions[1].length} parameters 
+                    <Info>
+                        <div 
+                            class=more-info
+                            transition:slide={{axis: "x", delay: 0.5}}
+                        >
+                            {conditions[1].join(", ")}
+                        </div>
+                    </Info>
+                {/if}
+            {:catch err}
+                {""}
+            {/await}
+        {/if}
     </div>
 </div>
 
