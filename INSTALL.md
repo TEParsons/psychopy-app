@@ -1,39 +1,19 @@
 # To install
 
-Install UV to handle Python environments:
-https://docs.astral.sh/uv/getting-started/installation
-
 Install Node.js:
 https://nodejs.org/en/download/
 
-Install NPM dependencies for the svelte side of things:
+Then, in command line, call:
 ```
-cd svelte
-npm i
-cd ..
-```
-
-Install NPM dependencies for the electron side of things:
-```
-cd electron
-npm i
-cd ..
-```
-
-Setup a Python environment:
-```
-cd electron
-uv venv --python 3.10 --clear
-uv pip install git+https://github.com/psychopy/psychopy@dev
-uv pip install -e ../pycompanion
-cd ..
+npm ci
 ```
 
 # To run
 
-Call:
+In command line, call:
 
 ```
-cd electron
-npm start
+npm run electron:start
 ```
+
+On your first time running, the app will take a long time to start as it's installing Python. You should get updates on this in the terminal.
