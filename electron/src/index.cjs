@@ -31,12 +31,6 @@ app.setPath("userData", path.join(app.getPath("appData"), "psychopy4", ".node"))
 
 
 const createWindow = async () => {
-  // make sure we have uv
-  uv.executable = await python.install.uv()
-  // try to get Python executable
-  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
-  python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
-  console.log(`Using Python at: ${python.details.executable}`)
   // create splash
   windows.splash = new BrowserWindow({
       icon: path.join(__dirname, 'favicon@2x.png'),
@@ -51,6 +45,12 @@ const createWindow = async () => {
   windows.splash.loadFile(path.join(__dirname, 'splash.html'));
   windows.splash.center();
   windows.splash.show();
+  // make sure we have uv
+  uv.executable = await python.install.uv()
+  // try to get Python executable
+  python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
+  python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
+  console.log(`Using Python at: ${python.details.executable}`)
 
   // array which tracks which requirements are ready
   let ready = {
