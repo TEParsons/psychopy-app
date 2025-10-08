@@ -17,9 +17,10 @@
 		"electron:make": "electron-forge make",
 		"electron:publish": "electron-forge publish",
 		"electron:lint": "echo \"No linting configured\"",
-		"velopack:pack": "vpk pack --packId OpenScienceTools.PsychoPy4 --packVersion %npm_package_version% --packDir ./dist-electron/win-unpacked --mainExe PsychoPy4.exe --outputDir ./releases"
+		"velopack:pack": "vpk pack --packId OpenScienceTools.PsychoPy4 --packVersion %npm_package_version% --packDir ./out/PsychoPy4-win32-x64 --mainExe PsychoPy4.exe --outputDir ./releases"
 	},
 	"devDependencies": {
+		"@sveltejs/adapter-static": "^3.0.9",
 		"@electron-forge/cli": "^7.8.3",
 		"@electron-forge/maker-deb": "^7.8.3",
 		"@electron-forge/maker-rpm": "^7.8.3",
@@ -33,8 +34,6 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"electron": "38.0.0",
-		"electron-maker-velopack": "^1.0.4",
-		"electron-prebuilt-compile": "^8.2.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
@@ -42,7 +41,6 @@
 	},
 	"dependencies": {
 		"@monaco-editor/loader": "^1.5.0",
-		"@sveltejs/adapter-static": "^3.0.9",
 		"extract-zip": "2.0.1",
 		"json-schema-default": "^1.0.2",
 		"jsonschema": "^1.5.0",

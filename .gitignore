@@ -38,3 +38,4 @@ mprocs.log
 
 pycompanion/build
 out/
+.velopack

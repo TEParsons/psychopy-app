@@ -22,10 +22,12 @@ var svelte = {
   },
   process: undefined
 };
-var windows = {};
+var windows = {
+  splash: undefined
+};
 
 // redirect app gubbins to a subfolder so it's distinct from user data
-app.setPath("userData", path.join(app.getPath("userData"), ".node"))
+app.setPath("userData", path.join(app.getPath("appData"), "psychopy4", ".node"))
 
 
 const createWindow = async () => {
@@ -36,7 +38,7 @@ const createWindow = async () => {
   python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
   console.log(`Using Python at: ${python.details.executable}`)
   // create splash
-  var splash = new BrowserWindow({
+  windows.splash = new BrowserWindow({
       icon: path.join(__dirname, 'favicon@2x.png'),
       title:"PsychoPy",
       width: 720, 
@@ -46,9 +48,9 @@ const createWindow = async () => {
       frame: false, 
       alwaysOnTop: true 
   });
-  splash.loadFile(path.join(__dirname, 'splash.html'));
-  splash.center();
-  splash.show();
+  windows.splash.loadFile(path.join(__dirname, 'splash.html'));
+  windows.splash.center();
+  windows.splash.show();
 
   // array which tracks which requirements are ready
   let ready = {
@@ -74,8 +76,6 @@ const createWindow = async () => {
     if (Object.values(ready).every(val => val)) {
       // load a builder window
       newWindow("builder");
-      // close the splash screen
-      splash.close();
       // stop waiting
       clearInterval(interval);
     }
@@ -103,6 +103,10 @@ function newWindow(target=null, show=true, debug=true) {
       win.show();
       win.maximize();
       win.focus();
+      // make sure the splash screen is closed
+      if (!windows.splash.isDestroyed()) {
+        windows.splash.close()
+      }
       // show dev tools if debugging
       if (debug) {
         win.webContents.openDevTools();
