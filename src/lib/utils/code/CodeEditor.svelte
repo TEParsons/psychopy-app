@@ -91,6 +91,8 @@
     class="container" 
     bind:this={container}
     style:resize={resize}
+    style:overflow-y={resize !== "horizontal" ? "auto" : "hidden"}
+    style:overflow-x={resize !== "vertical" ? "auto" : "hidden"}
 ></div>
 
 <style>

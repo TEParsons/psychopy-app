@@ -145,7 +145,7 @@
             style:grid-column-end={inline ? "gap" : "end"}
         >
             <ValueCtrl 
-                param={param}
+                bind:param={param}
                 disabled={!enabled}
                 bind:valid={valid}
             ></ValueCtrl>

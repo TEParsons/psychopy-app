@@ -3,7 +3,7 @@
 
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
-        param,
+        param=$bindable(),
         /** @bindable State tracking whether this param's value is valid */
         valid=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
