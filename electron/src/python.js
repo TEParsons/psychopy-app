@@ -1,6 +1,7 @@
 import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
+import logging from "./logging.js";
 import { app } from "electron";
 import { uv, installUV, installPython, installPackage, getEnvironments, getPackages, getPackageDetails } from "./install.js"
 import { randomUUID } from "node:crypto";
@@ -17,7 +18,7 @@ function message(target, flag, evt) {
     target.push(msg);
   }
   // log message
-  // console.log(flag, msg);
+  // logging.log(flag, msg);
 }
 
 function getConstants() {
@@ -43,7 +44,7 @@ function getConstants() {
 
 export async function startPython() {
   // log start
-  console.log("Starting Python...")
+  logging.log("Starting Python...")
   // get constants
   python.liaison.constants = await getConstants().catch(err => console.error(err));
   // spawn a Python process
@@ -55,31 +56,31 @@ export async function startPython() {
     // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
-      console.log(`Python process stopped, reason: ${evt?.message}`);
+      logging.log(`Python process stopped, reason: ${evt?.message}`);
       // mark dead
       python.details.alive = false
   })
   // actions to take on spawn
   python.process.on("spawn", evt => {
     // log started
-    console.log("Python process started");
+    logging.log("Python process started");
     // mark alive
     python.details.alive = true;
     // add listener for Liaison waking up
     python.process.stdout.on("data", evt => {
       if (decoder.decode(evt) === `${python.liaison.constants.START_MARKER}@${python.liaison.address}`) {
         // log started
-        console.log("Liaison started")
+        logging.log("Liaison started")
         // open a websocket
         python.socket = new WebSocket(`ws://${python.liaison.address}`);
         // listen for websocket events
         python.socket.onopen = evt => {
-          console.log(`Opened websocket on ws://${python.liaison.address}`);
+          logging.log(`Opened websocket on ws://${python.liaison.address}`);
           // resolve ready promise
           python.liaison.ready.resolve();
         }
-        python.socket.onclose = evt => console.log(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
-        python.socket.onerror = evt => console.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
+        python.socket.onclose = evt => logging.log(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
+        python.socket.onerror = evt => logging.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // listen for messages
         python.socket.onmessage = evt => message(python.output.liaison, "MESSAGE")
         // stop listening for wakeup
@@ -138,7 +139,7 @@ async function send(msg, timeout=1000) {
       id: msgid
     })
   );
-  // console.log("SENT", {
+  // logging.log("SENT", {
   //   command: msg,
   //   id: msgid
   // })
@@ -148,7 +149,7 @@ async function send(msg, timeout=1000) {
     let lsnr = evt => {
       // parse reply
       let data = JSON.parse(evt.data)
-      // console.log("RECEIVED", data.evt)
+      // logging.log("RECEIVED", data.evt)
       // check ID
       if (data.evt.id !== msgid) {
         return
@@ -184,22 +185,22 @@ function runScript(file, executable, ...args) {
   ], {cwd: path.dirname(file)})
   // log stdout
   script.stdout.on(
-    "data", evt => console.log("STDOUT", evt)
+    "data", evt => logging.log(["STDOUT", evt])
   )
   script.stderr.on(
-    "data", evt => console.log("STDERR", evt)
+    "data", evt => logging.log(["STDERR", evt])
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
     script.on(
       "exit", evt => {
-        console.log(`Finished running ${file}`);
+        logging.log(`Finished running ${file}`);
         resolve(evt);
       }
     )
     script.on(
       "error", err => {
-        console.log(`Failed to run ${file}: ${err.message}`);
+        logging.log(`Failed to run ${file}: ${err.message}`);
         reject(evt.message);
       }
     )

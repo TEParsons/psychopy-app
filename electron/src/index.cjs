@@ -3,12 +3,11 @@ const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
 const { uv } = require("./install.js");
+const logging = require("./logging.js");
 const proc = require("child_process");
 const { VelopackApp } = require('velopack');
 
 VelopackApp.build().run();
-
-let decoder = new TextDecoder();
 
 version = {
   major: "dev",
@@ -50,11 +49,17 @@ const createWindow = () => {
     resp => {
       // store UV executable once we've got it
       uv.executable = resp
+      // log
+      logging.log(
+        `Using UV at: ${uv.executable}`
+      )
       // try to get Python executable
       python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
       python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
       // report Python executable
-      console.log(`Using Python at: ${python.details.executable}`)
+      logging.log(
+        `Using Python at: ${python.details.executable}`
+      )
       // start python
       python.start()
     }

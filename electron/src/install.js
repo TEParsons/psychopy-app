@@ -1,6 +1,7 @@
 import { app }  from 'electron';
 import proc from "child_process";
 import { platform , arch } from "process";
+import logging from "./logging.js";
 import path from "path";
 import fs from "fs";
 import extract from "extract-zip";
@@ -83,7 +84,7 @@ export function installPython(
         ).trim()
     } catch (err) {
         // install python if none found
-        console.log("No Python venv found for this version, installing...")
+        logging.log("No Python venv found for this version, installing...")
         // make a new venv
         proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
         // get executable
