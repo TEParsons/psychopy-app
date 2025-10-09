@@ -4,12 +4,8 @@ import { platform , arch } from "process";
 import path from "path";
 import fs from "fs";
 import extract from "extract-zip";
-import { fileURLToPath } from 'url';
 
 let decoder = new TextDecoder();
-
-
-let __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 
 export var uv = {
@@ -94,9 +90,8 @@ export function installPython(
         executable = decoder.decode(
             proc.execSync(`"${uv.executable}" python find "${folder}"`)
         ).trim()
-        // install PsychoPy and pycompanion
-        // proc.execSync(`"${uv.executable}" pip install -e ../pycompanion[websocket] --python "${executable}"`)
-        proc.execSync(`"${uv.executable}" pip install ./pycompanion[websocket] --python "${executable}"`)
+        // install PsychoPy and liaison
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${executable}"`)
         if (version.psychopy === "dev") {
             proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
         } else {

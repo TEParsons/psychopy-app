@@ -1,1 +1,0 @@
-from .test_submodule import TestClass, test_function, TEST_CONSTANT

@@ -36,6 +36,5 @@ vite.config.ts.timestamp-*
 scratch.*
 mprocs.log
 
-pycompanion/build
 out/
 .velopack

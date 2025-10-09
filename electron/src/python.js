@@ -23,7 +23,7 @@ function message(target, flag, evt) {
 function getConstants() {
   // run module
   let constants = proc.spawn(python.details.executable, [
-    "-m", "pycompanion.liaison.constants"
+    "-m", "liaison.constants"
   ])
   // create promise to await response
   return new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@ export async function startPython() {
   python.liaison.constants = await getConstants().catch(err => console.error(err));
   // spawn a Python process
   python.process = proc.spawn(python.details.executable, [
-    "-m", "pycompanion.liaison.websocket", python.liaison.address
+    "-m", "liaison.websocket", python.liaison.address
   ])
   // add listener for errors
   python.process.stderr.on("data", evt => message(python.output.stderr, "STDERR", evt))
