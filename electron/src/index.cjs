@@ -71,12 +71,18 @@ const createWindow = () => {
   };
 
   // start the svelte side of things
-  svelte.process = proc.exec(`npm run svelte:dev -- --host=${svelte.address.host} --port=${svelte.address.port}`);
+  logging.log(`Starting Svelte at ${svelte.address.host}:${svelte.address.port}`)
+  svelte.process = proc.exec(`vite dev -- --host=${svelte.address.host} --port=${svelte.address.port}`);
   svelte.process.stdout.on("data", msg => {
+    logging.log(["STDOUT", String(msg)])
     // mark as ready once we have the all clear from vite
     if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
+      logging.log(`Started svelte at ${svelte.address.host}:${svelte.address.port}`)
       ready.svelte = true;
     }
+  })
+  svelte.process.stderr.on("data", msg => {
+    logging.log(["STDERR", String(msg)])
   })
   // set a minimum load time so that the splash screen is at least shown
   setTimeout(() => ready.mintime = true, 1000);
@@ -106,10 +112,13 @@ function newWindow(target=null, show=true, debug=true) {
   });
   win.removeMenu();
   // load target URL
-  win.loadURL(`http://${svelte.address.host}:${svelte.address.port}/${target}`);
+  let url = `http://${svelte.address.host}:${svelte.address.port}/${target}`
+  logging.log(`Loading ${url}...`)
+  win.loadURL(url);
   // show when ready (if requested)
   if (show) {
     win.once("ready-to-show", evt => {
+      logging.log(`Loaded ${url}`)
       win.show();
       win.maximize();
       win.focus();
