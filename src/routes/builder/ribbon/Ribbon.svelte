@@ -65,7 +65,7 @@
 <Ribbon>
     <RibbonSection>
         <IconButton 
-            icon="icons/btn-hamburger.svg"
+            icon="/icons/btn-hamburger.svg"
             label="Menu"
             onclick={() => show.menu = true} 
             borderless
