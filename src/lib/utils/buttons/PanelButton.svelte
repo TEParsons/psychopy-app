@@ -29,7 +29,7 @@
         class=panel-indicator
         class:open={open}
     >
-        <use xlink:href="icons/sym-arrow-right.svg"></use>
+        <use xlink:href="/icons/sym-arrow-right.svg"></use>
     </svg>
 </button>
 {#if open}

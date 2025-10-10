@@ -86,7 +86,7 @@
     <div class=ctrls>
         {#if python}
             <CompactButton
-                icon="icons/btn-add.svg"
+                icon="/icons/btn-add.svg"
                 tooltip="Get more..."
                 onclick={evt => showPluginMgr = true}
             />
@@ -94,13 +94,13 @@
                 bind:shown={showPluginMgr}
             />
             <CompactButton
-                icon="icons/btn-refresh.svg"
+                icon="/icons/btn-refresh.svg"
                 tooltip="Reload Components"
                 onclick={loadComponents}
             />
         {/if}
         <CompactButton
-            icon="icons/btn-filter.svg"
+            icon="/icons/btn-filter.svg"
             tooltip="Filter..."
             onclick={(evt) => showFilterDlg = true}
         />

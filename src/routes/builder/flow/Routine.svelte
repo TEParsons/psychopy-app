@@ -77,7 +77,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem
-        icon="icons/sym-dot-{element.disabled ? "blue" : "light"}.svg"
+        icon="/icons/sym-dot-{element.disabled ? "blue" : "light"}.svg"
         label="{element.disabled ? "Enable" : "Disable"} Routine"
         onclick={(evt) => {
             // update history
@@ -87,7 +87,7 @@
         }}
     />
     <MenuItem 
-        icon="icons/btn-delete.svg"
+        icon="/icons/btn-delete.svg"
         label="Remove"
         onclick={removeRoutine}
     />

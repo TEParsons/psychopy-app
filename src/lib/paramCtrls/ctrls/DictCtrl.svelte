@@ -101,7 +101,7 @@
             bind:valid={entriesValid[label]}
         />
         <CompactButton
-            icon="icons/btn-delete.svg"
+            icon="/icons/btn-delete.svg"
             onclick={(evt) => {
                 delete param.val[label]
             }}
@@ -113,7 +113,7 @@
     <div class=gap></div>
     <div class=gap></div>
     <CompactButton
-        icon="icons/btn-add.svg"
+        icon="/icons/btn-add.svg"
         onclick={(evt) => {
             // enumerate field name to avoid duplication
             let key = "field";

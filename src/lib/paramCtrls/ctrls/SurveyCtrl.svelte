@@ -68,7 +68,7 @@
 />
 
 <CompactButton 
-    icon="icons/btn-find.svg"
+    icon="/icons/btn-find.svg"
     tooltip="Browse your projects on Pavlovia"
     onclick={(evt) => showSurveysDlg = true}
     disabled={disabled || current.user === undefined}
@@ -110,12 +110,12 @@
         <div class=ctrls>
             <IconButton
                 label="Manage surveys on Pavlovia"
-                icon="icons/rbn-pavlovia.svg"
+                icon="/icons/rbn-pavlovia.svg"
                 onclick={(evt) => window.open("https://pavlovia.org/dashboard?tab=4")}
             />
             <IconButton
                 label="Refresh available surveys"
-                icon="icons/btn-refresh.svg"
+                icon="/icons/btn-refresh.svg"
                 onclick={populateSurveys}
             />
         </div>

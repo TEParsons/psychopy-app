@@ -94,7 +94,7 @@
         >
             <span style:flex-grow={1}>Available devices</span>
             <CompactButton
-                icon="icons/btn-refresh.svg"
+                icon="/icons/btn-refresh.svg"
                 tooltip=Refresh
                 onclick={refresh}
             />
@@ -149,7 +149,7 @@
                                             bind:value={timeout} 
                                         />
                                         <CompactButton
-                                            icon="icons/btn-refresh.svg"
+                                            icon="/icons/btn-refresh.svg"
                                             tooltip=Retry
                                             onclick={refresh}
                                         />

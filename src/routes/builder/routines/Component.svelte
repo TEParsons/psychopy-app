@@ -61,7 +61,7 @@
 >    
     {component.name}
     <svg>
-        <use xlink:href="icons/components/{component.tag}.svg"></use>
+        <use xlink:href="/icons/components/{component.tag}.svg"></use>
     </svg>
 </label>
 
@@ -146,12 +146,12 @@
     bind:position={contextMenuPos}
 >
     <MenuItem
-        icon="icons/btn-edit.svg"
+        icon="/icons/btn-edit.svg"
         label="Edit Component"
         onclick={(evt) => showDialog = true}
     />
     <MenuItem
-        icon="icons/sym-dot-{component.disabled ? "blue" : "light"}.svg"
+        icon="/icons/sym-dot-{component.disabled ? "blue" : "light"}.svg"
         label="{component.disabled ? "Enable" : "Disable"} Component"
         onclick={(evt) => {
             // update history
@@ -161,7 +161,7 @@
         }}
     />
     <MenuItem 
-        icon="icons/btn-delete.svg"
+        icon="/icons/btn-delete.svg"
         label="Delete Component"
         onclick={(evt) => {
             // update history

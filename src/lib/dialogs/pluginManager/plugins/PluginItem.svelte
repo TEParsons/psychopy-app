@@ -35,7 +35,7 @@
                 {#if !installed}
                     <Button
                         label="Install"
-                        icon="icons/btn-download.svg"
+                        icon="/icons/btn-download.svg"
                         onclick={install}
                         awaiting={siblings.installed}
                         horizontal

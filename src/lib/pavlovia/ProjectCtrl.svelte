@@ -49,21 +49,21 @@
 >
     <MenuItem
         label="New project"
-        icon="icons/btn-add.svg"
+        icon="/icons/btn-add.svg"
     ></MenuItem>
     <MenuItem
         label="Edit project"
-        icon="icons/btn-edit.svg"
+        icon="/icons/btn-edit.svg"
     ></MenuItem>
     <MenuItem
         label="Manage local projects..."
-        icon="icons/btn-edit.svg"
+        icon="/icons/btn-edit.svg"
         onclick={(evt) => show.manageProjectsDlg = true}
     ></MenuItem>
     <MenuSeparator/>
     <MenuItem
         label="Search projects..."
-        icon="icons/btn-find.svg"
+        icon="/icons/btn-find.svg"
         onclick={(evt) => show.browseProjectsDlg = true}
     ></MenuItem>
 </DropdownButton>

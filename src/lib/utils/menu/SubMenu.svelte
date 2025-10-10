@@ -31,7 +31,7 @@
         <svg 
             class=menu-item-chevron
         >
-            <use xlink:href="icons/sym-arrow-right.svg"></use>
+            <use xlink:href="/icons/sym-arrow-right.svg"></use>
         </svg>
         <Menu 
             bind:shown={shown}

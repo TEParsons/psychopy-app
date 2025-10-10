@@ -44,7 +44,7 @@
     <svg
         class=icon
     >
-        <use xlink:href="icons/sym-dot-{selected ? "blue" : "light"}.svg" />
+        <use xlink:href="/icons/sym-dot-{selected ? "blue" : "light"}.svg" />
     </svg>
     {#if tooltip}
         <Tooltip

@@ -19,7 +19,7 @@
     <div class=button-container>
         <Button 
             label="Routine settings"
-            icon="icons/btn-settings.svg"
+            icon="/icons/btn-settings.svg"
             tooltip="Edit settings for this Routine"
             onclick={() => showDialog = true}
             horizontal 

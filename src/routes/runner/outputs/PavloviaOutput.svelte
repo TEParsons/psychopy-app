@@ -10,7 +10,7 @@
 <CodeOutput bind:value={current.output.pavlovia}>
     {#snippet ctrls()}
         <CompactButton
-            icon="icons/btn-clear.svg"
+            icon="/icons/btn-clear.svg"
             onclick={evt => current.output.pavlovia = ""}
             tooltip="Clear pavlovia output"
         />

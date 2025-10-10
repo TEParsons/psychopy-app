@@ -27,7 +27,7 @@
         style:padding-left="calc({0.5 + level/2}rem)"
     >
         <svg class=chevron>
-            <use xlink:href="icons/sym-arrow-{open ? "down" : "right"}.svg" />
+            <use xlink:href="/icons/sym-arrow-{open ? "down" : "right"}.svg" />
         </svg>
         {branch.label}
     </button>

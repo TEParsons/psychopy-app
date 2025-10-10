@@ -92,7 +92,7 @@
         role=none
     >
         <svg>
-            <use xlink:href="icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
+            <use xlink:href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
         </svg>
     </div>
     {#if element}
@@ -115,7 +115,7 @@
             role=none
         >
             <svg>
-                <use xlink:href="icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
+                <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
             </svg>
         </div>
         <EntryPoint index={element.terminator.index}></EntryPoint>
@@ -128,7 +128,7 @@
     bind:position={contextMenuPos}
 >
     <MenuItem 
-        icon="icons/btn-delete.svg"
+        icon="/icons/btn-delete.svg"
         label="Delete Loop"
         onclick={removeLoop}
     />

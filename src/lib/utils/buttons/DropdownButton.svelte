@@ -63,7 +63,7 @@
         <svg 
             class=chevron
         >
-            <use xlink:href="icons/sym-arrow-down.svg"></use>
+            <use xlink:href="/icons/sym-arrow-down.svg"></use>
         </svg>
     </button>
     <Menu

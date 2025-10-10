@@ -43,7 +43,7 @@
 >
     <MenuItem
         label="Edit user..."
-        icon="icons/btn-edit.svg"
+        icon="/icons/btn-edit.svg"
     ></MenuItem>
     <SubMenu
         label="Switch user..."
@@ -58,7 +58,7 @@
         <MenuSeparator/>
         <MenuItem
             label="New user..."
-            icon="icons/btn-new.svg"
+            icon="/icons/btn-new.svg"
         ></MenuItem>
     </SubMenu>
     <MenuSeparator/>

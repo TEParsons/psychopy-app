@@ -73,30 +73,30 @@
         <Menu 
             bind:shown={show.menu}
         >
-            <SubMenu label="File" icon="icons/rbn-file.svg">
+            <SubMenu label="File" icon="/icons/rbn-file.svg">
                 <MenuItem 
-                    icon="icons/btn-new.svg" 
+                    icon="/icons/btn-new.svg" 
                     label="New file" 
                     onclick={file_new}
                 />
                 <MenuItem 
-                    icon="icons/btn-open.svg" 
+                    icon="/icons/btn-open.svg" 
                     label="Open file" 
                     onclick={file_open} 
                 />
                 <MenuItem 
-                    icon="icons/btn-save.svg" 
+                    icon="/icons/btn-save.svg" 
                     label="Save file" 
                     onclick={file_save} 
                     disabled={!current.experiment.history.past.length} 
                 />
                 <MenuItem 
-                    icon="icons/btn-saveas.svg" 
+                    icon="/icons/btn-saveas.svg" 
                     label="Save file as"
                     onclick={file_save_as} 
                 />
                 <MenuItem
-                    icon="icons/btn-settings.svg"
+                    icon="/icons/btn-settings.svg"
                     label="Preferences"
                     onclick={(evt) => {show.prefsDlg = true}}
                 ></MenuItem>
@@ -106,9 +106,9 @@
             bind:shown={show.prefsDlg}
         ></PrefsDialog>
     </RibbonSection>
-    <RibbonSection label=File icon="icons/rbn-file.svg">
+    <RibbonSection label=File icon="/icons/rbn-file.svg">
         <IconButton 
-            icon="icons/btn-new.svg" 
+            icon="/icons/btn-new.svg" 
             label="New file" 
             onclick={(evt) => prompts.NEW = true}
             borderless
@@ -118,7 +118,7 @@
             action={file_new}
         />  
         <IconButton 
-            icon="icons/btn-open.svg" 
+            icon="/icons/btn-open.svg" 
             label="Open file" 
             onclick={(evt) => prompts.OPEN = true} 
             borderless
@@ -128,37 +128,37 @@
             action={file_open}
         />
         <IconButton 
-            icon="icons/btn-save.svg" 
+            icon="/icons/btn-save.svg" 
             label="Save file" 
             onclick={file_save}
             disabled={!current.experiment.history.past.length} 
             borderless
         />
         <IconButton 
-            icon="icons/btn-saveas.svg" 
+            icon="/icons/btn-saveas.svg" 
             label="Save file as"
             onclick={file_save_as} 
             borderless
         />
     </RibbonSection>
 
-    <RibbonSection label=Edit icon="icons/rbn-edit.svg">
+    <RibbonSection label=Edit icon="/icons/rbn-edit.svg">
         <IconButton 
-            icon="icons/btn-undo.svg" 
+            icon="/icons/btn-undo.svg" 
             label="Undo{lastAction}" 
             onclick={undo} 
             disabled={current.file === null || !current.experiment.history.past.length} 
             borderless
         />
         <IconButton 
-            icon="icons/btn-redo.svg" 
+            icon="/icons/btn-redo.svg" 
             label="Redo {nextAction}" 
             onclick={redo} 
             disabled={current.file === null || !current.experiment.history.future.length} 
             borderless
         />
         <IconButton 
-            icon="icons/btn-find.svg" 
+            icon="/icons/btn-find.svg" 
             label="Find" 
             onclick={() => show.findDlg = true}
             borderless
@@ -168,15 +168,15 @@
         ></FindDialog>
     </RibbonSection>
     
-    <RibbonSection label=Experiment icon="icons/rbn-experiment.svg">
+    <RibbonSection label=Experiment icon="/icons/rbn-experiment.svg">
         <!-- <IconButton 
             id="ribbon-btn-monitors" 
-            icon="icons/btn-monitors.svg" 
+            icon="/icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
         {#if electron}
             <IconButton
-                icon="icons/btn-devices.svg"
+                icon="/icons/btn-devices.svg"
                 label="Open the device manager"
                 onclick={(evt) => show.deviceMgrDlg = true}
                 borderless
@@ -187,7 +187,7 @@
         {/if}
 
         <IconButton 
-            icon="icons/btn-settings.svg" 
+            icon="/icons/btn-settings.svg" 
             label="Experiment settings" 
             onclick={(evt) => show.settingsDlg = true}
             disabled={current.experiment === null}
@@ -216,9 +216,9 @@
     </RibbonSection>
 
     {#if electron}
-        <RibbonSection label=Desktop icon="icons/rbn-desktop.svg">
+        <RibbonSection label=Desktop icon="/icons/rbn-desktop.svg">
             <IconButton 
-                icon="icons/btn-compilepy.svg" 
+                icon="/icons/btn-compilepy.svg" 
                 label="Write experiment as a .py file" 
                 onclick={evt => prompts.PYCOMPILE = true}
                 disabled={current.experiment === null}
@@ -229,7 +229,7 @@
                 action={compilePython}
             /> 
             <IconButton 
-                icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
+                icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
                 label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
                 onclick={evt => prompts.PYRUN = true}
                 disabled={current.experiment === null}
@@ -241,16 +241,16 @@
             /> 
         </RibbonSection>
 
-        <RibbonSection label=Browser icon="icons/rbn-browser.svg">
+        <RibbonSection label=Browser icon="/icons/rbn-browser.svg">
             <IconButton 
-                    icon="icons/btn-compilejs.svg" 
+                    icon="/icons/btn-compilejs.svg" 
                     label="Write experiment as a .js file" 
                     onclick={(evt) => console.log("COMPILE JS")}
                     disabled={current.experiment === null}
                     borderless
                 />
                 <IconButton 
-                    icon="icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
+                    icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
                     label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment in browser" 
                     onclick={(evt) => console.log("RUN JS")}
                     disabled={current.experiment === null}
@@ -259,36 +259,36 @@
         </RibbonSection>
     {/if}
 
-    <!-- <RibbonSection id=browser label=Browser icon="icons/rbn-browser.svg">
+    <!-- <RibbonSection id=browser label=Browser icon="/icons/rbn-browser.svg">
         <IconButton 
             id="ribbon-btn-sync" 
-            icon="icons/btn-sync.svg" 
+            icon="/icons/btn-sync.svg" 
             label="Sync to Pavlovia" 
         />
     -->
 
-    <RibbonSection label=Pavlovia icon="icons/rbn-pavlovia.svg">
+    <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
         <UserCtrl />
         <ProjectCtrl />
     </RibbonSection>
 
     <RibbonGap></RibbonGap>
 
-    <RibbonSection label=Views icon="icons/rbn-windows.svg">
+    <RibbonSection label=Views icon="/icons/rbn-windows.svg">
         <IconButton 
-            icon="icons/btn-builder.svg" 
+            icon="/icons/btn-builder.svg" 
             label="Builder view" 
             onclick={(evt) => newWindow("builder")} 
             borderless
         />
         <IconButton 
-            icon="icons/btn-coder.svg" 
+            icon="/icons/btn-coder.svg" 
             label="Coder view" 
             onclick={(evt) => newWindow("coder")} 
             borderless
         />
         <IconButton 
-            icon="icons/btn-runner.svg" 
+            icon="/icons/btn-runner.svg" 
             label="Runner view" 
             onclick={(evt) => newWindow("runner")} 
             borderless

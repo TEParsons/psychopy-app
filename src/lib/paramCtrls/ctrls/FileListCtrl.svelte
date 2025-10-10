@@ -68,7 +68,7 @@
             bind:valid={itemsValid[i]}
         />
         <CompactButton
-            icon="icons/btn-delete.svg"
+            icon="/icons/btn-delete.svg"
             onclick={(evt) => {
                 param.val.splice(i, 1)
             }}
@@ -78,7 +78,7 @@
     {/each}
     <div class=gap></div>
     <CompactButton 
-            icon="icons/btn-add-many.svg"
+            icon="/icons/btn-add-many.svg"
             onclick={async (evt) => {
                 // do we have mime types from the param?
                 let types = mimeTypesFromParam(param)
@@ -99,7 +99,7 @@
             disabled={disabled}
     />
     <CompactButton
-        icon="icons/btn-add.svg"
+        icon="/icons/btn-add.svg"
         onclick={(evt) => {
             // add item
             param.val.push("");

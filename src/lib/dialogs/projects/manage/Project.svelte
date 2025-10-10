@@ -13,7 +13,7 @@
     <div class=project-header>  
         <h3>{project.id}</h3>
         <CompactButton
-            icon="icons/btn-delete.svg"
+            icon="/icons/btn-delete.svg"
             onclick={(evt) => delete projects[project.id]}
         />
     </div>  

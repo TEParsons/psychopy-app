@@ -5,7 +5,7 @@ const config = {
 	kit: {
 		adapter: adapter({
 			pages: './dist',
-			fallback: './index.html',
+			fallback: './404.html',
 			precompress: false,
 			strict: true
 		}),
@@ -13,11 +13,6 @@ const config = {
 			base: "",
 			assets: "",
 			relative: true
-		}
-	},
-	compilerOptions: {
-		experimental: {
-			async: true
 		}
 	}
 };

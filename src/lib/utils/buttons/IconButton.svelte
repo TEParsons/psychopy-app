@@ -33,7 +33,7 @@
 >
     <svg>
         {#await awaiting}
-            <use xlink:href="icons/sym-pending.svg#animation" ></use>
+            <use xlink:href="/icons/sym-pending.svg#animation" ></use>
         {:then}
             <use xlink:href={icon}></use>
         {:catch}

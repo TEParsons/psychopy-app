@@ -55,7 +55,7 @@
 
 {#if python}
     <CompactButton
-        icon="icons/btn-devices.svg"
+        icon="/icons/btn-devices.svg"
         onclick={(evt) => showDialog = true}
     />
 

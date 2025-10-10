@@ -72,7 +72,7 @@ const createWindow = () => {
 
   // start the svelte side of things
   logging.log(`Starting Svelte at ${svelte.address.host}:${svelte.address.port}`)
-  svelte.process = proc.exec(`vite dev -- --host=${svelte.address.host} --port=${svelte.address.port}`);
+  svelte.process = proc.exec(`vite ${version.major === "dev" ? "dev" : "preview"} --host=${svelte.address.host} --port=${svelte.address.port}`);
   svelte.process.stdout.on("data", msg => {
     logging.log(["STDOUT", String(msg)])
     // mark as ready once we have the all clear from vite

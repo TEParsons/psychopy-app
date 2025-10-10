@@ -21,7 +21,7 @@
     >
         {#snippet ctrls()}
             <CompactButton
-                icon="icons/btn-clear.svg"
+                icon="/icons/btn-clear.svg"
                 onclick={evt => output.content = ""}
                 tooltip="Clear output"
             />

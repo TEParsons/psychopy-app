@@ -20,7 +20,7 @@
         disabled 
     />
     <CompactButton 
-        icon="icons/btn-open.svg"
+        icon="/icons/btn-open.svg"
         tooltip="Open folder..."
         onclick={async evt => {
             // get folder path from electron dialog
@@ -37,7 +37,7 @@
         }}
     />
     <CompactButton 
-        icon="icons/btn-target.svg"
+        icon="/icons/btn-target.svg"
         tooltip="Navigate to current file"
         onclick={evt => {
             // get file

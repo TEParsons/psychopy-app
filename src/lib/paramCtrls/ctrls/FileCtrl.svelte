@@ -35,7 +35,7 @@
     disabled={disabled}
 />
 <CompactButton 
-    icon="icons/btn-open.svg"
+    icon="/icons/btn-open.svg"
     tooltip="Browse for file..."
     onclick={getFile}
     disabled={disabled}
