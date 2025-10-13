@@ -26,7 +26,7 @@
 </script>
 <div class=param-code-input-multi>
     <CodeEditor 
-        bind:value={param.value}
+        bind:value={param.val}
         resize=vertical
         language={language}
         readonly={disabled}

@@ -5,7 +5,7 @@
 
     let {
         name,
-        param,
+        param=$bindable(),
         /** @bindable State keeping track of whether this param's value is valid */
         valid=$bindable()
     } = $props();

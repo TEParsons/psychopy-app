@@ -2,6 +2,7 @@
     import ParamCtrl from "./ParamCtrl.svelte";
     import StartStopCtrl from "./StartStopCtrl.svelte";
     import { Notebook, NotebookPage } from "$lib/utils/notebook"
+    import { python } from "$lib/globals.svelte";
     import { getContext } from "svelte";
 
     let {
@@ -33,6 +34,46 @@
         Hardware: 3, 
         Testing: 4
     }
+
+    let translatableParams = {
+        "Before Experiment": "Before JS Experiment", 
+        "Begin Experiment": "Begin JS Experiment", 
+        "Begin Routine": "Begin JS Routine", 
+        "Each Frame": "Each JS Frame", 
+        "End Routine": "End JS Routine", 
+        "End Experiment": "End JS Experiment"
+    }
+
+    // store translated param values
+    $effect(() => {
+        let output = {}
+        // if there's a Code Type param and it's set to auto translate, JS params should be derived
+        if (element.params?.["Code Type"]?.val === "Auto->JS") {
+            for (let [key, jskey] of Object.entries(translatableParams)) {
+                if (element.params[jskey]) {
+                    if (python) {
+                        element.params[jskey].val = "Translating..."
+                        python.liaison.send({
+                            command: "run",
+                            args: ["psychopy.experiment.py2js_transpiler:translatePythonToJavaScript", element.params[key].val]
+                        }, 10000).then(
+                            resp => {
+                                if (resp?.error) {
+                                    element.params[jskey].val = "Translation error:\n\n" + resp.error.slice(-1)
+                                } else {
+                                    element.params[jskey].val = resp
+                                }
+                            }
+                        )
+                    } else {
+                        element.params[jskey].val = "Translation not available in web-only mode."
+                    }
+                }
+            }
+        }
+
+        return output
+    })
 </script>
 
 <div class=params-container>
@@ -93,7 +134,7 @@
                                 {#if !["startVal", "startType", "startEstim", "stopVal", "stopType", "durationEstim", ...hideParams].includes(name)}
                                     <ParamCtrl 
                                         name={name} 
-                                        param={param}
+                                        bind:param={element.params[name]}
                                         bind:valid={valid[name]}
                                     ></ParamCtrl>
                                 {/if}
