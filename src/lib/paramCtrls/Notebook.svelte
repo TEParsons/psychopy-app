@@ -52,21 +52,20 @@
             for (let [key, jskey] of Object.entries(translatableParams)) {
                 if (element.params[jskey]) {
                     if (python) {
+                        // start off just saying "Translating..."
                         element.params[jskey].val = "Translating..."
+                        // do translation in Python
                         python.liaison.send({
                             command: "run",
                             args: ["psychopy.experiment.py2js_transpiler:translatePythonToJavaScript", element.params[key].val]
-                        }, 10000).then(
-                            resp => {
-                                if (resp?.error) {
-                                    element.params[jskey].val = "Translation error:\n\n" + resp.error.slice(-1)
-                                } else {
-                                    element.params[jskey].val = resp
-                                }
+                        }, 10000).then(resp => {
+                            // set value to returned value (or error)
+                            if (resp?.error) {
+                                element.params[jskey].val = "Translation error:\n\n" + resp.error.slice(-1)
+                            } else {
+                                element.params[jskey].val = resp
                             }
-                        )
-                    } else {
-                        element.params[jskey].val = "Translation not available in web-only mode."
+                        })
                     }
                 }
             }
