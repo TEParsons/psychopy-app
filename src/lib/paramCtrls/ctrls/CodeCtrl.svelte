@@ -29,6 +29,7 @@
         bind:value={param.value}
         resize=vertical
         language={language}
+        readonly={disabled}
     />
 </div>
 

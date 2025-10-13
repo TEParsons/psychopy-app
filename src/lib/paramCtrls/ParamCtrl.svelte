@@ -29,6 +29,10 @@
 
     function evaluateDepend(dep) {
         let target
+        // if dep is just a boolean, treat is as a forced outcome
+        if (typeof dep === "boolean") {
+            return dep
+        }
         // evaluate condition
         if (String(dep.condition).startsWith("==")) {
             // equal to something...

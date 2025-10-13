@@ -11,6 +11,7 @@
         editor=$bindable(),
         canUndo=$bindable(),
         canRedo=$bindable(),
+        readonly=$bindable(false),
         resize="none",
         language='python',
         theme='psychopy-light'
@@ -41,7 +42,8 @@
                 overviewRulerLanes: 0,
                 overviewRulerBorder: false,
                 wordWrap: 'on',
-                minimap: {enabled: false}
+                minimap: {enabled: false},
+                readOnly: readonly
             });
             // connect editor value to bound value
             editor.onDidChangeModelContent((e) => {
@@ -59,6 +61,12 @@
             })
         })();
     });
+
+    $effect(() => {
+        if (editor) {
+            editor.updateOptions({ readOnly: readonly })
+        }
+    })
 
     $effect(() => {
         if (value) {
@@ -93,6 +101,7 @@
     style:resize={resize}
     style:overflow-y={resize !== "horizontal" ? "auto" : "hidden"}
     style:overflow-x={resize !== "vertical" ? "auto" : "hidden"}
+    style:opacity={readonly ? "50%" : "100%"}
 ></div>
 
 <style>
