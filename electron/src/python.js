@@ -7,20 +7,6 @@ import { uv, installUV, installPython, installPackage, getEnvironments, getPacka
 import { randomUUID } from "node:crypto";
 
 
-function message(target, flag, evt) {
-  let msg = evt;
-  // decode message
-  if (evt instanceof Buffer) {
-    msg = decoder.decode(evt);
-  }
-  // store message
-  if (target) {
-    target.push(msg);
-  }
-  // log message
-  // logging.log(flag, msg);
-}
-
 function getConstants() {
   // run module
   let constants = proc.spawn(python.details.executable, [
@@ -52,7 +38,7 @@ export async function startPython() {
     "-m", "liaison.websocket", python.liaison.address
   ])
   // add listener for errors
-  python.process.stderr.on("data", evt => message(python.output.stderr, "STDERR", evt))
+  python.process.stderr.on("data", evt => logging.log(evt, "STDERR"))
     // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
@@ -79,13 +65,11 @@ export async function startPython() {
           // resolve ready promise
           python.liaison.ready.resolve();
         }
-        python.socket.onclose = evt => logging.log(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
-        python.socket.onerror = evt => logging.log(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
-        // listen for messages
-        python.socket.onmessage = evt => message(python.output.liaison, "MESSAGE")
+        python.socket.onclose = evt => logging.error(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
+        python.socket.onerror = evt => logging.error(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // stop listening for wakeup
         python.process.stdout.on(
-          "data", evt => message(python.output.stdout, "STDOUT", evt)
+          "data", evt => logging.log(evt, "STDOUT")
         )
       }
     })
@@ -132,6 +116,8 @@ async function send(msg, timeout=1000) {
   await Promise.allSettled(python.liaison.pending)
   // generate random ID
   let msgid = crypto.randomUUID()
+  // log message
+  logging.log(msg,`SENT\t${msgid}`, "liaison")
   // send message with ident
   python.socket.send(
     JSON.stringify({
@@ -139,23 +125,19 @@ async function send(msg, timeout=1000) {
       id: msgid
     })
   );
-  // logging.log("SENT", {
-  //   command: msg,
-  //   id: msgid
-  // })
   // create promise to await a reply
   let promise = new Promise((resolve, reject) => {
     // define listener to find reply then remove itself
     let lsnr = evt => {
       // parse reply
       let data = JSON.parse(evt.data)
-      // logging.log("RECEIVED", data.evt)
       // check ID
       if (data.evt.id !== msgid) {
         return
       }
+      // log reply
+      logging.log(data.response, `RECEIVED\t${msgid}`, "liaison")
       // if ID matches, store and stop listening
-      message(python.output.liaison, "RESP", data)
       python.socket.removeEventListener("message", lsnr)
       // resolve or reject
       if ("response" in data) {
@@ -188,10 +170,10 @@ function runScript(file, executable, ...args) {
   ], {cwd: path.dirname(file)})
   // log stdout
   script.stdout.on(
-    "data", evt => logging.log(["STDOUT", evt])
+    "data", evt => logging.log(evt, "STDOUT")
   )
   script.stderr.on(
-    "data", evt => logging.log(["STDERR", evt])
+    "data", evt => logging.log(evt, "STDOUT")
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
