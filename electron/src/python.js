@@ -129,7 +129,7 @@ async function send(msg, timeout=1000) {
   // wait for liaison to exist before sending messages
   await python.liaison.ready.promise
   // wait for other messages to finish
-  await Promise.all(python.liaison.pending)
+  await Promise.allSettled(python.liaison.pending)
   // generate random ID
   let msgid = crypto.randomUUID()
   // send message with ident
@@ -161,13 +161,16 @@ async function send(msg, timeout=1000) {
       if ("response" in data) {
         resolve(data.response)
       } else {
-        resolve(data)
+        reject(data)
       }
     }
     // listen for reply
     python.socket.addEventListener("message", lsnr)
     // timeout after
-    setTimeout(evt => resolve(`Message timed out: ${JSON.stringify(msg, undefined, 4)}`), timeout)
+    setTimeout(evt => reject({
+      error: [`Message timed out: ${JSON.stringify(msg, undefined, 4)}`],
+      evt: evt
+    }), timeout)
   })
   // store promise in liaison pending
   python.liaison.pending.push(promise)
