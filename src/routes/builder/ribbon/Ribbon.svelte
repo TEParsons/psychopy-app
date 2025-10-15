@@ -40,6 +40,7 @@
     })
 
     let awaiting = $state({
+        runpy: Promise.resolve(""),
         compilepy: Promise.resolve("")
     })
 
@@ -231,14 +232,11 @@
             <IconButton 
                 icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
                 label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                onclick={evt => prompts.PYRUN = true}
+                onclick={runPython}
                 disabled={current.experiment === null}
+                bind:awaiting={awaiting.runpy}
                 borderless
             />
-            <InstallPrompt
-                bind:shown={prompts.PYRUN}
-                action={runPython}
-            /> 
         </RibbonSection>
 
         <RibbonSection label=Browser icon="/icons/rbn-browser.svg">
