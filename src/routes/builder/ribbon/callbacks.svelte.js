@@ -216,7 +216,8 @@ export async function compilePython() {
         ],
         kwargs: {
             target: "PsychoPy", 
-            modular: true
+            modular: true,
+            expPath: current.experiment.filename
         }
     }, 10000).catch(
         reason => console.error(reason)
