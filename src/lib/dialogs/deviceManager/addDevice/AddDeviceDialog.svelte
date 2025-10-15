@@ -43,7 +43,7 @@
             args: [
                 "psychopy.experiment.devices:DeviceBackend.getBackendProfiles"
             ]
-        }, 5000)
+        }, 10000)
     }
 
     onMount(refresh)
@@ -134,11 +134,11 @@
                                         </div>
                                     </PanelButton>
                                 {/if}
-                            {:catch error}
+                            {:catch err}
                                 <div class=timeout-msg>
                                     <p>Getting available devices took longer than expected.</p>
                                     <pre>
-{error}
+{err.error.join("\n")}
                                     </pre>
                                     
                                     <p>Try again with a longer wait time (in milliseconds)?</p>
@@ -158,6 +158,8 @@
                             {/await}
                         {/each}
                     {/if}
+                {:catch err}
+                    {console.log(err)}
                 {/await}
             </RadioGroup>
         </div>
