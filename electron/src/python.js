@@ -117,7 +117,7 @@ async function send(msg, timeout=1000) {
   // generate random ID
   let msgid = crypto.randomUUID()
   // log message
-  logging.log(msg,`SENT\t${msgid}`, "liaison")
+  logging.log(msg,`SENT\t${msgid}`, "liaison", false)
   // send message with ident
   python.socket.send(
     JSON.stringify({
@@ -136,7 +136,7 @@ async function send(msg, timeout=1000) {
         return
       }
       // log reply
-      logging.log(data.response, `RECEIVED\t${msgid}`, "liaison")
+      logging.log(data.response, `RECEIVED\t${msgid}`, "liaison", false)
       // if ID matches, store and stop listening
       python.socket.removeEventListener("message", lsnr)
       // resolve or reject

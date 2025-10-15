@@ -36,10 +36,11 @@ export function initialize(name, file) {
  * Log to a named target
  * 
  * @param {*} msg Message to log
- * @param {*} target Target (by name) to log to, if not given will log to general logfile
- * @param {*} tag Optional tag to prepend to the message (e.g. SENT, RECEIVED, ERROR, etc.)
+ * @param {string} target Target (by name) to log to, if not given will log to general logfile
+ * @param {string} tag Optional tag to prepend to the message (e.g. SENT, RECEIVED, ERROR, etc.)
+ * @param {boolean} echo If true (default), then echo the message to the console
  */
-export function log(msg, tag=undefined, target="lastAppLoad") {
+export function log(msg, tag=undefined, target="lastAppLoad", echo=true) {
     if (typeof msg === "array") {
         // if given a list, join
         msg = msg.join("\t")
@@ -58,9 +59,12 @@ export function log(msg, tag=undefined, target="lastAppLoad") {
         msg = `${tag}\t${msg}`
     }
     // log to console
-    console.log(
-        msg.length > 100 ? `${msg.slice(0, 50)}...${msg.slice(-50)}` : msg
-    )
+    if (echo) {
+        console.log(
+            msg.length > 100 ? `${msg.slice(0, 50)}...${msg.slice(-50)}` : msg
+        )
+    }
+    
     // make sure we have a newline
     if (!msg.endsWith("\n")) {
         msg += "\n"
