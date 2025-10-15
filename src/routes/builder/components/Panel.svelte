@@ -132,15 +132,13 @@
                     </ComponentSection>
                 {/if}
             {/each}
-        {:catch}
+        {:catch err}
             <div class="message error">
                 <div>
                     Failed to load Components. 
                 </div>
                 <pre>
-                    {#each String(profiles.error).split(",") as line}
-                        <code>{line}</code>
-                    {/each}
+{err.error?.join?.("\n")}
                 </pre>
             </div>
         {/await}
