@@ -35,7 +35,7 @@
 </script>
 
 
-{#await fetch("api/plugins").then(resp => resp.json())}
+{#await fetch("/api/plugins").then(resp => resp.json())}
     Getting plugins...
 {:then plugins}
     <div class=plugins-ctrl>
