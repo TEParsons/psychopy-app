@@ -11,6 +11,7 @@ const electron = {
     documents: () => ipcRenderer.invoke("electron.paths.documents").then(resp => resp),
     user: () => ipcRenderer.invoke("electron.paths.user").then(resp => resp),
     devices: () => ipcRenderer.invoke("electron.paths.devices").then(resp => resp),
+    prefs: () => ipcRenderer.invoke("electron.paths.prefs").then(resp => resp),
     pavlovia: {
       dir: () => ipcRenderer.invoke("electron.paths.pavlovia").then(resp => resp),
       users: () => ipcRenderer.invoke("electron.paths.pavlovia.users").then(resp => resp),

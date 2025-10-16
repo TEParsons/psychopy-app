@@ -216,6 +216,7 @@ const handlers = {
       documents: ipcMain.handle("electron.paths.documents", (evt) => app.getPath("documents")),
       user: ipcMain.handle("electron.paths.user", (evt) => path.join(app.getPath("appData"), "psychopy4")),
       devices: ipcMain.handle("electron.paths.devices", (evt) => path.join(app.getPath("appData"), "psychopy4", "devices.json")),
+      prefs: ipcMain.handle("electron.paths.prefs", (evt) => path.join(app.getPath("appData"), "psychopy4", "preferences.json")),
       pavlovia: {
         dir: ipcMain.handle("electron.paths.pavlovia", (evt) => path.join(app.getPath("appData"), "psychopy4", "pavlovia")),
         users: ipcMain.handle("electron.paths.pavlovia.users", (evt) => path.join(app.getPath("appData"), "psychopy4", "pavlovia", "users.json")),

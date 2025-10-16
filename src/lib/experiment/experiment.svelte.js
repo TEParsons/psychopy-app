@@ -647,7 +647,7 @@ export class Param {
         let node = {}
         // populate node
         for (let key of this.saveAttrs) {
-            node[key] = this[key]
+            node[key] = $state.snapshot(this[key])
         }
 
         return node

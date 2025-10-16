@@ -7,6 +7,8 @@
         element,
         /** @bindable State controlling this dialog's visibility */
         shown=$bindable(),
+        /** @prop @type {function} Function to execute when param changes are applied */
+        onapply=(evt) => {},
         /** @prop @type {function} Function to execute when this dialog closes */
         onclose=(evt) => {}
     } = $props()
@@ -32,9 +34,17 @@
     onclose={onclose}
     onopen={() => element.restore.set()}
     buttons={{
-        OK: () => {}, 
-        APPLY: () => element.restore.set(), 
-        CANCEL: () => element.restore.apply(), 
+        OK: evt => {
+            element.restore.set();
+            onapply(evt);
+        }, 
+        APPLY: evt => {
+            element.restore.set();
+            onapply(evt);
+        }, 
+        CANCEL: evt => {
+            element.restore.apply()
+        }, 
         HELP: element.helpLink,
     }}
     buttonsDisabled={btnsDisabled}
