@@ -1,4 +1,6 @@
 <script>
+    import { prefs } from "$lib/preferences.svelte";
+
     let {
         param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
@@ -10,10 +12,35 @@
     let hovered = $state.raw(false);
     let handle = $state.raw()
 
+    // reset param and focus ctrl when selected
     $effect(() => {
         if (selected) {
             param.val.length = 0;
             handle.focus();
+        }
+    })
+
+    // check valid when param value changes
+    $effect(() => {
+        // start off valid
+        valid.state = true
+        valid.warning = undefined
+        // if binding is blank, it's invalid
+        if (!param.val.length) {
+            valid.state = false
+            valid.warning = "No binding set"
+        }
+        // iterate through existing key bindings
+        for (let [name, prefParam] of Object.entries(prefs.shortcuts)) {
+            // ignore this one (it will always match itself, duh)
+            if (name === param.name) {
+                continue
+            }
+            // if this keybinding matches on already in use, it's invalid
+            if (prefParam.val.length && prefParam.val.every(val => param.val.includes(val)) && param.val.every(val => prefParam.val.includes(val))) {
+                valid.state = false
+                valid.warning = `Keybinding '${param.val.join("+")}' for ${param.name} is already in use by '${prefParam.label}'`
+            }
         }
     })
 </script>
@@ -23,6 +50,7 @@
     class:selected={selected}
     onclick={evt => selected = !disabled}
     class:hovered={hovered}
+    style:color={valid ? "inherit" : "var(--red)"}
     onmouseenter={evt => hovered = true}
     onmouseleave={evt => hovered = false}
     role=none
