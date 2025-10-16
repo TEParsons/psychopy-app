@@ -1,5 +1,5 @@
 import { electron, projects, python } from '$lib/globals.svelte.js';
-import { current } from '../globals.svelte.js';
+import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
 
@@ -255,4 +255,16 @@ export function newWindow(target) {
     } else {
         return window.open(`/${target}`)
     }
+}
+
+
+export default {
+    new: file_new,
+    open: file_open,
+    save: file_save,
+    saveAs: file_save_as,
+    undo: undo,
+    redo: redo,
+    compileScript: compilePython,
+    runScript: runPython
 }

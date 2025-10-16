@@ -1180,9 +1180,9 @@
    }
   },
   "open": {
-   "val": "Ctrl+O",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "o"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1197,9 +1197,9 @@
    }
   },
   "new": {
-   "val": "Ctrl+N",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "n"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1214,9 +1214,9 @@
    }
   },
   "save": {
-   "val": "Ctrl+S",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "s"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1231,9 +1231,9 @@
    }
   },
   "saveAs": {
-   "val": "Ctrl+Shift+S",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "Alt", "s"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1248,9 +1248,9 @@
    }
   },
   "revealFolder": {
-   "val": "Alt+Shift+R",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Alt", "Shift", "r"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1265,9 +1265,9 @@
    }
   },
   "print": {
-   "val": "Ctrl+P",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "p"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1282,9 +1282,9 @@
    }
   },
   "close": {
-   "val": "Ctrl+W",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "w"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1299,9 +1299,9 @@
    }
   },
   "quit": {
-   "val": "Alt+F4",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Alt", "F4"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1316,9 +1316,9 @@
    }
   },
   "preferences": {
-   "val": "Ctrl+,",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", ","],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1333,9 +1333,9 @@
    }
   },
   "exportHTML": {
-   "val": "Ctrl+E",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "e"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1350,9 +1350,9 @@
    }
   },
   "cut": {
-   "val": "Ctrl+X",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "x"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1367,9 +1367,9 @@
    }
   },
   "copy": {
-   "val": "Ctrl+C",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "c"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1384,9 +1384,9 @@
    }
   },
   "paste": {
-   "val": "Ctrl+V",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "v"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1401,9 +1401,9 @@
    }
   },
   "duplicate": {
-   "val": "Ctrl+D",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "d"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1418,9 +1418,9 @@
    }
   },
   "indent": {
-   "val": "Ctrl+]",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "]"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1435,9 +1435,9 @@
    }
   },
   "dedent": {
-   "val": "Ctrl+[",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "["],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1452,9 +1452,9 @@
    }
   },
   "smartIndent": {
-   "val": "Shift+Tab",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Shift", "Tab"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1469,9 +1469,9 @@
    }
   },
   "find": {
-   "val": "Ctrl+F",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "f"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1486,9 +1486,9 @@
    }
   },
   "findAgain": {
-   "val": "Ctrl+G",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "g"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1503,9 +1503,9 @@
    }
   },
   "undo": {
-   "val": "Ctrl+Z",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "z"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1520,9 +1520,9 @@
    }
   },
   "redo": {
-   "val": "Ctrl+Shift+Z",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "Shift", "z"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1537,9 +1537,9 @@
    }
   },
   "comment": {
-   "val": "\"Ctrl+'\"",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "/"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1547,40 +1547,6 @@
    "allowedLabels": [],
    "label": "comment",
    "hint": "to the start of the line(s)",
-   "plugin": null,
-   "depends": {
-    "shown": [],
-    "enabled": []
-   }
-  },
-  "uncomment": {
-   "val": "\"Ctrl+Shift+'\"",
-   "valType": "str",
-   "inputType": "single",
-   "categ": "Key Bindings",
-   "updates": null,
-   "allowedUpdates": null,
-   "allowedVals": [],
-   "allowedLabels": [],
-   "label": "uncomment",
-   "hint": "from start of line(s)",
-   "plugin": null,
-   "depends": {
-    "shown": [],
-    "enabled": []
-   }
-  },
-  "toggle comment": {
-   "val": "\"Ctrl+/\"",
-   "valType": "str",
-   "inputType": "single",
-   "categ": "Key Bindings",
-   "updates": null,
-   "allowedUpdates": null,
-   "allowedVals": [],
-   "allowedLabels": [],
-   "label": "toggle comment",
-   "hint": "from start of line(s)",
    "plugin": null,
    "depends": {
     "shown": [],
@@ -1656,9 +1622,9 @@
    }
   },
   "compileScript": {
-   "val": "F5",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["F5"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,
@@ -1673,9 +1639,9 @@
    }
   },
   "runScript": {
-   "val": "Ctrl+Shift+R",
-   "valType": "str",
-   "inputType": "single",
+   "val": ["Control", "Shift", "R"],
+   "valType": "keypress",
+   "inputType": "keypress",
    "categ": "Key Bindings",
    "updates": null,
    "allowedUpdates": null,

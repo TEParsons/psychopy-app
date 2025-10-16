@@ -1,7 +1,8 @@
 <script>
     import Panel from '$lib/utils/Panel.svelte';
     import Frame from '$lib/utils/Frame.svelte';
-
+    import Shortcuts from '$lib/utils/Shortcuts.svelte';
+    import callbacks from "./callbacks.svelte";
     import Ribbon from './ribbon/Ribbon.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
@@ -14,6 +15,10 @@
 </script>
 
 <title>PsychoPy Builder: {current.experiment.filename}</title>
+<Shortcuts
+    callbacks={callbacks}
+/>
+
 <Frame 
     rows={3} 
     cols={4}

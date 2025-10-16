@@ -1,7 +1,7 @@
 <script>
     import { MessageDialog } from "$lib/utils/dialog";
     import { getContext } from "svelte";
-    import { file_save } from "./callbacks.svelte.js";
+    import { file_save } from "../callbacks.svelte.js";
 
     let current = getContext("current")
 

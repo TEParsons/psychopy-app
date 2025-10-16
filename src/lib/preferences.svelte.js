@@ -5,6 +5,13 @@ import { HasParams } from "$lib/experiment/experiment.svelte";
 class Preferences extends HasParams {
     ready = undefined;
 
+    // object mapping only params relevant to keyboard shortcuts
+    shortcuts = $derived(Object.fromEntries(
+        Object.entries(this.params).filter(
+            ([name, param]) => param.valType === "keypress")
+        )
+    )
+
     constructor() {
         // initialise superclass
         super("Preferences")

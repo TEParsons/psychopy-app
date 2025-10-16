@@ -13,8 +13,9 @@ export { default as ConditionsCtrl } from "./ConditionsCtrl.svelte";
 export { default as DeviceCtrl } from "./DeviceCtrl.svelte";
 export { default as RichChoiceCtrl } from "./RichChoiceCtrl.svelte";
 export { default as SurveyCtrl } from "./SurveyCtrl.svelte";
-export { default as CodeCtrl } from "./CodeCtrl.svelte"
-export { default as ValidatorCtrl } from "./ValidatorCtrl.svelte"
+export { default as CodeCtrl } from "./CodeCtrl.svelte";
+export { default as ValidatorCtrl } from "./ValidatorCtrl.svelte";
+export { default as KeyPressCtrl } from "./KeyPressCtrl.svelte";
 
 import {
     SingleLineCtrl,
@@ -36,7 +37,8 @@ import {
     // ColorCtrl,
     DictCtrl,
     // InvalidCtrl,
-    ValidatorCtrl
+    ValidatorCtrl,
+    KeyPressCtrl
 } from ".";
 
 
@@ -60,5 +62,6 @@ export var mapping = {
     // "color": ColorCtrl,
     "dict": DictCtrl,
     // "inv": InvalidCtrl,
-    "validator": ValidatorCtrl
+    "validator": ValidatorCtrl,
+    "keypress": KeyPressCtrl
 }
