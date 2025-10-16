@@ -37,7 +37,7 @@
                 continue
             }
             // if this keybinding matches on already in use, it's invalid
-            if (prefParam.val.length && prefParam.val.every(val => param.val.includes(val)) && param.val.every(val => prefParam.val.includes(val))) {
+            if (prefParam.val.length && prefParam.val.every(val => param.val.includes(val.toUpperCase())) && param.val.every(val => prefParam.val.includes(val.toUpperCase()))) {
                 valid.state = false
                 valid.warning = `Keybinding '${param.val.join("+")}' for ${param.name} is already in use by '${prefParam.label}'`
             }
@@ -70,17 +70,17 @@
                     return
                 }
                 // if not in value, add it
-                if (!param.val.includes(evt.key)) {
-                    param.val.push(evt.key)
+                if (!param.val.includes(evt.key.toUpperCase())) {
+                    param.val.push(evt.key.toUpperCase())
                 }
             }}
             onkeyup={evt => {
                 // prevent usual effect
                 evt.preventDefault()
                 // if in value, remove it
-                if (param.val.includes(evt.key)) {
+                if (param.val.includes(evt.key.toUpperCase())) {
                     param.val.splice(
-                        param.val.indexOf(evt.key)
+                        param.val.indexOf(evt.key.toUpperCase())
                     )
                 }
             }}
