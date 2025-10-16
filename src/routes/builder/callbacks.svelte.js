@@ -194,6 +194,15 @@ export function redo() {
 
 /* Experiment */
 
+
+export function togglePiloting() {
+    // update history
+    current.experiment.history.update(`toggle pilot mode`)
+    // toggle pilot mode
+    current.experiment.settings.params['runMode'].val = !current.experiment.settings.params['runMode'].val;
+}
+
+
 export async function compilePython() {
     // if no file, save as
     if (current.file === undefined) {
@@ -280,6 +289,7 @@ export default {
     saveAs: file_save_as,
     undo: undo,
     redo: redo,
-    compileScript: compilePython,
-    runScript: runPython
+    togglePiloting: togglePiloting,
+    compilePython: compilePython,
+    runPython: runPython
 }
