@@ -11,6 +11,10 @@
 
 <svelte:window 
     onkeydown={evt => {
+        // do nothing if default was prevented
+        if (evt.defaultPrevented) {
+            return
+        }
         // mark key as held
         if (!held.includes(evt.key)) {
             held.push(evt.key)
