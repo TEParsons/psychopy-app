@@ -87,6 +87,20 @@ export async function file_open() {
     console.log(`Loaded experiment '${current.file.name}':`, current.experiment);
 }
 
+
+export async function revealFolder() {
+    if (electron) {
+        // make sure file has an extension
+        let filename = $state.snapshot(current.experiment.filename)
+        if (!filename.endsWith(".psyexp")) {
+            filename += ".psyexp"
+        }
+        // reveal
+        electron.files.showItemInFolder(filename)
+    }
+}
+
+
 export async function file_save() {
     // get experiment as xml
     let node = current.experiment.toXML()
@@ -261,6 +275,7 @@ export function newWindow(target) {
 export default {
     new: file_new,
     open: file_open,
+    revealFolder: revealFolder,
     save: file_save,
     saveAs: file_save_as,
     undo: undo,

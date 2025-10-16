@@ -1,4 +1,4 @@
-const { app, dialog, BrowserWindow, ipcMain } = require('electron');
+const { app, dialog, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
 const { python, startPython } = require("./python.js");
@@ -230,7 +230,10 @@ const handlers = {
       mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
       openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(windows[evt.sender.id], options)),
       saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(windows[evt.sender.id], options)),
-      scandir: ipcMain.handle("electron.files.scandir", (evt, root) => getFileTree(root))
+      scandir: ipcMain.handle("electron.files.scandir", (evt, root) => getFileTree(root)),
+      showItemInFolder: ipcMain.handle("electron.files.showItemInFolder", (evt, folder) => shell.showItemInFolder(folder)),
+      openPath: ipcMain.handle("electron.files.openPath", (evt, path) => shell.openPath(path)),
+      openExternal: ipcMain.handle("electron.files.openExternal", (evt, url) => shell.openExternal(url))
     }
   },
   python: {

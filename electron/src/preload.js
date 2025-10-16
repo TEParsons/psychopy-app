@@ -25,7 +25,10 @@ const electron = {
     mkdir: (path, recursive=true) => ipcRenderer.invoke("electron.files.mkdir", path, recursive).then(resp => resp),
     openDialog: (options) => ipcRenderer.invoke("electron.files.openDialog", options).then(resp => resp),
     saveDialog: (options) => ipcRenderer.invoke("electron.files.saveDialog", options).then(resp => resp),
-    scandir: (root) => ipcRenderer.invoke("electron.files.scandir", root).then(resp => resp)
+    scandir: (root) => ipcRenderer.invoke("electron.files.scandir", root).then(resp => resp),
+    showItemInFolder: (folder) => ipcRenderer.invoke("electron.files.showItemInFolder", folder),
+    openPath: (path) => ipcRenderer.invoke("electron.files.openPath", path),
+    openExternal: (url) => ipcRenderer.invoke("electron.files.openExternal", url)
   }
 };
 contextBridge.exposeInMainWorld('electron', electron)
