@@ -41,11 +41,6 @@
     }}
     disabled={disabled}
 >
-    <svg
-        class=icon
-    >
-        <use xlink:href="/icons/sym-dot-{selected ? "blue" : "light"}.svg" />
-    </svg>
     {#if tooltip}
         <Tooltip
             bind:shown={hovered}
@@ -69,7 +64,7 @@
 <style>
     button {
         position: relative;
-        background-color: transparent;
+        background-color: var(--mantle);
         border: 1px solid var(--overlay);
         border-radius: .5rem;
         transition: border-color .2s, box-shadow .2s, background-color .2s, color .2s;
@@ -80,10 +75,18 @@
         flex-direction: row;
         gap: .5rem;
         align-items: center;
+        text-align: left;
         padding: .5em 1em;
         font-family: var(--body);
         max-width: 100%;
         max-height: 100%;
+        opacity: 80%;
+    }
+
+    button.selected {
+        border-color: var(--blue);
+        background-color: var(--base);
+        opacity: 100%;
     }
 
     button:disabled {

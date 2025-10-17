@@ -154,6 +154,7 @@
         gap: 1rem;
         box-sizing: border-box;
         padding: 1rem;
+        padding-bottom: 3rem;
         height: 100%;
         min-height: 10rem;
     }
