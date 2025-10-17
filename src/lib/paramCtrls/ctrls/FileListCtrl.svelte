@@ -9,7 +9,8 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable()
+        /** @interface */
+        ...attachments
     } = $props()
     
     // make sure param val is always a list rather than a string
@@ -45,27 +46,29 @@
         
         return items
     })
-    
 
-    let itemsValid = $state([])
-
-    $effect(() => {
-        valid.state = itemsValid.every(
-            (val) => val.state
+    function validateFileList(valid) {
+        // combine valid on all child items
+        valid.value = items.every(
+            item => item.valid.value
         )
-        valid.warning = itemsValid.map(
-            (val) => val.warning
-        ).flat()[0]
-    })
+        // combine warnings from child items
+        valid.warning = items.map(
+            item => item.valid.warning
+        ).join("\n")
+    }
 
 </script>
 
-<div class=list-ctrl-layout>
+<div 
+    class=list-ctrl-layout
+    {@attach element => param.registerValidator("fileList", validateFileList, -5)}
+    {...attachments}
+>
     {#each Object.entries(items) as [i, item]}
         <FileCtrl
             param={item}
             disabled={disabled}
-            bind:valid={itemsValid[i]}
         />
         <CompactButton
             icon="/icons/btn-delete.svg"

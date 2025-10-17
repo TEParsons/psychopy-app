@@ -5,7 +5,8 @@
         param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable()
+        /** @interface */
+        ...attachments
     } = $props()
 
     let selected = $state.raw(false);
@@ -20,29 +21,25 @@
         }
     })
 
-    // check valid when param value changes
-    $effect(() => {
-        // start off valid
-        valid.state = true
-        valid.warning = undefined
+    function validateKeypress(valid) {
         // if binding is blank, it's invalid
         if (!param.val.length) {
-            valid.state = false
+            valid.value = false
             valid.warning = "No binding set"
         }
         // iterate through existing key bindings
         for (let [name, prefParam] of Object.entries(prefs.shortcuts)) {
-            // ignore this one (it will always match itself, duh)
+            // ignore the current binding (it will always match itself, duh)
             if (name === param.name) {
                 continue
             }
             // if this keybinding matches on already in use, it's invalid
             if (prefParam.val.length && prefParam.val.every(val => param.val.includes(val.toUpperCase())) && param.val.every(val => prefParam.val.includes(val.toUpperCase()))) {
-                valid.state = false
+                valid.value = false
                 valid.warning = `Keybinding '${param.val.join("+")}' for ${param.name} is already in use by '${prefParam.label}'`
             }
         }
-    })
+    }
 </script>
 
 <div 
@@ -50,10 +47,12 @@
     class:selected={selected}
     onclick={evt => selected = !disabled}
     class:hovered={hovered}
-    style:color={valid ? "inherit" : "var(--red)"}
+    style:color={param.valid.value ? "inherit" : "var(--red)"}
     onmouseenter={evt => hovered = true}
     onmouseleave={evt => hovered = false}
     role=none
+    {@attach element => param.registerValidator("keypress", validateKeypress, -5)}
+    {...attachments}
 >
     {#if selected}
         <input 

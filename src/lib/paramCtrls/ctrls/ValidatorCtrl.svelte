@@ -5,9 +5,13 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable(),
-        validate = (param) => !Array.isArray(param.allowedVals) || param.allowedVals.includes(param.val)
+        /** @interface */
+        ...attachments
     } = $props()
+
+    function validateValidator(valid) {
+        valid.value = param.val in options || param.val === ""
+    }
 
     let current = getContext("current")
 
@@ -29,7 +33,9 @@
     class=param-validator-input
     disabled={disabled || options.length === 0} 
     bind:value={param.val}
-    style:color={valid.state ? "inherit" : "var(--red)"}
+    style:color={param.valid.value ? "inherit" : "var(--red)"}
+    {@attach element => param.registerValidator("validator", validateValidator, 0)}
+    {...attachments}
 >
     <option
         value=""

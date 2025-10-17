@@ -7,11 +7,11 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        /** @bindable State controlling whether this param's value is valid */
-        valid=$bindable(),
-        /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => [true, undefined],
+        /** @interface */
+        ...attachments
     } = $props()
+
+    function validateTable(valid) {}
 
     function openTable() {
         // placeholder: How do I open Excel from Svelte? 
@@ -22,9 +22,9 @@
 
 <FileCtrl
     param={param}
-    validate={validate}
-    bind:valid={valid}
     disabled={disabled}
+    {@attach element => param.registerValidator("table", validateTable, -5)}
+    {...attachments}
 ></FileCtrl>
 <CompactButton
     icon="/icons/btn-table.svg"

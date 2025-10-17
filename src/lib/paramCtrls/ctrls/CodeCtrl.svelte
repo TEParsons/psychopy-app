@@ -4,27 +4,26 @@
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param=$bindable(),
-        /** @bindable State tracking whether this param's value is valid */
-        valid=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => true
+        /** @interface */
+        ...attachments
     } = $props()
 
-
-    $effect(() => {
-        if (valid !== undefined) {
-            valid.state = validate(param)
-        }
-    })
+    function validateCode(valid) {
+        return
+    }
 
     let language = $derived(
         param.allowedVals ? param.allowedVals : "python"
     )
 
 </script>
-<div class=param-code-input-multi>
+<div 
+    class=param-code-input-multi
+    {@attach element => param.registerValidator("code", validateCode, 10)}
+    {...attachments}
+>
     <CodeEditor 
         bind:value={param.val}
         resize=vertical

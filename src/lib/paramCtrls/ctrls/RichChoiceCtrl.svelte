@@ -5,18 +5,17 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable()
+        /** @interface */
+        ...attachments
     } = $props()
 
-    let options = $state.raw([])
-
-    $effect(() => {
-        optionsFromParam(param).then(resp => options = resp)
-    })
+    function validateRichChoice(valid) {}
 </script>
 
 <div 
     class=param-rich-choice-ctrl
+    {@attach element => param.registerValidator("richChoice", validateRichChoice, 0)}
+    {...attachments}
 >
     {#await optionsFromParam(param)}
         Loading...

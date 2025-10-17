@@ -2,14 +2,19 @@
     import { devices, python } from "$lib/globals.svelte";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager"
     import { CompactButton } from "$lib/utils/buttons";
+    import ChoiceCtrl from "./ChoiceCtrl.svelte";
 
     let {
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable(),
-        validate = (param) => !Array.isArray(param.allowedVals) || param.allowedVals.includes(param.val)
+        /** @interface */
+        ...attachments
     } = $props()
+
+    function validateDevice(valid) {
+        valid.value = param.val in devices || param.val === ""
+    }
 
     let options = $derived.by(() => {
         let output = [];
@@ -39,7 +44,9 @@
     class=param-device-input
     disabled={disabled || options.length === 0} 
     bind:value={param.val}
-    style:color={valid.state ? "inherit" : "var(--red)"}
+    style:color={param.valid.value ? "inherit" : "var(--red)"}
+    {@attach element => param.registerValidator("device", validateDevice, 0)}
+    {...attachments}
 >
     <option
         value=""

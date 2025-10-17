@@ -2,8 +2,7 @@
     let {
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
-        disabled=false,
-        valid=$bindable()
+        disabled=false
     } = $props()
 </script>
 

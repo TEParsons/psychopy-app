@@ -2,40 +2,37 @@
     let {
         /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
         param,
-        /** @bindable State tracking whether this param's value is valid */
-        valid=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => true,
-        /** @prop @type {Function} Function to check whether this param is code */
-        checkCode = (param) => ["code", "extendedCode"].includes(param.valType) || String(param.val).startsWith("$"),
         /** @prop @type {Boolean} Should the code indicator ($) be shown? */
-        codeIndicator = ["code", "extendedCode"].includes(param.valType)
+        codeIndicator = ["code", "extendedCode"].includes(param.valType),
+        /** @interface */
+        ...attachments
     } = $props()
 
-    let isCode = $derived(checkCode(param));
-
-    $effect(() => {
-        if (valid !== undefined) {
-            valid.state = validate(param)
+    function validateMultiText(valid) {
+        if (this.isCode) {
+            valid.value = true
+            valid.warning = undefined
         }
-    })
+    }
 </script>
 
 {#if codeIndicator}
-<span 
-    class=code-indicator
->
-    $
-</span>
+    <span 
+        class=code-indicator
+    >
+        $
+    </span>
 {/if}
 <textarea 
     class=param-text-input-multi
     bind:value={param.val} 
-    class:valid={valid.state} 
-    class:code={isCode} 
+    class:valid={param.valid.value} 
+    class:code={param.isCode} 
     disabled={disabled}
+    {@attach element => param.registerValidator("multiText", validateMultiText, 10)}
+    {...attachments}
 >
 </textarea>
 

@@ -3,21 +3,14 @@
     import DeviceProfile from "./DeviceProfile.svelte";
 
     let {
-        device,
-        valid=$bindable()
+        device
     } = $props()
-
-    valid['name'] = {
-        state: true,
-        warnings: []
-    }
 </script>
 
 
 <div class=device-details-pnl>
     <ParamsNotebook
         element={device}
-        bind:valid={valid}
     />
     <DeviceProfile 
         profile={device.profile}

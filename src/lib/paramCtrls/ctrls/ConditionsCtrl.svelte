@@ -11,20 +11,23 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        /** @bindable State controlling whether this param's value is valid */
-        valid=$bindable(),
-        /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => [true, undefined],
+        /** @interface */
+        ...attachments
     } = $props()
+
+    function validateConditions(valid) {
+        return
+    }
+
 </script>
 
 <div class=wrapper>
     <TableCtrl
         param={param}
         disabled={disabled}
-        validate={validate}
-        bind:valid={valid}
-    ></TableCtrl>
+        {@attach element => param.registerValidator("conditions", validateConditions, 5)}
+        {...attachments}
+    />
     <div class=output>
         {#if param.val}
             {#await python.liaison.send({

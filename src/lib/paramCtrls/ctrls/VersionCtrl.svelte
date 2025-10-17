@@ -3,10 +3,13 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable(),
-        validate = (param) => !Array.isArray(param.allowedVals) || param.allowedVals.includes(param.val)
+        /** @interface */
+        ...attachments
     } = $props()
 
+    function validateVersion(valid) {
+        valid.value = param.val in options || param.val === ""
+    }
     
     // construct options live from the param's allowedVals and allowedLabels attributes
     let options = $derived.by(async () => {
@@ -32,7 +35,9 @@
     class=param-version-input
     disabled={disabled || param.allowedVals.length == 1} 
     bind:value={param.val}
-    style:color={valid.state ? "inherit" : "var(--red)"}
+    style:color={param.valid.value ? "inherit" : "var(--red)"}
+    {@attach element => param.registerValidator("version", validateVersion, 0)}
+    {...attachments}
 >
     {#await options}
         <option value="">Fetching versions from GitHub...</option>

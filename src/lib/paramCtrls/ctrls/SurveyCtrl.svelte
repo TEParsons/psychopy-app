@@ -10,13 +10,13 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        /** @bindable State tracking whether this param's value is valid */
-        valid=$bindable(),
-        /** @prop @type {Function} Function to check whether this param's value is valid */
-        validate = (param) => [true, ""],
+        /** @interface */
+        ...attachments
     } = $props()
 
     let current = getContext("current")
+
+    function validateSurvey(valid) {}
 
     let showSurveysDlg = $state.raw();
 
@@ -62,9 +62,9 @@
 
 <SingleLineCtrl 
     param={param} 
-    validate={validate}
-    bind:valid={valid}
     disabled={disabled}
+    {@attach element => param.registerValidator("survey", validateSurvey, -5)}
+    {...attachments}
 />
 
 <CompactButton 

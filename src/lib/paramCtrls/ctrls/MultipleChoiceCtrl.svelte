@@ -3,17 +3,22 @@
 
     let {
         param,
-        valid=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        validate = (param) => !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
+        /** @interface */
+        ...attachments
     } = $props()
-    
+
+    function validateMultiChoice(valid) {
+        valid.value = !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
+    }
 </script>
 
 <div
     class=param-multi-choice-input
-    style:color={valid.state ? "inherit" : "var(--red)"}
+    style:color={param.valid.value ? "inherit" : "var(--red)"}
+    {@attach element => param.registerValidator("multiChoice", validateMultiChoice, 10)}
+    {...attachments}
 >
     {#await optionsFromParam(param)}
         Loading...

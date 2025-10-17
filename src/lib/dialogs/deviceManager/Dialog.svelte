@@ -21,7 +21,13 @@
 
     let showAddDeviceDialog = $state.raw(false)
 
-    let valid = $state({})
+    let valid = $derived(
+        Object.values(devices).every(
+            element => Object.values(element.params).every(
+                param => param.valid.value
+            )
+        )
+    )
 
     let restore = {
         set: () => Object.values(devices).forEach(
@@ -33,12 +39,8 @@
     }
 
     let btnsDisabled = $derived({
-        OK: Object.values(valid).some(
-            (val) => !val.state
-        ),
-        APPLY: Object.values(valid).some(
-            (val) => !val.state
-        )
+        OK: !valid,
+        APPLY: !valid
     })
 
     onMount(async () => {
@@ -195,7 +197,6 @@
                 >
                     <DeviceDetails
                         device={device}
-                        bind:valid={valid}
                     ></DeviceDetails>
                 </NotebookPage>
             {/each}

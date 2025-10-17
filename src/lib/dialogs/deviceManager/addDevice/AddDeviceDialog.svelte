@@ -28,6 +28,7 @@
     setContext("selected", selected)
 
     let param = new Param("Device label")
+    param.valType = "code"
     param.inputType = "name"
 
     let panelsOpen = $state({})
@@ -48,12 +49,8 @@
 
     onMount(refresh)
 
-    let validName = $state({
-        state: false,
-        warning: ""
-    })
     let disableBtns = $derived({
-        OK: !validName.state || !selected.device
+        OK: !param.valid.value || !selected.device
     })
 
 </script>
@@ -86,7 +83,6 @@
         <ParamCtrl
             name={param.name}
             param={param}
-            bind:valid={validName}
         ></ParamCtrl>
         <div 
             class=label

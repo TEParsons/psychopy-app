@@ -9,8 +9,20 @@
         param,
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
-        valid=$bindable()
+        /** @interface */
+        ...attachments
     } = $props()
+
+    function validateDict(valid) {
+        // combine valid on all child items
+        valid.value = entries.every(
+            ([key, item]) => item.valid.value
+        )
+        // combine warnings from child items
+        valid.warning = entries.map(
+            ([key, item]) => item.valid.warning
+        ).join("\n")
+    }
     
     // make sure param val is always an object rather than a string
     $effect(() => {
@@ -40,31 +52,13 @@
     })
     
 
-    let entriesValid = $state({})
-    
-    $effect(() => {
-        for (let [key, val] of entries) {
-            if (!(key in entriesValid)) {
-                entriesValid[key] = {
-                    state: true,
-                    warning: undefined
-                }
-            }
-        }
-    })
-
-    $effect(() => {
-        valid.state = Object.values(entriesValid).every(
-            (val) => val.state
-        )
-        valid.warning = Object.values(entriesValid).map(
-            (val) => val.warning
-        ).flat()[0]
-    })
-
 </script>
 
-<div class=dict-ctrl-layout>
+<div 
+    class=dict-ctrl-layout
+    {@attach element => param.registerValidator("dict", validateDict, 0)}
+    {...attachments}
+>
     {#each entries as [label, value]}
         <input
             bind:value={
@@ -98,7 +92,6 @@
             param={value}
             codeIndicator={false}
             disabled={disabled}
-            bind:valid={entriesValid[label]}
         />
         <CompactButton
             icon="/icons/btn-delete.svg"

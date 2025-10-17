@@ -6,14 +6,9 @@
     let {
         name,
         param=$bindable(),
-        /** @bindable State keeping track of whether this param's value is valid */
-        valid=$bindable()
+        /** @interface */
+        ...attachments
     } = $props();
-
-    valid = {
-        state: true,
-        warning: undefined
-    }
 
     let ValueCtrl = $state.raw();
     if (param.inputType in mapping) {
@@ -107,6 +102,7 @@
         id={name}
         style:grid-template-rows={inline ? "[label] min-content [warning] min-content" : "[label] min-content [ctrl] auto [warning] min-content"}
         style:flex-grow={grow ? 1 : 0}
+        {...attachments}
     >
         <label 
             class=param-label 
@@ -151,14 +147,13 @@
             <ValueCtrl 
                 bind:param={param}
                 disabled={!enabled}
-                bind:valid={valid}
             ></ValueCtrl>
         </div>
         <div 
             class=warning
         >
-            {#if valid && valid.warning !== undefined}
-                {valid.warning}
+            {#if param.valid.warning}
+                {param.valid.warning}
             {/if}
         </div>
     </div>

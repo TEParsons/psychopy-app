@@ -8,9 +8,7 @@
     let {
         element,
         /** @prop @type {array<string>} List of param names not to show */
-        hideParams=[],
-        /** @bindable State keeping track of whether each param's value is valid */
-        valid=$bindable(),
+        hideParams=[]
     } = $props();
 
     let pageIndex = $state()
@@ -86,7 +84,6 @@
                     <ParamCtrl 
                         name={name} 
                         param={param}
-                        bind:valid={valid[name]}
                     ></ParamCtrl>
                 {/if}
             {/each}
@@ -134,7 +131,6 @@
                                     <ParamCtrl 
                                         name={name} 
                                         bind:param={element.params[name]}
-                                        bind:valid={valid[name]}
                                     ></ParamCtrl>
                                 {/if}
                             {/each}

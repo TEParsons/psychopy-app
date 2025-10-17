@@ -572,6 +572,31 @@ export class Param {
     val = $state();
     updates = $state();
 
+    // checks to see if this param looks like code
+    isCode = $derived(
+        ["code", "extendedCode"].includes(this.valType) || String(this.val).startsWith("$")
+    )
+
+    // list of validators to run through (in order), these are added by param ctrls
+    validators = $state({})
+    // state keeping track of the valid state of this param
+    valid = $derived.by(() => {
+        // start off true with no warning
+        let output = {
+            value: true,
+            warning: undefined
+        }
+        // iterate through validators
+        for (let validator of Object.values(this.validators).sort(
+            (x, y) => y.priority - x.priority
+        )) {
+            // run validation
+            validator.validate(output)
+        }
+
+        return output
+    })
+
     // attributes which are saved to XML/JSON
     saveAttrs = [
         "name", 
@@ -596,6 +621,20 @@ export class Param {
             enabled: []
         }
         this.siblings = {};
+    }
+
+    /**
+     * 
+     * @param {string} name Name to register this validator as
+     * @param {function} validator Validation method - use `this` to refer to the param
+     * @param {number} priority Higher priority validators are run first 
+     */
+    registerValidator(name, validator, priority=0) {
+        this.validators[name] = {
+            name: name,
+            validate: validator,
+            priority: priority
+        }
     }
 
     /**
