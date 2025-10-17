@@ -28,6 +28,8 @@
         current.experiment.routines[rt.name] = rt
         // navigate to it
         current.routine = rt
+        // insert into the flow
+        current.inserting = rt
     }
     
 </script>
