@@ -581,6 +581,10 @@ export class Param {
     validators = $state({})
     // state keeping track of the valid state of this param
     valid = $derived.by(() => {
+        // have to query this.val for the valid derived to update when this.val does
+        // (this is dumb but I can't think of a better way to do it)
+        let track = (val => val)
+        track(this.val)
         // start off true with no warning
         let output = {
             value: true,

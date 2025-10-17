@@ -17,6 +17,8 @@ export { default as CodeCtrl } from "./CodeCtrl.svelte";
 export { default as ValidatorCtrl } from "./ValidatorCtrl.svelte";
 export { default as KeyPressCtrl } from "./KeyPressCtrl.svelte";
 export { default as SoundCtrl } from "./SoundCtrl.svelte";
+export { default as FontCtrl } from "./FontCtrl.svelte";
+
 
 import {
     SingleLineCtrl,
@@ -31,7 +33,7 @@ import {
     BoolCtrl,
     FileCtrl,
     SoundCtrl,
-    // FontCtrl,
+    FontCtrl,
     SurveyCtrl,
     FileListCtrl,
     TableCtrl,
@@ -57,7 +59,7 @@ export var mapping = {
     "bool": BoolCtrl,
     "file": FileCtrl,
     "soundFile": SoundCtrl,
-    // "font": FontCtrl,
+    "font": FontCtrl,
     "survey": SurveyCtrl,
     "fileList": FileListCtrl,
     "table": TableCtrl,
