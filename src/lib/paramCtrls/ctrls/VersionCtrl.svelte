@@ -8,7 +8,7 @@
     } = $props()
 
     function validateVersion(valid) {
-        valid.value = param.val in options || param.val === ""
+        valid.value = options.includes(param.val) || param.val === ""
     }
     
     // construct options live from the param's allowedVals and allowedLabels attributes

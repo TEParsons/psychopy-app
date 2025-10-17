@@ -10,7 +10,7 @@
     } = $props()
 
     function validateValidator(valid) {
-        valid.value = param.val in options || param.val === ""
+        valid.value = options.includes(param.val) || param.val === ""
     }
 
     let current = getContext("current")
