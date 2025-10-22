@@ -1,5 +1,6 @@
 <script>
-    import Tooltip from "../tooltip/Tooltip.svelte";
+    import Icon from "$lib/utils/icons/Icon.svelte";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
         /** @prop @type {string} Text label for this button, if any */

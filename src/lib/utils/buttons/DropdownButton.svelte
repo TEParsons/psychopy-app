@@ -1,6 +1,7 @@
 <script>
-    import Menu from "../menu/Menu.svelte";
-    import Tooltip from "../tooltip/Tooltip.svelte";
+    import Menu from "$lib/utils/menu/Menu.svelte";
+    import Icon from "$lib/utils/icons/Icon.svelte";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
         /** @prop @type {string} Label for this button */
@@ -11,6 +12,8 @@
         onclick,
         /** @prop @type {string|undefined} Hover text for this button, if any */
         tooltip = undefined,
+        /** Are we awaiting execution of this button? */
+        awaiting=$bindable(false),
         /** @prop @type {boolean} Disable this button */
         disabled = false,
         /** @interface Inner contents of menu to be shown when button is clicked */
@@ -31,22 +34,26 @@
         onfocusin={() => {showTooltip = true}}
         onfocusout={() => {showTooltip = false}}
     >
-        {#if icon && String(icon).endsWith(".svg")}
-            <svg 
-            class=icon
-        >
-            <use href={icon}></use>
-        </svg>
-        {:else if icon && String(icon).endsWith(".png")}
-            <img 
-                class=icon
-                src={icon}
-                alt={icon}
-            />
+        {#if icon}
+            <div class=icon-container>
+                <Icon 
+                    src={icon}
+                    size=2rem
+                    bind:awaiting={awaiting}
+                />
+            </div>
         {/if}
         <span
             class=label
-        >{label}</span>
+        >
+            {#await awaiting}
+                ...
+            {:then}
+                {label}
+            {:catch err}
+                {err}
+            {/await}
+        </span>
         {#if tooltip}
             <Tooltip
                 bind:shown={showTooltip}
@@ -60,11 +67,11 @@
         onclick={(evt) => showMenu = !showMenu}
         aria-label="v"
     >
-        <svg 
-            class=chevron
-        >
-            <use href="/icons/sym-arrow-down.svg"></use>
-        </svg>
+        <div class=chevron>
+            <Icon 
+                src="/icons/sym-arrow-down.svg"
+            />
+        </div>
     </button>
     <Menu
         bind:shown={showMenu}
@@ -108,12 +115,6 @@
             inset 1px 1px 10px rgba(0, 0, 0, 0.05)
         ;
     }
-
-    button .icon {
-        width: 100%;
-        aspect-ratio: 1/1;
-    }
-
     .dropdown-button {
         position: relative;
         display: flex;
@@ -122,8 +123,7 @@
         margin: .25rem;
     }
 
-    button .icon {
-        width: 2rem;
+    button .icon-container {
         border-radius: .5rem;
     }
 

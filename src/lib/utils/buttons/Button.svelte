@@ -1,5 +1,6 @@
 <script>
-    import Tooltip from "../tooltip/Tooltip.svelte";
+    import Icon from "$lib/utils/icons/Icon.svelte";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
         /** @prop @type {string} Label for this button */
@@ -51,21 +52,12 @@
         </Tooltip>
     {/if}
     {#if icon}
-        <svg 
-            class=icon
-        >
-            {#await awaiting}
-                <use href="/icons/sym-pending.svg#animation" ></use>
-            {:then}
-                {#if String(icon).match(/.*\.svg/g)}
-                    <use href={icon}></use>
-                {:else}
-                    {@html icon}
-                {/if}
-            {:catch}
-                <use href="/icons/sym-error.svg" ></use>
-            {/await}
-        </svg>
+        <div class=icon-container>
+            <Icon 
+                src={icon} 
+                bind:awaiting={awaiting}
+            />
+        </div>
     {/if}
     <span
         class=label
@@ -133,12 +125,7 @@
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.05)
         ;
-    }
-
-    button .icon {
-        width: 100%;
-        aspect-ratio: 1/1;
-    }
+    }    
     
     button {
         display: grid;
@@ -148,7 +135,7 @@
         max-width: 100%;
         max-height: 100%;
     }
-    button svg {
+    button .icon-container {
         height: 2.25rem;
         aspect-ratio: 1 / 1;
     }
@@ -157,7 +144,7 @@
         grid-template-columns: [icon] min-content [label] max-content;
         justify-content: start;
     }
-    button.horizontal .icon {
+    button.horizontal .icon-container {
         width: 2rem;
         margin-right: .5rem;
         grid-column-start: icon;
@@ -170,7 +157,7 @@
         grid-template-rows: [icon] min-content [label] min-content;
         justify-items: center;
     }
-    button.vertical .icon {
+    button.vertical .icon-container {
         height: 3rem;
         margin-bottom: .5rem;
         grid-row-start: icon;

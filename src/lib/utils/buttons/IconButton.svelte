@@ -1,5 +1,6 @@
 <script>
-    import Tooltip from '../tooltip/Tooltip.svelte';
+    import Icon from "$lib/utils/icons/Icon.svelte";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
         /** @prop @type {string} Text label for this button, if any */
@@ -31,15 +32,11 @@
     onfocusout={() => {showTooltip = false}}
     class:borderless={borderless}
 >
-    <svg>
-        {#await awaiting}
-            <use href="/icons/sym-pending.svg#animation" ></use>
-        {:then}
-            <use href={icon}></use>
-        {:catch}
-            <use href={icon}></use>
-        {/await}
-    </svg>
+    <Icon 
+        src={icon}
+        size=2.25rem
+        bind:awaiting={awaiting}
+    />
     <Tooltip
         bind:shown={showTooltip}
         position="bottom"
@@ -101,10 +98,6 @@
     }
     button.borderless:enabled:focus {
         border-color: var(--blue);
-    }
-
-    button svg {
-        height: 2.25rem;
     }
 
 </style>

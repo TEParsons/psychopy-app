@@ -1,5 +1,6 @@
 <script>
-    import Tooltip from "../tooltip/Tooltip.svelte";
+    import Icon from "$lib/utils/icons/Icon.svelte";
+    import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
         /** @prop @type {string|undefined} Path to icon for this button, if any */
@@ -35,15 +36,11 @@
         </Tooltip>
     {/if}
     {#if icon}
-    <svg>
-        {#await awaiting}
-            <use href="/icons/sym-pending.svg#animation" ></use>
-        {:then}
-            <use href={icon}></use>
-        {:catch}
-            <use href={icon}></use>
-        {/await}
-    </svg>
+        <Icon 
+            src={icon} 
+            size=1.25rem
+            bind:awaiting={awaiting}
+        />
     {/if}
 </button>
 
@@ -64,12 +61,6 @@
         display: grid;
         align-items: center;
         justify-content: center;
-    }
-
-    button svg {
-        aspect-ratio: 1 / 1;
-        height: 1.25rem;
-        width: 1.25rem;
     }
 
     button:disabled {

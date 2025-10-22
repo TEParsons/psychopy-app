@@ -1,4 +1,5 @@
 <script>
+    import Icon from "$lib/utils/icons/Icon.svelte";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
@@ -47,11 +48,10 @@
     </Tooltip>
     {/if}
     {#if icon}
-    <svg 
-        class=icon
-    >
-        <use href={icon}></use>
-    </svg>
+        <Icon 
+            src={icon}
+            size=1rem
+        />
     {/if}
 </button>
 
@@ -116,15 +116,6 @@
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.05)
         ;
-    }
-
-    button .icon {
-        width: 100%;
-        aspect-ratio: 1/1;
-    }
-
-    button .icon {
-        height: 1rem;
     }
 
     button.active {

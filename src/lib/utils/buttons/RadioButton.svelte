@@ -1,5 +1,6 @@
 <script>
     import { getContext, onMount } from "svelte";
+    import Icon from "$lib/utils/icons/Icon.svelte";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
@@ -51,11 +52,10 @@
     {/if}
 
     {#if icon}
-        <svg 
-            class=icon
-        >
-            <use href={icon}></use>
-        </svg>
+        <Icon 
+            src={icon}
+            size=1rem
+        />
     {/if}
 
     {label}
@@ -99,10 +99,5 @@
         box-shadow: 
             inset 1px 1px 10px rgba(0, 0, 0, 0.05)
         ;
-    }
-
-    button .icon {
-        width: 1rem;
-        aspect-ratio: 1/1;
-    }    
+    }   
 </style>
