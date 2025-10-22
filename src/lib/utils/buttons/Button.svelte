@@ -43,25 +43,29 @@
     onfocusout={() => {showTooltip = false}}
 >
     {#if tooltip}
-    <Tooltip
-        bind:shown={showTooltip}
-        position="right"
-    >
-        {tooltip}
-    </Tooltip>
+        <Tooltip
+            bind:shown={showTooltip}
+            position="right"
+        >
+            {tooltip}
+        </Tooltip>
     {/if}
     {#if icon}
-    <svg 
-        class=icon
-    >
-        {#await awaiting}
-            <use xlink:href="/icons/sym-pending.svg#animation" ></use>
-        {:then}
-            <use xlink:href={icon}></use>
-        {:catch}
-            <use xlink:href={icon}></use>
-        {/await}
-    </svg>
+        <svg 
+            class=icon
+        >
+            {#await awaiting}
+                <use xlink:href="/icons/sym-pending.svg#animation" ></use>
+            {:then}
+                {#if String(icon).match(/.*\.svg/g)}
+                    <use xlink:href={icon}></use>
+                {:else}
+                    {@html icon}
+                {/if}
+            {:catch}
+                <use xlink:href="/icons/sym-error.svg" ></use>
+            {/await}
+        </svg>
     {/if}
     <span
         class=label
