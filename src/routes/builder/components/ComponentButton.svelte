@@ -48,7 +48,7 @@
 {#if !component.hidden}
 <Button 
     label={titleCase(component['__name__'])}
-    icon={component.iconSVG || `/icons/components/${component['__name__']}.svg`}
+    icon={component.iconSVG}
     vertical
     disabled={!(current.routine instanceof Routine)}
     onclick={newComponent}

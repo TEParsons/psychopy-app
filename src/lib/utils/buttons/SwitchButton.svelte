@@ -39,7 +39,7 @@
     {/if}
     <span class="{value ? "active" : "inactive"}">{labels[0]}</span>
     <svg>
-        <use xlink:href="/icons/ctrl-switch-{value ? "left" : "right"}.svg"></use>
+        <use href="/icons/ctrl-switch-{value ? "left" : "right"}.svg"></use>
     </svg>
     <span class="{value ? "inactive" : "active"}">{labels[1]}</span>
 </button>

@@ -15,7 +15,7 @@
         <div class=flowline-container>
             <div class=flowline></div>
             <svg class=flowline-arrow>
-                <use xlink:href="/icons/sym-arrow-right.svg"></use>
+                <use href="/icons/sym-arrow-right.svg"></use>
             </svg>
         </div>
         {#if current.experiment}

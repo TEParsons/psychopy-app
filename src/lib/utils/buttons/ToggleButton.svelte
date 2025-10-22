@@ -50,7 +50,7 @@
     <svg 
         class=icon
     >
-        <use xlink:href={icon}></use>
+        <use href={icon}></use>
     </svg>
     {/if}
 </button>

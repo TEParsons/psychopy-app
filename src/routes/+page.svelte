@@ -2,19 +2,19 @@
     <nav>
         <a href="./builder">
             <svg>
-                <use xlink:href="/icons/btn-builder.svg"></use>
+                <use href="/icons/btn-builder.svg"></use>
             </svg>
             Builder
         </a>
         <a href="./coder">
             <svg>
-                <use xlink:href="/icons/btn-coder.svg"></use>
+                <use href="/icons/btn-coder.svg"></use>
             </svg>
             Coder
         </a>
         <a href="./runner">
             <svg>
-                <use xlink:href="/icons/btn-runner.svg"></use>
+                <use href="/icons/btn-runner.svg"></use>
             </svg>
             Runner
         </a>

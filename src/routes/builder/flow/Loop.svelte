@@ -92,7 +92,7 @@
         role=none
     >
         <svg>
-            <use xlink:href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
+            <use href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
         </svg>
     </div>
     {#if element}
@@ -115,7 +115,7 @@
             role=none
         >
             <svg>
-                <use xlink:href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
+                <use href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
             </svg>
         </div>
         <EntryPoint index={element.terminator.index}></EntryPoint>

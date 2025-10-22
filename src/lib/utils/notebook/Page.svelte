@@ -97,7 +97,7 @@
 >
     {#if icon}
         <svg>
-            <use xlink:href={icon}></use>
+            <use href={icon}></use>
         </svg>
     {/if}
     {#if renaming}

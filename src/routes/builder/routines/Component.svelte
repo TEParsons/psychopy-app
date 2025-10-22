@@ -61,7 +61,7 @@
 >    
     {component.name}
     <svg>
-        <use xlink:href="/icons/components/{component.tag}.svg"></use>
+        <use href="/icons/components/{component.tag}.svg"></use>
     </svg>
 </label>
 

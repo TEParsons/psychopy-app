@@ -55,15 +55,15 @@
             class=icon
         >
             {#await awaiting}
-                <use xlink:href="/icons/sym-pending.svg#animation" ></use>
+                <use href="/icons/sym-pending.svg#animation" ></use>
             {:then}
                 {#if String(icon).match(/.*\.svg/g)}
-                    <use xlink:href={icon}></use>
+                    <use href={icon}></use>
                 {:else}
                     {@html icon}
                 {/if}
             {:catch}
-                <use xlink:href="/icons/sym-error.svg" ></use>
+                <use href="/icons/sym-error.svg" ></use>
             {/await}
         </svg>
     {/if}

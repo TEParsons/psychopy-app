@@ -18,7 +18,7 @@
     role=none
 >
     <svg>
-        <use xlink:href="/icons/sym-info.svg" />
+        <use href="/icons/sym-info.svg" />
     </svg>
 
     {#if hovered}

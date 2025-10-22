@@ -44,7 +44,7 @@
         <svg 
             class=menu-item-icon
         >
-            <use xlink:href={icon}></use>
+            <use href={icon}></use>
         </svg>
     {:else if icon && String(icon).endsWith(".png")}
         <img 

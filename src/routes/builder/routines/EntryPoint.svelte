@@ -55,7 +55,7 @@
     class:hovered={hovered}
 >
     <svg>
-        <use xlink:href="/icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"></use>
+        <use href="/icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"></use>
     </svg>
     
     <button 

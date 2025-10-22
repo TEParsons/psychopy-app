@@ -33,11 +33,11 @@
 >
     <svg>
         {#await awaiting}
-            <use xlink:href="/icons/sym-pending.svg#animation" ></use>
+            <use href="/icons/sym-pending.svg#animation" ></use>
         {:then}
-            <use xlink:href={icon}></use>
+            <use href={icon}></use>
         {:catch}
-            <use xlink:href={icon}></use>
+            <use href={icon}></use>
         {/await}
     </svg>
     <Tooltip

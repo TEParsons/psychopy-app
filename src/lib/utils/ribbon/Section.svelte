@@ -19,7 +19,7 @@
     >
         {#if icon}
             <svg>
-                <use xlink:href={icon}></use>
+                <use href={icon}></use>
             </svg>
         {:else}
             <div></div>

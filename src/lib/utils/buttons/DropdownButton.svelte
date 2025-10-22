@@ -35,7 +35,7 @@
             <svg 
             class=icon
         >
-            <use xlink:href={icon}></use>
+            <use href={icon}></use>
         </svg>
         {:else if icon && String(icon).endsWith(".png")}
             <img 
@@ -63,7 +63,7 @@
         <svg 
             class=chevron
         >
-            <use xlink:href="/icons/sym-arrow-down.svg"></use>
+            <use href="/icons/sym-arrow-down.svg"></use>
         </svg>
     </button>
     <Menu
