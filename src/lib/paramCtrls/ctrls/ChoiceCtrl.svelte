@@ -10,7 +10,9 @@
     } = $props()
 
     function validateChoice(valid) {
-        valid.value = !Array.isArray(param.allowedVals) || param.allowedVals.includes(param.val)
+        if (Array.isArray(param.allowedVals) && !param.allowedVals.includes(param.val)) {
+            valid.warning = `${param.val} not in list of allowed values`
+        }
     }
 </script>
 
