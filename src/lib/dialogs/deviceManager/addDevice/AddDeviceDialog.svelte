@@ -2,11 +2,13 @@
     import { Dialog } from "$lib/utils/dialog";
     
     import { CompactButton, PanelButton, RadioGroup } from "$lib/utils/buttons";
+    import { sanitizeImportString } from "$lib/utils/tools/imports.js";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
     import { Device, Param } from "$lib/experiment/experiment.svelte"
     import { onMount, setContext } from "svelte";
     import { devices, python } from "$lib/globals.svelte";
+    import { deviceProfiles } from "$lib/experiment/profiles.svelte"
 
     let {
         shown=$bindable()
@@ -42,9 +44,11 @@
         promises.backends = python.liaison.send({
             command: "run",
             args: [
-                "psychopy.experiment.devices:DeviceBackend.getBackendProfiles"
+                "psychopy.experiment:getDeviceProfiles"
             ]
-        }, 10000)
+        }, 10000).then(
+            resp => Object.assign(deviceProfiles, resp)
+        )
     }
 
     onMount(refresh)
@@ -103,12 +107,12 @@
                     <div class=loading-msg>
                         Getting device backends...
                     </div>
-                {:then backends}
-                    {#if backends}
-                        {#each backends as backend}
+                {:then}
+                    {#if deviceProfiles}
+                        {#each Object.values(deviceProfiles).filter(profile => profile.device) as backend}
                             {#await python.liaison.send({
                                 command: "run",
-                                args: [`${backend.__class__}.getAvailableDevices`]
+                                args: [`${sanitizeImportString(backend.device)}.getAvailableDevices`]
                             }, timeout)}
                                 <PanelButton
                                     label="Getting {backend.label} devices..."
