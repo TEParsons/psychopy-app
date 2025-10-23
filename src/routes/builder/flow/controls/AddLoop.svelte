@@ -5,8 +5,7 @@
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import ComponentProfiles from "$lib/experiment/components.json";
-    import LoopProfiles from "$lib/experiment/loops.json";
+    import { loopProfiles } from "$lib/experiment/profiles.svelte";
     
     let current = getContext("current");
 
@@ -51,7 +50,7 @@
     <Menu 
         bind:shown={showMenu}
     >
-        {#each Object.keys(LoopProfiles) as loopType}
+        {#each Object.keys(loopProfiles) as loopType}
             <MenuItem 
                 label="New {titleCase(loopType)} loop..."
                 onclick={() => {
