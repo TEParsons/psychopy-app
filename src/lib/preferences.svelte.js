@@ -1,5 +1,6 @@
 import { electron } from "$lib/globals.svelte";
 import { HasParams } from "$lib/experiment/experiment.svelte";
+import FallbackPreferences from "$lib/preferences.json"
 
 
 class Preferences extends HasParams {
@@ -20,36 +21,42 @@ class Preferences extends HasParams {
     }
 
     load() {
-        return electron.paths.prefs()
-            .then(
-                // make sure prefs file exists
-                async file => {
-                    if (!(await electron.files.exists(file))) {
-                        await this.save()
-                    }
+        if (electron) {
+            return electron.paths.prefs()
+                .then(
+                    // make sure prefs file exists
+                    async file => {
+                        if (!(await electron.files.exists(file))) {
+                            await this.save()
+                        }
 
-                    return file
-                }
-            ).then(
-                // load data from file
-                file => electron.files.load(file)
-            ).then(
-                // setup params from file content
-                data => this.fromJSON(JSON.parse(data))
-            )
+                        return file
+                    }
+                ).then(
+                    // load data from file
+                    file => electron.files.load(file)
+                ).then(
+                    // setup params from file content
+                    data => this.fromJSON(JSON.parse(data))
+                )
+        } else {
+            return FallbackPreferences
+        }
     }
 
     save() {
-        return electron.paths.prefs()
-            .then(
-                // save prefs to file
-                file => electron.files.save(
-                    // JSONify first
-                    file, JSON.stringify(
-                        this.toJSON(), undefined, 4
+        if (electron) {
+            return electron.paths.prefs()
+                .then(
+                    // save prefs to file
+                    file => electron.files.save(
+                        // JSONify first
+                        file, JSON.stringify(
+                            this.toJSON(), undefined, 4
+                        )
                     )
                 )
-            )
+        }
     }
 }
 
