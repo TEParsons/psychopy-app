@@ -705,7 +705,9 @@ export class Param {
         // populate
         for (let key of this.saveAttrs) {
             // set from JSON if possible
-            this[key] = node[key] || this[key]
+            if (key in node) {
+                this[key] = node[key]
+            }
         }
     }
 
