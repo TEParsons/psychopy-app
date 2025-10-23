@@ -758,6 +758,9 @@ export class HasParams {
     /** @attribute @type {Experiment} Experiment this element belongs to */
     exp = undefined;
 
+    /** @attribute @type {Array} Names of known legacy params to ignore */
+    legacyParams = []
+
     /**
      * Array of parameters for this element
      */
@@ -891,6 +894,8 @@ export class HasParams {
         this.__class__ = template?.__class__
         // set plugin
         this.plugin = template.plugin;
+        // set legacy params
+        this.legacyParams = template.legacyParams || []
         // clear params
         Object.keys(this.params).forEach((key) => delete this.params[key])
         // iterate through params in relevant template
@@ -1080,6 +1085,10 @@ export class HasParams {
         this.reset()
         // iterate through param nodes
         for (let [name, paramNode] of Object.entries(node.params)) {
+            // ignore legqacy params
+            if (this.legacyParams.includes(name)) {
+                continue
+            }
             // if param wasn't templated, make an unknown
             if (!(name in this.params)) {
                 this.params[name] = Param.makeUnknown(name)
