@@ -14,56 +14,72 @@
         ...attachments
     } = $props()
 
-    let current = getContext("current");
-    $inspect(param.valid)
+    // stores lists of found fonts from Python
+    let fonts = $state({
+        system: [],
+        packaged: [],
+        user: [],
+        experiment: []
+    })
+    // stores promises which resolve when a source has been scanned
+    let scanning = $state({
+        system: Promise.resolve(true),
+        packaged: Promise.resolve(true),
+        user: Promise.resolve(true),
+        experiment: Promise.resolve(true)
+    });
 
-    // if Python is available, initialise a font manager
-    let manager = Promise.withResolvers();
     if (python) {
-        // setup manager
-        python.liaison.send({
-            command: "init",
-            args: [
-                "fontManager", "psychopy.tools.fontmanager:FontManager"
-            ]
-        }, 10000)
-        .then(
-            name => manager.resolve(name)
-        ).catch(
-            err => manager.reject(err)
-        )
-        // get font families from manager
-        manager.promise.then(
-            name => {
-                python.liaison.send({
+        // iterate through different font sources
+        for (let [key, method] of [
+            ["system", "getSystemFonts"],
+            ["packaged", "getPackagedFonts"],
+            ["user", "getUserFonts"]
+        ]) {
+            // scan for fonts
+            scanning[key] = python.liaison.send(
+                {
                     command: "run",
                     args: [
-                        `${name}.getFontFamilyNames`
+                        `psychopy.tools.fontmanager:FontFinder.${method}`
                     ]
-                }, 5000).then(
-                    resp => families = resp.map(val => val.toLowerCase().replace(" ", ""))
-                ).catch(
-                    err => families = undefined
-                )
-            }
-        )
-    } else {
-        // if not, reject promise
-        manager.reject(undefined)
+                }, 
+                10000
+            ).then(
+                resp => fonts[key].push(...Object.keys(resp))
+            ).catch(
+                err => console.error(err)
+            )
+        }
+        // todo: scan for fonts in experiment folder
     }
 
-    let families = $state.raw(undefined)
+    let installed = $derived.by(() => {
+        let found = false
+        // iterate through sources
+        for (let source of Object.values(fonts)) {
+            // check each name
+            for (let name of source) {
+                // does it (in lowercase with no spaces) match the param (in the same)?
+                if (
+                    name.toLowerCase().replaceAll(" ", "") === String(param.val).toLowerCase().replaceAll(" ", "")
+                ) {
+                    found = true
+                }
+            }
+        }
+
+        return found
+    })
 
     function validateFont(valid) {
-        if (families === undefined) {
-            // do nothing if we don't have family information
-            return
-        }
-        // is the current value known to PsychoPy?
-        console.log(families)
-        if (!families.includes(String(param.val).toLowerCase().replace(" ", ""))) {
-            valid.value = false
-            valid.warning = `Font '${param.val}' is not installed. Click the download button to try to install it.`
+        // vary the warning according to whether we're on local
+        if (!installed) {
+            if (python) {
+                valid.warning = `Font '${param.val}' is not installed. Try installing it via the Font Manager.`
+            } else {
+                valid.warning = `Font '${param.val}' is not web safe.`
+            }
         }
         
     }
@@ -75,8 +91,11 @@
     {@attach element => param.registerValidator("font", validateFont, 5)}
     {...attachments}
 />
-<CompactButton 
-    icon="/icons/btn-download.svg"
-    tooltip="Open font manager"
-    awaiting={manager.promise}
-/>
+{#if python}
+    <CompactButton 
+        icon="/icons/btn-download.svg"
+        tooltip="Open font manager"
+        awaiting={Promise.all(Object.values(scanning))}
+    />
+    <!-- todo: Add font manager dialog -->
+{/if}
