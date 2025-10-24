@@ -14,6 +14,8 @@
         ...attachments
     } = $props()
 
+    let current = getContext("current");
+
     // stores lists of found fonts from Python
     let fonts = $state({
         system: [],
@@ -44,15 +46,45 @@
                         `psychopy.tools.fontmanager:FontFinder.${method}`
                     ]
                 }, 
-                10000
+                1000
             ).then(
                 resp => fonts[key].push(...Object.keys(resp))
             ).catch(
                 err => console.error(err)
             )
         }
-        // todo: scan for fonts in experiment folder
     }
+
+    // scan for fonts in experiment folder whenever it changes
+    $effect(() => {
+        // clear experiment fonts
+        fonts.experiment.length = 0
+        // get folder
+        let expFolder = path.dirname(current.experiment.filename.replaceAll("\\", "/"))
+        console.log(expFolder)
+        // search in fonts and assets/fonts subfolders
+        if (expFolder) {
+            scanning.experiment = python.liaison.send(
+                {
+                    command: "run",
+                    args: [
+                        `psychopy.tools.fontmanager:FontFinder.getFolderFonts`,
+                        [
+                            path.join(expFolder, "fonts"),
+                            path.join(expFolder, "assets", "fonts")
+                        ],
+                        false
+                    ]
+                }, 
+                1000
+            ).then(
+                resp => fonts.experiment.push(...Object.keys(resp))
+            ).catch(
+                err => console.error(err)
+            ) 
+        }
+    })
+    
 
     let installed = $derived.by(() => {
         let found = false
