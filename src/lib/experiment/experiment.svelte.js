@@ -601,6 +601,9 @@ export class Param {
         return output
     })
 
+    // when set to True, this param is deleted when OK is pressed on a Param dialog
+    deleted = $state(false)
+
     // attributes which are saved to XML/JSON
     saveAttrs = [
         "name", 
@@ -720,7 +723,7 @@ export class Param {
         // make param
         let param = new Param(name);
         // populate with standard unknown loadout
-        Object.apply(param, {
+        Object.assign(param, {
             val: undefined,
             categ: "Unknown",
             allowedVals: undefined,
@@ -920,6 +923,19 @@ export class HasParams {
      */
     copyParams() {
         return $state.snapshot(this.params)
+    }
+
+    /**
+     * Removed any params queued for deletion
+     */
+    trim() {
+        Object.keys(this.params).filter(
+            // target only params which are marked deleted
+            key => this.params[key].deleted
+        ).forEach(
+            // delete param
+            key => delete this.params[key]
+        )
     }
 
     /**

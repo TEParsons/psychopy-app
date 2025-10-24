@@ -35,10 +35,12 @@
     onopen={() => element.restore.set()}
     buttons={{
         OK: evt => {
+            element.trim();
             element.restore.set();
             onapply(evt);
         }, 
         APPLY: evt => {
+            element.trim();
             element.restore.set();
             onapply(evt);
         }, 
