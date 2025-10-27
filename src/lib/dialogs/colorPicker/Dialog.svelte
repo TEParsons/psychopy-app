@@ -5,6 +5,7 @@
     import HexColor from "./HexColor.svelte";
     import RgbColor from "./RgbColor.svelte";
     import DklColor from "./DklColor.svelte";
+    import HsvColor from "./HsvColor.svelte";
 
     let {
         value=$bindable(),
@@ -57,7 +58,8 @@
                 ["named", NamedColor],
                 ["hex", HexColor],
                 ["rgb", RgbColor],
-                ["dkl", DklColor]
+                ["dkl", DklColor],
+                ["hsv", HsvColor]
             ] as [thisSpace, Component]}
                 {#if allowedSpaces.includes(thisSpace)}
                     <NotebookPage
