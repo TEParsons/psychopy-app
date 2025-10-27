@@ -36,7 +36,7 @@
             ) {
                 found = true
             }
-    }
+        }
 
         return found
     })

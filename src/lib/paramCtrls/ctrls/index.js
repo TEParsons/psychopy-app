@@ -18,6 +18,7 @@ export { default as ValidatorCtrl } from "./ValidatorCtrl.svelte";
 export { default as KeyPressCtrl } from "./KeyPressCtrl.svelte";
 export { default as SoundCtrl } from "./SoundCtrl.svelte";
 export { default as FontCtrl } from "./FontCtrl.svelte";
+export { default as ColorCtrl } from "./ColorCtrl.svelte";
 export { default as UnknownCtrl } from "./UnknownCtrl.svelte";
 
 
@@ -39,7 +40,7 @@ import {
     FileListCtrl,
     TableCtrl,
     ConditionsCtrl,
-    // ColorCtrl,
+    ColorCtrl,
     DictCtrl,
     UnknownCtrl,
     ValidatorCtrl,
@@ -65,7 +66,7 @@ export var mapping = {
     "fileList": FileListCtrl,
     "table": TableCtrl,
     "conditions": ConditionsCtrl,
-    // "color": ColorCtrl,
+    "color": ColorCtrl,
     "dict": DictCtrl,
     "inv": UnknownCtrl,
     "validator": ValidatorCtrl,
