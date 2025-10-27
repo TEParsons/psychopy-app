@@ -15,26 +15,45 @@
 
 <div class=page>
     <div class=ctrls>
-        {#each Object.keys(rgb) as i}
-            <div class=ctrl>
-                <div class=label>
-                    {[
-                        "Red",
-                        "Blue",
-                        "Green"
-                    ][i]}
-                </div>
-                <input 
-                    type=number 
-                    bind:value={rgb[i]}
-                    min=0
-                    max=255
-                />
-                <code class=output>
-                    = {new Uint8Array([rgb[i]]).toHex()}
-                </code>
-            </div>
-        {/each}
+        <!-- red -->
+        <div class=ctrl>
+            <div class=label>Red</div>
+            <input 
+                type=number 
+                bind:value={rgb[0]}
+                min=0
+                max=255
+            />
+            <code class=output>
+                = {new Uint8Array([rgb[0]]).toHex()}
+            </code>
+        </div>
+        <!-- green -->
+        <div class=ctrl>
+            <div class=label>Green</div>
+            <input 
+                type=number 
+                bind:value={rgb[1]}
+                min=0
+                max=255
+            />
+            <code class=output>
+                = {new Uint8Array([rgb[1]]).toHex()}
+            </code>
+        </div>
+        <!-- blue -->
+        <div class=ctrl>
+            <div class=label>Blue</div>
+            <input 
+                type=number 
+                bind:value={rgb[2]}
+                min=0
+                max=255
+            />
+            <code class=output>
+                = {new Uint8Array([rgb[2]]).toHex()}
+            </code>
+        </div>
     </div>
     <div 
         class=preview

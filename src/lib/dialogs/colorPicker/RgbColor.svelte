@@ -20,24 +20,39 @@
 
 <div class=page>
     <div class=ctrls>
-        {#each Object.keys(rgb) as i}
-            <div class=ctrl>
-                <div class=label>
-                    {[
-                        "Red",
-                        "Blue",
-                        "Green"
-                    ][i]}
-                </div>
-                <input 
-                    type=number 
-                    bind:value={rgb[i]}
-                    min={-1}
-                    max=1
-                    step=0.05
-                />
-            </div>
-        {/each}
+        <!-- red -->
+        <div class=ctrl>
+            <div class=label>Red</div>
+            <input 
+                type=number 
+                bind:value={rgb[0]}
+                min={-1}
+                max=1
+                step=0.05
+            />
+        </div>
+        <!-- green -->
+        <div class=ctrl>
+            <div class=label>Green</div>
+            <input 
+                type=number 
+                bind:value={rgb[1]}
+                min={-1}
+                max=1
+                step=0.05
+            />
+        </div>
+        <!-- blue -->
+        <div class=ctrl>
+            <div class=label>Blue</div>
+            <input 
+                type=number 
+                bind:value={rgb[2]}
+                min={-1}
+                max=1
+                step=0.05
+            />
+        </div>
     </div>
     <div 
         class=preview
