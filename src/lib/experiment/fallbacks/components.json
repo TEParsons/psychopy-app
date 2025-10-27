@@ -677,6 +677,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -1302,6 +1304,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -1689,6 +1693,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -3417,6 +3423,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -4444,6 +4452,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -4923,6 +4933,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -5558,6 +5570,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -9621,6 +9635,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -10933,11 +10949,12 @@
                 "updates": null,
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
-                    "hsv",
-                    "hex"
+                    "hsv"
                 ],
                 "allowedLabels": [],
                 "ctrlParams": {},
@@ -12128,11 +12145,12 @@
                 "updates": null,
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
-                    "hsv",
-                    "hex"
+                    "hsv"
                 ],
                 "allowedLabels": [],
                 "ctrlParams": {},
@@ -13529,6 +13547,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -15151,6 +15171,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -15747,6 +15769,8 @@
                 "updates": "constant",
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -18140,6 +18164,8 @@
                 "updates": null,
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
@@ -18909,6 +18935,8 @@
                 "updates": null,
                 "allowedUpdates": null,
                 "allowedVals": [
+                    "named",
+                    "hex",
                     "rgb",
                     "dkl",
                     "lms",
