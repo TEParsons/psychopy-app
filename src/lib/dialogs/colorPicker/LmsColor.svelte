@@ -1,4 +1,6 @@
 <script>
+    import { python } from "$lib/globals.svelte";
+    
     let {
         value=$bindable(),
         target="param"
