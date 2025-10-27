@@ -5,7 +5,7 @@
     } = $props();
 
     let hsv = $state([
-        0, 100, 50
+        0, 1, .5
     ])
     
     $effect(() => {
@@ -48,7 +48,7 @@
     </div>
     <div 
         class=preview
-        style:background-color="hsl({hsv[0]}, {hsv[1]}%, {hsv[2]}%)"
+        style:background-color="hsl({hsv[0]}, {hsv[1]*100}%, {hsv[2]*100}%)"
     ></div>
 </div>
 
