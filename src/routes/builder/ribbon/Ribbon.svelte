@@ -232,7 +232,7 @@
             <IconButton 
                 icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
                 label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                onclick={runPython}
+                onclick={evt => runPython()}
                 disabled={current.experiment === null}
                 bind:awaiting={awaiting.runpy}
                 borderless

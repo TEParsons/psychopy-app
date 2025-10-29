@@ -41,15 +41,15 @@ export function initialize(name, file) {
  * @param {boolean} echo If true (default), then echo the message to the console
  */
 export function log(msg, tag=undefined, target="lastAppLoad", echo=true) {
-    if (typeof msg === "array") {
+    if (msg instanceof Buffer) {
+        // if given a buffer, decode it
+        msg = decoder.decode(msg)
+    } else if (typeof msg === "array") {
         // if given a list, join
         msg = msg.join("\t")
     } else if (typeof msg === "object") {
         // if given an object, stringify
         msg = JSON.stringify(msg)
-    } else if (msg instanceof Buffer) {
-        // if given a buffer, decode it
-        decoder.decode(msg)
     } else {
         // anything else, convert to String
         msg = String(msg)

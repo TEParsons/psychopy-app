@@ -44,6 +44,10 @@ const python = {
     getPackages: (executable) => ipcRenderer.invoke("python.install.getPackages", executable).then(resp => resp),
     getPackageDetails: (executable, name) => ipcRenderer.invoke("python.install.getPackageDetails", executable, name).then(resp => resp),
   },
+  output: {
+    stdout: () => ipcRenderer.invoke("python.output.stdout").then(resp => resp),
+    stderr: () => ipcRenderer.invoke("python.output.stderr").then(resp => resp)
+  },
   shell: {
     list: () => ipcRenderer.invoke("python.shell.list").then(resp => resp),
     send: (id, msg) => ipcRenderer.invoke("python.shell.send", id, msg).then(resp => resp),

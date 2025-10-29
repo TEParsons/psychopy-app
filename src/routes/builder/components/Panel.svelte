@@ -21,7 +21,7 @@
             profiles.promise = python.liaison.send({
                 command: "run",
                 args: ["psychopy.experiment:getElementProfiles"]
-            }, 10000)
+            }, 100000)
             // store response on success
             profiles.promise.then(
                 data => Object.assign(profiles.all, data)

@@ -38,8 +38,11 @@ export async function startPython() {
     "-m", "liaison.websocket", python.liaison.address
   ])
   // add listener for errors
-  python.process.stderr.on("data", evt => logging.log(evt, "STDERR"))
-    // add listener to know when process exits
+  python.process.stderr.on("data", evt => {
+    python.output.stderr.push(evt);
+    logging.log(evt, "STDERR");
+  })
+  // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
       logging.log(`Python process stopped, reason: ${evt?.message}`);
@@ -69,7 +72,10 @@ export async function startPython() {
         python.socket.onerror = evt => logging.error(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // stop listening for wakeup
         python.process.stdout.on(
-          "data", evt => logging.log(evt, "STDOUT")
+          "data", evt => {
+            python.output.stdout.push(evt);
+            logging.log(evt, "STDOUT");
+          }
         )
       }
     })
@@ -170,10 +176,16 @@ function runScript(file, executable, ...args) {
   ], {cwd: path.dirname(file)})
   // log stdout
   script.stdout.on(
-    "data", evt => logging.log(evt, "STDOUT")
+    "data", evt => {
+      python.output.stdout.push(evt);
+      logging.log(evt, "STDOUT");
+    }
   )
   script.stderr.on(
-    "data", evt => logging.log(evt, "STDOUT")
+    "data", evt => {
+      python.output.stderr.push(evt);
+      logging.log(evt, "STDERR");
+    }
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
@@ -286,8 +298,34 @@ export const python = {
   },
   start: startPython,
   output: {
-    stdout: [],
-    stderr: [],
+    stdout: {
+      next: async () => await python.output.stdout.all.slice(-1)[0].promise,
+      push: (message) => {
+        // if given a buffer, decode it
+        if (message instanceof Buffer) {
+          message = decoder.decode(message)
+        }
+        // resolve last promise with message
+        python.output.stdout.all.slice(-1)[0].resolve(message)
+        // create new promise
+        python.output.stdout.all.push(Promise.withResolvers())
+      },
+      all: [Promise.withResolvers()]
+    },
+    stderr: {
+      next: async () => await python.output.stderr.all.slice(-1)[0].promise,
+      push: (message) => {
+        // if given a buffer, decode it
+        if (message instanceof Buffer) {
+          message = decoder.decode(message)
+        }
+        // resolve last promise with message
+        python.output.stderr.all.slice(-1)[0].resolve(message)
+        // create new promise
+        python.output.stderr.all.push(Promise.withResolvers())
+      },
+      all: [Promise.withResolvers()]
+    },
     liaison: []
   },
   liaison: {

@@ -246,6 +246,10 @@ const handlers = {
       getPackages: ipcMain.handle("python.install.getPackages", (evt, executable) => python.install.getPackages(executable)),
       getPackageDetails: ipcMain.handle("python.install.getPackageDetails", (evt, executable, name) => python.install.getPackageDetails(executable, name))
     },
+    output: {
+      stdout: ipcMain.handle("python.output.stdout", async (evt) => await python.output.stdout.next()),
+      stderr: ipcMain.handle("python.output.stderr", async (evt) => await python.output.stderr.next())
+    },
     isInstalled: ipcMain.handle("python.isInstalled", (evt, version, folder) => python.install.isInstalled(version, folder)),
     shell: {
       list: ipcMain.handle("python.shell.list", () => Object.keys(python.shell.shells)),
