@@ -9,6 +9,7 @@
     import ShellNotebook from "./shell/ShellNotebook.svelte";
     import FileExplorer from "./files/FileExplorer.svelte";
     import { electron, python } from "$lib/globals.svelte";
+    import path from "path-browserify";
     
 
     // reference current in context for ease of access
@@ -18,7 +19,7 @@
     current.openFile = async (file, label=undefined) => {
         // if no label, use file
         if (label === undefined) {
-            label = file
+            label = path.basename(file)
         }
         // if file already open, navigate to it
         if (current.pages.some(
@@ -37,6 +38,12 @@
         current.tab = current.pages.findIndex(item => item.file === file)
     }
 
+    // listen for messages from other windows
+    if (electron) {
+        // for opening files via another window
+        electron.windows.listen("fileOpen", (evt, file) => current.openFile(file))
+    }
+
 </script>
 
 <title>PsychoPy Coder</title>
@@ -53,7 +60,7 @@
             hspan={1}
             vspan={2}
         >
-            <FileExplorer />
+            <!-- <FileExplorer /> -->
         </Panel>
     {/if}
     <Panel

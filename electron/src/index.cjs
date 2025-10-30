@@ -214,6 +214,13 @@ const handlers = {
   electron: {
     windows: {
       new: ipcMain.handle("electron.windows.new", (evt, target) => newWindow(target)),
+      get: ipcMain.handle("electron.windows.get", (evt, target) => Object.keys(windows).filter(
+        id => !windows[id].isDestroyed()
+      ).filter(
+        id => String(windows[id].webContents.getURL()).startsWith(`http://${svelte.address.host}:${svelte.address.port}/${target}`)
+      )),
+      send: ipcMain.handle("electron.windows.send", (evt, id, tag, data) => windows[id].webContents.send(tag, data)),
+      focus: ipcMain.handle("electron.windows.focus", (evt, id) => windows[id].focus()),
       close: ipcMain.handle("electron.windows.close", (evt, id) => windows[id].close()),
     },
     paths: {

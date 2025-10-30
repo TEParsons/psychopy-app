@@ -2,6 +2,7 @@ import { electron, projects, python } from '$lib/globals.svelte.js';
 import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
+import { openIn } from "$lib/utils/views.js"
 
 
 /* File */
@@ -253,6 +254,8 @@ export async function compilePython() {
     } else {
         console.error(script)
     }
+    // open in Coder
+    openIn(target, "coder")
 
     return target
 }
@@ -271,14 +274,7 @@ export async function runPython(executable) {
 }
 
 /** Views */
-
-export function newWindow(target) {
-    if (electron) {
-        return electron.windows.new(target);
-    } else {
-        return window.open(`/${target}`)
-    }
-}
+export { newWindow } from "$lib/utils/views.js"
 
 
 export default {

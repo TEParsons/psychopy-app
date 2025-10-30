@@ -9,9 +9,20 @@
     import FlowPanel from './flow/Panel.svelte';
     import { current } from "./globals.svelte.js";
     import { setContext } from 'svelte';
+    import path from "path-browserify";
 
     // reference current in context for ease of access
     setContext("current", current)
+    // listen for messages from other windows
+    if (electron) {
+        // for opening files via another window
+        electron.windows.listen("fileOpen", (evt, file) => current.file = {
+            name: path.basename(file),
+            stem: path.basename(file, ".psyexp"),
+            file: file
+        })
+    }
+    
 </script>
 
 <title>PsychoPy Builder: {current.experiment.filename}</title>

@@ -1,13 +1,6 @@
 <script>
     import { electron } from "$lib/globals.svelte";
-
-    function newWindow(target) {
-        if (electron) {
-            return electron.windows.new(target);
-        } else {
-            return window.open(`/${target}`)
-        }
-    }
+    import { newWindow } from "$lib/utils/views.js"
 </script>
 
 <div class=container>

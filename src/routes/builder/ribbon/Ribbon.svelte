@@ -221,13 +221,10 @@
             <IconButton 
                 icon="/icons/btn-compilepy.svg" 
                 label="Write experiment as a .py file" 
-                onclick={evt => prompts.PYCOMPILE = true}
+                onclick={evt => compilePython()}
                 disabled={current.experiment === null}
+                bind:awaiting={awaiting.compilepy}
                 borderless
-            />
-            <InstallPrompt
-                bind:shown={prompts.PYCOMPILE}
-                action={compilePython}
             /> 
             <IconButton 
                 icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 

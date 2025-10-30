@@ -5,6 +5,10 @@ const { ipcRenderer, contextBridge } = require('electron');
 const electron = {
   windows: {
     new: (target) => ipcRenderer.invoke("electron.windows.new", target).then(resp => resp),
+    get: (target) => ipcRenderer.invoke("electron.windows.get", target).then(resp => resp),
+    send: (id, tag, data) => ipcRenderer.invoke("electron.windows.send", id, tag, data).then(resp => resp),
+    listen: (tag, lsnr) => ipcRenderer.on(tag, lsnr),
+    focus: (id) => ipcRenderer.invoke("electron.windows.focus", id).then(resp => resp),
     close: (id) => ipcRenderer.invoke("electron.windows.close", id).then(resp => resp),
   },
   paths: {

@@ -119,11 +119,4 @@ export function redo() {
 
 /* Views */
 
-
-export function newWindow(target) {
-    if (electron) {
-        return electron.windows.new(target);
-    } else {
-        return window.open(`/${target}`)
-    }
-}
+export { newWindow } from "$lib/utils/views.js";

@@ -8,8 +8,15 @@
     import { setContext } from "svelte";
     import StdoutOutput from "./outputs/StdoutOutput.svelte";
     import PavloviaOutput from "./outputs/PavloviaOutput.svelte";
+    import { electron } from "$lib/globals.svelte";
 
     setContext("current", current)
+
+    // listen for messages from other windows
+    if (electron) {
+        // for opening files via another window
+        electron.windows.listen("fileOpen", (evt, file) => current.files.push(file))
+    }
 
 </script>
 
