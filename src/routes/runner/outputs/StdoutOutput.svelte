@@ -3,23 +3,13 @@
     import { CodeOutput } from "$lib/utils/code";
     import { getContext } from "svelte";
     import { python } from "$lib/globals.svelte";
+    import { run } from "svelte/legacy";
 
     let current = getContext("current");
 
-    function subscribeStdout() {
-        python.output.stdout().then(resp => {
-            current.output.stdout += `${resp}\n`
-            subscribeStdout()
-        })
-    }
-    subscribeStdout()
-    function subscribeStderr() {
-        python.output.stderr().then(resp => {
-            current.output.stdout += `${resp}\n`
-            subscribeStderr()
-        })
-    }
-    subscribeStderr()
+    python.output.stdout.listen(
+        (evt, message) => current.output.stdout += `${message}\n`
+    )
 </script>
 
 

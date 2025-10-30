@@ -2,7 +2,7 @@ import proc from "child_process";
 import path from "path";
 const decoder = new TextDecoder();
 import logging from "./logging.js";
-import { app } from "electron";
+import { app, BrowserWindow } from "electron";
 import { uv, installUV, installPython, installPackage, getEnvironments, getPackages, getPackageDetails } from "./install.js"
 import { randomUUID } from "node:crypto";
 
@@ -38,10 +38,9 @@ export async function startPython() {
     "-m", "liaison.websocket", python.liaison.address
   ])
   // add listener for errors
-  python.process.stderr.on("data", evt => {
-    python.output.stderr.push(evt);
-    logging.log(evt, "STDERR");
-  })
+  python.process.stderr.on(
+    "data", evt => python.output.stderr(evt)
+  )
   // add listener to know when process exits
   python.process.on("exit", evt => {
       // log stopped
@@ -72,10 +71,7 @@ export async function startPython() {
         python.socket.onerror = evt => logging.error(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
         // stop listening for wakeup
         python.process.stdout.on(
-          "data", evt => {
-            python.output.stdout.push(evt);
-            logging.log(evt, "STDOUT");
-          }
+          "data", evt => python.output.stdout(evt)
         )
       }
     })
@@ -176,16 +172,10 @@ function runScript(file, executable, ...args) {
   ], {cwd: path.dirname(file)})
   // log stdout
   script.stdout.on(
-    "data", evt => {
-      python.output.stdout.push(evt);
-      logging.log(evt, "STDOUT");
-    }
+    "data", evt => python.output.stdout(evt)
   )
   script.stderr.on(
-    "data", evt => {
-      python.output.stderr.push(evt);
-      logging.log(evt, "STDERR");
-    }
+    "data", evt => python.output.stderr(evt)
   )
   // return a promise linked to its state
   return new Promise((resolve, reject) => {
@@ -298,33 +288,29 @@ export const python = {
   },
   start: startPython,
   output: {
-    stdout: {
-      next: async () => await python.output.stdout.all.slice(-1)[0].promise,
-      push: (message) => {
-        // if given a buffer, decode it
-        if (message instanceof Buffer) {
-          message = decoder.decode(message)
-        }
-        // resolve last promise with message
-        python.output.stdout.all.slice(-1)[0].resolve(message)
-        // create new promise
-        python.output.stdout.all.push(Promise.withResolvers())
-      },
-      all: [Promise.withResolvers()]
+    stdout: (message) => {
+      // if given a buffer, decode it
+      if (message instanceof Buffer) {
+        message = decoder.decode(message)
+      }
+      // log message
+      logging.log(message, "STDOUT")
+      // emit event
+      BrowserWindow.getAllWindows().forEach(
+        win => win.webContents.send("stdout", message)
+      )
     },
-    stderr: {
-      next: async () => await python.output.stderr.all.slice(-1)[0].promise,
-      push: (message) => {
-        // if given a buffer, decode it
-        if (message instanceof Buffer) {
-          message = decoder.decode(message)
-        }
-        // resolve last promise with message
-        python.output.stderr.all.slice(-1)[0].resolve(message)
-        // create new promise
-        python.output.stderr.all.push(Promise.withResolvers())
-      },
-      all: [Promise.withResolvers()]
+    stderr: (message, src) => {
+      // if given a buffer, decode it
+      if (message instanceof Buffer) {
+        message = decoder.decode(message)
+      }
+      // log message
+      logging.log(message, "STDERR")
+      // emit event
+      BrowserWindow.getAllWindows().forEach(
+        win => win.webContents.send("stderr", message)
+      )
     },
     liaison: []
   },
