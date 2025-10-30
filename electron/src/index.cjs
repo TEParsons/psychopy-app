@@ -90,8 +90,8 @@ const createWindow = () => {
   // when everything is ready, show the app
   let interval = setInterval(() => {
     if (Object.values(ready).every(val => val)) {
-      // load a builder window
-      newWindow("builder");
+      // load starting window
+      newWindow("", true, false, false);
       // stop waiting
       clearInterval(interval);
     }
@@ -99,12 +99,12 @@ const createWindow = () => {
 };
 
 
-function newWindow(target=null, show=true, debug=true) {
+function newWindow(target=null, show=true, fullscreen=true, debug=true) {
   // create window
   let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
-    width: 1080,
-    height: 720,
+    width: 940,
+    height: 520,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -120,7 +120,11 @@ function newWindow(target=null, show=true, debug=true) {
     win.once("ready-to-show", evt => {
       logging.log(`Loaded ${url}`)
       win.show();
-      win.maximize();
+      // fulscreen if requested
+      if (fullscreen) {
+        win.maximize();
+      }
+      // give focus
       win.focus();
       // make sure the splash screen is closed
       if (!windows.splash.isDestroyed()) {

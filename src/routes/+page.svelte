@@ -1,46 +1,104 @@
+<script>
+    import { electron } from "$lib/globals.svelte";
+
+    function newWindow(target) {
+        if (electron) {
+            return electron.windows.new(target);
+        } else {
+            return window.open(`/${target}`)
+        }
+    }
+</script>
+
 <div class=container>
+    <svg class=background>
+        <use href="/branding/component-wave.svg"></use>
+    </svg>
     <nav>
-        <a href="./builder">
-            <svg>
+        <button 
+            class=view
+            aria-label="builder"
+            onclick={evt => newWindow("builder")}
+        >
+            <h3>Builder</h3>
+            <svg class=icon>
                 <use href="/icons/btn-builder.svg"></use>
             </svg>
-            Builder
-        </a>
-        <a href="./coder">
-            <svg>
+            <p>Generate experiments easily using an intuitive graphical user interface (GUI).</p>
+        </button>
+        <button 
+            class=view
+            aria-label="coder"
+            onclick={evt => newWindow("coder")}
+        >
+            <h3>Coder</h3>
+            <svg class=icon>
                 <use href="/icons/btn-coder.svg"></use>
             </svg>
-            Coder
-        </a>
-        <a href="./runner">
-            <svg>
+            <p>Write and edit code directly in a variety of languages.</p>
+        </button>
+        <button 
+            class=view
+            aria-label="runner"
+            onclick={evt => newWindow("runner")}
+        >
+            <h3>Runner</h3>
+            <svg class=icon>
                 <use href="/icons/btn-runner.svg"></use>
             </svg>
-            Runner
-        </a>
+            <p>Coordinate running experiments and scripts and view any warnings generated.</p>
+        </button>
     </nav>
 </div>
 
 <style>
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-nav {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    margin: 4rem auto;
-    gap: 2rem;
-    justify-content: center;
-}
-nav a {
-    position: relative;
-    width: 8rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .5rem;
-}
+    .container {
+        position: fixed;
+        left: 0; right: 0; top: 0; bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--mantle);
+    }
+    .background {
+        position: absolute;
+        width: 120%;
+        min-width: 1080px;
+        z-index: -1;
+        object-fit: contain;
+        opacity: 50%;
+    }
+    nav {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        padding: 4rem;
+        margin: auto;
+        z-index: 1;
+    }
+    .view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .5rem;
+
+        width: 15rem;
+        padding: 1rem;
+        border: 1px solid var(--overlay);
+        border-radius: 1rem;
+        background-color: var(--base);
+    }
+    .icon {
+        height: 10rem;
+    }
+
+    button:enabled:hover,
+    button:enabled:focus {
+        outline: none;
+        border-color: var(--blue);
+        box-shadow: 
+            inset 1px 1px 10px rgba(0, 0, 0, 0.05)
+        ;
+    }
 </style>
