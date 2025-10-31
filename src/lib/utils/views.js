@@ -1,4 +1,5 @@
 import { electron } from "$lib/globals.svelte";
+import { resolve } from "$app/paths"
 
 
 /**
@@ -10,7 +11,7 @@ export function newWindow(target) {
     if (electron) {
         return electron.windows.new(target);
     } else {
-        return window.open(`/${target}`)
+        return window.open(resolve(`/${target}`))
     }
 }
 
