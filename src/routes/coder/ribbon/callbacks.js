@@ -1,4 +1,5 @@
 import { electron, python, projects } from '$lib/globals.svelte.js';
+import { browseFileOpen } from "$lib/utils/files.js";
 import { current } from '../globals.svelte.js';
 
 
@@ -17,41 +18,31 @@ export function file_new() {
 }
 
 export async function file_open() {
-    // get file handle from system dialog
-    let handle = await window.showOpenFilePicker({
-        types: [{
-            description: "PsychoPy Experiments",
-            accept: {
-                "application/xml": [".psyexp"]
-            }
-        }]
-    });
-    // set current file from result
-    current.file = handle[0]
-    // get file blob from handle
-    let file = await handle[0].getFile();
-    // load xml
-    let xml_parser = new DOMParser()
-    let document = xml_parser.parseFromString(await file.text(), "application/xml");
-    let node = document.getElementsByTagName("PsychoPy2experiment")[0];
-    // construct an Experiment object from the file
-    current.experiment.fromXML(file.name.replace(".psyexp", ""), node);
-    if (current.experiment.routines) {
-        current.routine = Object.values(current.experiment.routines)[0];
+    let file = await browseFileOpen([
+        { description: "Python Scripts", accept: {"text/x-python-code": [".py"]} },
+        { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
+        { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
+    ])
+    // abort if no file
+    if (file === undefined) {
+        return
+    }
+    // read content
+    let content
+    if (electron) {
+        content = await electron.files.load(file.file)
     } else {
-        current.routine = undefined;
+        content = await file.handle.text()
     }
-    // is file a known project?
-    for (let project of Object.values(projects)) {
-        // placeholder: how do we query local folder?
-        if (project.id.endsWith(file.name.replace(".psyexp", ""))) {
-            current.project = project
-        }
-    }
-    // mark as no longer modified
-    current.experiment.history.clear()
-
-    console.log(`Loaded experiment ${file.name}:`, current.experiment);
+    // open file
+    current.pages.push({
+        label: file.name,
+        file: file.file,
+        content: content,
+        editor: undefined
+    })
+    // focus new tab
+    current.tab = current.pages.length - 1
 }
 
 export async function file_save() {

@@ -22,12 +22,17 @@ export function file_new() {
 }
 
 export async function file_open() {
-    let content
-    current.file = await browseFileOpen([
-        { name: "PsychoPy Experiments", extensions: ["psyexp"] },
-        { name: 'All Files', extensions: ["*"] }
+    let file = await browseFileOpen([
+        { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
     ])
+    // set file
+    if (file) {
+        current.file = file
+    } else {
+        return
+    }
     // read content
+    let content
     if (electron) {
         content = await electron.files.load(current.file.file)
     } else {
@@ -38,7 +43,7 @@ export async function file_open() {
     let document = xml_parser.parseFromString(content, "application/xml");
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment.fromXML(current.file.stem, node);
+    current.experiment.fromXML(current.file.name.replace(".psyexp", ""), node);
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
