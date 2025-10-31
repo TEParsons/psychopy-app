@@ -1,6 +1,7 @@
 <script>
     import Menu from "./Menu.svelte";
     import Item from "./Item.svelte";
+    import { Icon } from "$lib/utils/icons";
 
     let {
         /** @prop @type {string} Label for this menu item */
@@ -28,11 +29,10 @@
     disabled={disabled}
 >
     {#snippet submenu()}
-        <svg 
-            class=menu-item-chevron
-        >
-            <use href="/icons/sym-arrow-right.svg"></use>
-        </svg>
+        <Icon 
+            src="/icons/sym-arrow-right.svg"
+            size=".5rem"
+        />
         <Menu 
             bind:shown={shown}
         >
@@ -48,9 +48,5 @@
     .menu {
         display: flex;
         flex-direction: column;
-    }
-    .menu-item-chevron {
-        width: .5rem;
-        margin-left: auto;
     }
 </style>

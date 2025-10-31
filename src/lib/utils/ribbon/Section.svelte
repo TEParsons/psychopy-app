@@ -1,4 +1,6 @@
 <script>
+    import { Icon } from "$lib/utils/icons";
+
     let {
         /** @prop @type {string} Label for this section */
         label="",
@@ -18,9 +20,9 @@
         class=ribbon-section-label
     >
         {#if icon}
-            <svg>
-                <use href={icon}></use>
-            </svg>
+            <Icon 
+                src={icon}
+            />
         {:else}
             <div></div>
         {/if}

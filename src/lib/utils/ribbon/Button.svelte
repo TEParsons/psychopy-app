@@ -1,6 +1,7 @@
 <script>
     import { slide } from 'svelte/transition';
     import Tooltip from '../tooltip/Tooltip.svelte';
+    import { Icon } from "$lib/utils/icons";
 
     let {
         /** @prop @type {string} Text label for this button, if any */
@@ -26,9 +27,9 @@
     onfocusin={() => {showTooltip = true}}
     onfocusout={() => {showTooltip = false}}
 >
-    <svg>
-        <use href={icon}></use>
-    </svg>
+    <Icon 
+        src={icon} 
+    />
     <Tooltip
         bind:shown={showTooltip}
         position="bottom"

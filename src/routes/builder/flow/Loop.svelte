@@ -7,6 +7,7 @@
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte'
     import { getContext } from "svelte";
+    import { Icon } from "$lib/utils/icons";
     
     let current = getContext("current");
 
@@ -91,9 +92,9 @@
         draggable={true}
         role=none
     >
-        <svg>
-            <use href="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg" ></use>
-        </svg>
+        <Icon 
+            src="/icons/sym-arrow-up{edgeHovered.left ? "-hl" : ""}.svg"
+        />
     </div>
     {#if element}
         {#each element.routines as rt}
@@ -114,9 +115,9 @@
             draggable={true}
             role=none
         >
-            <svg>
-                <use href="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"  ></use>
-            </svg>
+            <Icon 
+                src="/icons/sym-arrow-down{edgeHovered.right ? "-hl" : ""}.svg"
+            />
         </div>
         <EntryPoint index={element.terminator.index}></EntryPoint>
     {/if}

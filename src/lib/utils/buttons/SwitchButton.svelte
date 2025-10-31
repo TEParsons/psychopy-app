@@ -1,5 +1,5 @@
 <script>
-    import Icon from "$lib/utils/icons/Icon.svelte";
+    import { Icon } from "$lib/utils/icons";
     import Tooltip from "$lib/utils/tooltip/Tooltip.svelte";
 
     let {
@@ -39,9 +39,10 @@
         </Tooltip>
     {/if}
     <span class="{value ? "active" : "inactive"}">{labels[0]}</span>
-    <svg>
-        <use href="/icons/ctrl-switch-{value ? "left" : "right"}.svg"></use>
-    </svg>
+    <Icon
+        src="/icons/ctrl-switch-{value ? "left" : "right"}.svg"
+        size="32px"
+    />
     <span class="{value ? "inactive" : "active"}">{labels[1]}</span>
 </button>
 

@@ -1,4 +1,6 @@
 <script>
+    import { asset } from '$app/paths';
+
     let {
         src,
         size="100%",
@@ -8,7 +10,7 @@
 
     // transform source to a URL
     let url = $derived.by(() => {
-        if (String(src).match(/.*\.svg/g)) {
+        if (String(src).match(/.*\.(svg|png|jpg|jpeg)/g)) {
             // if already looks like a url, return as is
             return src
         } else {
@@ -20,18 +22,46 @@
     })
 </script>
 
-
-<svg 
-    class=icon
-    style:width={size}
-    style:height={size}
->
+{#if String(src).match(/.*\.(png|jpg|jpeg)/g)}
+    <!-- rasterised images -->
     {#await awaiting}
-        <use href="/icons/sym-pending.svg#animation"></use>
+        <img 
+            class=icon
+            style:width={size}
+            style:height={size}
+            src={asset("/icons/sym-pending.svg")} 
+            alt="Loading..."
+        />
     {:then}
-        <use href={url}></use>
+        <img 
+            class=icon
+            style:width={size}
+            style:height={size}
+            src={asset(url)} 
+            alt={url}
+        />
     {:catch}
-        <use href="/icons/sym-error.svg"></use>
+        <img 
+            class=icon
+            style:width={size}
+            style:height={size}
+            src={asset("/icons/sym-error.svg")} 
+            alt="Error"
+        />
     {/await}
-    
-</svg>
+{:else}
+    <!-- responsive SVG vectors -->
+    <svg 
+        class=icon
+        style:width={size}
+        style:height={size}
+    >
+        {#await awaiting}
+            <use href={asset("/icons/sym-pending.svg#animation")} />
+        {:then}
+            <use href={asset(url)} />
+        {:catch}
+            <use href={asset("/icons/sym-error.svg")} />
+        {/await}
+    </svg>
+{/if}

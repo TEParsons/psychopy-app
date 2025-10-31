@@ -5,7 +5,7 @@
     import { getContext } from "svelte"
     import { ParamsDialog } from "$lib/paramCtrls";
     import StaticPeriod from './StaticPeriod.svelte';
-    import { Param } from '$lib/experiment/experiment.svelte';
+    import { Icon } from "$lib/utils/icons";
     
     let current = getContext("current");
 
@@ -60,9 +60,9 @@
     style:grid-row-start={component.index + 3}
 >    
     {component.name}
-    <svg>
-        <use href="/icons/components/{component.tag}.svg"></use>
-    </svg>
+    <Icon 
+        src="/icons/components/{component.tag}.svg"
+    />
 </label>
 
 <!-- bars representing this on the timeline -->

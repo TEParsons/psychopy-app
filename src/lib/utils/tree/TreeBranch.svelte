@@ -2,6 +2,7 @@
     import { getContext } from "svelte";
     import TreeBranch from "./TreeBranch.svelte";
     import TreeNode from "./TreeNode.svelte";
+    import { Icon } from "$lib/utils/icons";
 
     let {
         branch,
@@ -26,9 +27,10 @@
         class:selected={siblings.selected === handle}
         style:padding-left="calc({0.5 + level/2}rem)"
     >
-        <svg class=chevron>
-            <use href="/icons/sym-arrow-{open ? "down" : "right"}.svg" />
-        </svg>
+        <Icon 
+            src="/icons/sym-arrow-{open ? "down" : "right"}.svg"
+            size=".5rem"
+        />
         {branch.label}
     </button>
     {#if open}
@@ -61,11 +63,6 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-    }
-
-    .chevron {
-        width: .5rem;
-        height: .5rem;
     }
     .selected {
         background-color: var(--mantle);

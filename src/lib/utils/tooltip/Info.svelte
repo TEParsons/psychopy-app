@@ -1,4 +1,6 @@
 <script>
+    import { Icon } from "$lib/utils/icons";
+    
     let {
         /** @interface */
         children
@@ -17,9 +19,9 @@
     onfocusout={() => hovered = false}
     role=none
 >
-    <svg>
-        <use href="/icons/sym-info.svg" />
-    </svg>
+    <Icon 
+        src="/icons/sym-info.svg"
+    />
 
     {#if hovered}
         {@render children?.()}

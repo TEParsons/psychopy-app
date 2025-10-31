@@ -4,7 +4,7 @@
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte';
     import { getContext } from "svelte";
-    import { flip } from "svelte/animate";
+    import { Icon } from "$lib/utils/icons";
     
     let current = getContext("current");
 
@@ -14,9 +14,11 @@
     <div class="flow">
         <div class=flowline-container>
             <div class=flowline></div>
-            <svg class=flowline-arrow>
-                <use href="/icons/sym-arrow-right.svg"></use>
-            </svg>
+            <div class=flowline-arrow>
+                <Icon 
+                    src="/icons/sym-arrow-right.svg"
+                />
+            </div>
         </div>
         {#if current.experiment}
             {#each current.experiment.flow.dynamic as emt}

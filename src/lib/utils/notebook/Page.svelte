@@ -2,6 +2,7 @@
     import { onMount, onDestroy, getContext } from 'svelte';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
     import Menu from '$lib/utils/menu/Menu.svelte';
+    import { Icon } from "$lib/utils/icons";
 
     let {
         /** @prop @type {String} Label for this page's tab */
@@ -96,9 +97,9 @@
     bind:this={handle}
 >
     {#if icon}
-        <svg>
-            <use href={icon}></use>
-        </svg>
+        <Icon 
+            src={icon}
+        />
     {/if}
     {#if renaming}
         <input 

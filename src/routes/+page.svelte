@@ -1,11 +1,13 @@
 <script>
     import { electron } from "$lib/globals.svelte";
-    import { newWindow } from "$lib/utils/views.js"
+    import { newWindow } from "$lib/utils/views.js";
+    import { Icon } from "$lib/utils/icons";
+    import { asset } from "$app/paths"
 </script>
 
 <div class=container>
     <svg class=background>
-        <use href="/branding/component-wave.svg"></use>
+        <use href={asset("/branding/component-wave.svg")}></use>
     </svg>
     <nav>
         <button 
@@ -14,9 +16,10 @@
             onclick={evt => newWindow("builder")}
         >
             <h3>Builder</h3>
-            <svg class=icon>
-                <use href="/icons/btn-builder.svg"></use>
-            </svg>
+            <Icon 
+                src="/icons/btn-builder.svg"
+                size="10rem";
+            />
             <p>Generate experiments easily using an intuitive graphical user interface (GUI).</p>
         </button>
         <button 
@@ -25,9 +28,10 @@
             onclick={evt => newWindow("coder")}
         >
             <h3>Coder</h3>
-            <svg class=icon>
-                <use href="/icons/btn-coder.svg"></use>
-            </svg>
+            <Icon 
+                src="/icons/btn-coder.svg"
+                size="10rem";
+            />
             <p>Write and edit code directly in a variety of languages.</p>
         </button>
         {#if electron}
@@ -37,9 +41,10 @@
                 onclick={evt => newWindow("runner")}
             >
                 <h3>Runner</h3>
-                <svg class=icon>
-                    <use href="/icons/btn-runner.svg"></use>
-                </svg>
+                <Icon 
+                    src="/icons/btn-runner.svg"
+                    size="10rem";
+                />
                 <p>Coordinate running experiments and scripts and view any warnings generated.</p>
             </button>
         {/if}

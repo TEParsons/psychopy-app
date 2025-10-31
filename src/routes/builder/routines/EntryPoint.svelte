@@ -1,6 +1,7 @@
 <script>
     import { Component } from "$lib/experiment/experiment.svelte";
     import { getContext } from "svelte";
+    import { Icon } from "$lib/utils/icons";
     
     let current = getContext("current");
     
@@ -54,9 +55,9 @@
     class:active={moving || inserting} 
     class:hovered={hovered}
 >
-    <svg>
-        <use href="/icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"></use>
-    </svg>
+    <Icon 
+        src="/icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"
+    />
     
     <button 
         class="hitbox" 

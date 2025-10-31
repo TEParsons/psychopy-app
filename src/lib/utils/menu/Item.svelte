@@ -1,5 +1,6 @@
 <script>
     import { getContext } from "svelte";
+    import { Icon } from "$lib/utils/icons";
 
     let {
         /** @prop @type {string} Label for this menu item */
@@ -40,19 +41,9 @@
     }}
     disabled={disabled}
 >
-    {#if icon && String(icon).endsWith(".svg")}
-        <svg 
-            class=menu-item-icon
-        >
-            <use href={icon}></use>
-        </svg>
-    {:else if icon && String(icon).endsWith(".png")}
-        <img 
-            class=menu-item-icon
-            src={icon}
-            alt={icon}
-        />
-    {/if}
+    <Icon 
+        src={icon}
+    />
     <span>{label}</span>
     {@render submenu?.()}
 </button>
@@ -86,11 +77,6 @@
     }
     .menu-item:enabled:focus {
         border: 1px solid var(--blue);
-    }
-
-    .menu-item-icon {
-        border-radius: .5rem;
-        width: 100%;
     }
 
 </style>
