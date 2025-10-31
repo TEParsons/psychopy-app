@@ -3,6 +3,7 @@
     import Frame from "$lib/utils/Frame.svelte";
     import Panel from "$lib/utils/Panel.svelte";
     import AlertsOutput from "./outputs/AlertsOutput.svelte";
+    import FilesPanel from "./files/Panel.svelte";
 
     import { current } from "./globals.svelte";
     import { setContext } from "svelte";
@@ -18,6 +19,8 @@
         electron.windows.listen("fileOpen", (evt, file) => current.files.push(file))
     }
 
+    let file = $state.raw();
+
 </script>
 
 <title>PsychoPy Runner</title>
@@ -26,14 +29,18 @@
     cols={3}
 >
     {#snippet ribbon()}
-        <div></div>
+        <div>
+            {file?.file}
+        </div>
     {/snippet}
     <Panel
         title=Files
         hspan={1}
         vspan={1}
     >
-        
+        <FilesPanel 
+            bind:value={file}
+        />
     </Panel>
 
     <Panel
