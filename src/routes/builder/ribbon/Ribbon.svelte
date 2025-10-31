@@ -10,10 +10,9 @@
         redo,
         // experiment
         compilePython,
+        compileJS,
         runPython,
-
-        newWindow
-
+        newWindow,
     } from '../callbacks.svelte.js'
     
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
@@ -240,7 +239,7 @@
             <IconButton 
                     icon="/icons/btn-compilejs.svg" 
                     label="Write experiment as a .js file" 
-                    onclick={(evt) => console.log("COMPILE JS")}
+                    onclick={(evt) => compileJS()}
                     disabled={current.experiment === null}
                     borderless
                 />

@@ -3,6 +3,7 @@
 import { componentProfiles, loopProfiles, deviceProfiles, preferencesProfile } from "./profiles.svelte";
 import { devices } from "$lib/globals.svelte";
 import { js2py, py2js } from "$lib/utils/transpiler";
+import { python, electron } from "$lib/globals.svelte";
 import path from "path-browserify";
 
 
@@ -321,7 +322,50 @@ export class Experiment {
         main.appendChild(flowNode)
 
         return main
-    }    
+    }
+
+    async writeScript(target="PsychoPy") {
+        if (!python) {
+            console.error("Script writing is not available in browser.")
+            return
+        }
+        // apply JSON to a Python Experiment object
+        await python.liaison.send({
+            command: "init",
+            args: [
+                "currentExperiment",
+                "psychopy.experiment:Experiment.fromJSON",
+                $state.snapshot(this.filename),
+                $state.snapshot(this.toJSON())
+            ]
+        }, 10000).catch(
+            reason => console.error(reason)
+        )
+        // call that object's writeScript method
+        let script = await python.liaison.send({
+            command: "run",
+            args: [
+                "currentExperiment.writeScript",
+            ],
+            kwargs: {
+                target: target, 
+                modular: true,
+                expPath: this.filename
+            }
+        }, 10000).catch(
+            reason => console.error(reason)
+        )
+        // construct output path
+        let targetFile = this.filename + (target === "PsychoJS" ? ".js" : ".py")
+        // save to python file
+        if (typeof script === "string") {
+            electron.files.save(targetFile, script)
+        } else {
+            console.error(script)
+        }
+
+        return targetFile
+    }
 }
 export class Routine {
     components = $state([])

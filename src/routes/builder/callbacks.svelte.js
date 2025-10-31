@@ -3,6 +3,7 @@ import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
 import { openIn } from "$lib/utils/views.js"
+import { browseFileOpen } from "$lib/utils/files.js"
 
 
 /* File */
@@ -22,47 +23,15 @@ export function file_new() {
 
 export async function file_open() {
     let content
+    current.file = await browseFileOpen([
+        { name: "PsychoPy Experiments", extensions: ["psyexp"] },
+        { name: 'All Files', extensions: ["*"] }
+    ])
+    // read content
     if (electron) {
-        // get file path from electron dialog
-        let file = await electron.files.openDialog({
-            properties: ["openFile"],
-            filters: [
-                { name: "PsychoPy Experiments", extensions: ["psyexp"] },
-                { name: 'All Files', extensions: ["*"] }
-            ]
-        })
-        // abort if no file
-        if (file === undefined) {
-            return
-        }
-        // read content
-        content = await electron.files.load(file[0])
-        // populate current.file
-        current.file = {
-            name: path.basename(file[0]),
-            stem: path.basename(file[0], ".psyexp"),
-            file: file[0]
-        }
+        content = await electron.files.load(current.file.file)
     } else {
-        // get file handle from system dialog
-        let handle = await window.showOpenFilePicker({
-            types: [{
-                description: "PsychoPy Experiments",
-                accept: {
-                    "application/xml": [".psyexp"]
-                }
-            }]
-        });
-        // get file blob from handle
-        let file = await handle[0].getFile();
-        // get content from blob
-        content = await file.text()
-        // populate current.file
-        current.file = {
-            name: file.name,
-            stem: file.name.replace(".psyexp", ""),
-            file: file
-        }
+        content = await current.file.handle.text()
     }
     // load xml
     let xml_parser = new DOMParser()
@@ -213,49 +182,29 @@ export async function compilePython() {
             return
         }
     }
-    // point to devices json
-    await python.liaison.send({
-        command: "run",
-        args: ["prefs.setDevicesFile", await electron.paths.devices()]
-    }, 10000).catch(
-        err => console.error(`Failed to set devices file: ${err}`)
-    )
-    // apply JSON to a Python Experiment object
-    await python.liaison.send({
-        command: "init",
-        args: [
-            "currentExperiment",
-            "psychopy.experiment:Experiment.fromJSON",
-            $state.snapshot(current.experiment.filename),
-            $state.snapshot(current.experiment.toJSON())
-        ]
-    }, 10000).catch(
-        reason => console.error(reason)
-    )
-    // call that object's writeScript method
-    let script = await python.liaison.send({
-        command: "run",
-        args: [
-            "currentExperiment.writeScript",
-        ],
-        kwargs: {
-            target: "PsychoPy", 
-            modular: true,
-            expPath: current.experiment.filename
-        }
-    }, 10000).catch(
-        reason => console.error(reason)
-    )
-    // construct output path
-    let target = current.file.stem + ".py"
-    // save to python file
-    if (typeof script === "string") {
-        electron.files.save(target, script)
-    } else {
-        console.error(script)
-    }
+    // use experiment object to write
+    let target = await current.experiment.writeScript("PsychoPy").catch(
+        err => console.error(err)
+    );
     // open in Coder
-    openIn(target, "coder")
+    openIn(target, "coder");
+
+    return target
+}
+
+export async function compileJS() {
+    // if no file, save as
+    if (current.file === undefined) {
+        await file_save_as()
+        // if cancelled save, cancel compile
+        if (current.file === undefined) {
+            return
+        }
+    }
+    // use experiment object to write
+    let target = await current.experiment.writeScript("PsychoJS");
+    // open in Coder
+    openIn(target, "coder");
 
     return target
 }

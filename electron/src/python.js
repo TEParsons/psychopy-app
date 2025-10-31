@@ -97,7 +97,22 @@ export async function startPython() {
         args: ["prefs", "psychopy.preferences:prefs"]
       }, 10000).catch(
         err => console.error(`Failed to load prefs: ${err}`)
+      ).then(
+        resp => {
+          // point to devices json
+          python.liaison.send({
+            command: "run",
+            args: ["prefs.setDevicesFile", path.join(
+              app.getPath("appData"), "psychopy4", "devices.json"
+            )]
+          }, 10000).catch(
+            err => console.error(`Failed to set devices file: ${err}`)
+          )
+        }
       )
+      
+      
+      
       // activate plugins
       python.liaison.send({
         command: "run",
