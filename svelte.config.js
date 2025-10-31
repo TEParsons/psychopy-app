@@ -10,8 +10,6 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: process.argv.includes("dev") ? "" : "/psychopy-app",
-			assets: process.argv.includes("dev") ? "" : "https://teparsons.github.io/psychopy-app",
 			relative: true
 		}
 	}
