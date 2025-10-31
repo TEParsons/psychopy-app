@@ -61,9 +61,6 @@
     button:disabled {
         opacity: .5;
     }
-    button svg {
-        width: 32px;
-    }
 
     button.switch-ctrl {
         display: grid;

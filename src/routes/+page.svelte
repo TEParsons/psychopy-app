@@ -89,9 +89,6 @@
         border-radius: 1rem;
         background-color: var(--base);
     }
-    .icon {
-        height: 10rem;
-    }
 
     button:enabled:hover,
     button:enabled:focus {

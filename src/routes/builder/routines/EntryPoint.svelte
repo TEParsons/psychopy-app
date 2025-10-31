@@ -57,6 +57,7 @@
 >
     <Icon 
         src="/icons/sym-arrow-right{hovered ? "-hl" : ""}.svg"
+        size="1rem"
     />
     
     <button 
@@ -84,9 +85,6 @@
         align-self: start;
         padding: 0;
         margin: 0;
-    }
-    .entry-point svg {
-        height: 1rem;
     }
     .entry-point.active {
         opacity: 1;

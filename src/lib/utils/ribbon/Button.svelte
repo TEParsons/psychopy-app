@@ -29,6 +29,7 @@
 >
     <Icon 
         src={icon} 
+        size="2.25rem"
     />
     <Tooltip
         bind:shown={showTooltip}
@@ -70,10 +71,6 @@
     }
     button:enabled:focus {
         border-color: var(--blue);
-    }
-
-    button svg {
-        height: 2.25rem;
     }
 
 </style>
