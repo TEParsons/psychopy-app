@@ -12,7 +12,7 @@
     let url = $derived.by(() => {
         if (String(src).match(/.*\.(svg|png|jpg|jpeg)/g)) {
             // if already looks like a url, return as is
-            return src
+            return asset(src)
         } else {
             // blobbify data to get around cross-origin security nonsense
             let blob = new Blob([src], {type: 'image/svg+xml'})
@@ -37,7 +37,7 @@
             class=icon
             style:width={size}
             style:height={size}
-            src={asset(url)} 
+            src={url} 
             alt={url}
         />
     {:catch}
@@ -59,7 +59,7 @@
         {#await awaiting}
             <use href={asset("/icons/sym-pending.svg#animation")} />
         {:then}
-            <use href={asset(url)} />
+            <use href={url} />
         {:catch}
             <use href={asset("/icons/sym-error.svg")} />
         {/await}
