@@ -10,6 +10,7 @@ const config = {
 			strict: true
 		}),
 		paths: {
+			base: process.env.BASE_PATH,
 			relative: true
 		}
 	}
