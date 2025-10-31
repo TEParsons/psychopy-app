@@ -13,6 +13,7 @@
     import { getContext } from "svelte";
     import { IconButton, } from '$lib/utils/buttons';
     import { UserCtrl } from '$lib/pavlovia/pavlovia.svelte';
+    import { electron } from "$lib/globals.svelte";
 
     let current = getContext("current");
 
@@ -96,11 +97,13 @@
             onclick={(evt) => newWindow("coder")} 
             borderless
         />
-        <IconButton 
-            icon="/icons/btn-runner.svg" 
-            label="Runner view" 
-            onclick={(evt) => newWindow("runner")} 
-            borderless
-        />
+        {#if electron}
+            <IconButton 
+                icon="/icons/btn-runner.svg" 
+                label="Runner view" 
+                onclick={(evt) => newWindow("runner")} 
+                borderless
+            />
+        {/if}
     </RibbonSection>
 </Ribbon>

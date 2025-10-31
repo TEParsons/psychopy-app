@@ -10,6 +10,7 @@
     import { current } from "./globals.svelte.js";
     import { setContext } from 'svelte';
     import path from "path-browserify";
+    import { electron } from "$lib/globals.svelte";
 
     // reference current in context for ease of access
     setContext("current", current)

@@ -281,11 +281,13 @@
             onclick={(evt) => newWindow("coder")} 
             borderless
         />
-        <IconButton 
-            icon="/icons/btn-runner.svg" 
-            label="Runner view" 
-            onclick={(evt) => newWindow("runner")} 
-            borderless
-        />
+        {#if electron}
+            <IconButton 
+                icon="/icons/btn-runner.svg" 
+                label="Runner view" 
+                onclick={(evt) => newWindow("runner")} 
+                borderless
+            />
+        {/if}
     </RibbonSection>
 </Ribbon>

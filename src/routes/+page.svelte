@@ -30,17 +30,19 @@
             </svg>
             <p>Write and edit code directly in a variety of languages.</p>
         </button>
-        <button 
-            class=view
-            aria-label="runner"
-            onclick={evt => newWindow("runner")}
-        >
-            <h3>Runner</h3>
-            <svg class=icon>
-                <use href="/icons/btn-runner.svg"></use>
-            </svg>
-            <p>Coordinate running experiments and scripts and view any warnings generated.</p>
-        </button>
+        {#if electron}
+            <button 
+                class=view
+                aria-label="runner"
+                onclick={evt => newWindow("runner")}
+            >
+                <h3>Runner</h3>
+                <svg class=icon>
+                    <use href="/icons/btn-runner.svg"></use>
+                </svg>
+                <p>Coordinate running experiments and scripts and view any warnings generated.</p>
+            </button>
+        {/if}
     </nav>
 </div>
 
