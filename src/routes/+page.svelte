@@ -1,37 +1,44 @@
 <script>
     import { electron, python } from "$lib/globals.svelte";
     import { newWindow } from "$lib/utils/views.js";
+    import { Button } from "$lib/utils/buttons";
     import { Icon } from "$lib/utils/icons";
     import { asset } from "$app/paths";
 
     // handle initial setup
     let ready = $state({
-        status: true,
+        status: undefined,
         message: ""
     })
-    
-    if (python) {
-        // mark as not ready until plugins are activated
-        ready.status = false
-        ready.message = "Activating plugins..."
-        // activate plugins
-        python.liaison.send({
-            command: "run",
-            args: ["psychopy.plugins:activatePlugins"]
-        }, 10000).then(
-            resp => {
-                ready.status = true;
-                ready.message = ""
-            }
-        ).catch(
-            err => {
-                ready.status = true;
-                ready.message = `Failed to activate plugins: ${err}`
-            }
-        )
-    } else {
-        ready.status = true
+
+    function activatePlugins(timeout=120000) {
+        if (python) {
+            // mark as not ready until plugins are activated
+            ready.status = undefined
+            ready.message = "Activating plugins..."
+            // activate plugins
+            python.liaison.send({
+                command: "run",
+                args: ["psychopy.plugins:activatePlugins"]
+            }, timeout).then(
+                resp => {
+                    // on success, mark ready
+                    ready.status = true;
+                    ready.message = ""
+                }
+            ).catch(
+                err => {
+                    // on failure, prompt to try again
+                    ready.status = false;
+                    ready.message = `Failed to activate plugins.`
+                }
+            )
+        } else {
+            ready.status = true
+            ready.message = ""
+        }
     }
+    activatePlugins()
 </script>
 
 <div class=container>
@@ -43,7 +50,7 @@
             class=view
             aria-label="builder"
             onclick={evt => newWindow("builder")}
-            disabled={!ready.status}
+            disabled={ready.status === undefined}
         >
             <h3>Builder</h3>
             <Icon 
@@ -56,7 +63,7 @@
             class=view
             aria-label="coder"
             onclick={evt => newWindow("coder")}
-            disabled={!ready.status}
+            disabled={ready.status === undefined}
         >
             <h3>Coder</h3>
             <Icon 
@@ -70,7 +77,7 @@
                 class=view
                 aria-label="runner"
                 onclick={evt => newWindow("runner")}
-                disabled={!ready.status}
+                disabled={ready.status === undefined}
             >
                 <h3>Runner</h3>
                 <Icon 
@@ -83,6 +90,14 @@
     </nav>
     <div class=message>
         {ready.message}
+        {#if ready.status === false}
+            <Button
+                label="Try again?"
+                icon="/icons/btn-refresh.svg"
+                onclick={evt => activatePlugins()}
+                horizontal
+            />
+        {/if}
     </div>
 </div>
 
@@ -97,6 +112,13 @@
         align-items: center;
         justify-content: center;
         background-color: var(--mantle);
+    }
+
+    .message {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        align-items: center;
     }
     .background {
         position: absolute;
