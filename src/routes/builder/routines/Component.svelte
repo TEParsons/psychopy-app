@@ -61,7 +61,7 @@
 >    
     {component.name}
     <Icon 
-        src="/icons/components/{component.tag}.svg"
+        src={component.iconSVG}
     />
 </label>
 
