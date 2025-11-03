@@ -42,7 +42,6 @@ export async function file_open() {
     if (electron) {
         content = await electron.files.load(current.file.file)
     } else {
-        console.log(current.file.handle)
         content = await current.file.handle.text()
     }
     // load xml

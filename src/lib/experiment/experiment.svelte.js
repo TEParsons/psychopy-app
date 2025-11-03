@@ -1481,7 +1481,6 @@ export class Flow {
             if (profile.tag === "LoopTerminator") {
                 // error if initiator doesn't exist
                 if (!(profile.name in initiators)) {
-                    console.log(initiators)
                     throw Error(`Reference to nonexistant LoopInitiator ${profile.name} in LoopTerminator`)
                 }
                 // recreate

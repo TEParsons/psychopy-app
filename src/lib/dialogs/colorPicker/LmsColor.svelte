@@ -18,7 +18,6 @@
             args: ["rgb", "psychopy.tools.colorspacetools:lms2rgb", $state.snapshot(lms)]
         }, 1000).then(
             name => {
-                console.log(name)
                 // convert returned value from numpy to JSON
                 return python.liaison.send({
                     command: "run",
