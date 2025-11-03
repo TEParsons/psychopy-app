@@ -110,16 +110,6 @@ export async function startPython() {
           )
         }
       )
-      
-      
-      
-      // activate plugins
-      python.liaison.send({
-        command: "run",
-        args: ["psychopy.plugins:activatePlugins"]
-      }, 10000).catch(
-        err => console.error(`Failed to activate plugins: ${err}`)
-      )
     }).catch(
       err => console.error(`Liaison timed out: ${err}`)
     )
