@@ -51,8 +51,6 @@
         for (let profile of Object.values(profiles.all)) {
             // skip...
             if (
-                // ...anything that isn't a Component or Routine
-                !profile['__class__'].match(/psychopy\.experiment\.(components|routines).*/) ||
                 // ...base elements
                 profile['__class__'].match(/psychopy\.experiment\.(components|routines)\._?base:.*/) ||
                 // ...hidden elements
@@ -118,7 +116,7 @@
                     <ComponentSection label={categ}>
                         {#each components.sorted[categ] as comp}
                             {#if filter === undefined || filter.every((value) => comp.targets.includes(value))}
-                                {#if comp['__class__'].startsWith("psychopy.experiment.components")}
+                                {#if comp['__class__'].startsWith("psychopy.experiment.components") || comp['__class__'].endsWith("omponent")}
                                     <ComponentButton 
                                         component={comp}
                                     ></ComponentButton>
