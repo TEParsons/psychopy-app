@@ -16,10 +16,11 @@
         all: []
     });
     setContext("siblings", children)
+    $inspect(children)
 
     // cached list of pypi packages
     const pypi = $state([]);
-    python.install.getPackages(executable.current).then(
+    python.uv.getPackages(executable.current).then(
         resp => {
             for (let key in resp) {
                 if (!pypi.includes(key)) {
@@ -31,7 +32,7 @@
 
     $effect(() => {
         if (executable.current) {
-            children.installed = python.install.getPackages(executable.current)
+            python.uv.getPackages(executable.current).then(packages => children.installed = packages)
         }
     })
 
@@ -59,34 +60,28 @@
 <div class=packages-ctrl>
     <div class=packages-list>
         <input type=search bind:value={searchterm} />
-        {#await python.install.getPackages(executable.current)}
-            <div class=message>Scanning...</div>
-        {:then installed}
-            <!-- installed packages first -->
-            {#each Object.keys(installed) as name}
-                {#if matches(searchterm, name)}
-                    {#await python.install.getPackageDetails(executable.current, name)}
-                        <div>Loading...</div>
-                    {:then profile}
-                        <PackageItem profile={profile} installed />
-                    {/await}
-                {/if}
-            {/each}
-            <!-- if search matches a pypi package, include that too -->
-            {#if searchterm && !Object.keys(installed).includes(searchterm)}
-                {#await checkPyPi(searchterm).then(resp => resp)}
-                    Searching PyPi...
+        <!-- installed packages first -->
+        {#each Object.keys(children.installed) as name}
+            {#if matches(searchterm, name)}
+                {#await python.uv.getPackageDetails(name, executable.current)}
+                    <div>Loading...</div>
                 {:then profile}
-                    {#if profile}
-                        <PackageItem profile={profile} />
-                    {/if}
-                {:catch err}
-                    {""}
+                    <PackageItem profile={profile} installed />
                 {/await}
             {/if}
-        {:catch}
-            <div class=message>Failed</div>
-        {/await}
+        {/each}
+        <!-- if search matches a pypi package, include that too -->
+        {#if searchterm && !Object.keys(children.installed).includes(searchterm)}
+            {#await checkPyPi(searchterm).then(resp => resp)}
+                Searching PyPi...
+            {:then profile}
+                {#if profile}
+                    <PackageItem profile={profile} />
+                {/if}
+            {:catch err}
+                {""}
+            {/await}
+        {/if}
     </div>
     <div class=package-details>
         {@render children.selected?.()}

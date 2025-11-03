@@ -137,6 +137,7 @@
     }
 
     button:disabled {
-        opacity: 50%;
+        background-color: var(--crust);
+        color: var(--outline);
     }
 </style>

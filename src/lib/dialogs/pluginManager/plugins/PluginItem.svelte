@@ -18,8 +18,10 @@
     })
 
     function install(evt) {
-        siblings.installed = python.install.package(plugin.pipname, executable.current).then(
-            resp => python.install.getPackages(executable.current)
+        siblings.installed = python.uv.installPackage(
+            plugin.pipname, executable.current
+        ).then(
+            resp => python.uv.getPackages(executable.current).then(packages => siblings.installed = packages)
         );
     }
 </script>

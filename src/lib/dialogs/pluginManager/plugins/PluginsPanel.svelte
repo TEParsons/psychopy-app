@@ -16,7 +16,9 @@
 
     $effect(() => {
         if (executable.current) {
-            children.installed = python.install.getPackages(executable.current)
+            python.uv.getPackages(executable.current).then(
+                resp => children.installed = resp
+            )
         }
     })
 
@@ -41,26 +43,20 @@
     <div class=plugins-ctrl>
         <div class=plugin-list-ctrl>
             <input type=search bind:value={searchterm} />
-            {#await python.install.getPackages(executable.current)}
-                <div class=message>Checking installed...</div>
-            {:then installed}
                 <div class=plugins-list>
                     {#each plugins.sort(
                         // installed packages at the top
-                        (x, y) => +Object.keys(installed).includes(y.pipname) - +Object.keys(installed).includes(x.pipname)
+                        (x, y) => +Object.keys(children.installed).includes(y.pipname) - +Object.keys(children.installed).includes(x.pipname)
                     ) as profile}
                         {#if matches(searchterm, profile)}
                             <PluginItem 
                                 plugin={profile} 
-                                installed={Object.keys(installed).includes(profile.pipname)}
+                                installed={Object.keys(children.installed).includes(profile.pipname)}
                                 bind:executable={executable} 
                             />
                         {/if}
                     {/each}
                 </div>
-            {:catch}
-                Failed
-            {/await}
         </div>
         <div class=selected-plugin>
             {@render children.selected?.()}

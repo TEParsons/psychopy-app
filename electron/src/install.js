@@ -8,13 +8,6 @@ import extract from "extract-zip";
 
 let decoder = new TextDecoder();
 
-
-export var uv = {
-    dir: path.join(app.getPath("appData"), "psychopy4", ".uv"),
-    executable: path.join(app.getPath("appData"), "psychopy4", ".uv", "uv"),
-}
-
-
 export async function installUV() {
     // make sure folder exists
     fs.mkdirSync(uv.dir, {
@@ -123,7 +116,7 @@ export function getPackages(executable) {
 }
 
 
-export async function getPackageDetails(executable, name) {
+export async function getPackageDetails(name, executable) {
     // use pip show to get details
     let resp = decoder.decode(
         proc.execSync(`"${uv.executable}" pip show ${name} --python "${executable}"`)
@@ -188,4 +181,29 @@ export function getEnvironments(
     }
     
     return output
+}
+
+
+export var uv = {
+    dir: path.join(app.getPath("appData"), "psychopy4", ".uv"),
+    executable: path.join(app.getPath("appData"), "psychopy4", ".uv", "uv"),
+    output: (message) => {
+        // if given a buffer, decode it
+        if (message instanceof Buffer) {
+        message = decoder.decode(message)
+        }
+        // log message
+        logging.log(message, "UV")
+        // emit event
+        BrowserWindow.getAllWindows().forEach(
+            win => win.webContents.send("uv", message)
+        )
+    },
+    installUV: installUV,
+    installPython: installPython,
+    getEnvironments: getEnvironments,
+    installPackage: installPackage,
+    getPackages: getPackages,
+    getPackageDetails: getPackageDetails,
+    
 }

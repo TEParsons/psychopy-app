@@ -16,7 +16,7 @@
 
 
 {#if shown}
-    {#await python.install.python({
+    {#await python.uv.python({
         python: "3.10",
         psychopy: current.experiment.settings.params['Use version']?.val
     })}

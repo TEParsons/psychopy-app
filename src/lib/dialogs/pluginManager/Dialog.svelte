@@ -36,7 +36,7 @@
         <div class=environment-ctrl>
             Python environment:
             <select bind:value={executable.current}>
-                {#await python.install.getEnvironments()}
+                {#await python.uv.getEnvironments()}
                     <option>
                         Scanning Python environments...
                     </option>

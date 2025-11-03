@@ -45,7 +45,7 @@ const createWindow = () => {
   windows.splash.center();
   windows.splash.show();
   // setup uv/python
-  python.install.uv().then(
+  python.uv.installUV().then(
     resp => {
       // store UV executable once we've got it
       uv.executable = resp
@@ -55,7 +55,7 @@ const createWindow = () => {
       )
       // try to get Python executable
       python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
-      python.details.executable = python.install.python({python: "3.10", psychopy: version.major})
+      python.details.executable = python.uv.installPython({python: "3.10", psychopy: version.major})
       // report Python executable
       logging.log(
         `Using Python at: ${python.details.executable}`
@@ -249,15 +249,16 @@ const handlers = {
   },
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
-    output: ipcMain.handle("python.output", (evt) => python.output),
-    install: {
-      python: ipcMain.handle("python.install.python", (evt, version, folder) => python.install.python(version, folder)),
-      package: ipcMain.handle("python.install.package", (evt, name, executable) => python.install.package(name, executable)),
-      getEnvironments: ipcMain.handle("python.install.getEnvironments", (evt, folder) => python.install.getEnvironments(folder)),
-      getPackages: ipcMain.handle("python.install.getPackages", (evt, executable) => python.install.getPackages(executable)),
-      getPackageDetails: ipcMain.handle("python.install.getPackageDetails", (evt, executable, name) => python.install.getPackageDetails(executable, name))
+    uv: {
+      dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),
+      executable: ipcMain.handle("python.uv.executable", (evt) => python.uv.executable),
+      installUV: ipcMain.handle("python.uv.installUV", (evt) => python.uv.installUV()),
+      installPython: ipcMain.handle("python.uv.installPython", (evt, version, folder) => python.uv.installPython(version, folder)),
+      getEnvironments: ipcMain.handle("python.uv.getEnvironments", (evt, folder) => python.uv.getEnvironments(folder)),
+      installPackage: ipcMain.handle("python.uv.installPackage", (evt, name, executable) => python.uv.installPackage(name, executable)),
+      getPackages: ipcMain.handle("python.uv.getPackages", (evt, executable) => python.uv.getPackages(executable)),
+      getPackageDetails: ipcMain.handle("python.uv.getPackageDetails", (evt, name, executable) => python.uv.getPackageDetails(name, executable)),
     },
-    isInstalled: ipcMain.handle("python.isInstalled", (evt, version, folder) => python.install.isInstalled(version, folder)),
     shell: {
       list: ipcMain.handle("python.shell.list", () => Object.keys(python.shell.shells)),
       send: ipcMain.handle("python.shell.send", (evt, id, msg) => python.shell.send(id, msg)),

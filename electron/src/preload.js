@@ -41,12 +41,19 @@ contextBridge.exposeInMainWorld('electron', electron)
 const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
-  install: {
-    python: (version, folder) => ipcRenderer.invoke("python.install.python", version, folder).then(resp => resp),
-    package: (name, executable) => ipcRenderer.invoke("python.install.package", name, executable).then(resp => resp),
-    getEnvironments: (folder) => ipcRenderer.invoke("python.install.getEnvironments", folder).then(resp => resp),
-    getPackages: (executable) => ipcRenderer.invoke("python.install.getPackages", executable).then(resp => resp),
-    getPackageDetails: (executable, name) => ipcRenderer.invoke("python.install.getPackageDetails", executable, name).then(resp => resp),
+  uv: {
+    dir: () => ipcRenderer.invoke("python.uv.dir").then(resp => resp),
+    executable: () => ipcRenderer.invoke("python.uv.executable").then(resp => resp),
+    installUV: () => ipcRenderer.invoke("python.uv.installUV").then(resp => resp),
+    installPython: (version, folder) => ipcRenderer.invoke("python.uv.installPython", version, folder).then(resp => resp),
+    getEnvironments: (folder) => ipcRenderer.invoke("python.uv.getEnvironments", folder).then(resp => resp),
+    installPackage: (name, executable) => ipcRenderer.invoke("python.uv.installPackage", name, executable).then(resp => resp),
+    getPackages: (executable) => ipcRenderer.invoke("python.uv.getPackages", executable).then(resp => resp),
+    getPackageDetails: (name, executable) => ipcRenderer.invoke("python.uv.getPackageDetails", name, executable).then(resp => resp),
+    output: {
+      send: (message) => ipcRenderer.send("uv", message),
+      listen: (lsnr) => ipcRenderer.on("uv", lsnr)
+    }
   },
   output: {
     stdout: {

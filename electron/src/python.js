@@ -283,14 +283,7 @@ export const python = {
     alive: false,
   },
   runScript: runScript,
-  install: {
-    uv: installUV,
-    python: installPython,
-    package: installPackage,
-    getEnvironments: getEnvironments,
-    getPackages: getPackages,
-    getPackageDetails: getPackageDetails
-  },
+  uv: uv,
   start: startPython,
   output: {
     stdout: (message) => {
