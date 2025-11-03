@@ -1,5 +1,5 @@
 import { electron, python, projects } from '$lib/globals.svelte.js';
-import { browseFileOpen } from "$lib/utils/files.js";
+import { browseFileOpen, browseFileSave } from "$lib/utils/files.js";
 import { current } from '../globals.svelte.js';
 
 
@@ -18,11 +18,14 @@ export function file_new() {
 }
 
 export async function file_open() {
-    let file = await browseFileOpen([
-        { description: "Python Scripts", accept: {"text/x-python-code": [".py"]} },
-        { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
-        { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
-    ])
+    let file = await browseFileOpen(
+        [
+            { description: "Python Scripts", accept: {"text/x-python-code": [".py"]} },
+            { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
+            { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
+        ],
+        current.file?.parent
+    )
     // abort if no file
     if (file === undefined) {
         return
@@ -55,13 +58,19 @@ export async function file_save() {
     content = xmlFormat(content)
     // diverge here based on whether there is a current file...
     if (current.file) {
-        // get file writable from handle
-        let handle = current.file
-        let file = await handle.createWritable();
-        // write to file
-        file.seek(0);
-        file.write(content);
-        file.close();
+        if (electron) {
+            await electron.files.save(
+                $state.snapshot(current.file.file),
+                content
+            )
+        } else {
+            // create writable
+            let file = await current.file.handle.createWritable();
+            // write to file
+            file.seek(0);
+            file.write(content);
+            file.close();
+        }
         // mark as no longer modified
         current.experiment.history.clear()
     } else {
@@ -71,18 +80,21 @@ export async function file_save() {
 }
 
 export async function file_save_as() {
-    // open a file picker
-    let handle = await window.showSaveFilePicker({
-        types: [{
-            description: "PsychoPy Experiment",
-            accept: {
-                "application/xml": [".psyexp"]
-            }
-        }],
-        suggestedName: current.experiment.filename + ".psyexp"
-    });
-    // set current file from result
-    current.file = handle;
+    // open file browser
+    let file = await browseFileSave(
+        [
+            { description: "Python Scripts", accept: {"text/x-python-code": [".py"]} },
+            { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
+            { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
+        ],
+        current.file?.file || "untitled.py"
+    )
+    // abort if no file
+    if (file === undefined) {
+        return
+    }
+    // set file
+    current.file = file
     // save
     await file_save()
 }

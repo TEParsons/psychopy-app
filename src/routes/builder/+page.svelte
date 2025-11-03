@@ -11,17 +11,14 @@
     import { setContext } from 'svelte';
     import path from "path-browserify";
     import { electron } from "$lib/globals.svelte";
+    import { parsePath } from "$lib/utils/files";
 
     // reference current in context for ease of access
     setContext("current", current)
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => current.file = {
-            name: path.basename(file),
-            stem: path.basename(file, ".psyexp"),
-            file: file
-        })
+        electron.windows.listen("fileOpen", (evt, file) => current.file = parsePath(file))
     }
     
 </script>

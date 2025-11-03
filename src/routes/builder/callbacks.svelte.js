@@ -3,7 +3,7 @@ import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
 import { openIn } from "$lib/utils/views.js"
-import { browseFileOpen } from "$lib/utils/files.js"
+import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js"
 
 
 /* File */
@@ -11,9 +11,11 @@ import { browseFileOpen } from "$lib/utils/files.js"
 export function file_new() {
     // clear current file
     current.file = {
+        file: undefined,
+        parent: undefined,
         name: "untitled.psyexp",
         stem: "untitled",
-        file: undefined
+        ext: ".psyexp"
     };
     // clear experiment
     current.experiment.reset()
@@ -22,20 +24,25 @@ export function file_new() {
 }
 
 export async function file_open() {
-    let file = await browseFileOpen([
-        { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
-    ])
-    // set file
-    if (file) {
-        current.file = file
-    } else {
+    // open file browser
+    let file = await browseFileOpen(
+        [
+            { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
+        ],
+        current.file?.parent || ""
+    )
+    // abort if no file
+    if (file === undefined) {
         return
     }
+    // set file
+    current.file = file
     // read content
     let content
     if (electron) {
         content = await electron.files.load(current.file.file)
     } else {
+        console.log(current.file.handle)
         content = await current.file.handle.text()
     }
     // load xml
@@ -87,10 +94,13 @@ export async function file_save() {
     // diverge here based on whether there is a current file...
     if (current.file.file) {
         if (electron) {
-            await electron.files.save($state.snapshot(current.file.file), content)
+            await electron.files.save(
+                $state.snapshot(current.file.file), 
+                content
+            )
         } else {
             // get file writable from handle
-            let file = await current.file.file.createWritable();
+            let file = await current.file.handle.createWritable();
             // write to file
             file.seek(0);
             file.write(content);
@@ -104,46 +114,19 @@ export async function file_save() {
 }
 
 export async function file_save_as() {
-    if (electron) {
-        // get file path from electron dialog
-        let file = await electron.files.saveDialog({
-            defaultPath: current.experiment.filename,
-            filters: [
-                { name: "PsychoPy Experiments", extensions: ["psyexp"] },
-                { name: 'All Files', extensions: ["*"] }
-            ]
-        })
-        // abort if no file
-        if (file === undefined) {
-            return
-        }
-        // populate current.file
-        current.file = {
-            name: path.basename(file[0]),
-            stem: path.basename(file[0], ".psyexp"),
-            file: file
-        }
-    } else {
-        // open a file picker
-        let handle = await window.showSaveFilePicker({
-            types: [{
-                description: "PsychoPy Experiment",
-                accept: {
-                    "application/xml": [".psyexp"]
-                }
-            }],
-            suggestedName: current.experiment.filename + ".psyexp"
-        });
-        // get file blob from handle
-        let file = await handle[0].getFile();
-        // populate current.file
-        current.file = {
-            name: file.name,
-            stem: file.name.replace(".psyexp", ""),
-            file: file
-        }
+    // open file browser
+    let file = await browseFileSave(
+        [
+            { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
+        ],
+        current.file?.file || "untitled.psyexp"
+    )
+    // abort if no file
+    if (file === undefined) {
+        return
     }
-    
+    // set file
+    current.file = file
     // save
     await file_save()
 
