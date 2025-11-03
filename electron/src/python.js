@@ -129,8 +129,8 @@ export async function startPython() {
 async function send(msg, timeout=1000) {
   // wait for liaison to exist before sending messages
   await python.liaison.ready.promise
-  // wait for other messages to finish
-  await Promise.allSettled(python.liaison.pending)
+  // wait for other messages to finish (without inheriting their failures)
+  await Promise.allSettled(python.liaison.pending).catch(err => {})
   // generate random ID
   let msgid = crypto.randomUUID()
   // log message
