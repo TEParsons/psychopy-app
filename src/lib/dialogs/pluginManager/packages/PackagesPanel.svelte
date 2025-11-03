@@ -16,7 +16,6 @@
         all: []
     });
     setContext("siblings", children)
-    $inspect(children)
 
     // cached list of pypi packages
     const pypi = $state([]);
@@ -90,11 +89,6 @@
 
 
 <style>
-    .message {
-        width: 45rem;
-        padding: 1rem;
-    }
-
     .packages-ctrl {
         display: grid;
         width: 65rem;

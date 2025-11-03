@@ -48,6 +48,7 @@ const python = {
     installPython: (version, folder) => ipcRenderer.invoke("python.uv.installPython", version, folder).then(resp => resp),
     getEnvironments: (folder) => ipcRenderer.invoke("python.uv.getEnvironments", folder).then(resp => resp),
     installPackage: (name, executable) => ipcRenderer.invoke("python.uv.installPackage", name, executable).then(resp => resp),
+    uninstallPackage: (name, executable) => ipcRenderer.invoke("python.uv.uninstallPackage", name, executable).then(resp => resp),
     getPackages: (executable) => ipcRenderer.invoke("python.uv.getPackages", executable).then(resp => resp),
     getPackageDetails: (name, executable) => ipcRenderer.invoke("python.uv.getPackageDetails", name, executable).then(resp => resp),
     output: {

@@ -1,4 +1,4 @@
-import { app }  from 'electron';
+import { app, BrowserWindow }  from 'electron';
 import proc from "child_process";
 import { platform , arch } from "process";
 import logging from "./logging.js";
@@ -7,6 +7,26 @@ import fs from "fs";
 import extract from "extract-zip";
 
 let decoder = new TextDecoder();
+
+/**
+ * Execute a function with output sent to the front end
+ */
+async function execTracked(args) {
+    // execute asynchronously
+    let prog = proc.spawn(
+        uv.executable,
+        args
+    )
+    // pass output to front end
+    prog.stdout.on("data", evt => uv.output(evt))
+    prog.stderr.on("data", evt => uv.output(evt))
+    // await completion/error
+    let promise = Promise.withResolvers()
+    prog.on("close", (code, signal) => promise.resolve([code, signal]))
+    prog.on("error", err => promise.reject(err))
+
+    return promise.promise
+}
 
 export async function installUV() {
     // make sure folder exists
@@ -97,8 +117,39 @@ export function installPython(
 }
 
 
-export function installPackage(name, executable) {
-    return proc.execSync(`"${uv.executable}" pip install ${name} --python "${executable}"`)
+export async function installPackage(name, executable) {
+    // log start
+    uv.output(
+        `Installing ${name}...`
+    )
+    // install
+    let resp = await execTracked(
+        ["pip", "install", name, "--python", executable]
+    )
+    // log done
+    uv.output(
+        `Finished installing ${name}.`
+    )
+
+    return resp
+}
+
+
+export async function uninstallPackage(name, executable) {
+    // log start
+    uv.output(
+        `Uninstalling ${name}...`
+    )
+    // uninstall
+    let resp = await execTracked(
+        ["pip", "uninstall", name, "--python", executable]
+    )
+    // log done
+    uv.output(
+        `Finished uninstalling ${name}.`
+    )
+
+    return resp
 }
 
 
@@ -190,7 +241,7 @@ export var uv = {
     output: (message) => {
         // if given a buffer, decode it
         if (message instanceof Buffer) {
-        message = decoder.decode(message)
+            message = decoder.decode(message)
         }
         // log message
         logging.log(message, "UV")
@@ -203,6 +254,7 @@ export var uv = {
     installPython: installPython,
     getEnvironments: getEnvironments,
     installPackage: installPackage,
+    uninstallPackage: uninstallPackage,
     getPackages: getPackages,
     getPackageDetails: getPackageDetails,
     

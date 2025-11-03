@@ -5,7 +5,6 @@
 
     let {
         plugin,
-        installed=$bindable(),
         executable=$bindable()
     } = $props()
 
@@ -17,11 +16,31 @@
         }
     })
 
+    let installed = $derived(
+        Object.keys(siblings.installed).includes(plugin.pipname)
+    )
+
     function install(evt) {
-        siblings.installed = python.uv.installPackage(
+        python.uv.installPackage(
             plugin.pipname, executable.current
         ).then(
-            resp => python.uv.getPackages(executable.current).then(packages => siblings.installed = packages)
+            resp => python.uv.getPackages(
+                executable.current
+            ).then(
+                packages => siblings.installed = packages
+            )
+        );
+    }
+
+    function uninstall(evt) {
+        python.uv.uninstallPackage(
+            plugin.pipname, executable.current
+        ).then(
+            resp => python.uv.getPackages(
+                executable.current
+            ).then(
+                packages => siblings.installed = packages
+            )
         );
     }
 </script>
@@ -39,7 +58,15 @@
                         label="Install"
                         icon="/icons/btn-download.svg"
                         onclick={install}
-                        awaiting={siblings.installed}
+                        bind:awaiting={siblings.installed}
+                        horizontal
+                    />
+                {:else}
+                    <Button
+                        label="Uninstall"
+                        icon="/icons/btn-delete.svg"
+                        onclick={uninstall}
+                        bind:awaiting={siblings.installed}
                         horizontal
                     />
                 {/if}

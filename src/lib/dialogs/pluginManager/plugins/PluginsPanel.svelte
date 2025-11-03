@@ -51,7 +51,6 @@
                         {#if matches(searchterm, profile)}
                             <PluginItem 
                                 plugin={profile} 
-                                installed={Object.keys(children.installed).includes(profile.pipname)}
                                 bind:executable={executable} 
                             />
                         {/if}
