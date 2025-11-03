@@ -3,7 +3,7 @@ import path from "path";
 const decoder = new TextDecoder();
 import logging from "./logging.js";
 import { app, BrowserWindow } from "electron";
-import { uv, installUV, installPython, installPackage, getEnvironments, getPackages, getPackageDetails } from "./install.js"
+import { uv } from "./uv.js"
 import { randomUUID } from "node:crypto";
 
 
