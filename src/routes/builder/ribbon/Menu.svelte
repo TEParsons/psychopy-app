@@ -2,6 +2,7 @@
     import { getContext } from "svelte";
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu';
     import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
+    import { FindDialog } from "$lib/dialogs/find";
     import { prefs } from "$lib/preferences.svelte"; 
     import { electron } from "$lib/globals.svelte";
 
@@ -31,7 +32,8 @@
     } = $props()
 
     let show = $state({
-        prefsDlg: false
+        prefsDlg: false,
+        findDlg: false,
     })
 </script>
 
@@ -84,9 +86,6 @@
             label="Preferences"
             onclick={(evt) => {show.prefsDlg = true}}
         />
-        <PrefsDialog
-            bind:shown={show.prefsDlg}
-        ></PrefsDialog>
         <MenuItem
             label="Reset preferences"
             onclick={evt => prefs.reset()}
@@ -102,4 +101,37 @@
             />
         {/if}
     </SubMenu>
+
+    <SubMenu label="Edit" icon="/icons/rbn-edit.svg">
+        <MenuItem 
+            label="Undo"
+            icon="/icons/btn-undo.svg"
+            disabled={current.file === null || !current.experiment.history.past.length}
+            onclick={undo}
+            shortcut="undo"
+        />
+        <MenuItem 
+            label="Redo"
+            icon="/icons/btn-redo.svg"
+            onclick={redo}
+            disabled={current.file === null || !current.experiment.history.future.length}
+            shortcut="redo"
+        />
+        <MenuSeparator />
+        <MenuItem 
+            label="Find in experiment"
+            icon="/icons/btn-find.svg"
+            onclick={evt => show.findDlg = true}
+            shortcut="find"
+        />
+    </SubMenu>
 </Menu>
+
+
+<!-- dialogs need to be outside so they're not hidden when the menu is -->
+<PrefsDialog
+    bind:shown={show.prefsDlg}
+/>
+<FindDialog
+    bind:shown={show.findDlg}
+/>
