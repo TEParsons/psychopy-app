@@ -2,6 +2,7 @@
     import { getContext } from "svelte";
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu';
     import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
+    import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import { FindDialog } from "$lib/dialogs/find";
     import { prefs } from "$lib/preferences.svelte"; 
     import { electron } from "$lib/globals.svelte";
@@ -19,6 +20,8 @@
         undo,
         redo,
         // experiment
+        togglePiloting,
+        sendToRunner,
         compilePython,
         compileJS,
         runPython,
@@ -34,6 +37,7 @@
     let show = $state({
         prefsDlg: false,
         findDlg: false,
+        settingsDlg: false
     })
 </script>
 
@@ -125,6 +129,69 @@
             shortcut="find"
         />
     </SubMenu>
+
+    <SubMenu label="Experiment" icon="/icons/rbn-experiment.svg">
+        <MenuItem 
+            label="Experiment settings"
+            icon="/icons/btn-settings.svg"
+            onclick={evt => show.settingsDlg = true}
+        />
+
+        <MenuSeparator />
+
+        <!-- todo: Copy/paste Routine/Component/etc. -->
+    </SubMenu>
+
+    {#if electron}
+        <SubMenu label="Run" icon="/icons/btn-runpy.svg">
+            <MenuItem 
+                label="Toggle pilot mode"
+                onclick={togglePiloting}
+                shortcut="togglePilot"
+            />
+            <MenuItem 
+                label="Send to Runner"
+                icon="/icons/btn-send{current.experiment.pilotMode ? "pilot" : "run"}.svg" 
+                onclick={sendToRunner}
+                shortcut="sendToRunner"
+                disabled={!current.experiment.filename}
+            />
+
+            <MenuSeparator />
+
+            <MenuItem 
+                label="Compile Python"
+                icon="/icons/btn-compilepy.svg" 
+                onclick={evt => compilePython()}
+                shortcut="compilePython"
+                disabled={current.experiment === null}
+            /> 
+            <MenuItem 
+                label="{current.experiment.pilotMode ? "Pilot" : "Run"} in Python" 
+                icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}py.svg" 
+                onclick={evt => runPython()}
+                shortcut="runPython"
+                disabled={current.experiment === null}
+            />
+
+            <MenuSeparator />
+
+            <MenuItem 
+                label="Compile JS" 
+                icon="/icons/btn-compilejs.svg" 
+                onclick={(evt) => compileJS()}
+                shortcut="compileJS"
+                disabled={current.experiment === null}
+            />
+            <MenuItem 
+                label="{current.experiment.pilotMode ? "Pilot" : "Run"} in browser" 
+                icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
+                onclick={(evt) => console.log("RUN JS")}
+                shortcut="runJS"
+                disabled={current.experiment === null}
+            />
+        </SubMenu>
+    {/if}
 </Menu>
 
 
@@ -134,4 +201,8 @@
 />
 <FindDialog
     bind:shown={show.findDlg}
+/>
+<ParamsDialog
+    element={current.experiment.settings}
+    bind:shown={show.settingsDlg}
 />

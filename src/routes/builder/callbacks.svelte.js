@@ -2,7 +2,7 @@ import { electron, projects, python } from '$lib/globals.svelte.js';
 import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
-import { openIn } from "$lib/utils/views.js"
+import { openIn } from "$lib/utils/views.svelte"
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js"
 
 
@@ -164,6 +164,11 @@ export function togglePiloting() {
 }
 
 
+export function sendToRunner() {
+    openIn(current.experiment.filename, "runner")
+}
+
+
 export async function compilePython() {
     // if no file, save as
     if (current.file === undefined) {
@@ -213,8 +218,12 @@ export async function runPython(executable) {
     return true
 }
 
+export async function runJS() {
+    // todo: Run in JS
+}
+
 /** Views */
-export { newWindow } from "$lib/utils/views.js"
+export { newWindow } from "$lib/utils/views.svelte"
 
 
 export default {
@@ -228,6 +237,9 @@ export default {
     undo: undo,
     redo: redo,
     togglePiloting: togglePiloting,
+    sendToRunner: sendToRunner,
     compilePython: compilePython,
-    runPython: runPython
+    runPython: runPython,
+    compileJS: compileJS,
+    runJS: runJS
 }

@@ -31,10 +31,10 @@ export async function openIn(file, target) {
         if (windows.length) {
             id = windows[0]
         } else {
-            id = electron.windows.new(target)
+            id = await electron.windows.new(target)
         }
         // send request to window to open file
-        await electron.windows.send(id, "fileOpen", file)
+        await electron.windows.send(id, "fileOpen", $state.snapshot(file))
         // focus window
         await electron.windows.focus(id)
     }

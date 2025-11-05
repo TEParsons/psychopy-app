@@ -9,6 +9,7 @@
         undo,
         redo,
         // experiment
+        sendToRunner,
         compilePython,
         compileJS,
         runPython,
@@ -179,7 +180,17 @@
                 }
             } 
             disabled={current.experiment === null}
-        />        
+        />  
+        
+        {#if electron}
+            <IconButton 
+                icon="/icons/btn-send{current.experiment.pilotMode ? "pilot" : "run"}.svg" 
+                label="Send experiment to runner" 
+                onclick={sendToRunner}
+                disabled={!current.experiment.filename}
+                borderless
+            /> 
+        {/if}
     </RibbonSection>
 
     {#if electron}

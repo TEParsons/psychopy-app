@@ -1,6 +1,6 @@
 <script>
     import { electron, python } from "$lib/globals.svelte";
-    import { newWindow } from "$lib/utils/views.js";
+    import { newWindow } from "$lib/utils/views.svelte";
     import { Button } from "$lib/utils/buttons";
     import { Icon } from "$lib/utils/icons";
     import { asset } from "$app/paths";

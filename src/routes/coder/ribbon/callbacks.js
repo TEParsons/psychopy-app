@@ -122,4 +122,4 @@ export function redo() {
 
 /* Views */
 
-export { newWindow } from "$lib/utils/views.js";
+export { newWindow } from "$lib/utils/views.svelte";

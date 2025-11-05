@@ -1402,6 +1402,27 @@
                 "enabled": []
             }
         },
+        "sendToRunner": {
+            "val": [
+                "CONTROL",
+                "ALT",
+                "F5"
+            ],
+            "valType": "keypress",
+            "inputType": "keypress",
+            "categ": "Key Bindings",
+            "updates": null,
+            "allowedUpdates": null,
+            "allowedVals": [],
+            "allowedLabels": [],
+            "label": "Send to runner",
+            "hint": "Send experiment to runner",
+            "plugin": null,
+            "depends": {
+                "shown": [],
+                "enabled": []
+            }
+        },
         "compilePython": {
             "val": [
                 "CONTROL",
