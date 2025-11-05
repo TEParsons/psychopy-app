@@ -70,14 +70,8 @@ export async function file_open() {
 
 
 export async function revealFolder() {
-    if (electron) {
-        // make sure file has an extension
-        let filename = $state.snapshot(current.experiment.filename)
-        if (!filename.endsWith(".psyexp")) {
-            filename += ".psyexp"
-        }
-        // reveal
-        electron.files.showItemInFolder(filename)
+    if (electron && current.file) {
+        electron.files.showItemInFolder(current.file.file)
     }
 }
 
