@@ -245,7 +245,8 @@ const handlers = {
       showItemInFolder: ipcMain.handle("electron.files.showItemInFolder", (evt, folder) => shell.showItemInFolder(folder)),
       openPath: ipcMain.handle("electron.files.openPath", (evt, path) => shell.openPath(path)),
       openExternal: ipcMain.handle("electron.files.openExternal", (evt, url) => shell.openExternal(url))
-    }
+    },
+    quit: ipcMain.handle("electron.quit", (evt) => app.quit())
   },
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),

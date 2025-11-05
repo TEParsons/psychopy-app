@@ -15,7 +15,7 @@
         newWindow,
     } from '../callbacks.svelte.js'
     
-    import { Menu, MenuItem, SubMenu } from '$lib/utils/menu'
+    import Menu from "./Menu.svelte";
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import { getContext } from "svelte";
     import { electron, python } from "$lib/globals.svelte.js";
@@ -24,7 +24,7 @@
     import { FindDialog } from "$lib/dialogs/find/index.js";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js"
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
-    import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
+    
     import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
 
@@ -35,7 +35,6 @@
         settingsDlg: false,
         findDlg: false,
         deviceMgrDlg: false,
-        prefsDlg: false,
     })
 
     let awaiting = $state({
@@ -71,40 +70,8 @@
             borderless
         />
         <Menu 
-            bind:shown={show.menu}
-        >
-            <SubMenu label="File" icon="/icons/rbn-file.svg">
-                <MenuItem 
-                    icon="/icons/btn-new.svg" 
-                    label="New file" 
-                    onclick={file_new}
-                />
-                <MenuItem 
-                    icon="/icons/btn-open.svg" 
-                    label="Open file" 
-                    onclick={file_open} 
-                />
-                <MenuItem 
-                    icon="/icons/btn-save.svg" 
-                    label="Save file" 
-                    onclick={file_save} 
-                    disabled={!current.experiment.history.past.length} 
-                />
-                <MenuItem 
-                    icon="/icons/btn-saveas.svg" 
-                    label="Save file as"
-                    onclick={file_save_as} 
-                />
-                <MenuItem
-                    icon="/icons/btn-settings.svg"
-                    label="Preferences"
-                    onclick={(evt) => {show.prefsDlg = true}}
-                ></MenuItem>
-            </SubMenu>
-        </Menu>
-        <PrefsDialog
-            bind:shown={show.prefsDlg}
-        ></PrefsDialog>
+            bind:shown={show.menu} 
+        />
     </RibbonSection>
     <RibbonSection label=File icon="/icons/rbn-file.svg">
         <IconButton 

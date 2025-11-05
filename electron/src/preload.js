@@ -33,7 +33,8 @@ const electron = {
     showItemInFolder: (folder) => ipcRenderer.invoke("electron.files.showItemInFolder", folder),
     openPath: (path) => ipcRenderer.invoke("electron.files.openPath", path),
     openExternal: (url) => ipcRenderer.invoke("electron.files.openExternal", url)
-  }
+  },
+  quit: () => ipcRenderer.invoke("electron.quit")
 };
 contextBridge.exposeInMainWorld('electron', electron)
 

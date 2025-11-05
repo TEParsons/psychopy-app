@@ -132,6 +132,16 @@ export async function file_save_as() {
     return current.file
 }
 
+export function close() {
+    window.close()
+}
+
+export function quit() {
+    if (electron) {
+        electron.quit()
+    }
+}
+
 /* Edit */
 export function undo() {
     current.experiment.history.undo();
@@ -219,6 +229,8 @@ export default {
     revealFolder: revealFolder,
     save: file_save,
     saveAs: file_save_as,
+    close: close,
+    quit: quit,
     undo: undo,
     redo: redo,
     togglePiloting: togglePiloting,

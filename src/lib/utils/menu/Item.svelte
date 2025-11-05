@@ -1,12 +1,15 @@
 <script>
     import { getContext } from "svelte";
     import { Icon } from "$lib/utils/icons";
+    import { prefs } from "$lib/preferences.svelte";
 
     let {
         /** @prop @type {string} Label for this menu item */
         label,
         /** @prop @type {String|undefined} Path to an icon for this page's tab */
         icon=undefined,
+        /** @prop @type {String} Name of the keyboard shortcut (if any) for this menu item */
+        shortcut=undefined,
         /** 
          * @prop @type {function} Function to call when this item is clicked, given 3 params:
          * 
@@ -25,7 +28,7 @@
     } = $props()
 
     // function to close parent
-    let closeMenu = getContext("closeMenu")
+    let closeMenu = getContext("closeMenu");
 </script>
 
 
@@ -43,8 +46,16 @@
 >
     <Icon 
         src={icon}
+        size=1rem
     />
-    <span>{label}</span>
+    <span class=label>
+        {label}
+    </span>
+    <span class=shortcut>
+        {#if shortcut in prefs.shortcuts}
+            {prefs.shortcuts[shortcut].val.join("+")}
+        {/if}
+    </span>
     {@render submenu?.()}
 </button>
 
@@ -55,7 +66,7 @@
         /* own attributes */
         display: grid;
         position: relative;
-        grid-template-columns: [icon] 1rem [label] 1fr [chevron] 1rem;
+        grid-template-columns: [icon] 1rem [label] 1fr [shortcut] max-content [chevron] 1rem;
         align-items: center;
         justify-items: start;
         gap: 0 .5rem;
@@ -68,8 +79,15 @@
         padding: 0.5rem 1rem;
         transition: background-color .2s;
     }
-    .menu-item span {
+    .menu-item .label {
         grid-column-start: label;
+    }
+    .menu-item .shortcut {
+        grid-column-start: shortcut;
+        font-family: var(--mono);
+        color: var(--outline);
+        font-size: .9em;
+        padding-left: 4rem;
     }
     .menu-item:enabled:hover,
     .menu-item:enabled:focus {
@@ -77,6 +95,10 @@
     }
     .menu-item:enabled:focus {
         border: 1px solid var(--blue);
+    }
+
+    .menu-item:disabled {
+        opacity: 50%;
     }
 
 </style>
