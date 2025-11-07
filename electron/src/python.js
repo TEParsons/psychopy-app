@@ -96,7 +96,7 @@ export async function startPython() {
         command: "register",
         args: ["prefs", "psychopy.preferences:prefs"]
       }, 10000).catch(
-        err => console.error(`Failed to load prefs: ${err}`)
+        err => console.error(`Failed to load prefs`, err)
       ).then(
         resp => {
           // point to devices json
@@ -106,12 +106,12 @@ export async function startPython() {
               app.getPath("appData"), "psychopy4", "devices.json"
             )]
           }, 10000).catch(
-            err => console.error(`Failed to set devices file: ${err}`)
+            err => console.error(`Failed to set devices file`, err)
           )
         }
       )
     }).catch(
-      err => console.error(`Liaison timed out: ${err}`)
+      err => console.error(`Liaison timed out`, err)
     )
   })
 }
