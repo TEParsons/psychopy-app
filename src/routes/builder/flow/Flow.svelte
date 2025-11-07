@@ -17,6 +17,7 @@
             <div class=flowline-arrow>
                 <Icon 
                     src="/icons/sym-arrow-right.svg"
+                    size=".75rem"
                 />
             </div>
         </div>
@@ -61,10 +62,9 @@
     }
     .flowline-arrow {
         position: absolute;
-        left: 100%;
-        top: 1rem;
+        left: calc(100% - 1px);
+        top: calc(1rem + 1px);
         transform: translateY(-50%);
-        height: .75rem;
     }
     .flow-canvas {
         padding: 1rem;
