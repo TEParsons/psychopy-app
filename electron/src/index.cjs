@@ -28,6 +28,9 @@ var windows = {
 // redirect app gubbins to a subfolder so it's distinct from user data
 app.setPath("userData", path.join(app.getPath("appData"), "psychopy4", ".node"))
 
+// setup a clipboard
+clipboard = undefined
+
 
 const createWindow = () => {
   // create splash
@@ -245,6 +248,10 @@ const handlers = {
       showItemInFolder: ipcMain.handle("electron.files.showItemInFolder", (evt, folder) => shell.showItemInFolder(folder)),
       openPath: ipcMain.handle("electron.files.openPath", (evt, path) => shell.openPath(path)),
       openExternal: ipcMain.handle("electron.files.openExternal", (evt, url) => shell.openExternal(url))
+    },
+    clipboard: {
+      get: ipcMain.handle("electron.clipboard.get", (evt) => clipboard),
+      set: ipcMain.handle("electron.clipboard.set", (evt, value) => clipboard = value)
     },
     quit: ipcMain.handle("electron.quit", (evt) => app.quit())
   },

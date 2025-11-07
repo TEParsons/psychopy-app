@@ -20,6 +20,9 @@
         undo,
         redo,
         // experiment
+        copyRoutine,
+        pasteRoutine,
+        // run
         togglePiloting,
         sendToRunner,
         compilePython,
@@ -138,6 +141,18 @@
         />
 
         <MenuSeparator />
+
+        <MenuItem 
+            label="Copy current Routine"
+            icon="/icons/btn-copy.svg"
+            onclick={evt => copyRoutine()}
+        />
+
+        <MenuItem 
+            label="Paste Routine"
+            icon="/icons/btn-paste.svg"
+            onclick={evt => pasteRoutine()}
+        />
 
         <!-- todo: Copy/paste Routine/Component/etc. -->
     </SubMenu>

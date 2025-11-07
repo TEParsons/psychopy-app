@@ -3,6 +3,7 @@
     import { Menu, MenuItem, SubMenu } from '$lib/utils/menu';
     import Tooltip from '$lib/utils/tooltip/Tooltip.svelte';
     import { getContext } from "svelte";
+    import { copyRoutine } from "../callbacks.svelte";
     
     let current = getContext("current");
 
@@ -87,8 +88,13 @@
         }}
     />
     <MenuItem 
+        icon="/icons/btn-copy.svg"
+        label="Copy Routine"
+        onclick={evt => copyRoutine(element)}
+    />
+    <MenuItem 
         icon="/icons/btn-delete.svg"
-        label="Remove"
+        label="Remove Routine"
         onclick={removeRoutine}
     />
 </Menu>

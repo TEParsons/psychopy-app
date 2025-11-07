@@ -1,4 +1,5 @@
 import { Experiment } from "$lib/experiment/experiment.svelte.js";
+import { Clipboard } from "$lib/utils/clipboard";
 
 
 export let current = $state({
@@ -9,4 +10,5 @@ export let current = $state({
     routine: undefined,
     moving: undefined,
     inserting: undefined,
+    clipboard: new Clipboard()
 })

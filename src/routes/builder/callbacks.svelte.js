@@ -3,7 +3,8 @@ import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
 import { openIn } from "$lib/utils/views.svelte"
-import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js"
+import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
+import { Routine, HasParams } from "$lib/experiment/experiment.svelte"
 
 
 /* File */
@@ -154,6 +155,47 @@ export function redo() {
 }
 
 /* Experiment */
+
+export function copyRoutine(routine=undefined) {
+    // use current routine if none given
+    if (!routine) {
+        routine = current.routine
+    }
+    // store JSON representation in clipboard
+    current.clipboard.set(routine.toJSON())
+}
+
+export async function pasteRoutine() {
+    let clipboard = await current.clipboard.get()
+    // abort if nothing is in the clipboard
+    if (!clipboard) {
+        return
+    }
+    // create element from clipboard
+    let element
+    if (clipboard.tag === "Routine") {
+        element = new Routine()
+    } else {
+        element = new HasParams(clipboard.tag)
+    }
+    element.fromJSON(clipboard)
+    // if element isn't a Routine, abort
+    if (![Routine, HasParams].some(cls => element instanceof cls)) {
+        return
+    }
+    // make name valid
+    let name = current.experiment.resolveNameConflict(element.name)
+    // set name
+    if (element instanceof Routine) {
+        element.settings.params['name'].val = name
+    } else {
+        element.params['name'].val = name
+    }
+    // add to experiment and select
+    current.experiment.routines[element.name] = current.routine = element
+}
+
+/* Run */
 
 
 export function togglePiloting() {

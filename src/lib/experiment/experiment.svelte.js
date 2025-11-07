@@ -109,6 +109,33 @@ export class Experiment {
     })
 
     /**
+     * If the given name conflicts with this experiment's namespace, transform it until it doesn't
+     */
+    resolveNameConflict(name) {
+        // return as is if already valid
+        if (!Object.keys(this.namespace).includes(name)) {
+            return name
+        }
+        // choose where to start numbering
+        let index = 1;
+        if (String(name).match(/\d+$/)) {
+            // if it already ends with a number, get the number
+            index = parseInt(
+                String(name).match(/\d+$/)[0]
+            );
+            // remove it from the name
+            name = String(name).replace(/\d+$/, "")
+        }
+        // iterate index until name is unique
+        while (Object.keys(this.namespace).includes(`${name}${index}`)) {
+            index += 1
+            console.log(index)
+        }
+
+        return `${name}${index}`
+    }
+
+    /**
      *
      * @param {String} filename Name of the experiment file
      */

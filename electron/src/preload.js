@@ -34,6 +34,10 @@ const electron = {
     openPath: (path) => ipcRenderer.invoke("electron.files.openPath", path),
     openExternal: (url) => ipcRenderer.invoke("electron.files.openExternal", url)
   },
+  clipboard: {
+    get: () => ipcRenderer.invoke("electron.clipboard.get").then(resp => resp),
+    set: (value) => ipcRenderer.invoke("electron.clipboard.set", value).then(resp => resp)
+  },
   quit: () => ipcRenderer.invoke("electron.quit")
 };
 contextBridge.exposeInMainWorld('electron', electron)
