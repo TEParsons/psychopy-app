@@ -6,13 +6,10 @@ const { uv } = require("./uv.js");
 const logging = require("./logging.js");
 const proc = require("child_process");
 const { VelopackApp } = require('velopack');
+const appVersion = require('./version.json');
 
 VelopackApp.build().run();
 
-version = {
-  major: "dev",
-  minor: "1"
-}
 
 var svelte = {
   address: {
@@ -47,58 +44,33 @@ const createWindow = () => {
   windows.splash.loadFile(path.join(__dirname, 'splash.html'));
   windows.splash.center();
   windows.splash.show();
-  // setup uv/python
-  python.uv.installUV().then(
-    resp => {
-      // store UV executable once we've got it
-      uv.executable = resp
-      // log
-      logging.log(
-        `Using UV at: ${uv.executable}`
-      )
-      // try to get Python executable
-      python.details.dir = path.join(app.getPath("appData"), "psychopy4", ".python", version.major)
-      python.details.executable = python.uv.installPython({python: "3.10", psychopy: version.major})
-      // report Python executable
-      logging.log(
-        `Using Python at: ${python.details.executable}`
-      )
-      // start python
-      python.start()
-    }
-  )
-  // array which tracks which requirements are ready
+  // keep track of ready statuses
   let ready = {
-    svelte: false,
-    mintime: false
-  };
-
+    svelte: Promise.withResolvers(),
+    mintime: Promise.withResolvers()
+  }
+  // start a 1s timer
+  setTimeout(
+    () => ready.mintime.resolve(),
+    1000
+  )
   // start the svelte side of things
   logging.log(`Starting Svelte at ${svelte.address.host}:${svelte.address.port}`)
-  svelte.process = proc.exec(`vite ${version.major === "dev" ? "dev" : "preview"} --host=${svelte.address.host} --port=${svelte.address.port}`);
+  svelte.process = proc.exec(`vite ${appVersion.major === "dev" ? "dev" : "preview"} --host=${svelte.address.host} --port=${svelte.address.port}`);
   svelte.process.stdout.on("data", msg => {
     logging.log(msg, "STDOUT")
     // mark as ready once we have the all clear from vite
     if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
       logging.log(`Started svelte at ${svelte.address.host}:${svelte.address.port}`)
-      ready.svelte = true;
+      // mark ready
+      ready.svelte.resolve()
     }
   })
   svelte.process.stderr.on("data", msg => {
     logging.log(msg, "STDERR")
   })
-  // set a minimum load time so that the splash screen is at least shown
-  setTimeout(() => ready.mintime = true, 1000);
-
-  // when everything is ready, show the app
-  let interval = setInterval(() => {
-    if (Object.values(ready).every(val => val)) {
-      // load starting window
-      newWindow("", true, false, false);
-      // stop waiting
-      clearInterval(interval);
-    }
-  }, 10)
+  // show when Svelte has loaded and min time has been reached
+  Promise.all(Object.values(ready).map(val => val.promise)).then(() => newWindow("", true, false, false))
 };
 
 
@@ -257,6 +229,7 @@ const handlers = {
   },
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
+    start: ipcMain.handle("python.start", (evt) => python.start()),
     uv: {
       dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),
       executable: ipcMain.handle("python.uv.executable", (evt) => python.uv.executable),

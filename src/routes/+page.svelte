@@ -7,38 +7,30 @@
 
     // handle initial setup
     let ready = $state({
-        status: undefined,
+        status: Promise.withResolvers(),
         message: ""
     })
-
-    function activatePlugins(timeout=120000) {
-        if (python) {
-            // mark as not ready until plugins are activated
-            ready.status = undefined
-            ready.message = "Activating plugins..."
-            // activate plugins
-            python.liaison.send({
-                command: "run",
-                args: ["psychopy.plugins:activatePlugins"]
-            }, timeout).then(
-                resp => {
-                    // on success, mark ready
-                    ready.status = true;
-                    ready.message = ""
-                }
-            ).catch(
-                err => {
-                    // on failure, prompt to try again
-                    ready.status = false;
-                    ready.message = `Failed to activate plugins.`
-                }
-            )
-        } else {
-            ready.status = true
-            ready.message = ""
-        }
+    
+    async function setup() {
+        // install UV
+        ready.message = "Downloading UV (a Python installer)..."
+        await python.uv.installUV().catch(err => ready.status.reject(err))
+        // install Python
+        ready.message = "Installing Python..."
+        await python.uv.installPython().catch(err => ready.status.reject(err))
+        // start python
+        ready.message = "Starting Python..."
+        await python.start().catch(err => ready.status.reject(err))
+        // activatePlugins
+        ready.message = "Activating plugins..."
+        await python.liaison.send({
+            command: "run",
+            args: ["psychopy.plugins:activatePlugins"]
+        }, 20000).catch(err => ready.status.reject(err))
+        // mark success
+        ready.status.resolve()
     }
-    activatePlugins()
+    setup();
 </script>
 
 <div class=container>
@@ -50,7 +42,6 @@
             class=view
             aria-label="builder"
             onclick={evt => newWindow("builder")}
-            disabled={ready.status === undefined}
         >
             <h3>Builder</h3>
             <Icon 
@@ -63,7 +54,6 @@
             class=view
             aria-label="coder"
             onclick={evt => newWindow("coder")}
-            disabled={ready.status === undefined}
         >
             <h3>Coder</h3>
             <Icon 
@@ -77,7 +67,6 @@
                 class=view
                 aria-label="runner"
                 onclick={evt => newWindow("runner")}
-                disabled={ready.status === undefined}
             >
                 <h3>Runner</h3>
                 <Icon 
@@ -89,15 +78,19 @@
         {/if}
     </nav>
     <div class=message>
-        {ready.message}
-        {#if ready.status === false}
+        {#await ready.status.promise}
+            {ready.message}
+        {:then}
+            Ready
+        {:catch err}
+            Failed setup: {err}
             <Button
                 label="Try again?"
                 icon="/icons/btn-refresh.svg"
-                onclick={evt => activatePlugins()}
+                onclick={evt => setup()}
                 horizontal
             />
-        {/if}
+        {/await}
     </div>
 </div>
 

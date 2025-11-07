@@ -5,6 +5,7 @@ import logging from "./logging.js";
 import { app, BrowserWindow } from "electron";
 import { uv } from "./uv.js"
 import { randomUUID } from "node:crypto";
+import appVersion from "./version.json" with { type: "json" };
 
 
 function getConstants() {
@@ -279,7 +280,7 @@ class PythonShell {
 export const python = {
   details: {
     executable: undefined,
-    dir: undefined,
+    dir: path.join(app.getPath("appData"), "psychopy4", ".python", appVersion.major),
     alive: false,
   },
   runScript: runScript,

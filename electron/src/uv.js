@@ -5,6 +5,8 @@ import logging from "./logging.js";
 import path from "path";
 import fs from "fs";
 import extract from "extract-zip";
+import appVersion from "./version.json" with { type: "json" };
+import { python } from "./python.js"
 
 let decoder = new TextDecoder();
 
@@ -71,18 +73,16 @@ export async function installUV() {
             fs.unlink(zipfile, err => {if (err) throw err})
         }
     )
-
-    return uv.executable
 }
 
 
 export function installPython(
-    version={python: "3.10", psychopy: "dev"}, 
+    version={python: "3.10", psychopy: appVersion.major}, 
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     // make sure version has necessary keys
     version.python = version.python || "3.10"
-    version.psychopy = version.psychopy || "dev"
+    version.psychopy = version.psychopy || appVersion.major
     // get specific folder for this version
     folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy)
     // make sure folder exists
@@ -90,9 +90,8 @@ export function installPython(
         recursive: true
     })
     // try to find executable
-    let executable
     try { 
-        executable = decoder.decode(
+        python.details.executable = decoder.decode(
             proc.execSync(`"${uv.executable}" python find "${folder}"`)
         ).trim()
     } catch (err) {
@@ -101,19 +100,19 @@ export function installPython(
         // make a new venv
         proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
         // get executable
-        executable = decoder.decode(
+        python.details.executable = decoder.decode(
             proc.execSync(`"${uv.executable}" python find "${folder}"`)
         ).trim()
         // install PsychoPy and liaison
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${executable}"`)
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${python.details.executable}"`)
         if (version.psychopy === "dev") {
-            proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${executable}"`)
+            proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${python.details.executable}"`)
         } else {
-            proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${executable}"`)
+            proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
         }
     }
-    
-    return executable
+
+    return true
 }
 
 
