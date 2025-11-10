@@ -81,7 +81,6 @@ body {
 }
 
 * {
-    font-variant-emoji: Noto Color Emoji;
     transition: border-color .2s, box-shadow .2s;
 }
 
