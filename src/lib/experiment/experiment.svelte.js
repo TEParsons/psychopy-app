@@ -970,6 +970,8 @@ export class HasParams {
         }
         // set class
         this.__class__ = template?.__class__
+        // set icon
+        this.iconSVG = template.iconSVG || template.iconFile
         // set plugin
         this.plugin = template.plugin;
         // set legacy params
