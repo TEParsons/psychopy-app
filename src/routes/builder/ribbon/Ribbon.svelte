@@ -14,6 +14,7 @@
         compileJS,
         runPython,
         newWindow,
+        runJS,
     } from '../callbacks.svelte.js'
     
     import Menu from "./Menu.svelte";
@@ -40,7 +41,9 @@
 
     let awaiting = $state({
         runpy: Promise.resolve(""),
-        compilepy: Promise.resolve("")
+        compilepy: Promise.resolve(""),
+        runjs: Promise.resolve(""),
+        compilejs: Promise.resolve("")
     })
 
     let lastAction = $derived.by(() => {
@@ -219,13 +222,15 @@
                     label="Write experiment as a .js file" 
                     onclick={(evt) => compileJS()}
                     disabled={current.experiment === null}
+                    bind:awaiting={awaiting.compilejs}
                     borderless
                 />
                 <IconButton 
                     icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
                     label="{current.experiment.pilotMode ? "Pilot" : "Run"} experiment in browser" 
-                    onclick={(evt) => console.log("RUN JS")}
+                    onclick={(evt) => runJS()}
                     disabled={current.experiment === null}
+                    bind:awaiting={awaiting.runjs}
                     borderless
                 />
         </RibbonSection>
