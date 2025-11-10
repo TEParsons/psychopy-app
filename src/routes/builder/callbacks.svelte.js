@@ -28,14 +28,12 @@ export async function file_open() {
     if (file === undefined) {
         return
     }
-    // set file
-    current.experiment.file = file
     // read content
     let content
     if (electron) {
-        content = await electron.files.load(current.experiment.file.file)
+        content = await electron.files.load(file.file)
     } else {
-        content = await current.experiment.file.handle.text()
+        content = await file.handle.text()
     }
     // load xml
     let xml_parser = new DOMParser()
@@ -43,6 +41,7 @@ export async function file_open() {
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
     current.experiment.fromXML(node);
+    current.experiment.file = file
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
