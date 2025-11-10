@@ -32,49 +32,75 @@ clipboard = undefined
 const createWindow = () => {
   // create splash
   windows.splash = new BrowserWindow({
-      icon: path.join(__dirname, 'favicon@2x.png'),
-      title:"PsychoPy",
-      width: 720, 
-      height: 400,
-      show: false,
-      transparent: true, 
-      frame: false, 
-      alwaysOnTop: true 
+    icon: path.join(__dirname, 'favicon@2x.png'),
+    title: "PsychoPy",
+    width: 720,
+    height: 400,
+    show: false,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true
   });
   windows.splash.loadFile(path.join(__dirname, 'splash.html'));
   windows.splash.center();
   windows.splash.show();
+
   // keep track of ready statuses
   let ready = {
     svelte: Promise.withResolvers(),
     mintime: Promise.withResolvers()
   }
+
   // start a 1s timer
   setTimeout(
     () => ready.mintime.resolve(),
     1000
   )
   // start the svelte side of things
-  logging.log(`Starting Svelte at ${svelte.address.host}:${svelte.address.port}`)
-  svelte.process = proc.exec(`vite ${appVersion.major === "dev" ? "dev" : "preview"} --host=${svelte.address.host} --port=${svelte.address.port}`);
-  svelte.process.stdout.on("data", msg => {
-    logging.log(msg, "STDOUT")
+  const isDev = !app.isPackaged;
+
+  if (isDev) {
+    // Development: use Vite dev server
+    logging.log(`Starting Vite dev server at ${svelte.address.host}:${svelte.address.port}`)
+    svelte.process = proc.exec(`vite dev --host=${svelte.address.host} --port=${svelte.address.port}`);
+    svelte.process.stdout.on("data", msg => {
+      logging.log(msg, "STDOUT")
     // mark as ready once we have the all clear from vite
-    if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
-      logging.log(`Started svelte at ${svelte.address.host}:${svelte.address.port}`)
+      if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
+        logging.log(`Started svelte at ${svelte.address.host}:${svelte.address.port}`)
       // mark ready
-      ready.svelte.resolve()
-    }
-  })
-  svelte.process.stderr.on("data", msg => {
-    logging.log(msg, "STDERR")
-  })
+        ready.svelte.resolve()
+      }
+    })
+    svelte.process.stderr.on("data", msg => {
+      logging.log(msg, "STDERR")
+    })
+  } else {
+    // Production: serve static files via HTTP server
+    const express = require('express');
+    const app = express();
+
+    app.use(express.static(path.join(__dirname, '../../dist')));
+
+    // Handle SPA fallback without wildcard
+    app.use((req, res) => {
+      res.sendFile(path.join(__dirname, '../../dist/index.html'));
+    });
+
+    const server = app.listen(svelte.address.port, svelte.address.host, () => {
+      logging.log(`Started static server at ${svelte.address.host}:${svelte.address.port}`)
+      ready.svelte.resolve();
+    });
+
+    svelte.process = { kill: () => server.close() };
+  }
+
   // show when Svelte has loaded and min time has been reached
   Promise.all(Object.values(ready).map(val => val.promise)).then(() => newWindow("", true, false, false))
 };
 
 
-function newWindow(target=null, show=true, fullscreen=true, debug=true) {
+function newWindow(target = null, show = true, fullscreen = true, debug = true) {
   // create window
   let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
@@ -86,10 +112,13 @@ function newWindow(target=null, show=true, fullscreen=true, debug=true) {
     }
   });
   win.removeMenu();
+
   // load target URL
-  let url = `http://${svelte.address.host}:${svelte.address.port}/${target}`
+  let url = `http://${svelte.address.host}:${svelte.address.port}/${target || ''}`;
+
   logging.log(`Loading ${url}...`)
   win.loadURL(url);
+
   // show when ready (if requested)
   if (show) {
     win.once("ready-to-show", evt => {
@@ -113,7 +142,6 @@ function newWindow(target=null, show=true, fullscreen=true, debug=true) {
   }
   // store handle against id
   windows[win.webContents.id] = win;
-
   return win.webContents.id
 }
 
@@ -174,7 +202,7 @@ function getFileTree(folder) {
       // append
       output.push(details)
     }
-  } catch(err) {
+  } catch (err) {
     console.error(err)
 
     return output
@@ -210,10 +238,10 @@ const handlers = {
       }
     },
     files: {
-      load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, {encoding: 'utf8'})),
-      save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, {encoding: 'utf8', mode: 0o777})),
+      load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, { encoding: 'utf8' })),
+      save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, { encoding: 'utf8', mode: 0o777 })),
       exists: ipcMain.handle("electron.files.exists", (evt, file) => fs.existsSync(file)),
-      mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive=true) => fs.mkdirSync(path, { recursive: recursive })),
+      mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive = true) => fs.mkdirSync(path, { recursive: recursive })),
       openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(windows[evt.sender.id], options)),
       saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(windows[evt.sender.id], options)),
       scandir: ipcMain.handle("electron.files.scandir", (evt, root) => getFileTree(root)),
@@ -249,7 +277,7 @@ const handlers = {
     },
     liaison: {
       constants: ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants),
-      send: ipcMain.handle("python.liaison.send", (evt, message, timeout=1000) => python.liaison.send(message, timeout))
+      send: ipcMain.handle("python.liaison.send", (evt, message, timeout = 1000) => python.liaison.send(message, timeout))
     },
     runScript: ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
   }
