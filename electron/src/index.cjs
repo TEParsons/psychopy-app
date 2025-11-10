@@ -261,8 +261,10 @@ const handlers = {
     uv: {
       dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),
       executable: ipcMain.handle("python.uv.executable", (evt) => python.uv.executable),
+      exists: ipcMain.handle("python.uv.exists", (evt) => python.uv.exists()),
       installUV: ipcMain.handle("python.uv.installUV", (evt) => python.uv.installUV()),
       installPython: ipcMain.handle("python.uv.installPython", (evt, version, folder) => python.uv.installPython(version, folder)),
+      findPython: ipcMain.handle("python.uv.findPython", (evt, version, folder) => python.uv.findPython(version, folder)),
       getEnvironments: ipcMain.handle("python.uv.getEnvironments", (evt, folder) => python.uv.getEnvironments(folder)),
       installPackage: ipcMain.handle("python.uv.installPackage", (evt, name, executable) => python.uv.installPackage(name, executable)),
       uninstallPackage: ipcMain.handle("python.uv.uninstallPackage", (evt, name, executable) => python.uv.uninstallPackage(name, executable)),

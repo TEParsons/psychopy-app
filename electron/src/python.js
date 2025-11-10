@@ -279,7 +279,7 @@ class PythonShell {
 // array with information about/from Python
 export const python = {
   details: {
-    executable: undefined,
+    executable: uv.findPython(),
     dir: path.join(app.getPath("appData"), "psychopy4", ".python", appVersion.major),
     alive: false,
   },

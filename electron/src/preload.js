@@ -50,8 +50,10 @@ const python = {
   uv: {
     dir: () => ipcRenderer.invoke("python.uv.dir").then(resp => resp),
     executable: () => ipcRenderer.invoke("python.uv.executable").then(resp => resp),
+    exists: () => ipcRenderer.invoke("python.uv.exists").then(resp => resp),
     installUV: () => ipcRenderer.invoke("python.uv.installUV").then(resp => resp),
     installPython: (version, folder) => ipcRenderer.invoke("python.uv.installPython", version, folder).then(resp => resp),
+    findPython: (version, folder) => ipcRenderer.invoke("python.uv.findPython", version, folder).then(resp => resp),
     getEnvironments: (folder) => ipcRenderer.invoke("python.uv.getEnvironments", folder).then(resp => resp),
     installPackage: (name, executable) => ipcRenderer.invoke("python.uv.installPackage", name, executable).then(resp => resp),
     uninstallPackage: (name, executable) => ipcRenderer.invoke("python.uv.uninstallPackage", name, executable).then(resp => resp),

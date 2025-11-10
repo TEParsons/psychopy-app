@@ -36,7 +36,7 @@ export async function installUV() {
         recursive: true
     })
     // if installed, update
-    if (fs.existsSync(uv.executable)) {
+    if (uv.exists()) {
         // proc.execSync(`${uv.executable} self update`)
         return true
     }
@@ -75,6 +75,26 @@ export async function installUV() {
     )
 }
 
+export function findPython(
+    version={python: "3.10", psychopy: appVersion.major}, 
+    folder=path.join(app.getPath("appData"), "psychopy4", ".python")
+) {
+    // make sure version has necessary keys
+    version.python = version.python || "3.10"
+    version.psychopy = version.psychopy || appVersion.major
+    // get specific folder for this version
+    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy)
+    // try using UV to search for a Python executable
+    try {
+        return decoder.decode(
+            proc.execSync(`"${uv.executable}" python find "${folder}"`)
+        ).trim()
+    } catch (err) {
+        // if this fails, return undefined (as there is none)
+        return
+    }
+}
+
 
 export function installPython(
     version={python: "3.10", psychopy: appVersion.major}, 
@@ -89,27 +109,16 @@ export function installPython(
     fs.mkdirSync(folder, {
         recursive: true
     })
-    // try to find executable
-    try { 
-        python.details.executable = decoder.decode(
-            proc.execSync(`"${uv.executable}" python find "${folder}"`)
-        ).trim()
-    } catch (err) {
-        // install python if none found
-        logging.log("No Python venv found for this version, installing...")
-        // make a new venv
-        proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
-        // get executable
-        python.details.executable = decoder.decode(
-            proc.execSync(`"${uv.executable}" python find "${folder}"`)
-        ).trim()
-        // install PsychoPy and liaison
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${python.details.executable}"`)
-        if (version.psychopy === "dev") {
-            proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${python.details.executable}"`)
-        } else {
-            proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
-        }
+    // make a new venv
+    proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
+    // get executable
+    python.details.executable = findPython()
+    // install PsychoPy and liaison
+    proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${python.details.executable}"`)
+    if (version.psychopy === "dev") {
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${python.details.executable}"`)
+    } else {
+        proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
     }
 
     return true
@@ -249,12 +258,13 @@ export var uv = {
             win => win.webContents.send("uv", message)
         )
     },
+    exists: () => fs.existsSync(uv.executable + ".exe"),
     installUV: installUV,
     installPython: installPython,
+    findPython: findPython,
     getEnvironments: getEnvironments,
     installPackage: installPackage,
     uninstallPackage: uninstallPackage,
     getPackages: getPackages,
     getPackageDetails: getPackageDetails,
-    
 }

@@ -12,12 +12,20 @@
     })
     
     async function setup() {
+        // do we already have UV and Python?
+        ready.message = "Checking Python..."
+        let hasUV = await python.uv.exists().catch(err => ready.status.reject(err))
+        let hasPython = await python.uv.findPython().catch(err => ready.status.reject(err))
         // install UV
-        ready.message = "Downloading UV (a Python installer)..."
-        await python.uv.installUV().catch(err => ready.status.reject(err))
+        if (!hasUV) {
+            ready.message = "Downloading UV (a Python installer)..."
+            await python.uv.installUV().catch(err => ready.status.reject(err))
+        }
         // install Python
-        ready.message = "Installing Python..."
-        await python.uv.installPython().catch(err => ready.status.reject(err))
+        if (!hasPython) {
+            ready.message = "Installing Python..."
+            await python.uv.installPython().catch(err => ready.status.reject(err))
+        }
         // start python
         ready.message = "Starting Python..."
         await python.start().catch(err => ready.status.reject(err))
