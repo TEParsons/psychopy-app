@@ -16,7 +16,7 @@
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => current.files.push(file))
+        electron.windows.listen("fileOpen", (evt, file) => current.experiment.files.push(file))
     }
 
     let file = $state.raw();

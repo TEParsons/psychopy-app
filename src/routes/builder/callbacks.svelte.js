@@ -10,14 +10,6 @@ import { Routine, HasParams } from "$lib/experiment/experiment.svelte"
 /* File */
 
 export function file_new() {
-    // clear current file
-    current.file = {
-        file: undefined,
-        parent: undefined,
-        name: "untitled.psyexp",
-        stem: "untitled",
-        ext: ".psyexp"
-    };
     // clear experiment
     current.experiment.reset()
     // focus trial
@@ -30,27 +22,27 @@ export async function file_open() {
         [
             { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
         ],
-        current.file?.parent || ""
+        current.experiment.file?.parent || ""
     )
     // abort if no file
     if (file === undefined) {
         return
     }
     // set file
-    current.file = file
+    current.experiment.file = file
     // read content
     let content
     if (electron) {
-        content = await electron.files.load(current.file.file)
+        content = await electron.files.load(current.experiment.file.file)
     } else {
-        content = await current.file.handle.text()
+        content = await current.experiment.file.handle.text()
     }
     // load xml
     let xml_parser = new DOMParser()
     let document = xml_parser.parseFromString(content, "application/xml");
     let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment.fromXML(current.file.name.replace(".psyexp", ""), node);
+    current.experiment.fromXML(node);
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
@@ -59,20 +51,20 @@ export async function file_open() {
     // is file a known project?
     for (let project of Object.values(projects)) {
         // placeholder: how do we query local folder?
-        if (project.id.endsWith(current.file.stem)) {
+        if (project.id.endsWith(current.experiment.file.stem)) {
             current.project = project
         }
     }
     // mark as no longer modified
     current.experiment.history.clear()
 
-    console.log(`Loaded experiment '${current.file.name}':`, current.experiment);
+    console.log(`Loaded experiment '${current.experiment.file.name}':`, current.experiment);
 }
 
 
 export async function revealFolder() {
-    if (electron && current.file) {
-        electron.files.showItemInFolder(current.file.file)
+    if (electron && current.experiment.file) {
+        electron.files.showItemInFolder(current.experiment.file.file)
     }
 }
 
@@ -86,15 +78,15 @@ export async function file_save() {
     // make human readable
     content = xmlFormat(content)
     // diverge here based on whether there is a current file...
-    if (current.file.file) {
+    if (current.experiment.file.file) {
         if (electron) {
             await electron.files.save(
-                $state.snapshot(current.file.file), 
+                $state.snapshot(current.experiment.file.file), 
                 content
             )
         } else {
             // get file writable from handle
-            let file = await current.file.handle.createWritable();
+            let file = await current.experiment.file.handle.createWritable();
             // write to file
             file.seek(0);
             file.write(content);
@@ -113,18 +105,18 @@ export async function file_save_as() {
         [
             { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} }
         ],
-        current.file?.file || "untitled.psyexp"
+        current.experiment.file?.file || "untitled.psyexp"
     )
     // abort if no file
     if (file === undefined) {
         return
     }
     // set file
-    current.file = file
+    current.experiment.file = file
     // save
     await file_save()
 
-    return current.file
+    return current.experiment.file
 }
 
 export function close() {
@@ -207,16 +199,16 @@ export function togglePiloting() {
 
 
 export function sendToRunner() {
-    openIn(current.experiment.filename, "runner")
+    openIn(current.experiment.file.file, "runner")
 }
 
 
 export async function compilePython() {
     // if no file, save as
-    if (current.file === undefined) {
+    if (current.experiment.file === undefined) {
         await file_save_as()
         // if cancelled save, cancel compile
-        if (current.file === undefined) {
+        if (current.experiment.file === undefined) {
             return
         }
     }
@@ -232,10 +224,10 @@ export async function compilePython() {
 
 export async function compileJS() {
     // if no file, save as
-    if (current.file === undefined) {
+    if (current.experiment.file === undefined) {
         await file_save_as()
         // if cancelled save, cancel compile
-        if (current.file === undefined) {
+        if (current.experiment.file === undefined) {
             return
         }
     }

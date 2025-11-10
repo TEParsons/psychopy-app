@@ -78,7 +78,7 @@
             label="Reveal in file explorer"
             onclick={revealFolder}
             shortcut="revealFolder"
-            disabled={current.file?.parent === undefined}
+            disabled={current.experiment.file?.parent === undefined}
         />
         <MenuItem
             label="Close window"
@@ -113,7 +113,7 @@
         <MenuItem 
             label="Undo"
             icon="/icons/btn-undo.svg"
-            disabled={current.file === null || !current.experiment.history.past.length}
+            disabled={current.experiment.file === null || !current.experiment.history.past.length}
             onclick={undo}
             shortcut="undo"
         />
@@ -121,7 +121,7 @@
             label="Redo"
             icon="/icons/btn-redo.svg"
             onclick={redo}
-            disabled={current.file === null || !current.experiment.history.future.length}
+            disabled={current.experiment.file === null || !current.experiment.history.future.length}
             shortcut="redo"
         />
         <MenuSeparator />
@@ -169,7 +169,7 @@
                 icon="/icons/btn-send{current.experiment.pilotMode ? "pilot" : "run"}.svg" 
                 onclick={sendToRunner}
                 shortcut="sendToRunner"
-                disabled={!current.experiment.filename}
+                disabled={!current.experiment.file}
             />
 
             <MenuSeparator />

@@ -88,9 +88,9 @@ class _FontManager {
         scanning: Promise.resolve(true),
         refresh: (experiment) => {
             // clear fonts
-            this.experiment.fonts.length = 0
+            experiment.fonts.length = 0
             // get folder
-            let folder = path.dirname(experiment.filename.replaceAll("\\", "/"))
+            let folder = experiment.file.parent
             if (folder) {
                 // search in fonts and assets/fonts subfolders
                 this.experiment.scanning = python.liaison.send(

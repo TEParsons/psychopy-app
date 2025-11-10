@@ -5,6 +5,7 @@ import { devices } from "$lib/globals.svelte";
 import { js2py, py2js } from "$lib/utils/transpiler";
 import { python, electron } from "$lib/globals.svelte";
 import path from "path-browserify";
+import { parsePath } from "$lib/utils/files";
 
 
 export class Experiment {
@@ -13,7 +14,7 @@ export class Experiment {
 
     routines = $state({})
     loops = $state({})
-    filename = $state(null)
+    file = $state(undefined)
 
     /** store past and future states for this experiment */
     history = $state({
@@ -146,25 +147,26 @@ export class Experiment {
         // starting defaults
         this.reset()
         // set filename
-        this.filename = filename;
+        this.file = parsePath(filename);
     }
 
     /** 
      * Get a path relative to this experiment's root folder 
      */
     relativePath(value) {
-        // get experiment root folder
-        let root = path.dirname(this.filename.replaceAll("\\", path.sep))
-        
-        return path.join(root, value)
+        if (this.file?.parent) {
+            return path.join(this.file?.parent, value) 
+        } else {
+            return value
+        }
     }
 
     /**
      * Reset this Experiment as if from new
      */
     reset(keepHistory=false) {
-        // set filename to untitled
-        this.filename = "untitled"
+        // clear file
+        this.file = undefined
         // set to current version
         this.version = "2026.1.0"
         // clear history
@@ -238,7 +240,7 @@ export class Experiment {
     toJSON() {
         // create node
         let node = {
-            filename: this.filename,
+            filename: this.file.file,
             version: this.version,
             settings: this.settings.toJSON(),
             routines: {},
@@ -261,7 +263,7 @@ export class Experiment {
         // reset experiment
         this.reset(true)
         // set basic attributes
-        this.filename = node.filename;
+        this.file = parsePath(node.filename);
         this.version = node.version;
         // copy settings
         this.settings.fromJSON(node.settings);
@@ -282,14 +284,11 @@ export class Experiment {
     /**
      * Populate this Experiment from an XML element
      * 
-     * @param {String} filename Name of the experiment file
      * @param {Element} node XML element to create the Experiment from
      */
-    fromXML(filename, node) {
+    fromXML(node) {
         // reset experiment
         this.reset()
-        // store filename
-        this.filename = filename
         // get version
         this.version = node.getAttribute("version");
         // get settings
@@ -362,7 +361,7 @@ export class Experiment {
             args: [
                 "currentExperiment",
                 "psychopy.experiment:Experiment.fromJSON",
-                $state.snapshot(this.filename),
+                $state.snapshot(this.file.file),
                 $state.snapshot(this.toJSON())
             ]
         }, 10000).catch(
@@ -377,13 +376,16 @@ export class Experiment {
             kwargs: {
                 target: target, 
                 modular: true,
-                expPath: this.filename
+                expPath: this.file.file
             }
         }, 10000).catch(
             reason => console.error(reason)
         )
         // construct output path
-        let targetFile = this.filename + (target === "PsychoJS" ? ".js" : ".py")
+        let targetFile = path.join(
+            this.file.parent,
+            this.file.stem + (target === "PsychoJS" ? ".js" : ".py")
+        )
         // save to python file
         if (typeof script === "string") {
             electron.files.save(targetFile, script)

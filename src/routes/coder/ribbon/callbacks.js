@@ -24,7 +24,7 @@ export async function file_open() {
             { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
             { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
         ],
-        current.file?.parent
+        current.experiment.file?.parent
     )
     // abort if no file
     if (file === undefined) {
@@ -57,15 +57,15 @@ export async function file_save() {
     // make human readable
     content = xmlFormat(content)
     // diverge here based on whether there is a current file...
-    if (current.file) {
+    if (current.experiment.file) {
         if (electron) {
             await electron.files.save(
-                $state.snapshot(current.file.file),
+                $state.snapshot(current.experiment.file.file),
                 content
             )
         } else {
             // create writable
-            let file = await current.file.handle.createWritable();
+            let file = await current.experiment.file.handle.createWritable();
             // write to file
             file.seek(0);
             file.write(content);
@@ -87,14 +87,14 @@ export async function file_save_as() {
             { description: "JavaScript Scripts", accept: {"text/javascript": [".js"]} },
             { description: "Data Files", accept: {"text/csv": [".csv"], "application/json": [".json"]}},
         ],
-        current.file?.file || "untitled.py"
+        current.experiment.file?.file || "untitled.py"
     )
     // abort if no file
     if (file === undefined) {
         return
     }
     // set file
-    current.file = file
+    current.experiment.file = file
     // save
     await file_save()
 }

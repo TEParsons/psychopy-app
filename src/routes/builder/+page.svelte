@@ -18,12 +18,16 @@
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => current.file = parsePath(file))
+        electron.windows.listen("fileOpen", (evt, file) => current.experiment.file = parsePath(file))
     }
     
 </script>
 
-<title>PsychoPy Builder: {current.experiment.filename}</title>
+{#if current.experiment.file}
+    <title>PsychoPy Builder: {current.experiment.file?.name}</title>
+{:else}
+    <title>PsychoPy Builder</title>
+{/if}
 <Shortcuts
     callbacks={callbacks}
 />

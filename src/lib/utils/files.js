@@ -72,7 +72,7 @@ export async function browseFileOpen(
         }
         // get file blob from handle
         let file = await handle[0].getFile();
-        // populate current.file
+        // parse file
         output = parsePath(file.name)
         // add handle
         output.handle = file;

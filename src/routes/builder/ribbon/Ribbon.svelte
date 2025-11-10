@@ -115,14 +115,14 @@
             icon="/icons/btn-undo.svg" 
             label="Undo{lastAction}" 
             onclick={undo} 
-            disabled={current.file === null || !current.experiment.history.past.length} 
+            disabled={current.experiment.file === null || !current.experiment.history.past.length} 
             borderless
         />
         <IconButton 
             icon="/icons/btn-redo.svg" 
             label="Redo {nextAction}" 
             onclick={redo} 
-            disabled={current.file === null || !current.experiment.history.future.length} 
+            disabled={current.experiment.file === null || !current.experiment.history.future.length} 
             borderless
         />
         <IconButton 
@@ -187,7 +187,7 @@
                 icon="/icons/btn-send{current.experiment.pilotMode ? "pilot" : "run"}.svg" 
                 label="Send experiment to runner" 
                 onclick={sendToRunner}
-                disabled={!current.experiment.filename}
+                disabled={!current.experiment.file}
                 borderless
             /> 
         {/if}

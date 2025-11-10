@@ -38,6 +38,6 @@
         CANCEL: (evt) => {},
     }}
 >
-    '{current.experiment.filename}' has unsaved changes, save now?
+    '{current.experiment.file.name}' has unsaved changes, save now?
 </MessageDialog>
 {/if}

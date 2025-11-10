@@ -16,7 +16,7 @@
             { name: 'All Files', extensions: ["*"] }
         ])
         if (file) {
-            current.files.push(file)
+            current.experiment.files.push(file)
         }
     }
 </script>
