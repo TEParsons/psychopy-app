@@ -75,7 +75,7 @@
         hspan={1}
         vspan={python ? 2 : 3}
     ></Panel>
-    {#if python}
+    {#if python?.ready}
         <Panel
             title=Console
             hspan={5}

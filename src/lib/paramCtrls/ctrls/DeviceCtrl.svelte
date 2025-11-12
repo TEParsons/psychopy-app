@@ -60,7 +60,7 @@
     {/each}
 </select>
 
-{#if python}
+{#if python?.ready}
     <CompactButton
         icon="/icons/btn-devices.svg"
         onclick={(evt) => showDialog = true}

@@ -1,14 +1,25 @@
-const { app, dialog, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('node:path');
 const fs = require("fs");
+const proc = require("child_process");
+const { VelopackApp } = require('velopack');
+const { app, dialog, BrowserWindow, ipcMain, shell } = require('electron');
+
+// make sure psychopy4 folder exists before importing subpackages
+if (!fs.existsSync(path.join(app.getPath("appData"), "psychopy4"))) {
+  fs.mkdirSync(
+    path.join(app.getPath("appData"), "psychopy4")
+  )
+}
+
 const { python, startPython } = require("./python.js");
 const { uv } = require("./uv.js");
 const logging = require("./logging.js");
-const proc = require("child_process");
-const { VelopackApp } = require('velopack');
 const appVersion = require('./version.json');
 
 VelopackApp.build().run();
+
+// show debug tools if in dev mode
+const isDev = !app.isPackaged;
 
 
 var svelte = {
@@ -57,8 +68,6 @@ const createWindow = () => {
     1000
   )
   // start the svelte side of things
-  const isDev = !app.isPackaged;
-
   if (isDev) {
     // Development: use Vite dev server
     logging.log(`Starting Vite dev server at ${svelte.address.host}:${svelte.address.port}`)
@@ -96,11 +105,11 @@ const createWindow = () => {
   }
 
   // show when Svelte has loaded and min time has been reached
-  Promise.all(Object.values(ready).map(val => val.promise)).then(() => newWindow("", true, false, false))
+  Promise.all(Object.values(ready).map(val => val.promise)).then(() => newWindow("", true, false))
 };
 
 
-function newWindow(target = null, show = true, fullscreen = true, debug = true) {
+function newWindow(target = null, show = true, fullscreen = true, debug = isDev) {
   // create window
   let win = new BrowserWindow({
     icon: path.join(__dirname, 'favicon@2x.png'),
@@ -258,6 +267,7 @@ const handlers = {
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
     start: ipcMain.handle("python.start", (evt) => python.start()),
+    ready: ipcMain.handle("python.ready", async (evt) => await python.liaison.ready.promise),
     uv: {
       dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),
       executable: ipcMain.handle("python.uv.executable", (evt) => python.uv.executable),

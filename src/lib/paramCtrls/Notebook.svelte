@@ -49,7 +49,7 @@
         if (element.params?.["Code Type"]?.val === "Auto->JS") {
             for (let [key, jskey] of Object.entries(translatableParams)) {
                 if (element.params[jskey]) {
-                    if (python) {
+                    if (python?.ready) {
                         // start off just saying "Translating..."
                         element.params[jskey].val = "Translating..."
                         // do translation in Python

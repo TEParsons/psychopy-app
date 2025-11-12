@@ -69,7 +69,7 @@
             />
         </div>
     </div>
-    {#if python}
+    {#if python?.ready}
         {#await preview}
             <div class=preview>
             </div>

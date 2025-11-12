@@ -16,7 +16,7 @@
     })
 
     function loadComponents(evt) {
-        if (python) {
+        if (python?.ready) {
             // request profiles from Python
             profiles.promise = python.liaison.send({
                 command: "run",
@@ -82,7 +82,7 @@
 </script>
 <div id="components">
     <div class=ctrls>
-        {#if python}
+        {#if python?.ready}
             <CompactButton
                 icon="/icons/btn-add.svg"
                 tooltip="Get more..."

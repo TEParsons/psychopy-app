@@ -12,6 +12,10 @@
     })
     
     async function setup() {
+        // abort if on browser
+        if (!python) {
+            return
+        }
         // do we already have UV and Python?
         ready.message = "Checking Python..."
         let hasUV = await python.uv.exists().catch(err => ready.status.reject(err))

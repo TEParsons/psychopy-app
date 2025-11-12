@@ -145,7 +145,7 @@
             icon="/icons/btn-monitors.svg" 
             label="Monitor centre" 
         />         -->
-        {#if electron}
+        {#if python?.ready}
             <IconButton
                 icon="/icons/btn-devices.svg"
                 label="Open the device manager"
@@ -185,7 +185,7 @@
             disabled={current.experiment === null}
         />  
         
-        {#if electron}
+        {#if python?.ready}
             <IconButton 
                 icon="/icons/btn-send{current.experiment.pilotMode ? "pilot" : "run"}.svg" 
                 label="Send experiment to runner" 
@@ -196,7 +196,7 @@
         {/if}
     </RibbonSection>
 
-    {#if electron}
+    {#if python?.ready}
         <RibbonSection label=Desktop icon="/icons/rbn-desktop.svg">
             <IconButton 
                 icon="/icons/btn-compilepy.svg" 

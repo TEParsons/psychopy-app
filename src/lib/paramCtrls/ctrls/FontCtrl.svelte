@@ -48,7 +48,7 @@
         }
         // vary the warning according to whether we're on local
         if (!installed) {
-            if (python) {
+            if (python?.ready) {
                 valid.warning = `Font '${param.val}' is not installed. Try installing it via the Font Manager.`
             } else {
                 valid.warning = `Font '${param.val}' is not web safe.`
@@ -64,7 +64,7 @@
     {@attach element => param.registerValidator("font", validateFont, 5)}
     {...attachments}
 />
-{#if python}
+{#if python?.ready}
     <CompactButton 
         icon="/icons/btn-case.svg"
         tooltip="Open font manager"

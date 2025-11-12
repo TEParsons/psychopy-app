@@ -31,7 +31,7 @@ export async function optionsFromParam(param) {
         let output = [];
         // if either allowed labels or values are a Python function, execute it
         if (typeof param.allowedVals === "string" && param.allowedVals.startsWith("python:///")) {
-            if (python) {
+            if (python?.ready) {
                 param.allowedVals = await python.liaison.send({
                     command: "run",
                     args: [param.allowedVals.replace("python:///", "")]
@@ -44,7 +44,7 @@ export async function optionsFromParam(param) {
             }
         }
         if (typeof param.allowedLabels === "string" && param.allowedLabels.startsWith("python:///")) {
-            if (python) {
+            if (python?.ready) {
                 param.allowedLabels = await python.liaison.send({
                     command: "run",
                     args: [param.allowedLabels.replace("python:///", "")]

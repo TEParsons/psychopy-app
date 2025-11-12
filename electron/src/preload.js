@@ -47,6 +47,7 @@ const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
   start: () => ipcRenderer.invoke("python.start").then(resp => resp),
+  onready: (callback) => ipcRenderer.invoke("python.ready").then(resp => callback(resp)),
   uv: {
     dir: () => ipcRenderer.invoke("python.uv.dir").then(resp => resp),
     executable: () => ipcRenderer.invoke("python.uv.executable").then(resp => resp),
