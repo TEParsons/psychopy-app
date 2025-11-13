@@ -53,11 +53,12 @@
 		"marked": "^16.3.0",
 		"monaco-editor": "^0.52.2",
 		"path-browserify": "^1.0.1",
+		"tar": "^7.5.2",
 		"velopack": "^0.0.1350-g3ba32af",
 		"xml-formatter": "^3.6.5"
 	},
 	"optionalDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "*",
-		"@electron-forge/maker-dmg": "*"
+		"@electron-forge/maker-dmg": "*",
+		"@rollup/rollup-linux-x64-gnu": "*"
 	}
 }

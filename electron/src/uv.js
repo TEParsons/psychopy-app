@@ -4,7 +4,8 @@ import { platform , arch } from "process";
 import logging from "./logging.js";
 import path from "path";
 import fs from "fs";
-import extract from "extract-zip";
+import unzip from "extract-zip";
+import { extract as untar } from "tar";
 import appVersion from "./version.json" with { type: "json" };
 import { python } from "./python.js"
 
@@ -82,13 +83,27 @@ export async function installUV() {
         resp => resp.blob()
     ).then(
         async blob => {
-            let zipfile = path.join(uv.dir, ".uv" + path.extname(installers[platform][arch]));
-            // write zip file
+            // write to a zipped file
+            let zipfile = path.join(uv.dir, installers[platform][arch]);
             fs.writeFileSync(zipfile, await blob.bytes());
-            // extract zip file
-            await extract(zipfile, {
-                dir: uv.dir
-            })
+            console.log(zipfile)
+            // extract file
+            switch (path.extname(zipfile)) {
+                // extract zip file...
+                case ".zip":
+                    await unzip(zipfile, {
+                        dir: uv.dir
+                    })
+                // extract tar.gz file...
+                case ".gz":
+                    untar({
+                        file: zipfile,
+                        cwd: uv.dir,
+                        strip: 1,
+                        sync: true
+                    })
+                    // move 
+            }
             // delete zip file
             fs.unlink(zipfile, err => {if (err) throw err})
         }
