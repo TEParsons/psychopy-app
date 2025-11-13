@@ -62,7 +62,7 @@ export async function installUV() {
         resp => resp.blob()
     ).then(
         async blob => {
-            let zipfile = path.join(uv.dir, ".uv.zip");
+            let zipfile = path.join(uv.dir, ".uv" + path.extname(installers[platform][arch]));
             // write zip file
             fs.writeFileSync(zipfile, await blob.bytes());
             // extract zip file
@@ -114,9 +114,9 @@ export function installPython(
     // get executable
     python.details.executable = findPython()
     // install PsychoPy and liaison
-    proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/liaison --python "${python.details.executable}"`)
+    proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison --python "${python.details.executable}"`)
     if (version.psychopy === "dev") {
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy@dev --python "${python.details.executable}"`)
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`)
     } else {
         proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
     }
@@ -258,7 +258,7 @@ export var uv = {
             win => win.webContents.send("uv", message)
         )
     },
-    exists: () => fs.existsSync(uv.executable + ".exe"),
+    exists: () => fs.globSync("uv.*", {cwd: uv.dir}).length > 0,
     installUV: installUV,
     installPython: installPython,
     findPython: findPython,
