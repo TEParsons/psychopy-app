@@ -11,9 +11,6 @@ import { python } from "./python.js"
 let decoder = new TextDecoder();
 
 
-
-console.log("HIT", process.report.getReport().header?.glibcVersionRuntime)
-
 /**
  * Execute a function with output sent to the front end
  */
