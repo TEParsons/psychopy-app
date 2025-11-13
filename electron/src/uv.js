@@ -10,6 +10,10 @@ import { python } from "./python.js"
 
 let decoder = new TextDecoder();
 
+
+
+console.log("HIT", process.report.getReport().header?.glibcVersionRuntime)
+
 /**
  * Execute a function with output sent to the front end
  */
@@ -52,7 +56,26 @@ export async function installUV() {
             arm64: "uv-aarch64-apple-darwin.tar.gz"
         },
         linux: {
-
+            x64: "uv-x86_64-unknown-linux-gnu.tar.gz",
+            x86: "uv-i686-unknown-linux-gnu.tar.gz",
+            arm: "uv-armv7-unknown-linux-gnueabihf.tar.gz",
+            arm64: "uv-aarch64-unknown-linux-gnu.tar.gz",
+            ppc: "uv-powerpc64-unknown-linux-gnu.tar.gz",
+            s390x: "uv-s390x-unknown-linux-gnu.tar.gz",
+            ppc64: "uv-powerpc64le-unknown-linux-gnu.tar.gz",
+            ricsv: "uv-riscv64gc-unknown-linux-gnu.tar.gz",
+        }
+    }
+    // Linux requires some further distinctions
+    if (platform === "linux") {
+        // use different installers for MUSL linux
+        if (!process.report.getReport().header?.glibcVersionRuntime) {
+            installers.linux = {
+                x64: "uv-x86_64-unknown-linux-musl.tar.gz",
+                x86: "uv-i686-unknown-linux-musl.tar.gz",
+                arm: "uv-armv7-unknown-linux-musleabihf.tar.gz",
+                arm64: "uv-aarch64-unknown-linux-musl.tar.gz",
+            }
         }
     }
     // get relevant executable 
