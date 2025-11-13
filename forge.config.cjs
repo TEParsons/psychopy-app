@@ -15,7 +15,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        // background: '',
+        background: './static/branding/mac-install-backboard.png',
         icon: './static/branding/favicon.icns',
         format: 'ULFO'
       }
