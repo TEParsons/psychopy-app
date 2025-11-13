@@ -15,6 +15,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-dmg',
       config: {
+        title: 'PsychoPy',
         background: './static/branding/mac-install-backboard.png',
         icon: './static/branding/favicon.icns',
         format: 'ULFO'
