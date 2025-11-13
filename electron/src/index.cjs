@@ -21,6 +21,15 @@ VelopackApp.build().run();
 // show debug tools if in dev mode
 const isDev = !app.isPackaged;
 
+// figure out best file to use for a favicon
+var favicon = path.join(__dirname, 'favicon')
+if (process.platform === "win32") {
+  favicon += ".ico"
+} else if (process.platform === "darwin") {
+  favicon += ".icns"
+} else {
+  favicon += ".svg"
+}
 
 var svelte = {
   address: {
@@ -43,7 +52,7 @@ clipboard = undefined
 const createWindow = () => {
   // create splash
   windows.splash = new BrowserWindow({
-    icon: path.join(__dirname, 'favicon@2x.png'),
+    icon: favicon,
     title: "PsychoPy",
     width: 720,
     height: 400,
@@ -112,7 +121,7 @@ const createWindow = () => {
 function newWindow(target = null, show = true, fullscreen = true, debug = isDev) {
   // create window
   let win = new BrowserWindow({
-    icon: path.join(__dirname, 'favicon@2x.png'),
+    icon: favicon,
     width: 940,
     height: 520,
     show: false,
