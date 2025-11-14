@@ -86,7 +86,6 @@ export async function installUV() {
             // write to a zipped file
             let zipfile = path.join(uv.dir, installers[platform][arch]);
             fs.writeFileSync(zipfile, await blob.bytes());
-            console.log(zipfile)
             // extract file
             switch (path.extname(zipfile)) {
                 // extract zip file...
