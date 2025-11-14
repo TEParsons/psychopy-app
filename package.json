@@ -11,18 +11,26 @@
 		"appId": "psychopy4",
 		"productName": "PsychoPy",
 		"copyright": "Copyright PsychoPy® 2024 Open Science Tools Ltd.",
+		"asar": true,
+		"directories": {
+			"output": "out"
+		},
 		"win": {
+			"target": ["nsis"],
 			"icon": "./static/branding/favicon.ico"
 		},
 		"mac": {
-			"background": "./static/branding/mac-install-backboard.png",
+			"target": ["dmg"],
 			"icon": "./static/branding/favicon.icns"
 		},
 		"linux": {
-			"target": ["AppImage", "snap"],
+			"target": ["AppImage"],
 			"executableName": "PsychoPy",
 			"icon": "./static/branding/favicon.png",
 			"category": "Science"
+		},
+		"dmg": {
+			"background": "./static/branding/mac-install-backboard.png"
 		}
 	},
 	"scripts": {
@@ -32,10 +40,7 @@
 		"svelte:prepare": "svelte-kit sync || echo ''",
 		"svelte:check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"svelte:check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"electron:start": "electron-forge start",
-		"electron:package": "electron-forge package",
-		"electron:make": "electron-forge make",
-		"electron:publish": "electron-forge publish",
+		"electron:start": "electron electron/src/index.cjs",
 		"electron:lint": "echo \"No linting configured\"",
 		"velopack:pack": "vpk pack --packId OpenScienceTools.PsychoPy4 --packVersion $npm_package_version --packDir ./out/psychopy4-win32-x64 --mainExe psychopy4.exe --outputDir ./out/releases",
 		"velopack:pack:win": "vpk pack --packId OpenScienceTools.PsychoPy4 --packVersion %npm_package_version% --packDir ./out/psychopy4-win32-x64 --mainExe psychopy4.exe --outputDir ./out/releases",
