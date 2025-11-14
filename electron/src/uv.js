@@ -87,21 +87,20 @@ export async function installUV() {
             let zipfile = path.join(uv.dir, installers[platform][arch]);
             fs.writeFileSync(zipfile, await blob.bytes());
             // extract file
-            switch (path.extname(zipfile)) {
+            if (path.extname(zipfile) === ".zip") {
                 // extract zip file...
-                case ".zip":
-                    await unzip(zipfile, {
-                        dir: uv.dir
-                    })
+                await unzip(zipfile, {
+                    dir: uv.dir
+                })
+            }
+            if (path.extname(zipfile) === ".gz") {
                 // extract tar.gz file...
-                case ".gz":
-                    untar({
-                        file: zipfile,
-                        cwd: uv.dir,
-                        strip: 1,
-                        sync: true
-                    })
-                    // move 
+                untar({
+                    file: zipfile,
+                    cwd: uv.dir,
+                    strip: 1,
+                    sync: true
+                })
             }
             // delete zip file
             fs.unlink(zipfile, err => {if (err) throw err})
