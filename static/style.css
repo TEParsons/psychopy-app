@@ -1,7 +1,6 @@
 @import url("./fonts/Nunito.css");
 @import url("./fonts/NotoSans.css");
 @import url("./fonts/JetBrainsMono.css");
-@import url('./fonts/NotoColorEmoji.css');
 
 :root {
     /* colors */
@@ -33,7 +32,7 @@
     --text-on-outline: var(--hltext);
     /* fonts */
     --branded: Nunito;
-    --emoji: Noto Color Emoji;
+    --emoji: Noto Color Emoji, Noto Sans Symbols;
     --body: Noto Sans, var(--emoji);
     --heading: Noto Sans, var(--emoji);
     --mono: JetBrains Mono, var(--emoji);
