@@ -203,6 +203,10 @@ app.on("quit", (evt, code) => {
   svelte.process.kill(0);
   // close python
   python.process.kill(0);
+  if (process.platform !== 'win32') {
+    // on Linux and Mac, killing the Python process doesn't kill PTB, it has to be killed by PID
+    require("process").kill(python.process.pid)
+  }
 })
 
 
