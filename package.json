@@ -26,7 +26,7 @@
 		"linux": {
 			"target": ["AppImage"],
 			"executableName": "PsychoPy",
-			"icon": "./static/branding/favicon.png",
+			"icon": "./static/branding/favicon@1024x1024.png",
 			"category": "Science"
 		},
 		"dmg": {

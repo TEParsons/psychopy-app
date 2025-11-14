@@ -28,7 +28,7 @@ if (process.platform === "win32") {
 } else if (process.platform === "darwin") {
   favicon += ".icns"
 } else {
-  favicon += ".svg"
+  favicon += "@1024x1024.png"
 }
 
 var svelte = {
