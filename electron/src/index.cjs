@@ -67,34 +67,36 @@ const createWindow = () => {
 
   // keep track of ready statuses
   let ready = {
-    svelte: Promise.withResolvers(),
-    mintime: Promise.withResolvers()
+    svelte: Promise.withResolvers()
   }
-
-  // start a 1s timer
-  setTimeout(
-    () => ready.mintime.resolve(),
-    1000
-  )
+  // start timers 
+  let mintime = new Promise((resolve, reject) => setTimeout(resolve, 1000));
+  let maxtime = new Promise((resolve, reject) => setTimeout(resolve, 10000));
   // start the svelte side of things
   if (isDev) {
-    // Development: use Vite dev server
+    // use Vite dev server for development
     logging.log(`Starting Vite dev server at ${svelte.address.host}:${svelte.address.port}`)
     svelte.process = proc.exec(`vite dev --host=${svelte.address.host} --port=${svelte.address.port}`);
     svelte.process.stdout.on("data", msg => {
-      logging.log(msg, "STDOUT")
-    // mark as ready once we have the all clear from vite
-      if (msg.includes("➜") && msg.includes(svelte.address.host) && msg.includes(`${svelte.address.port}`)) {
-        logging.log(`Started svelte at ${svelte.address.host}:${svelte.address.port}`)
-      // mark ready
+      // look for ready message
+      let readyMatch = msg.match(
+        /➜  Local:   http:\/\/(?<host>[\w\d]+):(?<port>[\w\d]+)/
+      )
+      // if this is it...
+      if (readyMatch) {
+        // store final host and port
+        svelte.address.host = readyMatch.groups.host
+        svelte.address.port = readyMatch.groups.port
+        // mark as ready
         ready.svelte.resolve()
+        // log
+        logging.log(
+          `Started Vite dev server at ${svelte.address.host}:${svelte.address.port}`
+        )
       }
     })
-    svelte.process.stderr.on("data", msg => {
-      logging.log(msg, "STDERR")
-    })
   } else {
-    // Production: serve static files via HTTP server
+    // use express to serve static files in production
     const express = require('express');
     const app = express();
 
@@ -113,8 +115,16 @@ const createWindow = () => {
     svelte.process = { kill: () => server.close() };
   }
 
-  // show when Svelte has loaded and min time has been reached
-  Promise.all(Object.values(ready).map(val => val.promise)).then(() => newWindow("", true, false))
+  // show when Svelte has loaded and min time has been reached, or when max time has been reached
+  Promise.any([
+    Promise.all([
+      mintime,
+      ...Object.values(ready).map(val => val.promise)
+    ]),
+    maxtime
+  ]).then(
+    () => newWindow("", true, false)
+  )
 };
 
 
@@ -189,6 +199,7 @@ app.on('window-all-closed', () => {
   }
 });
 app.on("quit", (evt, code) => {
+  console.log("HIT")
   // close svelte
   svelte.process.kill(0);
   // close python
