@@ -199,7 +199,6 @@ app.on('window-all-closed', () => {
   }
 });
 app.on("quit", (evt, code) => {
-  console.log("HIT")
   // close svelte
   svelte.process.kill(0);
   // close python

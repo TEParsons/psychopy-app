@@ -150,7 +150,7 @@ export function installPython(
     // install PsychoPy and liaison
     proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison --python "${python.details.executable}"`)
     if (version.psychopy === "dev") {
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`)
+        proc.execSync(`"${uv.executable}" pip install git+https://github.com/TEParsons/psychopy-lib@dev-sys-wx-dep --python "${python.details.executable}"`)
     } else {
         proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
     }
@@ -292,7 +292,7 @@ export var uv = {
             win => win.webContents.send("uv", message)
         )
     },
-    exists: () => fs.globSync("uv.*", {cwd: uv.dir}).length > 0,
+    exists: () => fs.globSync("uv*", {cwd: uv.dir}).length > 0,
     installUV: installUV,
     installPython: installPython,
     findPython: findPython,
