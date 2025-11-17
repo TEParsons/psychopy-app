@@ -47,7 +47,7 @@ const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
   start: () => ipcRenderer.invoke("python.start").then(resp => resp),
-  onready: (callback) => ipcRenderer.invoke("python.ready").then(resp => callback(resp)),
+  started: () => ipcRenderer.invoke("python.started").then(resp => resp),
   uv: {
     dir: () => ipcRenderer.invoke("python.uv.dir").then(resp => resp),
     executable: () => ipcRenderer.invoke("python.uv.executable").then(resp => resp),
@@ -83,7 +83,8 @@ const python = {
   },
   liaison: {
     constants: () => ipcRenderer.invoke("python.liaison.constants").then(resp => resp),
-    send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp)
+    send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp),
+    ready: () => ipcRenderer.invoke("python.liaison.ready").then(resp => resp)
   },
   runScript: (file, ...args) => ipcRenderer.invoke("python.runScript", file, ...args).then(resp => resp)
 }

@@ -123,7 +123,7 @@ const createWindow = () => {
     ]),
     maxtime
   ]).then(
-    () => newWindow("", true, false)
+    () => newWindow("builder", true, false)
   )
 };
 
@@ -132,8 +132,8 @@ function newWindow(target = null, show = true, fullscreen = true, debug = isDev)
   // create window
   let win = new BrowserWindow({
     icon: favicon,
-    width: 940,
-    height: 520,
+    width: 1280,
+    height: 800,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -286,7 +286,7 @@ const handlers = {
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
     start: ipcMain.handle("python.start", (evt) => python.start()),
-    ready: ipcMain.handle("python.ready", async (evt) => await python.liaison.ready.promise),
+    started: ipcMain.handle("python.started", (evt) => python.started),
     uv: {
       dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),
       executable: ipcMain.handle("python.uv.executable", (evt) => python.uv.executable),
@@ -308,7 +308,8 @@ const handlers = {
     },
     liaison: {
       constants: ipcMain.handle("python.liaison.constants", (evt) => python.liaison.constants),
-      send: ipcMain.handle("python.liaison.send", (evt, message, timeout = 1000) => python.liaison.send(message, timeout))
+      send: ipcMain.handle("python.liaison.send", (evt, message, timeout = 1000) => python.liaison.send(message, timeout)),
+      ready: ipcMain.handle("python.liaison.ready", async (evt) => await python.liaison.ready.promise)
     },
     runScript: ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
   }
