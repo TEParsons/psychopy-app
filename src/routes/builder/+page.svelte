@@ -12,6 +12,7 @@
     import path from "path-browserify";
     import { electron } from "$lib/globals.svelte";
     import { parsePath } from "$lib/utils/files";
+    import SetupPython from '../../lib/python/SetupPython.svelte';
 
     // reference current in context for ease of access
     setContext("current", current)
@@ -59,6 +60,7 @@
     >
         <FlowPanel></FlowPanel>
     </Panel>
+    <SetupPython />
 </Frame>
 
 <style>

@@ -10,6 +10,7 @@
     import StdoutOutput from "./outputs/StdoutOutput.svelte";
     import PavloviaOutput from "./outputs/PavloviaOutput.svelte";
     import { electron } from "$lib/globals.svelte";
+    import SetupPython from "../../lib/python/SetupPython.svelte";
 
     setContext("current", current)
 
@@ -90,4 +91,5 @@
             </NotebookPage>
         </Notebook>
     </Panel>
+    <SetupPython />
 </Frame>

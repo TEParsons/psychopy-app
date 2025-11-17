@@ -3,8 +3,9 @@ export var electron = $state(window.electron)
 export var python = $state(window.python)
 // mark as ready once liaison loads
 if (python) {
-    python.onready(
-        evt => python.ready = true
+    // mark Python as ready once Liaison is
+    python.liaison.ready().then(
+        val => python.ready = val
     )
 }
 

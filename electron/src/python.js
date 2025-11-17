@@ -32,6 +32,7 @@ function getConstants() {
 export async function startPython() {
   // log start
   logging.log("Starting Python...")
+  python.started = true
   // get constants
   python.liaison.constants = await getConstants().catch(err => console.error(err));
   // spawn a Python process
@@ -46,15 +47,11 @@ export async function startPython() {
   python.process.on("exit", evt => {
       // log stopped
       logging.log(`Python process stopped, reason: ${evt?.message}`);
-      // mark dead
-      python.details.alive = false
   })
   // actions to take on spawn
   python.process.on("spawn", evt => {
     // log started
     logging.log("Python process started");
-    // mark alive
-    python.details.alive = true;
     // add listener for Liaison waking up
     python.process.stdout.on("data", evt => {
       if (decoder.decode(evt) === `${python.liaison.constants.START_MARKER}@${python.liaison.address}`) {
@@ -66,10 +63,10 @@ export async function startPython() {
         python.socket.onopen = evt => {
           logging.log(`Opened websocket on ws://${python.liaison.address}`);
           // resolve ready promise
-          python.liaison.ready.resolve();
+          python.liaison.ready.resolve(true);
         }
-        python.socket.onclose = evt => logging.error(`Closed websocket on ws://${python.liaison.address}, reason: ${evt.reason}`)
-        python.socket.onerror = evt => logging.error(`Websocket error on ws://${python.liaison.address}: ${evt.message}`)
+        python.socket.onclose = evt => logging.error(`Closed websocket on ws://${python.liaison.address}`, evt.reason)
+        python.socket.onerror = evt => python.liaison.ready.reject()
         // stop listening for wakeup
         python.process.stdout.on(
           "data", evt => python.output.stdout(evt)
@@ -87,7 +84,7 @@ export async function startPython() {
             }, 
             30000
           ).catch(
-            err => console.error(`Liaison isn't responding (sent a ping and didn't receive a pong within 30s)`)
+            err => logging.error(`Liaison isn't responding (sent a ping and didn't receive a pong within 30s)`)
           )
         }, 
         30000
@@ -112,7 +109,7 @@ export async function startPython() {
         }
       )
     }).catch(
-      err => console.error(`Liaison timed out`, err)
+      err => logging.error(`Liaison timed out`, err)
     )
   })
 }
@@ -280,12 +277,12 @@ class PythonShell {
 export const python = {
   details: {
     executable: uv.findPython(),
-    dir: path.join(app.getPath("appData"), "psychopy4", ".python", appVersion.major),
-    alive: false,
+    dir: path.join(app.getPath("appData"), "psychopy4", ".python", appVersion.major)
   },
   runScript: runScript,
   uv: uv,
   start: startPython,
+  started: false,
   output: {
     stdout: (message) => {
       // if given a buffer, decode it

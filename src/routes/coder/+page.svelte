@@ -10,6 +10,7 @@
     import FileExplorer from "./files/FileExplorer.svelte";
     import { electron, python } from "$lib/globals.svelte";
     import path from "path-browserify";
+    import SetupPython from "../../lib/python/SetupPython.svelte";
     
 
     // reference current in context for ease of access
@@ -84,4 +85,5 @@
             <ShellNotebook />
         </Panel>
     {/if}
+    <SetupPython />
 </Frame>
