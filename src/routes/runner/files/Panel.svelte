@@ -2,23 +2,13 @@
     import { RadioButton, RadioGroup, CompactButton, Button } from "$lib/utils/buttons"
     import { browseFileOpen } from "$lib/utils/files";
     import { getContext } from "svelte";
+    import { fileOpen } from "../callbacks.svelte";
 
     let {
         value=$bindable()
     } = $props();
     
     let current = getContext("current");
-
-    async function addFile(evt) {
-        let file = await browseFileOpen([
-            { name: "PsychoPy Experiments", extensions: ["psyexp"] },
-            { name: "Python Scripts", extensions: ["py"] },
-            { name: 'All Files', extensions: ["*"] }
-        ])
-        if (file) {
-            current.experiment.files.push(file)
-        }
-    }
 </script>
 
 <div class=panel>
@@ -45,7 +35,7 @@
         <Button 
             label="Add file"
             icon="/icons/btn-add.svg"
-            onclick={addFile}
+            onclick={evt => fileOpen(current, false)}
             horizontal
         />
     </div>

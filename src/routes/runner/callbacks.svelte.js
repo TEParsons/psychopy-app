@@ -1,0 +1,80 @@
+import path from "path-browserify";
+import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
+import { electron } from "$lib/globals.svelte"
+
+
+
+export async function addFile(current, file) {
+    if (file.ext === ".psyrun") {
+        // if given a .psyrun, add all files contained
+        for (let subfile of await loadPsyrun(file)) {
+            addFile(current, subfile)
+        }
+    } else {
+        // otherwise just add the given file
+        current.files.push(file)
+    }
+}
+
+export async function loadPsyrun(file) {
+    // load JSON file
+    let content = await electron.files.load(file.file)
+    // convert paths to file objects with details
+    let output = []
+    for (let item of JSON.parse(content)) {
+        output.push(
+            parsePath(
+                path.join(item.path, item.file)
+            )
+        )
+    }
+    
+    return output
+}
+
+export function fileNew(current) {
+    // clear current files
+    current.files.length = 0
+}
+
+/**
+ * Open a file browser to get files.
+ * 
+ * @param {object} current Current Runner setup (from getContext)
+ * @param {boolean} replace If true, then replace existing files with ones selected
+ */
+export async function fileOpen(current, replace=false) {
+    // work out allowed files
+    let allowedFiles
+    if (replace) {
+        allowedFiles = [
+            // only psyrun if we're replacing
+            { description: "PsychoPy Runner Configurations", accept: {"application/x-python-code": [".psyrun"]} }
+        ]
+    } else {
+        // psyexp, py and psyrun if we're adding
+        allowedFiles = [
+            { description: "PsychoPy Experiments", accept: {"application/xml": [".psyexp"]} },
+            { description: "Python Scripts", accept: {"application/x-python-code": [".py"]} },
+            { description: "PsychoPy Runner Configurations", accept: {"application/x-python-code": [".psyrun"]} }
+        ]
+    }
+    // open file browser
+    let file = await browseFileOpen(
+        allowedFiles,
+        ""
+    )
+    // abort if no file
+    if (file === undefined) {
+        return
+    }
+    // if replacing, clear existing files
+    if (replace) {
+        fileNew(current)
+    }
+    // add file(s)
+    await addFile(current, file)
+}
+
+
+export { newWindow } from "$lib/utils/views.svelte"

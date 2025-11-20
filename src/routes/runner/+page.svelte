@@ -11,13 +11,15 @@
     import PavloviaOutput from "./outputs/PavloviaOutput.svelte";
     import { electron } from "$lib/globals.svelte";
     import SetupPython from "../../lib/python/SetupPython.svelte";
+    import { addFile } from "./callbacks.svelte";
+    import Ribbon from "./ribbon/Ribbon.svelte";
 
     setContext("current", current)
 
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => current.experiment.files.push(file))
+        electron.windows.listen("fileOpen", (evt, file) => addFile(current, file))
     }
 
     let file = $state.raw();
@@ -30,9 +32,7 @@
     cols={3}
 >
     {#snippet ribbon()}
-        <div>
-            {file?.file}
-        </div>
+        <Ribbon />
     {/snippet}
     <Panel
         title=Files
