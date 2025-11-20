@@ -255,8 +255,9 @@ const handlers = {
         id => String(windows[id].webContents.getURL()).startsWith(`http://${svelte.address.host}:${svelte.address.port}/${target}`)
       )),
       send: ipcMain.handle("electron.windows.send", (evt, id, tag, data) => windows[id].webContents.send(tag, data)),
-      focus: ipcMain.handle("electron.windows.focus", (evt, id) => windows[id].focus()),
-      close: ipcMain.handle("electron.windows.close", (evt, id) => windows[id].close()),
+      focus: ipcMain.handle("electron.windows.focus", (evt, id) => windows[id || evt.sender.id].focus()),
+      devtools: ipcMain.handle("electron.windows.devtools", (evt, id) => windows[id || evt.sender.id].openDevTools()),
+      close: ipcMain.handle("electron.windows.close", (evt, id) => windows[id || evt.sender.id].close()),
     },
     paths: {
       documents: ipcMain.handle("electron.paths.documents", (evt) => app.getPath("documents")),

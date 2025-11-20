@@ -39,3 +39,31 @@ export async function openIn(file, target) {
         await electron.windows.focus(id)
     }
 }
+
+/**
+ * Show the first of a particular window, or open one if none are open
+ */
+export async function showWindow(target) {
+    if (electron) {
+        // get windows matching target
+        let windows = await electron.windows.get(target);
+        // either get first ID, or make a new window and use its ID
+        let id;
+        if (windows.length) {
+            id = windows[0]
+        } else {
+            id = await electron.windows.new(target)
+        }
+        // focus window
+        await electron.windows.focus(id)
+    }
+}
+
+/**
+ * Show the devtools panel in the current window
+ */
+export function showDevTools() {
+    if (electron) {
+        electron.windows.devtools()
+    }   
+}

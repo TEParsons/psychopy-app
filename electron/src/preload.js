@@ -9,6 +9,7 @@ const electron = {
     send: (id, tag, data) => ipcRenderer.invoke("electron.windows.send", id, tag, data).then(resp => resp),
     listen: (tag, lsnr) => ipcRenderer.on(tag, lsnr),
     focus: (id) => ipcRenderer.invoke("electron.windows.focus", id).then(resp => resp),
+    devtools: (id) => ipcRenderer.invoke("electron.windows.devtools", id).then(resp => resp),
     close: (id) => ipcRenderer.invoke("electron.windows.close", id).then(resp => resp),
   },
   paths: {

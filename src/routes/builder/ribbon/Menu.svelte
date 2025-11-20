@@ -19,6 +19,10 @@
         // edit
         undo,
         redo,
+        // view
+        newWindow,
+        showWindow,
+        showDevTools,
         // experiment
         copyRoutine,
         pasteRoutine,
@@ -27,8 +31,7 @@
         sendToRunner,
         compilePython,
         compileJS,
-        runPython,
-        newWindow,
+        runPython
     } from '../callbacks.svelte.js';
 
     let current = getContext("current");
@@ -130,6 +133,29 @@
             icon="/icons/btn-find.svg"
             onclick={evt => show.findDlg = true}
             shortcut="find"
+        />
+    </SubMenu>
+
+    <SubMenu label="View" icon="/icons/rbn-windows.svg">
+        <MenuItem 
+            label="Show Builder"
+            onclick={evt => showWindow("builder")}
+        />
+        <MenuItem 
+            label="Show Coder"
+            onclick={evt => showWindow("coder")}
+        />
+        <MenuItem 
+            label="Show Runner"
+            onclick={evt => showWindow("runner")}
+        />
+
+        <MenuSeparator />
+
+        <MenuItem 
+            label="Show developer tools"
+            onclick={showDevTools}
+            shortcut="showDevTools"
         />
     </SubMenu>
 

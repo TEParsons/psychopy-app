@@ -2,7 +2,7 @@ import { electron, projects, python } from '$lib/globals.svelte.js';
 import { current } from './globals.svelte.js';
 import xmlFormat from 'xml-formatter';
 import path from "path-browserify";
-import { openIn } from "$lib/utils/views.svelte"
+import { openIn, showDevTools } from "$lib/utils/views.svelte"
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
 import { Routine, HasParams } from "$lib/experiment/experiment.svelte"
 
@@ -307,7 +307,7 @@ export async function runJS() {
 }
 
 /** Views */
-export { newWindow } from "$lib/utils/views.svelte"
+export { newWindow, showWindow, showDevTools } from "$lib/utils/views.svelte"
 
 
 export default {
@@ -325,5 +325,6 @@ export default {
     compilePython: compilePython,
     runPython: runPython,
     compileJS: compileJS,
-    runJS: runJS
+    runJS: runJS,
+    showDevTools: showDevTools
 }
