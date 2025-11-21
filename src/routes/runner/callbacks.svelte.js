@@ -1,19 +1,39 @@
 import path from "path-browserify";
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
+import { Experiment } from "$lib/experiment/experiment.svelte";
+import { Script } from "$lib/experiment/script.svelte";
 import { electron } from "$lib/globals.svelte"
 
 
 
-export async function addFile(current, file) {
+export async function addFile(current, file, pilotMode=undefined) {
+    let item
+    // if given a .psyrun, add all files contained
     if (file.ext === ".psyrun") {
-        // if given a .psyrun, add all files contained
         for (let subfile of await loadPsyrun(file)) {
             addFile(current, subfile)
         }
-    } else {
-        // otherwise just add the given file
-        current.files.push(file)
+        return
     }
+    // if given a .psyexp, load as an experiment
+    if (file.ext === ".psyexp") {
+        item = new Experiment("untitled.psyexp")
+        await item.fromFile(file)
+    }
+    // if given a .py, load as a script
+    if (file.ext === ".py") {
+        item = new Script(file)
+    }
+    // quit if filetype isn't allowed
+    if (!item) {
+        return
+    }
+    // override pilot mode if requested
+    if (pilotMode !== undefined) {
+        item.pilotMode = pilotMode
+    }
+    // add to run list
+    current.runlist.push(item)
 }
 
 export async function loadPsyrun(file) {

@@ -8,7 +8,7 @@
         /** @prop @type {string|undefined} Hover text for this button, if any */
         tooltip=undefined,
         /** @prop @type {string} Starting  */
-        value=$bindable(false),
+        value=$bindable(),
         /** @prop @type {function} Function to call when this switch is toggled */
         onclick=() => {},
         /** @prop @type {boolean} Disable this button */

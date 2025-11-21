@@ -6,6 +6,7 @@ import { js2py, py2js } from "$lib/utils/transpiler";
 import { python, electron } from "$lib/globals.svelte";
 import path from "path-browserify";
 import { parsePath } from "$lib/utils/files";
+import xmlFormat from 'xml-formatter';
 
 
 export class Experiment {
@@ -219,6 +220,14 @@ export class Experiment {
 
     pilotMode = $derived(this.settings.params['runMode'].val)
 
+    getPilotMode() {
+        return this.settings.params['runMode'].val
+    }
+
+    setPilotMode(value) {
+        this.settings.params['runMode'].val = value
+    }
+
     /**
      * List of all Static Components in this Experiment
      */
@@ -287,6 +296,11 @@ export class Experiment {
      * @param {Element} node XML element to create the Experiment from
      */
     fromXML(node) {
+        // if given a string, parse it as XML
+        if (typeof node === "string") {
+            let document = new DOMParser().parseFromString(node, "application/xml");
+            node = document.getElementsByTagName("PsychoPy2experiment")[0];
+        }
         // reset experiment
         this.reset()
         // get version
@@ -350,6 +364,49 @@ export class Experiment {
         return main
     }
 
+    async fromFile(file) {
+        // parse to object if needed
+        if (typeof file === "string") {
+            file = parsePath(file)
+        }
+        // read text content from file
+        let content
+        if (electron) {
+            content = await electron.files.load(file.file)
+        } else {
+            // without electron, file needs to have a handle (from a UI interaction)
+            content = await file.handle.text()
+        }
+        // load from content
+        this.fromXML(content)
+        // store file
+        this.file = file
+    }
+
+    async toFile(target) {
+        // get experiment as xml
+        let node = current.experiment.toXML()
+        // convert to an xml string
+        let ser = new XMLSerializer()
+        let content = ser.serializeToString(node)
+        // make human readable
+        content = xmlFormat(content)
+        // write file
+        if (electron) {
+            await electron.files.save(
+                $state.snapshot(target.file), 
+                content
+            )
+        } else {
+            // get file writable from handle
+            let file = await target.handle.createWritable();
+            // write to file
+            file.seek(0);
+            file.write(content);
+            file.close();
+        }
+    }
+
     async writeScript(target="PsychoPy") {
         if (!python) {
             console.error("Script writing is not available in browser.")
@@ -394,6 +451,38 @@ export class Experiment {
         }
 
         return targetFile
+    }
+
+    /**
+     * Run this experiment in Python.
+     * 
+     * @param {boolean} compile If true, compile the experiment to Python before running
+     * @param {string || undefined} executable Path to the Python executable to run in (leave 
+     * undefined to use default executable)
+     */
+    async runPython(compile=undefined, executable=undefined) {
+        // fail if there's no Python to run in
+        if (!python) {
+            console.error("Script running is not available in browser.")
+            return
+        }
+        // compile first if requested
+        let target
+        if (compile) {
+            target = await this.writeScript("PsychoPy")
+        } else {
+            // otherwise, construct output path
+            target = path.join(
+                this.file.parent,
+                this.file.stem + ".py"
+            )
+        }
+        // run script
+        await python.runScript(
+            target, 
+            executable || await python.details().then(resp => resp.executable),
+            ...(this.pilotMode ? ["--pilot"] : [])
+        )
     }
 }
 export class Routine {

@@ -1,5 +1,7 @@
 export let current = $state({
-    files: [],
+    user: undefined,
+    item: undefined,
+    runlist: [],
     tab: "alerts",
     output: {
         alerts: "",

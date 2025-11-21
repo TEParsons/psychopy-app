@@ -3,6 +3,7 @@
         // file
         fileNew,
         fileOpen,
+        newWindow,
     } from '../callbacks.svelte.js'
     
     import Menu from "./Menu.svelte";
@@ -11,6 +12,7 @@
     import { electron, python } from "$lib/globals.svelte.js";
     import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
+    import { Experiment } from "$lib/experiment/experiment.svelte";
 
     let current = getContext("current");
 
@@ -75,6 +77,20 @@
             borderless
         /> -->
     </RibbonSection>
+
+    {#if current.item}
+        <RibbonSection label=Selection icon="/icons/rbn-experiment.svg">
+            <SwitchButton 
+                labels={["Pilot", "Run"]} 
+                tooltip="Experiment will run in {current.item.pilotMode ? "pilot" : "run"} mode"
+                bind:value={
+                    () => current.runlist[current.item]?.pilotMode,
+                    (value) => current.runlist[current.item]?.setPilotMode(value)
+                } 
+                disabled={!current.item}
+            />  
+        </RibbonSection>
+    {/if}
 
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
         <UserCtrl />

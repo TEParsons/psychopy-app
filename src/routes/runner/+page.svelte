@@ -22,8 +22,6 @@
         electron.windows.listen("fileOpen", (evt, file) => addFile(current, file))
     }
 
-    let file = $state.raw();
-
 </script>
 
 <title>PsychoPy Runner</title>
@@ -39,9 +37,7 @@
         hspan={1}
         vspan={1}
     >
-        <FilesPanel 
-            bind:value={file}
-        />
+        <FilesPanel />
     </Panel>
 
     <Panel

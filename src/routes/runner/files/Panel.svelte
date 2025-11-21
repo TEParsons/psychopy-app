@@ -1,12 +1,9 @@
 <script>
     import { RadioButton, RadioGroup, CompactButton, Button } from "$lib/utils/buttons"
-    import { browseFileOpen } from "$lib/utils/files";
+    import { Experiment } from "$lib/experiment/experiment.svelte";
+    import { Icon } from "$lib/utils/icons";
     import { getContext } from "svelte";
     import { fileOpen } from "../callbacks.svelte";
-
-    let {
-        value=$bindable()
-    } = $props();
     
     let current = getContext("current");
 </script>
@@ -14,18 +11,21 @@
 <div class=panel>
     <div class=items>
         <RadioGroup
-            bind:value={value}
+            bind:value={current.item}
         >
-            {#each Object.entries(current.files) as [i, file]}
+            {#each Object.entries(current.runlist) as [i, item]}
                 <div class=item>
+                    <Icon 
+                        src="/icons/btn-{item.pilotMode ? "pilot" : "run"}py.svg"
+                    />
                     <RadioButton 
-                        value={file}
-                        label="{file.name.length > 40 ? "..." : ""}{file.name.slice(-40)}"
-                        icon="/icons/btn-{file.name.endsWith(".psyexp") ? "builder" : "coder"}.svg"
+                        value={i}
+                        label="{item.file.name.length > 40 ? "..." : ""}{item.file.name.slice(-40)}"
+                        icon="/icons/btn-{item instanceof Experiment ? "builder" : "coder"}.svg"
                     />
                     <CompactButton 
                         icon="/icons/btn-delete.svg"
-                        onclick={evt => delete current.files[i]}
+                        onclick={evt => delete current.runlist[i]}
                     />
                 </div>
             {/each}
@@ -60,7 +60,7 @@
 }
 .item {
     display: grid;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1.5rem 1fr min-content;
     gap: .5rem;
     text-wrap: nowrap;
     text-overflow: ellipsis;

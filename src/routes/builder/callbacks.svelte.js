@@ -1,6 +1,6 @@
 import { electron, projects, python } from '$lib/globals.svelte.js';
 import { current } from './globals.svelte.js';
-import xmlFormat from 'xml-formatter';
+
 import path from "path-browserify";
 import { openIn, showDevTools } from "$lib/utils/views.svelte"
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
@@ -28,20 +28,9 @@ export async function file_open() {
     if (file === undefined) {
         return
     }
-    // read content
-    let content
-    if (electron) {
-        content = await electron.files.load(file.file)
-    } else {
-        content = await file.handle.text()
-    }
-    // load xml
-    let xml_parser = new DOMParser()
-    let document = xml_parser.parseFromString(content, "application/xml");
-    let node = document.getElementsByTagName("PsychoPy2experiment")[0];
     // construct an Experiment object from the file
-    current.experiment.fromXML(node);
-    current.experiment.file = file
+    current.experiment.fromFile(file);
+    // choose current routine
     if (current.experiment.routines) {
         current.routine = Object.values(current.experiment.routines)[0];
     } else {
@@ -69,28 +58,11 @@ export async function revealFolder() {
 
 
 export async function file_save() {
-    // get experiment as xml
-    let node = current.experiment.toXML()
-    // convert to an xml string
-    let ser = new XMLSerializer()
-    let content = ser.serializeToString(node)
-    // make human readable
-    content = xmlFormat(content)
     // diverge here based on whether there is a current file...
     if (current.experiment.file.file) {
-        if (electron) {
-            await electron.files.save(
-                $state.snapshot(current.experiment.file.file), 
-                content
-            )
-        } else {
-            // get file writable from handle
-            let file = await current.experiment.file.handle.createWritable();
-            // write to file
-            file.seek(0);
-            file.write(content);
-            file.close();
-        }
+        current.experiment.toFile(
+            $state.snapshot(current.experiment.file)
+        )
         // mark as no longer modified
         current.experiment.history.clear()
     } else {
@@ -242,11 +214,7 @@ export async function runPython(executable) {
     // write Python script
     let target = await compilePython();
     // run script
-    await python.runScript(
-        target, 
-        executable || await python.details().then(resp => resp.executable),
-        ...(current.experiment.pilotMode ? ["--pilot"] : [])
-    )
+    current.experiment.runPython(false, executable)
 
     return true
 }
