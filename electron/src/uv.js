@@ -153,6 +153,8 @@ export function installPython(
     } else {
         proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
     }
+    // install esprima (Py -> JS translation) and PyQt (expInfo dialog)
+    proc.execSync(`"${uv.executable}" pip install pyqt6 esprima --python "${python.details.executable}"`)
 
     return true
 }
