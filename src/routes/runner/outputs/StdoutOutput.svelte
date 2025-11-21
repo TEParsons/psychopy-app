@@ -10,6 +10,9 @@
     python.output.stdout.listen(
         (evt, message) => current.output.stdout += `${message}\n`
     )
+    python.output.stderr.listen(
+        (evt, message) => current.output.stdout += `${message}\n`
+    )
 </script>
 
 
