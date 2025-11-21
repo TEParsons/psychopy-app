@@ -94,6 +94,27 @@
         />  
     </RibbonSection>
 
+    {#if python?.ready}
+        <RibbonSection label=Run icon="/icons/btn-runpy.svg">
+            <IconButton 
+                icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}py.svg" 
+                label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
+                onclick={evt => current.runlist[selection]?.runPython()}
+                disabled={!selection}
+                bind:awaiting={awaiting.runpy}
+                borderless
+            />
+            <IconButton 
+                icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}js.svg" 
+                label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
+                onclick={(evt) => console.log("Run JS")}
+                disabled={current.experiment === null}
+                bind:awaiting={awaiting.runjs}
+                borderless
+            />
+        </RibbonSection>
+    {/if}
+
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
         <UserCtrl />
     </RibbonSection>
