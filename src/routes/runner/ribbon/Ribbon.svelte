@@ -16,6 +16,10 @@
 
     let current = getContext("current");
 
+    let {
+        selection
+    } = $props()
+
     let show = $state({
         menu: false,
         settingsDlg: false,
@@ -78,19 +82,17 @@
         /> -->
     </RibbonSection>
 
-    {#if current.item}
-        <RibbonSection label=Selection icon="/icons/rbn-experiment.svg">
-            <SwitchButton 
-                labels={["Pilot", "Run"]} 
-                tooltip="Experiment will run in {current.item.pilotMode ? "pilot" : "run"} mode"
-                bind:value={
-                    () => current.runlist[current.item]?.pilotMode,
-                    (value) => current.runlist[current.item]?.setPilotMode(value)
-                } 
-                disabled={!current.item}
-            />  
-        </RibbonSection>
-    {/if}
+    <RibbonSection label=Selection icon="/icons/rbn-experiment.svg">
+        <SwitchButton 
+            labels={["Pilot", "Run"]} 
+            tooltip="Experiment will run in {current.runlist[selection]?.pilotMode ? "pilot" : "run"} mode"
+            bind:value={
+                () => current.runlist[selection]?.pilotMode,
+                (value) => current.runlist[selection]?.setPilotMode(value)
+            } 
+            disabled={!selection}
+        />  
+    </RibbonSection>
 
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
         <UserCtrl />

@@ -22,6 +22,8 @@
         electron.windows.listen("fileOpen", (evt, file) => addFile(current, file))
     }
 
+    let selection = $state.raw()
+
 </script>
 
 <title>PsychoPy Runner</title>
@@ -30,14 +32,16 @@
     cols={3}
 >
     {#snippet ribbon()}
-        <Ribbon />
+        <Ribbon selection={selection} />
     {/snippet}
     <Panel
         title=Files
         hspan={1}
         vspan={1}
     >
-        <FilesPanel />
+        <FilesPanel 
+            bind:value={selection}
+        />
     </Panel>
 
     <Panel
@@ -85,7 +89,7 @@
             >
                 <PavloviaOutput />
             </NotebookPage>
-        </Notebook>
+        </Notebook> -->
     </Panel>
     <SetupPython />
 </Frame>

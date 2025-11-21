@@ -4,6 +4,10 @@
     import { Icon } from "$lib/utils/icons";
     import { getContext } from "svelte";
     import { fileOpen } from "../callbacks.svelte";
+
+    let {
+        value=$bindable()
+    } = $props()
     
     let current = getContext("current");
 </script>
@@ -11,7 +15,7 @@
 <div class=panel>
     <div class=items>
         <RadioGroup
-            bind:value={current.item}
+            bind:value={value}
         >
             {#each Object.entries(current.runlist) as [i, item]}
                 <div class=item>
