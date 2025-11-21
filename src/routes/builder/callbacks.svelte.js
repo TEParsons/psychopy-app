@@ -214,7 +214,7 @@ export async function runPython(executable) {
     // write Python script
     let target = await compilePython();
     // run script
-    current.experiment.runPython(false, executable)
+    await current.experiment.runPython(false, executable)
 
     return true
 }
@@ -223,55 +223,10 @@ export async function runJS() {
     if (!python) {
         return
     }
-    if (current.experiment.pilotMode) {
-        // compile to JS
-        await compileJS()
-        // get PsychoJS library
-        await python.liaison.send(
-            {
-                command: "run",
-                args: [
-                    "psychopy.tools.servertools:getPsychoJS"
-                ],
-                kwargs: {
-                    cwd: current.experiment.file.parent,
-                    useVersion: $state.snapshot(current.experiment.settings.params['Use version']?.val)
-                }
-            }, 
-            100000
-        )
-        // start a server
-        await python.liaison.send(
-            {
-                command: "init",
-                args: [
-                    "pilot_js_server",
-                    "psychopy.tools.servertools:Server"
-                ],
-                kwargs: {
-                    cwd: current.experiment.file.parent,
-                    port: 12002
-                }
-            }, 
-            10000
-        ).catch(
-            err => console.error(err)
-        )
-        // open experiment in browser
-        await python.liaison.send(
-            {
-                command: "run",
-                args: [
-                    "pilot_js_server.openInBrowser"
-                ],
-                kwargs: {
-                    params: {__pilotToken: "local"}
-                }
-            }, 
-            10000
-        )
-    }
-    // todo: Run in JS
+    // compile to JS
+    await compileJS()
+    // run
+    await current.experiment.runJS(false)
 }
 
 /** Views */

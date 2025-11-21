@@ -107,8 +107,8 @@
             <IconButton 
                 icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}js.svg" 
                 label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
-                onclick={(evt) => console.log("Run JS")}
-                disabled={current.experiment === null}
+                onclick={(evt) => current.runlist[selection]?.runJS()}
+                disabled={!selection || !(current.runlist[selection] instanceof Experiment)}
                 bind:awaiting={awaiting.runjs}
                 borderless
             />

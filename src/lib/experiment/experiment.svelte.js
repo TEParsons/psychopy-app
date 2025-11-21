@@ -460,7 +460,7 @@ export class Experiment {
      * @param {string || undefined} executable Path to the Python executable to run in (leave 
      * undefined to use default executable)
      */
-    async runPython(compile=undefined, executable=undefined) {
+    async runPython(compile=true, executable=undefined) {
         // fail if there's no Python to run in
         if (!python) {
             console.error("Script running is not available in browser.")
@@ -483,6 +483,79 @@ export class Experiment {
             executable || await python.details().then(resp => resp.executable),
             ...(this.pilotMode ? ["--pilot"] : [])
         )
+    }
+
+    /**
+     * Run this experiment in JS.
+     * 
+     * @param {boolean} compile If true, compile the experiment to JS before running
+     */
+    async runJS(compile=true) {
+        // compile first if requested
+        let target
+        if (compile) {
+            target = await this.writeScript("PsychoJS")
+        } else {
+            // otherwise, construct output path
+            target = path.join(
+                this.file.parent,
+                this.file.stem + ".py"
+            )
+        }
+
+        if (this.pilotMode) {
+            // fail if there's no Python to run server in
+            if (!python) {
+                console.error("Script running is not available in browser.")
+                return
+            }
+            // get PsychoJS library
+            await python.liaison.send(
+                {
+                    command: "run",
+                    args: [
+                        "psychopy.tools.servertools:getPsychoJS"
+                    ],
+                    kwargs: {
+                        cwd: this.file.parent,
+                        useVersion: $state.snapshot(this.settings.params['Use version']?.val)
+                    }
+                }, 
+                100000
+            )
+            // start a server
+            await python.liaison.send(
+                {
+                    command: "init",
+                    args: [
+                        "pilot_js_server",
+                        "psychopy.tools.servertools:Server"
+                    ],
+                    kwargs: {
+                        cwd: this.file.parent,
+                        port: 12002
+                    }
+                }, 
+                10000
+            ).catch(
+                err => console.error(err)
+            )
+            // open experiment in browser
+            await python.liaison.send(
+                {
+                    command: "run",
+                    args: [
+                        "pilot_js_server.openInBrowser"
+                    ],
+                    kwargs: {
+                        params: this.pilotMode ? {__pilotToken: "local"} : {}
+                    }
+                }, 
+                10000
+            )
+        } else {
+            // todo: Run in JS on Pavlovia (not pilot)
+        }
     }
 }
 export class Routine {
