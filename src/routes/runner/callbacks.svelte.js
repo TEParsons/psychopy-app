@@ -2,7 +2,8 @@ import path from "path-browserify";
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
 import { Experiment } from "$lib/experiment/experiment.svelte";
 import { Script } from "$lib/experiment/script.svelte";
-import { electron } from "$lib/globals.svelte"
+import { electron } from "$lib/globals.svelte";
+import { current } from './globals.svelte.js';
 
 
 
@@ -55,9 +56,11 @@ export async function loadPsyrun(file) {
     return output
 }
 
-export function fileNew(current) {
+export function fileNew() {
     // clear current files
-    current.files.length = 0
+    current.runlist.length = 0
+    // clear current file info
+    current.file = undefined
 }
 
 /**
@@ -66,7 +69,7 @@ export function fileNew(current) {
  * @param {object} current Current Runner setup (from getContext)
  * @param {boolean} replace If true, then replace existing files with ones selected
  */
-export async function fileOpen(current, replace=false) {
+export async function fileOpen(replace=false) {
     // work out allowed files
     let allowedFiles
     if (replace) {
@@ -94,10 +97,62 @@ export async function fileOpen(current, replace=false) {
     // if replacing, clear existing files
     if (replace) {
         fileNew(current)
+        current.file = file
     }
     // add file(s)
     await addFile(current, file)
 }
 
+export async function fileSave() {
+    // diverge here based on whether there is a current file...
+    if (current.file) {
+        // construct serializable object
+        let output = current.runlist.map(
+            item => $state.snapshot({
+                path: item.file.parent,
+                file: item.file.name, 
+                runMode: item.file.pilotMode ? "pilot" : "run"
+            })
+        )
+        // stringify
+        output = JSON.stringify(output, undefined, 4)
+        // write file
+        if (electron) {
+            await electron.files.save(
+                $state.snapshot(current.file.file), 
+                output
+            )
+        } else {
+            // get file writable from handle
+            let file = await current.file.handle.createWritable();
+            // write to file
+            file.seek(0);
+            file.write(output);
+            file.close();
+        }
+    } else {
+        return fileSaveAs()
+    }
+}
+
+export async function fileSaveAs() {
+    // open file browser
+    let file = await browseFileSave(
+        [
+            { description: "PsychoPy Runner Configurations", accept: {"application/xml": [".psyrun"]} }
+        ],
+        current.file?.file || "untitled.psyrun"
+    )
+    // abort if no file
+    if (file === undefined) {
+        return
+    }
+    // set file
+    current.file = file
+    // save
+    await fileSave()
+
+    return current.file
+}
 
 export { newWindow } from "$lib/utils/views.svelte"

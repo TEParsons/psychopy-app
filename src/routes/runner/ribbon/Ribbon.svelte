@@ -3,6 +3,9 @@
         // file
         fileNew,
         fileOpen,
+        fileSave,
+        fileSaveAs,
+        // view
         newWindow,
     } from '../callbacks.svelte.js'
     
@@ -58,28 +61,27 @@
         <IconButton 
             icon="/icons/btn-new.svg" 
             label="New configuration" 
-            onclick={(evt) => fileNew(current)} 
+            onclick={(evt) => fileNew()} 
             borderless
         />
         <IconButton 
             icon="/icons/btn-open.svg" 
             label="Open configuration" 
-            onclick={(evt) => fileOpen(current, true).catch(err => console.error(err))} 
+            onclick={(evt) => fileOpen(true).catch(err => console.error(err))} 
             borderless
         />
-        <!-- <IconButton 
+        <IconButton 
             icon="/icons/btn-save.svg" 
-            label="Save file" 
-            onclick={file_save}
-            disabled={!current.experiment.history.past.length} 
+            label="Save configuration" 
+            onclick={fileSave}
             borderless
         />
         <IconButton 
             icon="/icons/btn-saveas.svg" 
-            label="Save file as"
-            onclick={file_save_as} 
+            label="Save configuration as"
+            onclick={fileSaveAs} 
             borderless
-        /> -->
+        />
     </RibbonSection>
 
     <RibbonSection label=Selection icon="/icons/rbn-experiment.svg">

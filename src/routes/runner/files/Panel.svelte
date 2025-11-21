@@ -39,7 +39,7 @@
         <Button 
             label="Add file"
             icon="/icons/btn-add.svg"
-            onclick={evt => fileOpen(current, false)}
+            onclick={evt => fileOpen(false)}
             horizontal
         />
     </div>
