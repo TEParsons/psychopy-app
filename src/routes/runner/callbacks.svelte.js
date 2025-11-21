@@ -11,7 +11,7 @@ export async function addFile(current, file, pilotMode=undefined) {
     // if given a .psyrun, add all files contained
     if (file.ext === ".psyrun") {
         for (let subfile of await loadPsyrun(file)) {
-            addFile(current, subfile)
+            addFile(current, subfile.file, subfile.pilotMode)
         }
         return
     }
@@ -42,10 +42,13 @@ export async function loadPsyrun(file) {
     // convert paths to file objects with details
     let output = []
     for (let item of JSON.parse(content)) {
-        output.push(
-            parsePath(
+        output.push({
+            file: parsePath(
                 path.join(item.path, item.file)
-            )
+            ),
+            pilotMode: item.pilotMode
+        }
+            
         )
     }
     
