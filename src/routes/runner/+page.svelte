@@ -19,7 +19,7 @@
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => addFile(current, file))
+        electron.windows.listen("fileOpen", (evt, file) => addFile(file))
     }
 
     let selection = $state.raw()

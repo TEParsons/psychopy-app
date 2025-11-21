@@ -7,12 +7,16 @@ import { current } from './globals.svelte.js';
 
 
 
-export async function addFile(current, file, pilotMode=undefined) {
+export async function addFile(file, pilotMode=undefined) {
     let item
+    // parse file if needed
+    if (typeof file === "string") {
+        file = parsePath(file)
+    }
     // if given a .psyrun, add all files contained
     if (file.ext === ".psyrun") {
         for (let subfile of await loadPsyrun(file)) {
-            addFile(current, subfile.file, subfile.pilotMode)
+            addFile(subfile.file, subfile.pilotMode)
         }
         return
     }
@@ -48,9 +52,7 @@ export async function loadPsyrun(file) {
                 path.join(item.path, item.file)
             ),
             pilotMode: item.pilotMode
-        }
-            
-        )
+        })
     }
     
     return output
@@ -96,11 +98,11 @@ export async function fileOpen(replace=false) {
     }
     // if replacing, clear existing files
     if (replace) {
-        fileNew(current)
+        fileNew()
         current.file = file
     }
     // add file(s)
-    await addFile(current, file)
+    await addFile(file)
 }
 
 export async function fileSave() {
