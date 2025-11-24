@@ -25,8 +25,7 @@ export async function loadProjects() {
 }
 
 export var auth = $state({
-    root: "https://gitlab.pavlovia.org/",
-    redirect: "https://gitlab.pavlovia.org/",
+    root: "https://gitlab.pavlovia.org",
     client: "944b87ee0e6b4f510881d6f6bc082f64c7bba17d305efdb829e6e0e7ed466b34",
     state: "",
     challenge: "",
@@ -36,6 +35,7 @@ export var auth = $state({
         token: ""
     }
 })
+
 
 export async function login() {
     // create a private "state" based on uuid
@@ -66,9 +66,11 @@ export async function login() {
 
 export function logout() {
     // reset all auth params
-    auth.state = ""
-    auth.challenge = ""
-    auth.verifier = ""
-    auth.token.type = ""
-    auth.token.token = ""
+    Object.assign(auth, {
+        state: "",
+        challenge: "",
+        verifier: "",
+        token: "",
+        refreshToken: ""
+    })
 }
