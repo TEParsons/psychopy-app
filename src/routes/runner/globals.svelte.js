@@ -1,6 +1,6 @@
 export let current = $state({
     user: undefined,
-    item: undefined,
+    selection: undefined,
     runlist: [],
     file: undefined,
     tab: "alerts",
@@ -8,5 +8,9 @@ export let current = $state({
         alerts: "",
         stdout: "",
         pavlovia: ""
+    },
+    awaiting: {
+        runpy: Promise.resolve(""),
+        runjs: Promise.resolve(""),
     }
 })

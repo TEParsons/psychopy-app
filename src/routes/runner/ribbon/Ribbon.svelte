@@ -30,13 +30,6 @@
         deviceMgrDlg: false,
     })
 
-    let awaiting = $state({
-        runpy: Promise.resolve(""),
-        compilepy: Promise.resolve(""),
-        runjs: Promise.resolve(""),
-        compilejs: Promise.resolve("")
-    })
-
     let prompts = $state({
         NEW: false,
         OPEN: false,
@@ -103,7 +96,7 @@
                 label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
                 onclick={evt => current.runlist[selection]?.runPython()}
                 disabled={!selection}
-                bind:awaiting={awaiting.runpy}
+                bind:awaiting={current.awaiting.runpy}
                 borderless
             />
             <IconButton 
@@ -111,7 +104,7 @@
                 label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
                 onclick={(evt) => current.runlist[selection]?.runJS()}
                 disabled={!selection || !(current.runlist[selection] instanceof Experiment)}
-                bind:awaiting={awaiting.runjs}
+                bind:awaiting={current.awaiting.runjs}
                 borderless
             />
         </RibbonSection>

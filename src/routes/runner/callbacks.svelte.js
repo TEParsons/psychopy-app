@@ -165,12 +165,12 @@ export function quit() {
 }
 
 export function togglePiloting() {
-    if (current.runlist?.[current.item]) {
-        current.runlist[current.item].pilotMode = !current.runlist[current.item].pilotMode
+    if (current.runlist[current.selection]) {
+        current.runlist[current.selection].pilotMode = !current.runlist[current.selection]?.pilotMode
     }
 }
 
-export { newWindow } from "$lib/utils/views.svelte"
+export { newWindow, showWindow } from "$lib/utils/views.svelte"
 
 
 export var shortcuts = {

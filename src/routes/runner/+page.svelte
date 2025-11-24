@@ -29,8 +29,8 @@
 </script>
 
 
-{#if selection !== undefined}
-    <title>PsychoPy Runner: {current.runlist[selection].file.name}</title>
+{#if current.selection !== undefined}
+    <title>PsychoPy Runner: {current.runlist[current.selection].file.name}</title>
 {:else}
     <title>PsychoPy Runner</title>
 {/if}
@@ -39,7 +39,7 @@
     cols={3}
 >
     {#snippet ribbon()}
-        <Ribbon selection={selection} />
+        <Ribbon />
     {/snippet}
     <Panel
         title=Files
