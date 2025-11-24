@@ -85,17 +85,17 @@
     {#if python?.ready}
         <RibbonSection label=Run icon="/icons/btn-runpy.svg">
             <IconButton 
-                icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}py.svg" 
-                label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
-                onclick={evt => current.runlist[selection]?.runPython()}
+                icon="/icons/btn-{current.runlist[current.selection]?.pilotMode ? "pilot" : "run"}py.svg" 
+                label="{current.runlist[current.selection]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
+                onclick={evt => current.runlist[current.selection]?.runPython()}
                 disabled={current.selection === undefined}
                 bind:awaiting={current.awaiting.runpy}
                 borderless
             />
             <IconButton 
-                icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}js.svg" 
-                label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
-                onclick={(evt) => current.runlist[selection]?.runJS()}
+                icon="/icons/btn-{current.runlist[current.selection]?.pilotMode ? "pilot" : "run"}js.svg" 
+                label="{current.runlist[current.selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
+                onclick={(evt) => current.runlist[current.selection]?.runJS()}
                 disabled={current.selection === undefined || !(current.runlist[current.selection] instanceof Experiment)}
                 bind:awaiting={current.awaiting.runjs}
                 borderless

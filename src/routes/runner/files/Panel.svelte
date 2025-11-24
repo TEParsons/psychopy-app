@@ -6,7 +6,6 @@
     import { fileOpen } from "../callbacks.svelte";
     
     let current = getContext("current");
-    $inspect(current.selection)
 </script>
 
 <div class=panel>
