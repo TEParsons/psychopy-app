@@ -1,6 +1,6 @@
 import path from "path-browserify";
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
-import { Experiment } from "$lib/experiment/experiment.svelte";
+import { Experiment } from "$lib/experiment";
 import { Script } from "$lib/experiment/script.svelte";
 import { electron } from "$lib/globals.svelte";
 import { current } from './globals.svelte.js';

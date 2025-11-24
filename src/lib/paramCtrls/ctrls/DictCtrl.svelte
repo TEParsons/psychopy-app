@@ -1,5 +1,5 @@
 <script>
-    import { Param } from "$lib/experiment/experiment.svelte";
+    import { Param } from "$lib/experiment";
     import { CompactButton } from "$lib/utils/buttons";
     import { iterateName } from "./utils.js";
     import { sanitizeJSON } from "$lib/utils/transpiler"

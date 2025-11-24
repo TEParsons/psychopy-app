@@ -15,7 +15,7 @@
     import { electron, python } from "$lib/globals.svelte.js";
     import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
-    import { Experiment } from "$lib/experiment/experiment.svelte";
+    import { Experiment } from "$lib/experiment";
 
     let current = getContext("current");
 

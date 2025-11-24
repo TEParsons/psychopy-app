@@ -1,5 +1,5 @@
 <script>
-    import { FlowLoop } from "$lib/experiment/experiment.svelte.js";
+    import { FlowLoop } from "$lib/experiment/flow.svelte";
     import LoopNode from './Loop.svelte';
     import RoutineNode from './Routine.svelte';
     import EntryPoint from './EntryPoint.svelte';

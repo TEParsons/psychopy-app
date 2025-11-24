@@ -1,5 +1,5 @@
 <script>
-    import { Component } from "$lib/experiment/experiment.svelte";
+    import { Component } from "$lib/experiment";
     import { getContext } from "svelte";
     import { Icon } from "$lib/utils/icons";
     

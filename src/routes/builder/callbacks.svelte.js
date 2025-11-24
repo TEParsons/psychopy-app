@@ -4,7 +4,7 @@ import { current } from './globals.svelte.js';
 import path from "path-browserify";
 import { openIn, showDevTools } from "$lib/utils/views.svelte"
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
-import { Routine, HasParams } from "$lib/experiment/experiment.svelte"
+import { Routine, HasParams } from "$lib/experiment"
 
 
 /* File */

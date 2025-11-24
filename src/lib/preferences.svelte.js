@@ -1,5 +1,5 @@
 import { electron } from "$lib/globals.svelte";
-import { HasParams } from "$lib/experiment/experiment.svelte";
+import { HasParams } from "$lib/experiment";
 import FallbackPreferences from "$lib/preferences.json"
 
 

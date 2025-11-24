@@ -1,6 +1,6 @@
 <script>
     import { RadioButton, RadioGroup, CompactButton, Button } from "$lib/utils/buttons"
-    import { Experiment } from "$lib/experiment/experiment.svelte";
+    import { Experiment } from "$lib/experiment";
     import { Icon } from "$lib/utils/icons";
     import { getContext } from "svelte";
     import { fileOpen } from "../callbacks.svelte";

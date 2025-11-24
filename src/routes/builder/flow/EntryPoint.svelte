@@ -1,5 +1,5 @@
 <script>
-    import { LoopInitiator, LoopTerminator, Routine, StandaloneRoutine } from '$lib/experiment/experiment.svelte.js';
+    import { LoopInitiator, LoopTerminator, Routine, StandaloneRoutine } from '$lib/experiment';
     import { getContext } from "svelte";
     
     let current = getContext("current");

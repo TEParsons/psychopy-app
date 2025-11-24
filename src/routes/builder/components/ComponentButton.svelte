@@ -1,5 +1,5 @@
 <script>
-    import { StandaloneRoutine, Routine, Component } from '$lib/experiment/experiment.svelte.js';
+    import { StandaloneRoutine, Routine, Component } from '$lib/experiment';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";

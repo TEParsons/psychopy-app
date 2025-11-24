@@ -3,7 +3,7 @@
     import { CompactButton } from "$lib/utils/buttons";
 
     let {
-        /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
+        /** @prop @type {import("$lib/experiment").Param} Param object to which this ctrl pertains */
         param=$bindable(),
         /** @prop @type {Boolean} Should the code indicator ($) be shown? */
         codeIndicator = ["code", "extendedCode"].includes(param.valType),

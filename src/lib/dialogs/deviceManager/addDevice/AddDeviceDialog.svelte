@@ -5,10 +5,10 @@
     import { sanitizeImportString } from "$lib/utils/tools/imports.js";
     import DeviceListItem from "./DeviceListItem.svelte";
     import { ParamCtrl } from "$lib/paramCtrls";
-    import { Device, Param } from "$lib/experiment/experiment.svelte"
+    import { Device, Param } from "$lib/experiment"
     import { onMount, setContext } from "svelte";
     import { devices, python } from "$lib/globals.svelte";
-    import { deviceProfiles } from "$lib/experiment/profiles.svelte"
+    import { profiles } from "$lib/experiment"
 
     let {
         shown=$bindable()
@@ -47,7 +47,7 @@
                 "psychopy.experiment:getDeviceProfiles"
             ]
         }, 10000).then(
-            resp => Object.assign(deviceProfiles, resp)
+            resp => Object.assign(profiles.devices, resp)
         )
     }
 
@@ -108,8 +108,8 @@
                         Getting device backends...
                     </div>
                 {:then}
-                    {#if deviceProfiles}
-                        {#each Object.values(deviceProfiles).filter(profile => profile.device) as backend}
+                    {#if profiles.devices}
+                        {#each Object.values(profiles.devices).filter(profile => profile.device) as backend}
                             {#await python.liaison.send({
                                 command: "run",
                                 args: [`${sanitizeImportString(backend.device)}.getAvailableDevices`]
@@ -118,14 +118,14 @@
                                     label="Getting {backend.label} devices..."
                                     open={false}
                                 />
-                            {:then profiles}
-                                {#if profiles.length}
+                            {:then deviceProfiles}
+                                {#if deviceProfiles.length}
                                     <PanelButton
                                         label={backend.label}
                                         bind:open={panelsOpen[backend.__name__]}
                                     >
                                         <div class=device-category>
-                                            {#each Object.values(profiles) as device}
+                                            {#each Object.values(deviceProfiles) as device}
                                                 <DeviceListItem
                                                     device={device}
                                                     backend={backend}

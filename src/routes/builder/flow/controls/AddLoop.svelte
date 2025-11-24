@@ -1,11 +1,11 @@
 <script>
-    import { LoopInitiator } from '$lib/experiment/experiment.svelte.js';
+    import { LoopInitiator } from '$lib/experiment/flow.svelte.js';
     import { ParamsNotebook } from '$lib/paramCtrls/index.js';
     import { Menu, MenuItem } from '$lib/utils/menu';
     import { Button } from '$lib/utils/buttons';
     import { getContext } from "svelte";
     import Dialog from "$lib/utils/dialog/Dialog.svelte";
-    import { loopProfiles } from "$lib/experiment/profiles.svelte";
+    import { profiles } from "$lib/experiment";
     
     let current = getContext("current");
 
@@ -50,7 +50,7 @@
     <Menu 
         bind:shown={showMenu}
     >
-        {#each Object.keys(loopProfiles) as loopType}
+        {#each Object.keys(profiles.loops) as loopType}
             <MenuItem 
                 label="New {titleCase(loopType)} loop..."
                 onclick={() => {

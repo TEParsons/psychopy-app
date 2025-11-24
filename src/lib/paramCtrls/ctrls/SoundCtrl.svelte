@@ -17,7 +17,7 @@
     ]
 
     let {
-        /** @prop @type {import("$lib/experiment/experiment.svelte.js").Param} Param object to which this ctrl pertains */
+        /** @prop @type {import("$lib/experiment").Param} Param object to which this ctrl pertains */
         param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
