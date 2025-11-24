@@ -29,13 +29,6 @@
         findDlg: false,
         deviceMgrDlg: false,
     })
-
-    let prompts = $state({
-        NEW: false,
-        OPEN: false,
-        PYCOMPILE: false,
-        PYRUN: false
-    });
 </script>
 
 <Ribbon>
@@ -80,12 +73,12 @@
     <RibbonSection label=Selection icon="/icons/rbn-experiment.svg">
         <SwitchButton 
             labels={["Pilot", "Run"]} 
-            tooltip="Experiment will run in {current.runlist[selection]?.pilotMode ? "pilot" : "run"} mode"
+            tooltip="Experiment will run in {current.runlist[current.selection]?.pilotMode ? "pilot" : "run"} mode"
             bind:value={
-                () => current.runlist[selection]?.pilotMode,
-                (value) => current.runlist[selection]?.setPilotMode(value)
+                () => current.runlist[current.selection]?.pilotMode,
+                (value) => current.runlist[current.selection]?.setPilotMode(value)
             } 
-            disabled={!selection}
+            disabled={current.selection === undefined}
         />  
     </RibbonSection>
 
@@ -95,7 +88,7 @@
                 icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}py.svg" 
                 label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
                 onclick={evt => current.runlist[selection]?.runPython()}
-                disabled={!selection}
+                disabled={current.selection === undefined}
                 bind:awaiting={current.awaiting.runpy}
                 borderless
             />
@@ -103,7 +96,7 @@
                 icon="/icons/btn-{current.runlist[selection]?.pilotMode ? "pilot" : "run"}js.svg" 
                 label="{current.runlist[selection]?.pilotMode ? "Pilot" : "Run"} experiment in browser" 
                 onclick={(evt) => current.runlist[selection]?.runJS()}
-                disabled={!selection || !(current.runlist[selection] instanceof Experiment)}
+                disabled={current.selection === undefined || !(current.runlist[current.selection] instanceof Experiment)}
                 bind:awaiting={current.awaiting.runjs}
                 borderless
             />

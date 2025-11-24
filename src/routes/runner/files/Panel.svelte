@@ -4,18 +4,15 @@
     import { Icon } from "$lib/utils/icons";
     import { getContext } from "svelte";
     import { fileOpen } from "../callbacks.svelte";
-
-    let {
-        value=$bindable()
-    } = $props()
     
     let current = getContext("current");
+    $inspect(current.selection)
 </script>
 
 <div class=panel>
     <div class=items>
         <RadioGroup
-            bind:value={value}
+            bind:value={current.selection}
         >
             {#each Object.entries(current.runlist) as [i, item]}
                 <div class=item>
@@ -23,7 +20,7 @@
                         src="/icons/btn-{item.pilotMode ? "pilot" : "run"}py.svg"
                     />
                     <RadioButton 
-                        value={i}
+                        value={$state.snapshot(i)}
                         label="{item.file.name.length > 40 ? "..." : ""}{item.file.name.slice(-40)}"
                         icon="/icons/btn-{item instanceof Experiment ? "builder" : "coder"}.svg"
                     />

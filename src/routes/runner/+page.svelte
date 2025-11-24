@@ -46,9 +46,7 @@
         hspan={1}
         vspan={1}
     >
-        <FilesPanel 
-            bind:value={selection}
-        />
+        <FilesPanel />
     </Panel>
 
     <Panel

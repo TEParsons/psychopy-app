@@ -114,25 +114,26 @@
     </SubMenu>
 
     {#if electron}
-        <SubMenu label="Run" icon="/icons/btn-runpy.svg">
+        <SubMenu label="Run" icon="/icons/btn-runpy.svg" disabled={current.selection === undefined}>
             <MenuItem 
                 label="Toggle pilot mode"
                 onclick={togglePiloting}
                 shortcut="togglePilot"
+                disabled={current.selection === undefined}
             />
 
             <MenuSeparator />
 
             <MenuItem 
-                label="{current.runList[current.selection]?.pilotMode ? "Pilot" : "Run"} in Python" 
-                icon="/icons/btn-{current.runList[current.selection]?.pilotMode ? "pilot" : "run"}py.svg" 
+                label="{current.runlist[current.selection]?.pilotMode ? "Pilot" : "Run"} in Python" 
+                icon="/icons/btn-{current.runlist[current.selection]?.pilotMode ? "pilot" : "run"}py.svg" 
                 onclick={evt => current.awaiting.runpy = current.runlist[current.selection]?.runPython()}
                 shortcut="runPython"
                 disabled={current.selection === undefined}
             />
             <MenuItem 
-                label="{current.runList[current.selection]?.pilotMode ? "Pilot" : "Run"} in browser" 
-                icon="/icons/btn-{current.runList[current.selection]?.pilotMode ? "pilot" : "run"}js.svg" 
+                label="{current.runlist[current.selection]?.pilotMode ? "Pilot" : "Run"} in browser" 
+                icon="/icons/btn-{current.runlist[current.selection]?.pilotMode ? "pilot" : "run"}js.svg" 
                 onclick={(evt) => console.log("RUN JS")}
                 shortcut="runJS"
                 disabled={current.selection === undefined}
