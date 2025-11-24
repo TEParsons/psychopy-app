@@ -5,7 +5,7 @@ export let current = $state({
     file: undefined,
     tab: "alerts",
     output: {
-        alerts: "",
+        alerts: [],
         stdout: "",
         pavlovia: ""
     },

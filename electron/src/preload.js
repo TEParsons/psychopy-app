@@ -84,6 +84,7 @@ const python = {
   },
   liaison: {
     constants: () => ipcRenderer.invoke("python.liaison.constants").then(resp => resp),
+    listen: (tag, lsnr) => ipcRenderer.on(`liaison:${tag}`, lsnr),
     send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp),
     ready: () => ipcRenderer.invoke("python.liaison.ready").then(resp => resp)
   },
