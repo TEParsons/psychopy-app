@@ -2,14 +2,13 @@
     import Panel from '$lib/utils/Panel.svelte';
     import Frame from '$lib/utils/Frame.svelte';
     import Shortcuts from '$lib/utils/Shortcuts.svelte';
-    import callbacks from "./callbacks.svelte";
+    import { shortcuts } from "./callbacks.svelte";
     import Ribbon from './ribbon/Ribbon.svelte';
     import RoutinesNotebook from './routines/Notebook.svelte';
     import ComponentsPanel from './components/Panel.svelte';
     import FlowPanel from './flow/Panel.svelte';
     import { current } from "./globals.svelte.js";
     import { setContext } from 'svelte';
-    import path from "path-browserify";
     import { electron } from "$lib/globals.svelte";
     import { parsePath } from "$lib/utils/files";
     import SetupPython from '../../lib/python/SetupPython.svelte';
@@ -29,9 +28,6 @@
 {:else}
     <title>PsychoPy Builder</title>
 {/if}
-<Shortcuts
-    callbacks={callbacks}
-/>
 
 <Frame 
     rows={3} 
@@ -60,7 +56,14 @@
     >
         <FlowPanel></FlowPanel>
     </Panel>
+
+    <!-- this will setup keyboard shortcuts -->
+    <Shortcuts
+        callbacks={shortcuts}
+    />
+    <!-- this will setup a Python instance -->
     <SetupPython />
+
 </Frame>
 
 <style>

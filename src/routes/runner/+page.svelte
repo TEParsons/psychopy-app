@@ -13,6 +13,8 @@
     import SetupPython from "../../lib/python/SetupPython.svelte";
     import { addFile } from "./callbacks.svelte";
     import Ribbon from "./ribbon/Ribbon.svelte";
+    import Shortcuts from '$lib/utils/Shortcuts.svelte';
+    import { shortcuts } from "./callbacks.svelte";
 
     setContext("current", current)
 
@@ -26,7 +28,12 @@
 
 </script>
 
-<title>PsychoPy Runner</title>
+
+{#if selection !== undefined}
+    <title>PsychoPy Runner: {current.runlist[selection].file.name}</title>
+{:else}
+    <title>PsychoPy Runner</title>
+{/if}
 <Frame
     rows={1} 
     cols={3}
@@ -89,7 +96,13 @@
             >
                 <PavloviaOutput />
             </NotebookPage>
-        </Notebook> -->
+        </Notebook>
     </Panel>
+
+    <!-- this will setup keyboard shortcuts -->
+    <Shortcuts
+        callbacks={shortcuts}
+    />
+    <!-- this will setup a Python instance -->
     <SetupPython />
 </Frame>

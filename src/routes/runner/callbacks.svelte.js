@@ -1,5 +1,6 @@
 import path from "path-browserify";
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
+import { openIn, showDevTools } from "$lib/utils/views.svelte"
 import { Experiment } from "$lib/experiment";
 import { Script } from "$lib/experiment/script.svelte";
 import { electron } from "$lib/globals.svelte";
@@ -157,4 +158,28 @@ export async function fileSaveAs() {
     return current.file
 }
 
+export function quit() {
+    if (electron) {
+        electron.quit()
+    }
+}
+
+export function togglePiloting() {
+    if (current.runlist?.[current.item]) {
+        current.runlist[current.item].pilotMode = !current.runlist[current.item].pilotMode
+    }
+}
+
 export { newWindow } from "$lib/utils/views.svelte"
+
+
+export var shortcuts = {
+    new: fileNew,
+    open: fileOpen,
+    save: fileSave,
+    saveAs: fileSaveAs,
+    close: close,
+    quit: quit,
+    togglePiloting: togglePiloting,
+    showDevTools: showDevTools
+}

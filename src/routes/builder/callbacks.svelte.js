@@ -233,7 +233,7 @@ export async function runJS() {
 export { newWindow, showWindow, showDevTools } from "$lib/utils/views.svelte"
 
 
-export default {
+export var shortcuts = {
     new: file_new,
     open: file_open,
     revealFolder: revealFolder,
