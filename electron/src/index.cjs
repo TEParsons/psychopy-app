@@ -128,7 +128,7 @@ const createWindow = () => {
 };
 
 
-function newWindow(target = null, show = true, fullscreen = true, debug = isDev) {
+function newWindow(target = null, show = true, fullscreen = false, debug = isDev) {
   // create window
   let win = new BrowserWindow({
     icon: favicon,
