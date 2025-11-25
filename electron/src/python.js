@@ -59,7 +59,7 @@ export async function startPython() {
         logging.log("Liaison started")
         // open a websocket
         python.socket = new WebSocket(`ws://${python.liaison.address}`);
-        // listen for websocket events
+        // listen for websocket open/close
         python.socket.onopen = evt => {
           logging.log(`Opened websocket on ws://${python.liaison.address}`);
           // resolve ready promise
@@ -67,6 +67,26 @@ export async function startPython() {
         }
         python.socket.onclose = evt => logging.error(`Closed websocket on ws://${python.liaison.address}`, evt.reason)
         python.socket.onerror = evt => python.liaison.ready.reject()
+        // listen for websocket messages
+        python.socket.addEventListener("message", evt => {
+          let msg = evt.data;
+          // convert data to JSON
+          if (msg instanceof Buffer) {
+            msg = logging.decoder.decode(evt)
+          }
+          if (typeof msg === "string") {
+            try {
+              msg = JSON.parse(msg)
+            } catch {}
+          }
+          // if message includes a tag, send to web contents so listeners can get at it
+          if (typeof msg === "object" && "tag" in msg) {
+            BrowserWindow.getAllWindows().forEach(
+              win => win.webContents.send(`liaison:${msg.tag}`, msg)
+            )
+          }
+        })
+        
         // stop listening for wakeup
         python.process.stdout.on(
           "data", evt => python.output.stdout(evt)
@@ -89,6 +109,23 @@ export async function startPython() {
         }, 
         30000
       )
+      // setup alerts
+      python.liaison.send({
+        command: "init",
+        args: ["alerts", "psychopy.alerts.liaison:LiaisonAlertHandler"],
+        kwargs: {
+          liaison: "$liaison"
+        }
+      }, 30000).then(
+        resp => python.liaison.send({
+          command: "run",
+          args: ["psychopy.alerts:addAlertHandler", "$alerts"]
+        }, 30000).catch(
+          err => console.error("Failed to add alert handler", err)
+        )
+      ).catch(
+        err => console.error("Failed to setup alert handler", err)
+      )
       // setup prefs
       python.liaison.send({
         command: "register",
@@ -109,7 +146,7 @@ export async function startPython() {
         }
       )
     }).catch(
-      err => logging.error(`Liaison timed out`, err)
+      err => logging.error(`Failed to setup preferences`, err)
     )
   })
 }

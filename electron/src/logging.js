@@ -70,7 +70,9 @@ export function log(msg, tag=undefined, target="lastAppLoad", echo=true) {
         msg += "\n"
     }
     // write to log file
-    targets[target].stream.write(msg);
+    if (targets[target]) {
+        targets[target].stream.write(msg);
+    }
 }
 
 /**
