@@ -61,7 +61,7 @@
             hspan={1}
             vspan={2}
         >
-            <!-- <FileExplorer /> -->
+            <FileExplorer />
         </Panel>
     {/if}
     <Panel

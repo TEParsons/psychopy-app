@@ -1,40 +1,70 @@
 <script>
+    import { Icon } from "$lib/utils/icons";
     import { getContext } from "svelte";
 
     let {
-        node,
-        data,
-        level
-    } = $props();
+        label,
+        data=undefined,
+        icon=undefined,
+        onselect=(evt, data) => {},
+        onactivate=(evt, data) => {},
+        disabled=false,
+        /** @interface */
+        chevron
+    } = $props()
 
-    let siblings = getContext("siblings");
     let handle = $state.raw();
+
+    let siblings = getContext("siblings")
 </script>
 
-<button 
+<button
     class=tree-node
+    class:disabled={disabled}
     bind:this={handle}
-    style:padding-left="{0.5 + level/2}rem"
     onclick={evt => {
-        siblings.selected = handle;
-        siblings.onselect(evt, handle, data)
+        if (!disabled) {
+            siblings.selected = handle;
+            onselect(evt, data)
+        }
     }}
     ondblclick={evt => {
-        siblings.selected = handle;
-        siblings.onactivate(evt, handle, data)
+        if (!disabled) {
+            siblings.selected = handle;
+            onselect(evt, data)
+            onactivate(evt, data)
+        }
     }}
     class:selected={siblings.selected === handle}
+    disabled={disabled}
 >
-    {node.label}
+    <!-- arrow showing open state -->
+        {@render chevron?.()}
+    <!-- optional icon -->
+    {#if icon}
+        <Icon 
+            src={icon}
+            size=1.25rem
+        />
+    {/if}
+    <!-- label -->
+    {label}
 </button>
 
 <style>
     .tree-node {
-        text-align: left;
-        padding: .25rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: .25rem;
         background-color: transparent;
+        border: none;
     }
     .selected {
-        background-color: var(--mantle);
+        font-weight: bold;
+    }
+    .disabled {
+        opacity: 50%;
     }
 </style>

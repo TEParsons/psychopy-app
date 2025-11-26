@@ -1,42 +1,28 @@
 <script>
     import { setContext } from "svelte";
-    import TreeBranch from "./TreeBranch.svelte";
-    import TreeNode from "./TreeNode.svelte";
 
     let {
-        data,
-        onselect=(evt, handle, data) => {},
-        onactivate=(evt, handle, data) => {}
-    } = $props();
-
-    let level = 0;
+        /** @interface */
+        children
+    } = $props()
 
     let nodes = $state({
-        selected: undefined,
-        onselect: onselect,
-        onactivate: onactivate
+        selected: undefined
     });
-    setContext("siblings", nodes)
+
+    setContext("siblings", nodes);
 </script>
 
-<div 
-    class=tree-ctrl
-    onfocusout={evt => nodes.selected = undefined}
->
-    {#each data as node}
-        {#if "children" in node}
-            <TreeBranch branch={node} level={level} />
-        {:else}
-            <TreeNode node={node} data={node.data} level={level} />
-        {/if}
-    {/each}
+<div class=tree-root>
+    {@render children?.()}
 </div>
 
 <style>
-    .tree-ctrl {
+    .tree-root {
         display: flex;
         flex-direction: column;
         align-items: stretch;
+        gap: .25rem;
         background-color: var(--base);
         flex-grow: 1;
         padding-bottom: 1rem;
