@@ -48,7 +48,9 @@
         />
     {/if}
     <!-- label -->
-    {label}
+    <span class=node-label>
+        {label}
+    </span>
 </button>
 
 <style>
@@ -60,6 +62,9 @@
         gap: .25rem;
         background-color: transparent;
         border: none;
+    }
+    .node-label {
+        text-overflow: ellipsis;
     }
     .selected {
         font-weight: bold;

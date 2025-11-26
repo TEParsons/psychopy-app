@@ -10,8 +10,65 @@
     } = $props();
 
     let fileIcons = {
-        // todo: file icons
-    }
+            ".txt": "text",
+            ".md": "text",
+            ".log": "text",
+            ".json": "json",
+            ".yaml": "json",
+            ".yml": "json",
+            ".toml": "json",
+            ".tml": "json",
+            ".xml": "json",
+            ".csv": "table",
+            ".xlsx": "table",
+            ".xls": "table",
+            ".tsv": "table",
+            ".png": "image",
+            ".jpeg": "image",
+            ".jpg": "image",
+            ".bmp": "image",
+            ".tiff": "image",
+            ".tif": "image",
+            ".ppm": "image",
+            ".gif": "image",
+            ".svg": "design",
+            ".psd": "design",
+            ".ai": "design",
+            ".afdesign": "design",
+            ".afphoto": "design",
+            ".xcf": "design",
+            ".vsd": "design",
+            ".cdr": "design",
+            ".cdx": "design",
+            ".drawio": "design",
+            ".mp4": "video",
+            ".mov": "video",
+            ".avi": "video",
+            ".wmv": "video",
+            ".webm": "video",
+            ".mpeg": "video",
+            ".mp3": "audio",
+            ".wav": "audio",
+            ".aac": "audio",
+            ".wma": "audio",
+            ".flac": "audio",
+            ".m4a": "audio",
+            ".psyexp": "psychopy",
+            ".psyrun": "psychopy",
+            ".psydat": "psychopy",
+            ".py": "python",
+            "pyproject.toml": "packaging",
+            ".whl": "packaging",
+            ".wheel": "packaging",
+            ".js": "js",
+            ".html": "html",
+            ".css": "css",
+            ".git": "git",
+            ".gitignore": "git",
+            ".gitattributes": "git",
+            "README.md": "info",
+            "readme.md": "info",
+        }
 
     let current = getContext("current")
 
@@ -57,7 +114,7 @@
                 {:else}
                     <TreeNode 
                         label={file}
-                        icon={fileIcons[parsePath(file || "").ext] || "/icons/btn-new.svg"}
+                        icon="/icons/filetypes/{fileIcons[parsePath(file || "").ext] || "unknown"}.svg"
                         data={path.join(value, file)}
                         onselect={selectFile}
                         onactivate={openFile}
