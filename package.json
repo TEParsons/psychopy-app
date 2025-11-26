@@ -2,7 +2,7 @@
 	"name": "psychopy4",
 	"author": "Open Science Tools Ltd.",
 	"productName": "psychopy4",
-	"version": "2026.1.0",
+	"version": "2026.1.0-xxy",
 	"description": "Open-source package for creating experiments in behavioral science.",
 	"main": "electron/src/index.cjs",
 	"type": "module",
