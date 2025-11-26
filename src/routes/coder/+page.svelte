@@ -50,7 +50,7 @@
 <title>PsychoPy Coder</title>
 <Frame
     rows={3} 
-    cols={5}
+    cols={4}
 >
     {#snippet ribbon()}
         <CoderRibbon />
@@ -71,11 +71,6 @@
     >
         <CoderNotebook />
     </Panel>
-    <Panel
-        title=Outline
-        hspan={1}
-        vspan={python ? 2 : 3}
-    ></Panel>
     {#if python?.ready}
         <Panel
             title=Console
