@@ -62,8 +62,10 @@
         gap: .25rem;
         background-color: transparent;
         border: none;
+        overflow: hidden;
     }
     .node-label {
+        text-wrap: nowrap;
         text-overflow: ellipsis;
     }
     .selected {
