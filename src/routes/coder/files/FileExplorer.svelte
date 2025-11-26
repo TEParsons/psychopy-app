@@ -1,5 +1,5 @@
 <script>
-    import { TreeRoot } from "$lib/utils/tree2";
+    import { TreeRoot } from "$lib/utils/tree";
     import { electron } from "$lib/globals.svelte";
     import { getContext } from "svelte";
     import DirCtrl from "./DirCtrl.svelte";
@@ -24,7 +24,7 @@
 
     <TreeRoot>
         <FolderNode
-            value={directory}
+            bind:value={directory}
         />
     </TreeRoot>
 </div>

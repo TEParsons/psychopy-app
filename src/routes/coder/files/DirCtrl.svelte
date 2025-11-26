@@ -50,6 +50,7 @@
             value = folder
             onchange($state.snapshot(value))
         }}
+        disabled={current.pages[current.tab] === undefined}
     />
 </div>
 

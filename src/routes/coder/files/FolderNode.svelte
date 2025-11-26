@@ -6,7 +6,7 @@
     import { getContext } from "svelte";
 
     let {
-        value
+        value=$bindable()
     } = $props();
 
     let fileIcons = {
