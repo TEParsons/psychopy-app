@@ -1,15 +1,16 @@
 <script>
     import {
         // file
-        file_new,
-        file_open,
-        file_save,
-        file_save_as,
+        fileNew,
+        fileOpen,
+        fileSave,
+        fileSaveAs,
         newWindow,
         // experiment
-    } from './callbacks.js'
+    } from '../callbacks.js'
     
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
+    import Menu from "./Menu.svelte";
     import { getContext } from "svelte";
     import { IconButton, } from '$lib/utils/buttons';
     import { UserCtrl } from '$lib/pavlovia/pavlovia.svelte';
@@ -22,29 +23,42 @@
 </script>
 
 <Ribbon>
+    <RibbonSection>
+        <IconButton 
+            icon="/icons/btn-hamburger.svg"
+            label="Menu"
+            onclick={() => show.menu = true} 
+            borderless
+        />
+        <Menu 
+            bind:shown={show.menu} 
+        />
+    </RibbonSection>
+    
     <RibbonSection label=File icon="/icons/rbn-file.svg">
         <IconButton 
             icon="/icons/btn-new.svg" 
             label="New file" 
-            onclick={file_new}
+            onclick={fileNew}
             borderless
         /> 
         <IconButton 
             icon="/icons/btn-open.svg" 
             label="Open file" 
-            onclick={file_open} 
+            onclick={fileOpen} 
             borderless
         />
         <IconButton 
             icon="/icons/btn-save.svg" 
             label="Save file" 
-            onclick={file_save}
+            onclick={fileSave}
             borderless
+            disabled={!current.pages[current.tab]?.canUndo}
         />
         <IconButton 
             icon="/icons/btn-saveas.svg" 
             label="Save file as"
-            onclick={file_save_as} 
+            onclick={fileSaveAs} 
             borderless
         />
     </RibbonSection>

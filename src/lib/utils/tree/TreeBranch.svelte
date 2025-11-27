@@ -1,70 +1,55 @@
 <script>
-    import { getContext } from "svelte";
-    import TreeBranch from "./TreeBranch.svelte";
-    import TreeNode from "./TreeNode.svelte";
     import { Icon } from "$lib/utils/icons";
+    import TreeNode from "./TreeNode.svelte";
+
 
     let {
-        branch,
-        level
-    } = $props();
+        label,
+        icon=undefined,
+        /** @interface */
+        children
+    } = $props()
 
-    let siblings = getContext("siblings");
     let open = $state.raw(false);
-    let handle = $state.raw();
 </script>
 
 <div 
     class=tree-branch
 >
-    <button
-        class=label
-        bind:this={handle}
-        onclick={evt => {
-            siblings.selected = handle;
-            open = !open;
-        }}
-        class:selected={siblings.selected === handle}
-        style:padding-left="calc({0.5 + level/2}rem)"
+    <TreeNode
+        label={label}
+        icon={icon}
+        onselect={(evt, data) => open = !open}
     >
-        <Icon 
-            src="/icons/sym-arrow-{open ? "down" : "right"}.svg"
-            size=".5rem"
-        />
-        {branch.label}
-    </button>
+        <!-- arrow showing open state -->
+        {#snippet chevron()}
+            <Icon 
+                src="/icons/sym-arrow-{open ? "down" : "right"}.svg"
+                size=".5rem"
+            />
+        {/snippet}
+    </TreeNode>
+    
     {#if open}
-        <div 
-            class=children
-        >
-            {#each branch.children as node}
-                {#if "children" in node}
-                    <TreeBranch branch={node} level={level+1} />
-                {:else}
-                    <TreeNode node={node} level={level+1} />
-                {/if}
-            {/each}
+        <div class=tree-branch-nodes>
+            {@render children?.()}
         </div>
     {/if}
 </div>
 
 <style>
-    .label {
-        padding: .25rem;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: .5rem;
-        width: 100%;
-        background-color: transparent;
-    }
-
-    .children {
+    .tree-branch {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
+        gap: .5rem;
     }
-    .selected {
-        background-color: var(--mantle);
+    .tree-branch-nodes {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        align-items: stretch;
+        margin-left: .5rem;
+        padding-left: .5rem;
+        border-left: 1px solid var(--overlay);
     }
 </style>

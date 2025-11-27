@@ -16,29 +16,6 @@
     // reference current in context for ease of access
     setContext("current", current)
 
-    // map openFile function now that electron exists
-    current.openFile = async (file, label=undefined) => {
-        // if no label, use file
-        if (label === undefined) {
-            label = path.basename(file)
-        }
-        // if file already open, navigate to it
-        if (current.pages.some(
-            item => item.file === file
-        )) {
-            
-        } else {
-            // otherwise, add a new page
-            current.pages.push({
-                label: label,
-                file: file,
-                content: await electron.files.load(file)
-            })
-        }
-        // focus
-        current.tab = current.pages.findIndex(item => item.file === file)
-    }
-
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
@@ -50,7 +27,7 @@
 <title>PsychoPy Coder</title>
 <Frame
     rows={3} 
-    cols={5}
+    cols={4}
 >
     {#snippet ribbon()}
         <CoderRibbon />
@@ -61,7 +38,7 @@
             hspan={1}
             vspan={2}
         >
-            <!-- <FileExplorer /> -->
+            <FileExplorer />
         </Panel>
     {/if}
     <Panel
@@ -71,11 +48,6 @@
     >
         <CoderNotebook />
     </Panel>
-    <Panel
-        title=Outline
-        hspan={1}
-        vspan={python ? 2 : 3}
-    ></Panel>
     {#if python?.ready}
         <Panel
             title=Console

@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import unzip from "extract-zip";
 import { extract as untar } from "tar";
-import appVersion from "./version.json" with { type: "json" };
+import { appVersion, isDev } from "./version.js";
 import { python } from "./python.js"
 
 let decoder = new TextDecoder();
@@ -37,11 +37,6 @@ export async function installUV() {
     fs.mkdirSync(uv.dir, {
         recursive: true
     })
-    // if installed, update
-    if (uv.exists()) {
-        // proc.execSync(`${uv.executable} self update`)
-        return true
-    }
     // map installers to system architectures
     let installers = {
         win32: {
@@ -129,15 +124,15 @@ export function findPython(
 }
 
 
-export function installPython(
-    version={python: "3.10", psychopy: appVersion.major}, 
+export async function installPython(
+    version={python: "3.10", psychopy: appVersion}, 
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     // make sure version has necessary keys
     version.python = version.python || "3.10"
-    version.psychopy = version.psychopy || appVersion.major
+    version.psychopy = version.psychopy || appVersion
     // get specific folder for this version
-    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy)
+    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy.major)
     // make sure folder exists
     fs.mkdirSync(folder, {
         recursive: true
@@ -146,15 +141,22 @@ export function installPython(
     proc.execSync(`"${uv.executable}" venv --python ${version.python} --clear "${folder}"`)
     // get executable
     python.details.executable = findPython()
-    // install PsychoPy and liaison
+    // install liaison
     proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison --python "${python.details.executable}"`)
-    if (version.psychopy === "dev") {
-        proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`)
-    } else {
-        proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
-    }
     // install esprima (Py -> JS translation) and PyQt (expInfo dialog)
     proc.execSync(`"${uv.executable}" pip install pyqt6 esprima --python "${python.details.executable}"`)
+    // install psychopy (using await and a promise rather than execSync as execSync stalls the whole process)
+    await new Promise((resolve, reject) => {
+        if (version.psychopy.major === "dev") {
+            proc.exec(
+                `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`
+            ).on("close", evt => resolve())
+        } else {
+            proc.exec(
+                `"${uv.executable}" pip install psychopy=="${version.psychopy.str}" --python "${python.details.executable}"`
+            ).on("close", evt => resolve())
+        }
+    })
 
     return true
 }

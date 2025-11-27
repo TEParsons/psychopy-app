@@ -1,15 +1,30 @@
+import { Script } from "$lib/experiment/script.svelte"
+import { openIn } from "$lib/utils/views.svelte"
+
 export let current = $state({
     pages: [],
     tab: 0,
-    newFile: evt => {
-        // add new tab with blank file
-        current.pages.push({
-            label: "untitled.py",
-            file: undefined,
-            content: ""
-        })
-        // focus new tab
-        current.tab = $state.snapshot(current.pages.length) - 1
-    },
-    openFile: undefined
+    openFile: async file => {
+        // open in other frame if relevant
+        if (file.ext === ".psyexp") {
+            openIn(file.file, "builder")
+            return
+        }
+        if (file.ext === ".psyrun") {
+            openIn(file.file, "runner")
+            return
+        }
+        // if file not already open, open it
+        if (!current.pages.some(
+            item => item.file.file === file.file
+        )) {
+            current.pages.push(
+                new Script(file)
+            )
+        }
+        // focus
+        current.tab = current.pages.findIndex(item => item.file.file === file.file)
+        // load content from file
+        await current.pages[current.tab].fromFile(file)
+    }
 })

@@ -14,12 +14,9 @@ if (!fs.existsSync(path.join(app.getPath("appData"), "psychopy4"))) {
 const { python, startPython } = require("./python.js");
 const { uv } = require("./uv.js");
 const logging = require("./logging.js");
-const appVersion = require('./version.json');
+const { appVersion, isDev } = require('./version.js');
 
 VelopackApp.build().run();
-
-// show debug tools if in dev mode
-const isDev = !app.isPackaged;
 
 // figure out best file to use for a favicon
 var favicon = path.join(__dirname, 'favicon')
@@ -140,6 +137,14 @@ function newWindow(target = null, show = true, fullscreen = false, debug = isDev
     }
   });
   win.removeMenu();
+  // open new windows in browser unless opened by electron
+  win.webContents.setWindowOpenHandler(
+    ({ url }) => {
+      shell.openExternal(url);
+
+      return { action: 'deny' }
+    }
+  )
 
   // load target URL
   let url = `http://${svelte.address.host}:${svelte.address.port}/${target || ''}`;
@@ -210,11 +215,12 @@ app.on("quit", (evt, code) => {
 })
 
 
-function getFileTree(folder) {
+function getFileTree(folder, recursive=false) {
   let output = [];
 
   try {
     for (let item of fs.readdirSync(folder, { recursive: false })) {
+      console.log(item)
       // construct absolute path
       let abspath = path.join(folder, item);
       // get stats
@@ -274,10 +280,19 @@ const handlers = {
       load: ipcMain.handle("electron.files.load", (evt, file) => fs.readFileSync(file, { encoding: 'utf8' })),
       save: ipcMain.handle("electron.files.save", (evt, file, content) => fs.writeFileSync(file, content, { encoding: 'utf8', mode: 0o777 })),
       exists: ipcMain.handle("electron.files.exists", (evt, file) => fs.existsSync(file)),
+      stat: ipcMain.handle("electron.files.stat", (evt, file) => {
+        let stat = fs.statSync(file)
+        return Object.assign({
+          isDirectory: stat.isDirectory(),
+          isFile: stat.isFile()
+        }, stat)
+      }),
       mkdir: ipcMain.handle("electron.files.mkdir", (evt, path, recursive = true) => fs.mkdirSync(path, { recursive: recursive })),
       openDialog: ipcMain.handle("electron.files.openDialog", (evt, options) => dialog.showOpenDialogSync(windows[evt.sender.id], options)),
       saveDialog: ipcMain.handle("electron.files.saveDialog", (evt, options) => dialog.showSaveDialogSync(windows[evt.sender.id], options)),
-      scandir: ipcMain.handle("electron.files.scandir", (evt, root) => getFileTree(root)),
+      scandir: ipcMain.handle("electron.files.scandir", (evt, root, recursive) => fs.readdirSync(root, { recursive: recursive }).sort(
+        (a, b) => fs.statSync(path.join(root, b)).isDirectory() - fs.statSync(path.join(root, a)).isDirectory()
+      )),
       showItemInFolder: ipcMain.handle("electron.files.showItemInFolder", (evt, folder) => shell.showItemInFolder(folder)),
       openPath: ipcMain.handle("electron.files.openPath", (evt, path) => shell.openPath(path)),
       openExternal: ipcMain.handle("electron.files.openExternal", (evt, url) => shell.openExternal(url))
@@ -286,6 +301,7 @@ const handlers = {
       get: ipcMain.handle("electron.clipboard.get", (evt) => clipboard),
       set: ipcMain.handle("electron.clipboard.set", (evt, value) => clipboard = value)
     },
+    version: ipcMain.handle("electron.version", (evt) => appVersion),
     quit: ipcMain.handle("electron.quit", (evt) => app.quit())
   },
   python: {

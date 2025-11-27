@@ -27,6 +27,7 @@ const electron = {
     load: (file) => ipcRenderer.invoke("electron.files.load", file).then(resp => resp),
     save: (file, content) => ipcRenderer.invoke("electron.files.save", file, content).then(resp => resp),
     exists: (file) => ipcRenderer.invoke("electron.files.exists", file).then(resp => resp),
+    stat: (file) => ipcRenderer.invoke("electron.files.stat", file).then(resp => resp),
     mkdir: (path, recursive=true) => ipcRenderer.invoke("electron.files.mkdir", path, recursive).then(resp => resp),
     openDialog: (options) => ipcRenderer.invoke("electron.files.openDialog", options).then(resp => resp),
     saveDialog: (options) => ipcRenderer.invoke("electron.files.saveDialog", options).then(resp => resp),
@@ -39,6 +40,7 @@ const electron = {
     get: () => ipcRenderer.invoke("electron.clipboard.get").then(resp => resp),
     set: (value) => ipcRenderer.invoke("electron.clipboard.set", value).then(resp => resp)
   },
+  version: () => ipcRenderer.invoke("electron.version").then(resp => resp),
   quit: () => ipcRenderer.invoke("electron.quit")
 };
 contextBridge.exposeInMainWorld('electron', electron)

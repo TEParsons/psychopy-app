@@ -140,6 +140,30 @@
             />
         </SubMenu>
     {/if}
+
+    <SubMenu label="Help">
+        <MenuItem 
+            label="PsychoPy Homepage"
+            onclick={evt => open("https://www.psychopy.org/")}
+        />
+        <MenuItem 
+            label="Documentation"
+            onclick={evt => open("https://www.psychopy.org/documentation")}
+        />
+        <MenuItem 
+            label="Help Forum"
+            onclick={evt => open("https://discourse.psychopy.org/")}
+        />
+        <MenuSeparator />
+        {#if electron}
+            {#await electron.version() then version}
+                <MenuItem
+                    label="PsychoPy {version.major}.{version.minor}"
+                    disabled
+                />
+            {/await}
+        {/if}
+    </SubMenu>
 </Menu>
 
 

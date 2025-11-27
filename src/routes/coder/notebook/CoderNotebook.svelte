@@ -18,7 +18,7 @@
 <Notebook>
     {#each Object.entries(current.pages) as [i, page]}
         <NotebookPage
-            bind:label={page.label}
+            label={page.file.name}
             close={(evt) => current.pages.splice(i, 1)}
             bind:selected={
                 () => current.tab === parseInt(i),
