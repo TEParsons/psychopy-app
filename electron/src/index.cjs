@@ -137,6 +137,14 @@ function newWindow(target = null, show = true, fullscreen = false, debug = isDev
     }
   });
   win.removeMenu();
+  // open new windows in browser unless opened by electron
+  win.webContents.setWindowOpenHandler(
+    ({ url }) => {
+      shell.openExternal(url);
+
+      return { action: 'deny' }
+    }
+  )
 
   // load target URL
   let url = `http://${svelte.address.host}:${svelte.address.port}/${target || ''}`;
