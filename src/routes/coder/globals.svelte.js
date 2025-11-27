@@ -1,9 +1,19 @@
 import { Script } from "$lib/experiment/script.svelte"
+import { openIn } from "$lib/utils/views.svelte"
 
 export let current = $state({
     pages: [],
     tab: 0,
     openFile: async file => {
+        // open in other frame if relevant
+        if (file.ext === ".psyexp") {
+            openIn(file.file, "builder")
+            return
+        }
+        if (file.ext === ".psyrun") {
+            openIn(file.file, "runner")
+            return
+        }
         // if file not already open, open it
         if (!current.pages.some(
             item => item.file.file === file.file
