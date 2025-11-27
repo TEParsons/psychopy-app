@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import unzip from "extract-zip";
 import { extract as untar } from "tar";
-import appVersion from "./version.json" with { type: "json" };
+import { appVersion } from "./version.js";
 import { python } from "./python.js"
 
 let decoder = new TextDecoder();

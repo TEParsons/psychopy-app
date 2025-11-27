@@ -5,7 +5,7 @@ import logging from "./logging.js";
 import { app, BrowserWindow } from "electron";
 import { uv } from "./uv.js"
 import { randomUUID } from "node:crypto";
-import appVersion from "./version.json" with { type: "json" };
+import { appVersion } from "./version.js";
 
 
 function getConstants() {

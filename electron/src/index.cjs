@@ -14,7 +14,7 @@ if (!fs.existsSync(path.join(app.getPath("appData"), "psychopy4"))) {
 const { python, startPython } = require("./python.js");
 const { uv } = require("./uv.js");
 const logging = require("./logging.js");
-const appVersion = require('./version.json');
+const { appVersion } = require('./version.js');
 
 VelopackApp.build().run();
 
