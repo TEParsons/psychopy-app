@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 import unzip from "extract-zip";
 import { extract as untar } from "tar";
-import { appVersion } from "./version.js";
+import { appVersion, isDev } from "./version.js";
 import { python } from "./python.js"
 
 let decoder = new TextDecoder();
@@ -130,14 +130,14 @@ export function findPython(
 
 
 export function installPython(
-    version={python: "3.10", psychopy: appVersion.major}, 
+    version={python: "3.10", psychopy: appVersion}, 
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     // make sure version has necessary keys
     version.python = version.python || "3.10"
-    version.psychopy = version.psychopy || appVersion.major
+    version.psychopy = version.psychopy || appVersion
     // get specific folder for this version
-    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy)
+    folder = path.join(app.getPath("appData"), "psychopy4", ".python", version.psychopy.major)
     // make sure folder exists
     fs.mkdirSync(folder, {
         recursive: true
@@ -148,10 +148,10 @@ export function installPython(
     python.details.executable = findPython()
     // install PsychoPy and liaison
     proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison --python "${python.details.executable}"`)
-    if (version.psychopy === "dev") {
+    if (version.psychopy.major === "dev") {
         proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`)
     } else {
-        proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy}" --python "${python.details.executable}"`)
+        proc.execSync(`"${uv.executable}" pip install psychopy=="${version.psychopy.str}" --python "${python.details.executable}"`)
     }
     // install esprima (Py -> JS translation) and PyQt (expInfo dialog)
     proc.execSync(`"${uv.executable}" pip install pyqt6 esprima --python "${python.details.executable}"`)

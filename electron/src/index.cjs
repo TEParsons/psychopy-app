@@ -14,12 +14,9 @@ if (!fs.existsSync(path.join(app.getPath("appData"), "psychopy4"))) {
 const { python, startPython } = require("./python.js");
 const { uv } = require("./uv.js");
 const logging = require("./logging.js");
-const { appVersion } = require('./version.js');
+const { appVersion, isDev } = require('./version.js');
 
 VelopackApp.build().run();
-
-// show debug tools if in dev mode
-const isDev = !app.isPackaged;
 
 // figure out best file to use for a favicon
 var favicon = path.join(__dirname, 'favicon')

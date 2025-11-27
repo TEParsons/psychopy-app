@@ -6,8 +6,11 @@ export function parseVersion(version) {
     // return as an object
     return {
         major: `${year}.${major}`,
-        minor: minor
+        minor: minor,
+        str: version
     }
 }
 
 export const appVersion = app.isPackaged ? parseVersion(app.getVersion()) : {major: "dev", minor: app.getVersion()};
+
+export const isDev = !app.isPackaged;
