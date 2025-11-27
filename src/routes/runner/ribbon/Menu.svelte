@@ -141,7 +141,7 @@
         </SubMenu>
     {/if}
 
-    <SubMenu label="Help" icon="/icons/btn-info.svg">
+    <SubMenu label="Help">
         <MenuItem 
             label="PsychoPy Homepage"
             onclick={evt => open("https://www.psychopy.org/")}
