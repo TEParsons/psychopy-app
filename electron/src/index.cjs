@@ -296,6 +296,7 @@ const handlers = {
       get: ipcMain.handle("electron.clipboard.get", (evt) => clipboard),
       set: ipcMain.handle("electron.clipboard.set", (evt, value) => clipboard = value)
     },
+    version: ipcMain.handle("electron.version", (evt) => appVersion),
     quit: ipcMain.handle("electron.quit", (evt) => app.quit())
   },
   python: {

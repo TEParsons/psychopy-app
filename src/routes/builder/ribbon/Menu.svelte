@@ -5,7 +5,9 @@
     import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
     import { FindDialog } from "$lib/dialogs/find";
     import { prefs } from "$lib/preferences.svelte"; 
-    import { electron } from "$lib/globals.svelte";
+    import { electron, python } from "$lib/globals.svelte";
+    import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js";
+    import { PluginManagerDlg } from "$lib/dialogs/pluginManager";
 
     import {
         // file
@@ -43,7 +45,9 @@
     let show = $state({
         prefsDlg: false,
         findDlg: false,
-        settingsDlg: false
+        settingsDlg: false,
+        deviceMgrDlg: false,
+        pluginMgr: false,
     })
 </script>
 
@@ -100,16 +104,6 @@
             label="Reset preferences"
             onclick={evt => prefs.reset()}
         />
-
-        {#if electron}
-            <MenuSeparator />
-
-            <MenuItem
-                label="Quit"
-                onclick={quit}
-                shortcut="quit"
-            />
-        {/if}
     </SubMenu>
 
     <SubMenu label="Edit" icon="/icons/rbn-edit.svg">
@@ -233,6 +227,55 @@
             />
         </SubMenu>
     {/if}
+
+    <SubMenu label="Tools" icon="/icons/btn-hamburger.svg">
+        <MenuItem 
+            label="Open device manager"
+            icon="/icons/btn-devices.svg"
+            onclick={evt => show.deviceMgrDlg = true}
+            disabled={!python?.ready}
+        />
+        <MenuItem 
+            label="Manage plugins and packages"
+            icon="/icons/btn-plugin.svg"
+            onclick={evt => show.pluginMgr = true}
+            disabled={!python?.ready}
+        />
+    </SubMenu>
+
+    <SubMenu label="Help" icon="/icons/btn-info.svg">
+        <MenuItem 
+            label="PsychoPy Homepage"
+            onclick={evt => open("https://www.psychopy.org/")}
+        />
+        <MenuItem 
+            label="Documentation"
+            onclick={evt => open("https://www.psychopy.org/documentation")}
+        />
+        <MenuItem 
+            label="Help Forum"
+            onclick={evt => open("https://discourse.psychopy.org/")}
+        />
+        <MenuSeparator />
+        {#if electron}
+            {#await electron.version() then version}
+                <MenuItem
+                    label="PsychoPy {version.major}.{version.minor}"
+                    disabled
+                />
+            {/await}
+        {/if}
+    </SubMenu>
+
+    <MenuSeparator />
+
+    {#if electron}
+        <MenuItem
+            label="Quit"
+            onclick={quit}
+            shortcut="quit"
+        />
+    {/if}    
 </Menu>
 
 
@@ -246,4 +289,10 @@
 <ParamsDialog
     element={current.experiment.settings}
     bind:shown={show.settingsDlg}
+/>
+<DeviceManagerDialog
+    bind:shown={show.deviceMgrDlg}
+/>
+<PluginManagerDlg 
+    bind:shown={show.pluginMgr}
 />
