@@ -76,7 +76,7 @@
         // iterate through open pages
         for (let [i, page] of Object.entries(current.pages)) {
             // if page shows the given file...
-            if (page.file === data) {
+            if (page.file.file === data.file) {
                 // ...navigate to it
                 current.tab = parseInt(i)
                 // return true so we know we hit something
@@ -115,7 +115,7 @@
                     <TreeNode 
                         label={file}
                         icon="/icons/filetypes/{fileIcons[parsePath(file || "").ext] || "unknown"}.svg"
-                        data={path.join(value, file)}
+                        data={parsePath(path.join(value, file))}
                         onselect={selectFile}
                         onactivate={openFile}
                     />

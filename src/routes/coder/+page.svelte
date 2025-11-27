@@ -16,29 +16,6 @@
     // reference current in context for ease of access
     setContext("current", current)
 
-    // map openFile function now that electron exists
-    current.openFile = async (file, label=undefined) => {
-        // if no label, use file
-        if (label === undefined) {
-            label = path.basename(file)
-        }
-        // if file already open, navigate to it
-        if (current.pages.some(
-            item => item.file === file
-        )) {
-            
-        } else {
-            // otherwise, add a new page
-            current.pages.push({
-                label: label,
-                file: file,
-                content: await electron.files.load(file)
-            })
-        }
-        // focus
-        current.tab = current.pages.findIndex(item => item.file === file)
-    }
-
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
