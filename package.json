@@ -78,11 +78,11 @@
 		"monaco-editor": "^0.52.2",
 		"path-browserify": "^1.0.1",
 		"tar": "^7.5.2",
+		"velopack": "^0.0.1350-g3ba32af",
 		"xml-formatter": "^3.6.5"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "*",
-		"velopack": "^0.0.1350-g3ba32af",
 		"electron-maker-velopack": "^1.0.4",
 		"dmg-builder": "^0.5.1"
 	},
