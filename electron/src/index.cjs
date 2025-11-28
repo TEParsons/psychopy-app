@@ -125,7 +125,7 @@ const createWindow = () => {
 };
 
 
-function newWindow(target = null, show = true, fullscreen = false, debug = isDev) {
+async function newWindow(target = null, show = true, fullscreen = false, debug = isDev) {
   // create window
   let win = new BrowserWindow({
     icon: favicon,
@@ -148,12 +148,14 @@ function newWindow(target = null, show = true, fullscreen = false, debug = isDev
 
   // load target URL
   let url = `http://${svelte.address.host}:${svelte.address.port}/${target || ''}`;
-
   logging.log(`Loading ${url}...`)
   win.loadURL(url);
+  // store handle against id
+  windows[win.webContents.id] = win;
 
   // show when ready (if requested)
   if (show) {
+    // show once ready, if requested
     win.once("ready-to-show", evt => {
       logging.log(`Loaded ${url}`)
       win.show();
@@ -172,10 +174,20 @@ function newWindow(target = null, show = true, fullscreen = false, debug = isDev
         win.webContents.openDevTools();
       }
     })
+    // return ID once shown
+    return new Promise((resolve, reject) => {
+      win.once("show", evt => {
+        resolve(win.webContents.id)
+      })
+    })
+  } else {
+    // if not showing, return ID once ready to show
+    return new Promise((resolve, reject) => {
+      win.once("ready-to-show", evt => {
+        resolve(win.webContents.id)
+      })
+    })
   }
-  // store handle against id
-  windows[win.webContents.id] = win;
-  return win.webContents.id
 }
 
 
