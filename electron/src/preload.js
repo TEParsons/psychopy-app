@@ -90,6 +90,9 @@ const python = {
     send: (message, timeout=1000) => ipcRenderer.invoke("python.liaison.send", message, timeout).then(resp => resp),
     ready: () => ipcRenderer.invoke("python.liaison.ready").then(resp => resp)
   },
-  runScript: (file, ...args) => ipcRenderer.invoke("python.runScript", file, ...args).then(resp => resp)
+  scripts: {
+    run: (file, ...args) => ipcRenderer.invoke("python.scripts.run", file, ...args).then(resp => resp),
+    stop: () => ipcRenderer.invoke("python.scripts.stop").then(resp => resp),
+  }
 }
 contextBridge.exposeInMainWorld('python', python)

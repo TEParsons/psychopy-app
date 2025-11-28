@@ -212,6 +212,7 @@
                 onclick={evt => runPython()}
                 disabled={current.experiment === null}
                 bind:awaiting={awaiting.runpy}
+                cancel={python.scripts.stop}
                 borderless
             />
         </RibbonSection>

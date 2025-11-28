@@ -477,7 +477,7 @@ export class Experiment {
             )
         }
         // run script
-        await python.runScript(
+        await python.scripts.run(
             target, 
             executable || await python.details().then(resp => resp.executable),
             ...(this.pilotMode ? ["--pilot"] : [])
