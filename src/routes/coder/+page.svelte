@@ -3,6 +3,8 @@
     import { current } from "./globals.svelte";
 
     import CoderRibbon from "./ribbon/Ribbon.svelte";
+    import Shortcuts from '$lib/utils/Shortcuts.svelte';
+    import { shortcuts } from "./callbacks.svelte";
     import { CoderNotebook } from "./notebook";
     import Frame from "$lib/utils/Frame.svelte";
     import Panel from "$lib/utils/Panel.svelte";
@@ -59,5 +61,10 @@
             <ShellNotebook />
         </Panel>
     {/if}
+    <!-- this will setup keyboard shortcuts -->
+    <Shortcuts
+        callbacks={shortcuts}
+    />
+    <!-- this will setup a Python instance -->
     <SetupPython />
 </Frame>

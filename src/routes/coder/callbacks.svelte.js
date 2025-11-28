@@ -1,5 +1,6 @@
 import { electron, python, projects } from '$lib/globals.svelte.js';
 import { browseFileOpen, browseFileSave, parsePath } from "$lib/utils/files.js";
+import { openIn, showDevTools } from "$lib/utils/views.svelte"
 import { current } from './globals.svelte.js';
 
 
@@ -31,6 +32,12 @@ export async function fileOpen() {
     current.openFile(file)
 }
 
+export async function revealFolder() {
+    if (electron && current.pages[current.tab].file) {
+        electron.files.showItemInFolder(current.pages[current.tab].file.file)
+    }
+}
+
 export async function fileSave() {
     // if no file yet, save as instead
     if (!current.pages[current.tab]?.file) {
@@ -60,27 +67,86 @@ export async function fileSaveAs() {
     await fileSave()
 }
 
-/* Edit */
-export function undo() {
-    current.experiment.history.undo();
-    // restore focus to tab if possible
-    if (current.routine && current.routine.name in current.experiment.routines) {
-        current.routine = current.experiment.routines[current.routine.name]
+export function quit() {
+    if (electron) {
+        electron.quit()
     }
 }
 
+/* Edit */
+
+export function undo() {
+    current.pages[current.tab]?.editor?.getModel()?.undo()
+}
+
 export function redo() {
-    current.experiment.history.redo();
-    // restore focus to tab if possible
-    if (current.routine && current.routine.name in current.experiment.routines) {
-        current.routine = current.experiment.routines[current.routine.name]
-    }
+    current.pages[current.tab]?.editor?.getModel()?.undo()
+}
+
+export function find() {
+    current.pages[current.tab]?.editor?.trigger(
+        "find", 
+        "editor.actions.findWithArgs", 
+        { 
+            searchString: ""
+        }
+    )
 }
 
 /* Experiment */
 
+/* Run */
 
+export function togglePiloting() {
+    // toggle pilot mode
+    if (current.pages[current.tab]) {
+        current.pages[current.tab].pilotMode = !current.pages[current.tab].pilotMode
+    }
+}
+
+export function sendToRunner() {
+    openIn(current.pages[current.tab]?.file?.file, "runner")
+}
+
+export async function runPython(executable) {
+    // write Python script
+    let target = await compilePython();
+    // run script
+    await current.experiment.runPython(false, executable)
+
+    return true
+}
+
+export async function runJS() {
+    if (!python) {
+        return
+    }
+    // compile to JS
+    await compileJS()
+    // run
+    await current.experiment.runJS(false)
+}
 
 /* Views */
 
-export { newWindow } from "$lib/utils/views.svelte";
+export { newWindow, showWindow, showDevTools } from "$lib/utils/views.svelte";
+
+
+export var shortcuts = {
+    new: fileNew,
+    open: fileOpen,
+    revealFolder: revealFolder,
+    save: fileSave,
+    saveAs: fileSaveAs,
+    close: close,
+    quit: quit,
+    undo: undo,
+    redo: redo,
+    // togglePiloting: togglePiloting,
+    // sendToRunner: sendToRunner,
+    // compilePython: compilePython,
+    // runPython: runPython,
+    // compileJS: compileJS,
+    // runJS: runJS,
+    showDevTools: showDevTools
+}

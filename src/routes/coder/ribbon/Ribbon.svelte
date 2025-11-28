@@ -6,15 +6,20 @@
         fileSave,
         fileSaveAs,
         newWindow,
+        // edit
+        undo,
+        redo,
+        find,
         // experiment
-    } from '../callbacks.js'
+        sendToRunner
+    } from '../callbacks.svelte.js'
     
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
     import Menu from "./Menu.svelte";
     import { getContext } from "svelte";
-    import { IconButton, } from '$lib/utils/buttons';
+    import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl } from '$lib/pavlovia/pavlovia.svelte';
-    import { electron } from "$lib/globals.svelte";
+    import { electron, python } from "$lib/globals.svelte";
 
     let current = getContext("current");
 
@@ -67,29 +72,46 @@
         <IconButton 
             icon="/icons/btn-undo.svg" 
             label="Undo"
-            onclick={() => current.pages[current.tab].editor.getModel().undo()} 
-            disabled={!(current.pages[current.tab] && current.pages[current.tab].canUndo)} 
+            onclick={undo} 
+            disabled={!current.pages[current.tab]?.canUndo} 
             borderless
         />
         <IconButton 
             icon="/icons/btn-redo.svg" 
             label="Redo" 
-            onclick={() => current.pages[current.tab].editor.getModel().redo()} 
-            disabled={!(current.pages[current.tab] && current.pages[current.tab].canRedo)} 
+            onclick={redo} 
+            disabled={!current.pages[current.tab]?.canRedo} 
             borderless
         />
         <IconButton 
             icon="/icons/btn-find.svg" 
             label="Find" 
-            onclick={(evt) => current.pages[current.tab].editor.trigger(
-                "find", 
-                "editor.actions.findWithArgs", 
-                { 
-                    searchString: ""
-                }
-            )}
+            onclick={find}
+            disabled={!current.pages[current.tab]?.editor}
             borderless
         />
+    </RibbonSection>
+
+    <RibbonSection label=Experiment icon="/icons/rbn-experiment.svg">
+        <SwitchButton 
+            labels={["Pilot", "Run"]} 
+            tooltip="Experiment will run in {current.pages[current.tab]?.pilotMode ? "pilot" : "run"} mode"
+            bind:value={
+                () => current.pages[current.tab]?.pilotMode,
+                (value) => current.pages[current.tab].pilotMode = value
+            } 
+            disabled={!current.pages[current.tab]}
+        />  
+        
+        {#if python?.ready}
+            <IconButton 
+                icon="/icons/btn-send{current.pages[current.tab]?.pilotMode ? "pilot" : "run"}.svg" 
+                label="Send experiment to runner" 
+                onclick={sendToRunner}
+                disabled={!current.pages[current.tab]}
+                borderless
+            /> 
+        {/if}
     </RibbonSection>
 
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">

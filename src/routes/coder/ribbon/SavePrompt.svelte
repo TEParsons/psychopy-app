@@ -1,7 +1,7 @@
 <script>
     import { MessageDialog } from "$lib/utils/dialog";
     import { getContext } from "svelte";
-    import { file_save } from "./callbacks.js";
+    import { fileSave } from "./callbacks.svelte.js";
 
     let current = getContext("current")
 
@@ -28,7 +28,7 @@
     buttons={{
         YES: (evt) => {
             // if yes, save and do action
-            file_save()
+            fileSave()
             action(evt)
         },
         NO: (evt) => {
