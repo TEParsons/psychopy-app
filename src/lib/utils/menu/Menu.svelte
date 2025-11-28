@@ -41,16 +41,28 @@
     </div>
 {/if}
 
-<svelte:window onmousedown={(evt) => {
-    // ignore clicks when element is not shown
-    if (!handle) {
-        return
-    }
-    // if clicked outside of itself, close
-    if (!handle.contains(evt.target)) {
-        shown = false
-    }
-}} />
+<svelte:window 
+    onmousedown={(evt) => {
+        // ignore clicks when element is not shown
+        if (!handle) {
+            return
+        }
+        // if clicked outside of itself, close
+        if (!handle.contains(evt.target)) {
+            shown = false
+        }
+    }} 
+    onkeydown={(evt) => {
+        // ignore clicks when element is not shown
+        if (!handle) {
+            return
+        }
+        // if escape is pressed, close
+        if (evt.key === "Escape") {
+            shown = false
+        }
+    }}
+/>
 
 <style>
     div {
