@@ -1,4 +1,4 @@
-import { Experiment } from "$lib/experiment";
+import { Experiment, Script } from "$lib/experiment";
 import { Clipboard } from "$lib/utils/clipboard";
 
 
@@ -7,6 +7,10 @@ export let current = $state({
     file: undefined,
     project: undefined,
     experiment: new Experiment("untitled.psyexp"),
+    readme: {
+        shown: false,
+        script: new Script("readme.md")
+    },
     routine: undefined,
     moving: undefined,
     inserting: undefined,

@@ -43,13 +43,27 @@ export class Script {
     /**
      * Write the current contents of this script to a file
      */
-    toFile(file) {
+    async toFile(file) {
         // parse to object if needed
         if (typeof file === "string") {
             file = parsePath(file)
         }
         // if we were keeping track of history, clear it now
         this.canUndo = false
+        // write content from file
+        if (electron) {
+            electron.files.save(
+                $state.snapshot(this.file.file), 
+                $state.snapshot(this.content)
+            )
+        } else {
+            // get file writable from handle
+            let writable = await file.handle.createWritable();
+            // write to file
+            writable.seek(0);
+            writable.write(this.content);
+            writable.close();
+        }
     }
 
     /**

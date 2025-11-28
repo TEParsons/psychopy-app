@@ -11,7 +11,8 @@
     import { setContext } from 'svelte';
     import { electron } from "$lib/globals.svelte";
     import { parsePath } from "$lib/utils/files";
-    import SetupPython from '../../lib/python/SetupPython.svelte';
+    import SetupPython from '$lib/python/SetupPython.svelte';
+    import ReadMe from '$lib/dialogs/readme/ReadMe.svelte';
 
     // reference current in context for ease of access
     setContext("current", current)
@@ -58,6 +59,11 @@
     >
         <FlowPanel></FlowPanel>
     </Panel>
+
+    <ReadMe 
+        script={current.readme.script}
+        bind:shown={current.readme.shown}
+    />
 
     <!-- this will setup keyboard shortcuts -->
     <Shortcuts

@@ -26,6 +26,7 @@
         showWindow,
         showDevTools,
         // experiment
+        showReadme,
         copyRoutine,
         pasteRoutine,
         // run
@@ -159,6 +160,12 @@
             label="Experiment settings"
             icon="/icons/btn-settings.svg"
             onclick={evt => show.settingsDlg = true}
+        />
+
+        <MenuItem 
+            label="Show readme"
+            icon="/icons/btn-new.svg"
+            onclick={evt => showReadme()}
         />
 
         <MenuSeparator />
