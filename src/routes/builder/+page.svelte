@@ -19,6 +19,8 @@
     if (electron) {
         // for opening files via another window
         electron.windows.listen("fileOpen", (evt, file) => current.experiment.file = parsePath(file))
+        // mark ready
+        electron.windows.emit("ready", true)
     }
     
 </script>

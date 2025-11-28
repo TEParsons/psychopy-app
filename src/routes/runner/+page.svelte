@@ -22,6 +22,8 @@
     if (electron) {
         // for opening files via another window
         electron.windows.listen("fileOpen", (evt, file) => addFile(file))
+        // mark ready
+        electron.windows.emit("ready", true)
     }
 
     let selection = $state.raw()

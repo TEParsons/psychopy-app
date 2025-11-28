@@ -20,6 +20,8 @@
     if (electron) {
         // for opening files via another window
         electron.windows.listen("fileOpen", (evt, file) => current.openFile(file))
+        // mark ready
+        electron.windows.emit("ready", true)
     }
 
 </script>

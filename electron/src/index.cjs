@@ -152,7 +152,8 @@ async function newWindow(target = null, show = true, fullscreen = false, debug =
   win.loadURL(url);
   // store handle against id
   windows[win.webContents.id] = win;
-
+  // create promise waiting for ready event
+  let ready = Promise.withResolvers()
   // show when ready (if requested)
   if (show) {
     // show once ready, if requested
@@ -174,22 +175,19 @@ async function newWindow(target = null, show = true, fullscreen = false, debug =
         win.webContents.openDevTools();
       }
     })
-    // return ID once shown
-    return new Promise((resolve, reject) => {
-      win.once("show", evt => {
-        resolve(win.webContents.id)
-      })
+    // return ID once ready message is received (has to be sent via electron.windows.emit)
+    win.webContents.on("ipc-message", (evt, tag) => {
+      if (tag === "ready") {
+        ready.resolve(win.webContents.id)
+      }
     })
   } else {
     // if not showing, return ID once ready to show
-    return new Promise((resolve, reject) => {
-      win.once("ready-to-show", evt => {
-        resolve(win.webContents.id)
-      })
-    })
+    win.once("ready-to-show", evt => ready.resolve(win.webContents.id))
   }
+  // wait until ready
+  return await ready.promise
 }
-
 
 
 // This method will be called when Electron has finished
@@ -266,7 +264,7 @@ function getFileTree(folder, recursive=false) {
 const handlers = {
   electron: {
     windows: {
-      new: ipcMain.handle("electron.windows.new", (evt, target) => newWindow(target)),
+      new: ipcMain.handle("electron.windows.new", async (evt, target) => await newWindow(target)),
       get: ipcMain.handle("electron.windows.get", (evt, target) => Object.keys(windows).filter(
         id => !windows[id].isDestroyed()
       ).filter(
