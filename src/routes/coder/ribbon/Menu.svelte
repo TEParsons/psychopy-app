@@ -180,12 +180,6 @@
 
     <SubMenu label="Tools" icon="/icons/btn-hamburger.svg">
         <MenuItem 
-            label="Open device manager"
-            icon="/icons/btn-devices.svg"
-            onclick={evt => show.deviceMgrDlg = true}
-            disabled={!python?.ready}
-        />
-        <MenuItem 
             label="Manage plugins and packages"
             icon="/icons/btn-plugin.svg"
             onclick={evt => show.pluginMgr = true}
@@ -232,9 +226,6 @@
 <!-- dialogs need to be outside so they're not hidden when the menu is -->
 <PrefsDialog
     bind:shown={show.prefsDlg}
-/>
-<DeviceManagerDialog
-    bind:shown={show.deviceMgrDlg}
 />
 <PluginManagerDlg 
     bind:shown={show.pluginMgr}

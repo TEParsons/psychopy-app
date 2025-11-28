@@ -1,5 +1,7 @@
 import { Script } from "$lib/experiment/script.svelte"
 import { openIn } from "$lib/utils/views.svelte"
+import { python } from "$lib/globals.svelte"
+import { parsePath } from "$lib/utils/files"
 
 export let current = $state({
     pages: [],
@@ -13,6 +15,18 @@ export let current = $state({
         if (file.ext === ".psyrun") {
             openIn(file.file, "runner")
             return
+        }
+        // convert psydat
+        if (file.ext === ".psydat") {
+            let fileCSV = await python.liaison.send({
+                command: "run",
+                args: [
+                    "psychopy.tools.filetools:psydat2csv",
+                    file.file
+                ]
+            })
+            // open new path
+            file = parsePath(fileCSV)
         }
         // if file not already open, open it
         if (!current.pages.some(
