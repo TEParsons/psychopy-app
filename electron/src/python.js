@@ -203,6 +203,9 @@ async function send(msg, timeout=1000) {
 }
 
 
+var scripts = []
+
+
 function runScript(file, executable, ...args) {
   // if not given, use default executable
   executable = executable || python.details.executable;
@@ -210,6 +213,8 @@ function runScript(file, executable, ...args) {
   let script = proc.execFile(executable, [
     file, ...args
   ], {cwd: path.dirname(file)})
+  // store process
+  scripts.push(script)
   // log stdout
   script.stdout.on(
     "data", evt => python.output.stdout(evt)
@@ -221,12 +226,18 @@ function runScript(file, executable, ...args) {
   return new Promise((resolve, reject) => {
     script.on(
       "exit", evt => {
+        // remove from active scripts array
+        delete scripts[scripts.indexOf(script)]
+        // log finished
         logging.log(`Finished running ${file}`);
         resolve(evt);
       }
     )
     script.on(
       "error", err => {
+        // remove from active scripts array
+        delete scripts[scripts.indexOf(script)]
+        // log failed
         logging.log(`Failed to run ${file}: ${err.message}`);
         reject(evt.message);
       }
@@ -316,10 +327,13 @@ export const python = {
     executable: uv.findPython(),
     dir: path.join(app.getPath("appData"), "psychopy4", ".python", appVersion.major)
   },
-  runScript: runScript,
   uv: uv,
   start: startPython,
   started: false,
+  scripts: {
+    run: runScript,
+    stop: () => scripts.forEach(script => script.kill())
+  },
   output: {
     stdout: (message) => {
       // if given a buffer, decode it

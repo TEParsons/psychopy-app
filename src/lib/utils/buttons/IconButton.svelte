@@ -15,6 +15,8 @@
         borderless=false,
         /** Are we awaiting execution of this button? */
         awaiting=$bindable(false),
+        /** If action is cancellable, supply a function to cancel it */
+        cancel=undefined,
         /** @interface */
         children=undefined,
     } = $props()
@@ -22,30 +24,79 @@
     let showTooltip = $state(false);
 </script>
 
-
-<button
-    disabled={disabled} 
-    onclick={evt => awaiting = onclick(evt)}
-    onmouseenter={() => {showTooltip = true}}
-    onmouseleave={() => {showTooltip = false}}
-    onfocusin={() => {showTooltip = true}}
-    onfocusout={() => {showTooltip = false}}
-    class:borderless={borderless}
->
-    <Icon 
-        src={icon}
-        size=2.25rem
-        bind:awaiting={awaiting}
-    />
-    <Tooltip
-        bind:shown={showTooltip}
-        position="bottom"
+{#await awaiting}
+    <button
+        disabled={disabled} 
+        onclick={evt => {
+            if (cancel) {
+                awaiting.resolve(cancel(evt))
+            }
+        }}
+        onmouseenter={() => {showTooltip = true}}
+        onmouseleave={() => {showTooltip = false}}
+        onfocusin={() => {showTooltip = true}}
+        onfocusout={() => {showTooltip = false}}
+        class:borderless={borderless}
     >
-        {label}
-    </Tooltip>
+        <Icon 
+            src="/icons/sym-{cancel && showTooltip ? "cancel" : "pending"}.svg"
+            size=2.25rem
+        />
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom"
+        >
+            {label}{cancel ? " (cancel)" : ""}
+        </Tooltip>
 
-    {@render children?.()}
-</button>
+        {@render children?.()}
+    </button>
+{:then}
+    <button
+        disabled={disabled} 
+        onclick={evt => awaiting = onclick(evt)}
+        onmouseenter={() => {showTooltip = true}}
+        onmouseleave={() => {showTooltip = false}}
+        onfocusin={() => {showTooltip = true}}
+        onfocusout={() => {showTooltip = false}}
+        class:borderless={borderless}
+    >
+        <Icon 
+            src={icon}
+            size=2.25rem
+        />
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom"
+        >
+            {label}
+        </Tooltip>
+
+        {@render children?.()}
+    </button>
+{:catch err}
+    <button
+        onclick={evt => awaiting = Promise.resolve(false)}
+        onmouseenter={() => {showTooltip = true}}
+        onmouseleave={() => {showTooltip = false}}
+        onfocusin={() => {showTooltip = true}}
+        onfocusout={() => {showTooltip = false}}
+        class:borderless={borderless}
+    >
+        <Icon 
+            src="/icons/sym-error.svg"
+            size=2.25rem
+        />
+        <Tooltip
+            bind:shown={showTooltip}
+            position="bottom"
+        >
+            {err}
+        </Tooltip>
+
+        {@render children?.()}
+    </button>
+{/await}
 
 
 <style>

@@ -332,7 +332,10 @@ const handlers = {
       send: ipcMain.handle("python.liaison.send", (evt, message, timeout = 1000) => python.liaison.send(message, timeout)),
       ready: ipcMain.handle("python.liaison.ready", async (evt) => await python.liaison.ready.promise)
     },
-    runScript: ipcMain.handle("python.runScript", (evt, file, ...args) => python.runScript(file, ...args))
+    scripts: {
+      run: ipcMain.handle("python.scripts.run", (evt, file, ...args) => python.scripts.run(file, ...args)),
+      stop: ipcMain.handle("python.scripts.stop", (evt) => python.scripts.stop())
+    }
   }
 };
 

@@ -33,7 +33,7 @@ export class Script {
             return
         }
         // run
-        await python.runScript(
+        await python.scripts.run(
             this.file.file, 
             executable || await python.details().then(resp => resp.executable),
             ...(this.pilotMode ? ["--pilot"] : [])
