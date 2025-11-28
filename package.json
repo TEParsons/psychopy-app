@@ -83,6 +83,8 @@
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "*",
 		"velopack": "^0.0.1350-g3ba32af",
-		"electron-maker-velopack": "^1.0.4"
-	}
+		"electron-maker-velopack": "^1.0.4",
+		"dmg-builder": "^0.5.1"
+	},
+	"os": ["darwin", "linux", "windows"]
 }
