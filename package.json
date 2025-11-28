@@ -84,5 +84,6 @@
 		"@rollup/rollup-linux-x64-gnu": "*",
 		"velopack": "^0.0.1350-g3ba32af",
 		"electron-maker-velopack": "^1.0.4"
-	}
+	},
+	"os": ["darwin", "linux", "windows"]
 }
