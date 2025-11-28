@@ -27,11 +27,7 @@
 {#await awaiting}
     <button
         disabled={disabled} 
-        onclick={evt => {
-            if (cancel) {
-                awaiting.resolve(cancel(evt))
-            }
-        }}
+        onclick={evt => cancel(evt)}
         onmouseenter={() => {showTooltip = true}}
         onmouseleave={() => {showTooltip = false}}
         onfocusin={() => {showTooltip = true}}
