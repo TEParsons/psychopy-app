@@ -11,7 +11,9 @@
         redo,
         find,
         // experiment
-        sendToRunner
+        sendToRunner,
+        // run
+        runPython
     } from '../callbacks.svelte.js'
     
     import { Ribbon, RibbonSection, RibbonGap } from '$lib/utils/ribbon';
@@ -24,6 +26,10 @@
     let current = getContext("current");
 
     let show = $state({
+    })
+
+    let awaiting = $state({
+        runpy: Promise.resolve(false)
     })
 </script>
 
@@ -113,6 +119,19 @@
             /> 
         {/if}
     </RibbonSection>
+    {#if python?.ready}
+        <RibbonSection label=Run icon="/icons/btn-runpy.svg">
+            <IconButton 
+                icon="/icons/btn-{current.pages[current.tab]?.pilotMode ? "pilot" : "run"}py.svg" 
+                label="{current.pages[current.tab]?.pilotMode ? "Pilot" : "Run"} experiment locally" 
+                onclick={evt => runPython()}
+                disabled={!current.pages[current.tab] || current.pages[current.tab].file.ext !== ".py"}
+                bind:awaiting={awaiting.runpy}
+                cancel={python.scripts.stop}
+                borderless
+            /> 
+        </RibbonSection>
+    {/if}
 
     <RibbonSection label=Pavlovia icon="/icons/rbn-pavlovia.svg">
         <UserCtrl />

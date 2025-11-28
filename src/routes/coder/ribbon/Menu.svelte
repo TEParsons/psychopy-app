@@ -31,9 +31,8 @@
         // // run
         togglePiloting,
         sendToRunner,
-        // compilePython,
-        // compileJS,
-        // runPython
+        runPython,
+        runJS
     } from '../callbacks.svelte.js';
 
     let current = getContext("current");
@@ -44,8 +43,6 @@
 
     let show = $state({
         prefsDlg: false,
-        findDlg: false,
-        settingsDlg: false,
         deviceMgrDlg: false,
         pluginMgr: false,
     })
@@ -170,9 +167,55 @@
 
             <MenuSeparator />
 
+            <MenuItem 
+                label="{current.pages[current.tab]?.pilotMode ? "Pilot" : "Run"} in Python" 
+                icon="/icons/btn-{current.pages[current.tab]?.pilotMode?.pilotMode ? "pilot" : "run"}py.svg" 
+                onclick={evt => runPython()}
+                shortcut="runPython"
+                disabled={!current.pages[current.tab] || current.pages[current.tab].file.ext !== ".py"}
+            />
 
         </SubMenu>
     {/if}
+
+    <SubMenu label="Tools" icon="/icons/btn-hamburger.svg">
+        <MenuItem 
+            label="Open device manager"
+            icon="/icons/btn-devices.svg"
+            onclick={evt => show.deviceMgrDlg = true}
+            disabled={!python?.ready}
+        />
+        <MenuItem 
+            label="Manage plugins and packages"
+            icon="/icons/btn-plugin.svg"
+            onclick={evt => show.pluginMgr = true}
+            disabled={!python?.ready}
+        />
+    </SubMenu>
+
+    <SubMenu label="Help">
+        <MenuItem 
+            label="PsychoPy Homepage"
+            onclick={evt => open("https://www.psychopy.org/")}
+        />
+        <MenuItem 
+            label="Documentation"
+            onclick={evt => open("https://www.psychopy.org/documentation")}
+        />
+        <MenuItem 
+            label="Help Forum"
+            onclick={evt => open("https://discourse.psychopy.org/")}
+        />
+        <MenuSeparator />
+        {#if electron}
+            {#await electron.version() then version}
+                <MenuItem
+                    label="PsychoPy {version.major}.{version.minor}"
+                    disabled
+                />
+            {/await}
+        {/if}
+    </SubMenu>
 
     <MenuSeparator />
 
@@ -184,3 +227,15 @@
         />
     {/if}  
 </Menu>
+
+
+<!-- dialogs need to be outside so they're not hidden when the menu is -->
+<PrefsDialog
+    bind:shown={show.prefsDlg}
+/>
+<DeviceManagerDialog
+    bind:shown={show.deviceMgrDlg}
+/>
+<PluginManagerDlg 
+    bind:shown={show.pluginMgr}
+/>

@@ -33,7 +33,8 @@
         sendToRunner,
         compilePython,
         compileJS,
-        runPython
+        runPython,
+        runJS
     } from '../callbacks.svelte.js';
 
     let current = getContext("current");
@@ -221,7 +222,7 @@
             <MenuItem 
                 label="{current.experiment.pilotMode ? "Pilot" : "Run"} in browser" 
                 icon="/icons/btn-{current.experiment.pilotMode ? "pilot" : "run"}js.svg" 
-                onclick={(evt) => console.log("RUN JS")}
+                onclick={(evt) => runJS()}
                 shortcut="runJS"
                 disabled={current.experiment === null}
             />

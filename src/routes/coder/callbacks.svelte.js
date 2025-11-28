@@ -109,10 +109,13 @@ export function sendToRunner() {
 }
 
 export async function runPython(executable) {
-    // write Python script
-    let target = await compilePython();
-    // run script
-    await current.experiment.runPython(false, executable)
+    if (!python) {
+        return
+    }
+    if (current.pages[current.tab]) {
+        // run script
+        await current.pages[current.tab].runPython(false, executable)
+    }    
 
     return true
 }
@@ -121,10 +124,10 @@ export async function runJS() {
     if (!python) {
         return
     }
-    // compile to JS
-    await compileJS()
-    // run
-    await current.experiment.runJS(false)
+    if (current.pages[current.tab]) {
+        // run script
+        await current.pages[current.tab].runJS(false)
+    }  
 }
 
 /* Views */
@@ -142,11 +145,9 @@ export var shortcuts = {
     quit: quit,
     undo: undo,
     redo: redo,
-    // togglePiloting: togglePiloting,
-    // sendToRunner: sendToRunner,
-    // compilePython: compilePython,
-    // runPython: runPython,
-    // compileJS: compileJS,
-    // runJS: runJS,
+    togglePiloting: togglePiloting,
+    sendToRunner: sendToRunner,
+    runPython: runPython,
+    runJS: runJS,
     showDevTools: showDevTools
 }
