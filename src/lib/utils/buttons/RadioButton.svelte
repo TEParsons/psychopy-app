@@ -45,7 +45,7 @@
     {#if tooltip}
         <Tooltip
             bind:shown={hovered}
-            position="right"
+            position="bottom-right"
         >
             {tooltip}
         </Tooltip>
