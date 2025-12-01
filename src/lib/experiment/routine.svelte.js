@@ -113,6 +113,8 @@ export class Routine {
         this.components.push(comp);
         // add reference to self
         comp.routine = this;
+        // add reference to exp
+        comp.exp = this.exp;
     }
 
     insertComponent(comp, index) {
@@ -233,13 +235,15 @@ export class Routine {
             }
             // parse node
             let comp = new Component(compNode.nodeName);
-            comp.routine = this;
+            
             comp.fromXML(compNode);
             // add to either components list or settings attribute
             if (comp.tag === "RoutineSettingsComponent") {
                 this.settings = comp;
+                comp.routine = this;
+                comp.exp = this.exp;
             } else {
-                this.components.push(comp);
+                this.addComponent(comp)
             }
         }
     }
