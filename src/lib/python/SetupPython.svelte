@@ -1,13 +1,19 @@
 <script>
     import { Button } from "$lib/utils/buttons";
     import { MessageArray, Message } from "$lib/utils/message";
+    import { MessageDialog } from "$lib/utils/dialog"
     import { python } from "$lib/globals.svelte";
+    import { marked } from "marked";
 
     // store progress for setting up Python
     let status = $state({
         ready: Promise.withResolvers(),
         dismiss: Promise.withResolvers(),
         message: "Checking for Python...",
+        dlg: {
+            message: "",
+            shown: false
+        },
     })
     // once status resolves, dismiss message after a brief pause
     status.ready.promise.finally(
@@ -31,8 +37,16 @@
         }
         // install Python
         if (!hasPython) {
-            status.message = "Installing Python..."
+            status.message = "Installing Python and PsychoPy library..."
+            status.dlg.message = (
+                "### Installing Python and PsychoPy library...\n" +
+                "It looks like this is the first time you've opened PsychoPy on this machine, so we need to install the PsychoPy Python module.\n" + 
+                "\n" +
+                "This may take some time and, unfortunately, cannot be done in the background. Once it's finished installing, you won't have to see this message again."
+            )
+            status.dlg.shown = true
             await python.uv.installPython().catch(err => status.ready.reject(err))
+            status.dlg.shown = false
         }
         // is Python already running?
         status.message = "Connecting Python"
@@ -83,6 +97,12 @@
         </div>
     {/await}
 </MessageArray>
+
+<MessageDialog
+    bind:shown={status.dlg.shown}
+>
+    {@html marked(status.dlg.message || "")}
+</MessageDialog>
 
 
 
