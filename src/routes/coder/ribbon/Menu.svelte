@@ -227,6 +227,8 @@
 <PrefsDialog
     bind:shown={show.prefsDlg}
 />
-<PluginManagerDlg 
-    bind:shown={show.pluginMgr}
-/>
+{#if python}
+    <PluginManagerDlg 
+        bind:shown={show.pluginMgr}
+    />
+{/if}

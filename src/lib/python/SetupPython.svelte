@@ -1,12 +1,13 @@
 <script>
     import { Button } from "$lib/utils/buttons";
     import { MessageArray, Message } from "$lib/utils/message";
+    import { python } from "$lib/globals.svelte";
 
     // store progress for setting up Python
     let status = $state({
         ready: Promise.withResolvers(),
         dismiss: Promise.withResolvers(),
-        message: "",
+        message: "Checking for Python...",
     })
     // once status resolves, dismiss message after a brief pause
     status.ready.promise.finally(

@@ -212,15 +212,21 @@
                 </div>
             </NotebookPage>
             {/if}
-            <ButtonTab
-                callback={(evt) => showAddDeviceDialog = true}
-                label="+ Add device"
-                tooltip={electron
-                    ? "Setup a currently connected device"
-                    : "Device setup not available in web-only"
-                }
-                disabled={!electron}
-            ></ButtonTab>
+
+            {#if electron}
+                <ButtonTab
+                    callback={(evt) => showAddDeviceDialog = true}
+                    label="+ Add device"
+                    tooltip={electron
+                        ? "Setup a currently connected device"
+                        : "Device setup not available in web-only"
+                    }
+                    disabled={!electron}
+                ></ButtonTab>
+                <AddDeviceDialog
+                    bind:shown={showAddDeviceDialog}
+                ></AddDeviceDialog>
+            {/if}
             <ButtonTab
                 callback={openDevicesFile}
                 label="⭱ Import devices"
@@ -228,10 +234,6 @@
             ></ButtonTab>
         </Listbook>
     </div>
-
-    <AddDeviceDialog
-        bind:shown={showAddDeviceDialog}
-    ></AddDeviceDialog>
 </Dialog>
 
 <style>

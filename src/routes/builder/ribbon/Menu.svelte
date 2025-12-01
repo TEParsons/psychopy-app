@@ -301,6 +301,8 @@
 <DeviceManagerDialog
     bind:shown={show.deviceMgrDlg}
 />
-<PluginManagerDlg 
-    bind:shown={show.pluginMgr}
-/>
+{#if python}
+    <PluginManagerDlg 
+        bind:shown={show.pluginMgr}
+    />
+{/if}
