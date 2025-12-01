@@ -1,4 +1,5 @@
 import { python, electron } from "$lib/globals.svelte";
+import { parsePath } from "$lib/utils/files";
 
 
 export class Script {
