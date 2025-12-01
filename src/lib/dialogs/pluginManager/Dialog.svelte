@@ -6,6 +6,7 @@
     import PluginsPanel from "./plugins/PluginsPanel.svelte";
     import PackagesPanel from "./packages/PackagesPanel.svelte";
     import { python } from "$lib/globals.svelte"
+    import { setContext } from "svelte";
 
     let {
         shown=$bindable()
@@ -23,6 +24,7 @@
         executable.default = resp.executable;
         executable.current = resp.executable;
     })
+    setContext("executable", () => executable)
 
     let output = $state.raw("");
     python.uv.output.listen(

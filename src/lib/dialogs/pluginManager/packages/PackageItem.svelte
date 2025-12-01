@@ -1,26 +1,89 @@
 <script>
     import { marked } from "marked";
     import { getContext } from "svelte";
+    import { Button } from "$lib/utils/buttons";
     var decoder = new TextDecoder();
 
     let {
-        profile,
-        installed=$bindable()
+        name,
+        getProfile=name => {},
+        executable=$bindable()
     } = $props()
 
     let siblings = getContext("siblings");
+    siblings.all.push(name)
 
     $effect(() => {
         if (siblings.selected === undefined) {
             siblings.selected = page
         }
     })
+
+    let installed = $derived(
+        Object.keys(siblings.installed).includes(name)
+    )
+
+    function install(evt) {
+        python.uv.installPackage(
+            name, executable.current
+        ).then(
+            resp => python.uv.getPackages(
+                executable.current
+            ).then(
+                packages => siblings.installed = packages
+            )
+        );
+    }
+
+    function uninstall(evt) {
+        python.uv.uninstallPackage(
+            name, executable.current
+        ).then(
+            resp => python.uv.getPackages(
+                executable.current
+            ).then(
+                packages => siblings.installed = packages
+            )
+        );
+    }
 </script>
 
 {#snippet page()}
-    <h2><code>{profile.info.name}</code></h2>
-    <div class=package-desc>
-        {@html marked(profile.info.description || "")}
+    <div class=package-page>
+        {#await getProfile(name)}
+            <h2>
+                Getting package details...
+            </h2>
+        {:then profile}
+            <div class=package-name><code>{profile.info.name}</code></div>
+            <div class=package-desc>
+                {@html marked(profile.info.description || "")}
+            </div>
+            <div class=ctrls>
+                {#if !installed}
+                    <Button
+                        label="Install"
+                        icon="/icons/btn-download.svg"
+                        onclick={install}
+                        bind:awaiting={siblings.installed}
+                        horizontal
+                    />
+                {:else}
+                    <Button
+                        label="Uninstall"
+                        icon="/icons/btn-delete.svg"
+                        onclick={uninstall}
+                        bind:awaiting={siblings.installed}
+                        horizontal
+                    />
+                {/if}
+            </div>
+        {:catch err}
+            <h2>Failed to load details for <code>{name}</code></h2>
+            <div class=package-desc>
+                {err}
+            </div>
+        {/await}
     </div>
 {/snippet}
 
@@ -30,7 +93,7 @@
     class:selected={siblings.selected === page}
     onclick={evt => siblings.selected = page}
 >
-    {profile.info.name}
+    {name}
 </button>
 
 <style>
@@ -56,5 +119,15 @@
         border-radius: .5rem;
         overflow-x: hidden;
         word-wrap: break-word;
+    }
+    .package-page {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: .5rem;
+        overflow-y: auto;
+    }
+    .package-name {
+        font-size: 2rem;
     }
 </style>

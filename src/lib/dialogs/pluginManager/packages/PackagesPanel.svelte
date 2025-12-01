@@ -62,11 +62,11 @@
         <!-- installed packages first -->
         {#each Object.keys(children.installed) as name}
             {#if matches(searchterm, name)}
-                {#await python.uv.getPackageDetails(name, executable.current)}
-                    <div>Loading...</div>
-                {:then profile}
-                    <PackageItem profile={profile} installed />
-                {/await}
+                <PackageItem 
+                    name={name}
+                    bind:executable={executable} 
+                    getProfile={name => python.uv.getPackageDetails(name, executable.current)} 
+                />
             {/if}
         {/each}
         <!-- if search matches a pypi package, include that too -->
@@ -75,7 +75,11 @@
                 Searching PyPi...
             {:then profile}
                 {#if profile}
-                    <PackageItem profile={profile} />
+                    <PackageItem 
+                        name={searchterm} 
+                        bind:executable={executable} 
+                        getProfile={name => profile} 
+                    />
                 {/if}
             {:catch err}
                 {""}
