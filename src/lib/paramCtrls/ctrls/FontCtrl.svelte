@@ -41,7 +41,7 @@
         return found
     })
 
-    function validateFont(valid) {
+    function validateFont(param, valid) {
         // allow no font
         if (!param.val) {
             return

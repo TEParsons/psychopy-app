@@ -1,13 +1,13 @@
 <script>
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateVersion(valid) {
+    function validateVersion(param, valid) {
         valid.value = options.includes(param.val) || param.val === ""
     }
     

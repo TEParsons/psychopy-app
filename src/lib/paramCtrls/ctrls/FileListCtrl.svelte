@@ -6,7 +6,7 @@
     import { mimeTypesFromParam } from "./utils";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
@@ -47,7 +47,7 @@
         return items
     })
 
-    function validateFileList(valid) {
+    function validateFileList(param, valid) {
         // combine valid on all child items
         valid.value = items.every(
             item => item.valid.value

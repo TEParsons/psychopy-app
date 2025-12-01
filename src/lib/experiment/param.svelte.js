@@ -29,8 +29,13 @@ export class Param {
         for (let validator of Object.values(this.validators).sort(
             (x, y) => y.priority - x.priority
         )) {
-            // run validation
-            validator.validate(output);
+            try {
+                // run validation
+                validator.validate(this, output);
+            } catch (err) {
+                console.log(`Error validating ${this.name}`, err);
+                return false
+            }
         }
 
         return output;

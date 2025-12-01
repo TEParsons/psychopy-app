@@ -6,7 +6,7 @@
 
     let {
         /** @prop @type {import("$lib/experiment").Param} Param object to which this ctrl pertains */
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
@@ -15,7 +15,7 @@
 
     let current = getContext("current")
 
-    function validateTable(valid) {}
+    function validateTable(param, valid) {}
 
     function openTable() {
         electron.files.openPath(current.experiment.relativePath(param.val))

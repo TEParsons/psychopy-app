@@ -16,7 +16,7 @@
         dialog: false
     })
 
-    function validateColor() {
+    function validateColor(param, valid) {
 
     }
 

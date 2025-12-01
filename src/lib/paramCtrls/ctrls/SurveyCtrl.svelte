@@ -7,7 +7,7 @@
 
     let {
         /** @prop @type {import("$lib/experiment").Param} Param object to which this ctrl pertains */
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
@@ -16,7 +16,7 @@
 
     let current = getContext("current")
 
-    function validateSurvey(valid) {}
+    function validateSurvey(param, valid) {}
 
     let showSurveysDlg = $state.raw();
 

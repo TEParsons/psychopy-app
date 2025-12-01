@@ -2,14 +2,14 @@
     import { optionsFromParam } from "./utils.js";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface*/
         ...attachments
     } = $props()
 
-    function validateChoice(valid) {
+    function validateChoice(param, valid) {
         if (Array.isArray(param.allowedVals) && !param.allowedVals.includes(param.val)) {
             valid.warning = `${param.val} not in list of allowed values`
         }

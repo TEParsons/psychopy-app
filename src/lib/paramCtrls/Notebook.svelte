@@ -6,7 +6,7 @@
     import { getContext } from "svelte";
 
     let {
-        element,
+        element=$bindable(),
         /** @prop @type {array<string>} List of param names not to show */
         hideParams=[]
     } = $props();

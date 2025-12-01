@@ -10,7 +10,7 @@
         ...attachments
     } = $props()
 
-    function validateCode(valid) {
+    function validateCode(param, valid) {
         return
     }
 

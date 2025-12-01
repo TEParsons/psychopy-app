@@ -21,7 +21,7 @@
         }
     })
 
-    function validateKeypress(valid) {
+    function validateKeypress(param, valid) {
         // if binding is blank, it's invalid
         if (!param.val.length) {
             valid.value = false

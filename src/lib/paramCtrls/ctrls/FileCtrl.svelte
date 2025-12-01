@@ -14,7 +14,7 @@
         ...attachments
     } = $props()
 
-    function validateFile(valid) {
+    function validateFile(param, valid) {
         // check file extension
         if (this.allowedVals) {
             if (!param.allowedVals.some(

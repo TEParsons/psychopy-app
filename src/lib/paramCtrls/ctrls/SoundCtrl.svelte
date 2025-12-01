@@ -28,7 +28,7 @@
     } = $props()
     
 
-    function validateSound(valid) {
+    function validateSound(param, valid) {
         // allow musical notes
         if (notes.includes(param.val)) {
             valid.value = true

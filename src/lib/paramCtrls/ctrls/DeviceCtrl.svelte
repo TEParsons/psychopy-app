@@ -5,14 +5,14 @@
     import ChoiceCtrl from "./ChoiceCtrl.svelte";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateDevice(valid) {
+    function validateDevice(param, valid) {
         valid.value = param.val in devices || param.val === ""
     }
 

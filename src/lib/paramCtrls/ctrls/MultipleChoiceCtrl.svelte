@@ -2,14 +2,14 @@
     import { optionsFromParam } from "./utils.js";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateMultiChoice(valid) {
+    function validateMultiChoice(param, valid) {
         valid.value = !Array.isArray(param.allowedVals) || !Array.isArray(param.val) || param.val.every((val) => param.allowedVals.includes(val))
     }
 </script>

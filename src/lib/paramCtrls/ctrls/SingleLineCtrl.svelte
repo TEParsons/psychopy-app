@@ -10,8 +10,8 @@
         ...attachments
     } = $props()
 
-    function validateText(valid) {
-        if (this.isCode) {
+    function validateText(param, valid) {
+        if (param.isCode) {
             valid.value = true
             valid.warning = undefined
         }

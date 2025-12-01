@@ -1,7 +1,7 @@
 <script>
     let {
         /** @prop @type {import("$lib/experiment").Param} Param object to which this ctrl pertains */
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @prop @type {Boolean} Should the code indicator ($) be shown? */
@@ -10,7 +10,7 @@
         ...attachments
     } = $props()
 
-    function validateMultiText(valid) {
+    function validateMultiText(param, valid) {
         if (this.isCode) {
             valid.value = true
             valid.warning = undefined

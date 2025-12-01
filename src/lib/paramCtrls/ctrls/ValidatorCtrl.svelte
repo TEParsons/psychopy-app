@@ -2,14 +2,14 @@
     import { getContext } from "svelte";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateValidator(valid) {
+    function validateValidator(param, valid) {
         valid.value = options.includes(param.val) || param.val === ""
     }
 

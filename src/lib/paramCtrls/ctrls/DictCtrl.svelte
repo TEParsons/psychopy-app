@@ -6,14 +6,14 @@
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateDict(valid) {
+    function validateDict(param, valid) {
         // combine valid on all child items
         valid.value = entries.every(
             ([key, item]) => item.valid.value

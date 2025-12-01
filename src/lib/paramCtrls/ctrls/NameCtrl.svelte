@@ -4,14 +4,14 @@
     import SingleLineCtrl from "./SingleLineCtrl.svelte";
 
     let {
-        param,
+        param=$bindable(),
         /** @prop @type {boolean} Controls whether this control is disabled */
         disabled=false,
         /** @interface */
         ...attachments
     } = $props()
 
-    function validateName(valid) {
+    function validateName(param, valid) {
         // must have a value
         if (String(param.val).length === 0) {
             valid.value = false
