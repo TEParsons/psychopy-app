@@ -384,7 +384,7 @@ export class Experiment {
 
     async toFile(target) {
         // get experiment as xml
-        let node = current.experiment.toXML()
+        let node = this.toXML()
         // convert to an xml string
         let ser = new XMLSerializer()
         let content = ser.serializeToString(node)
