@@ -29,6 +29,7 @@
     
     import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
+    import MonitorCenterDlg from '../../../lib/dialogs/monitorCenter/MonitorCenterDlg.svelte';
 
     let current = getContext("current");
 
@@ -37,6 +38,7 @@
         settingsDlg: false,
         findDlg: false,
         deviceMgrDlg: false,
+        monitorCenterDlg: false
     })
 
     let awaiting = $state({
@@ -146,6 +148,15 @@
             label="Monitor centre" 
         />         -->
         {#if python?.ready}
+        <IconButton
+                icon="/icons/btn-monitors.svg"
+                label="Open the monitor center"
+                onclick={(evt) => show.monitorCenterDlg = true}
+                borderless
+            ></IconButton>
+            <MonitorCenterDlg
+                bind:shown={show.monitorCenterDlg}
+            />
             <IconButton
                 icon="/icons/btn-devices.svg"
                 label="Open the device manager"
@@ -154,7 +165,7 @@
             ></IconButton>
             <DeviceManagerDialog
                 bind:shown={show.deviceMgrDlg}
-            ></DeviceManagerDialog>
+            />
         {/if}
 
         <IconButton 
