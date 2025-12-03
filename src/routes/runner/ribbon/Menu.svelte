@@ -134,7 +134,7 @@
             <MenuItem 
                 label="{current.runlist[current.selection]?.pilotMode ? "Pilot" : "Run"} in browser" 
                 icon="/icons/btn-{current.runlist[current.selection]?.pilotMode ? "pilot" : "run"}js.svg" 
-                onclick={(evt) => console.log("RUN JS")}
+                onclick={(evt) => current.awaiting.runjs = current.runlist[current.selection]?.runJS()}
                 shortcut="runJS"
                 disabled={current.selection === undefined}
             />
