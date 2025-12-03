@@ -28,12 +28,12 @@
         }
         // do we already have UV and Python?
         status.message = "Checking Python..."
-        let hasUV = await python.uv.exists().catch(err => status.ready.reject(err))
-        let hasPython = await python.uv.findPython().catch(err => status.ready.reject(err))
+        let hasUV = await python.uv.exists().catch(err => status.ready.reject(err?.error || err))
+        let hasPython = await python.uv.findPython().catch(err => status.ready.reject(err?.error || err))
         // install UV
         if (!hasUV) {
             status.message = "Downloading UV (a Python installer)..."
-            await python.uv.installUV().catch(err => status.ready.reject(err))
+            await python.uv.installUV().catch(err => status.ready.reject(err?.error || err))
         }
         // install Python
         if (!hasPython) {
@@ -45,7 +45,7 @@
                 "This may take some time and, unfortunately, cannot be done in the background. Once it's finished installing, you won't have to see this message again."
             )
             status.dlg.shown = true
-            await python.uv.installPython().catch(err => status.ready.reject(err))
+            await python.uv.installPython().catch(err => status.ready.reject(err?.error || err))
             status.dlg.shown = false
         }
         // is Python already running?
@@ -57,13 +57,13 @@
         } else {
             // start python
             status.message = "Starting Python..."
-            await python.start().catch(err => status.ready.reject(err))
+            await python.start().catch(err => status.ready.reject(err?.error || err))
             // activatePlugins
             status.message = "Activating plugins..."
             await python.liaison.send({
                 command: "run",
                 args: ["psychopy.plugins:activatePlugins"]
-            }, 20000).catch(err => status.ready.reject(err))
+            }, 20000).catch(err => status.ready.reject(err?.error || err))
             // mark success
             status.message = "Successfully started Python"
             status.ready.resolve(true)
@@ -91,7 +91,7 @@
             <Button
                 label="Try again?"
                 icon="/icons/btn-refresh.svg"
-                onclick={evt => setup()}
+                onclick={evt => setupPython()}
                 horizontal
             />
         </div>
