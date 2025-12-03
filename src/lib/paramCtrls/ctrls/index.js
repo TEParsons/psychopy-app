@@ -20,6 +20,7 @@ export { default as SoundCtrl } from "./SoundCtrl.svelte";
 export { default as FontCtrl } from "./FontCtrl.svelte";
 export { default as ColorCtrl } from "./ColorCtrl.svelte";
 export { default as UnknownCtrl } from "./UnknownCtrl.svelte";
+export { default as CalibrationCtrl } from "./CalibrationCtrl.svelte";
 
 
 import {
@@ -44,7 +45,8 @@ import {
     DictCtrl,
     UnknownCtrl,
     ValidatorCtrl,
-    KeyPressCtrl
+    KeyPressCtrl,
+    CalibrationCtrl
 } from ".";
 
 
@@ -70,5 +72,6 @@ export var mapping = {
     "dict": DictCtrl,
     "inv": UnknownCtrl,
     "validator": ValidatorCtrl,
-    "keypress": KeyPressCtrl
+    "keypress": KeyPressCtrl,
+    "calibration": CalibrationCtrl
 }

@@ -148,7 +148,6 @@ export async function showReadme() {
     } else if (current.experiment.file?.parent) {
         // if we have a folder but no readme, make a readme
         current.readme.script.file = parsePath(path.join(current.experiment.file.parent, "readme.md"))
-        console.log(current.readme.script.file)
         current.readme.script.content = ""
         current.readme.script.toFile(current.readme.script.file)
     } else {

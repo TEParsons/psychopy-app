@@ -1,4 +1,5 @@
-import { Param } from "$lib/experiment"
+import { Param } from "$lib/experiment";
+import { python } from "$lib/globals.svelte";
 
 
 export class MonitorConfiguration {
@@ -16,10 +17,11 @@ export class MonitorConfiguration {
     toJSON() {
         return {
             calibDate: this.date,
-            distance: this.params.distance.val,
-            sizePix: String.prototype.split(this.params.sizePix, ",").map(val => String.prototype.trim(val)),
-            width: this.params.width.val,
-            usebits: this.params.usebits.val
+            distance: $state.snapshot(this.params.distance.val),
+            sizePix: String.prototype.split($state.snapshot(this.params.sizePix.val), ",").map(val => String.prototype.trim(val)),
+            width: $state.snapshot(this.params.width.val),
+            usebits: $state.snapshot(this.params.usebits.val),
+            gammaGrid: $state.snapshot(this.params.gammaGrid.val),
         }
     }
 
@@ -68,6 +70,15 @@ export class MonitorConfiguration {
             label: "Use bits++?",
             hint: "Whether to use a CRS Bits++ calibration tool"
         })
+        this.params.gammaGrid = new Param("gammaGrid")
+        Object.assign(this.params.gammaGrid, {
+            val: node.gammaGrid,
+            updates: "constant",
+            inputType: "calibration",
+            valType: "code",
+            label: "Gamma calibration",
+            hint: "Gamma calibration grid"
+        })
         
         // {
         //     "calibDate": 1722588709,
@@ -84,5 +95,82 @@ export class MonitorConfiguration {
         //         768
         //     ]
         // }
+    }
+}
+
+
+export class CalibrationSetup {
+    params = $state({})
+
+    constructor() {
+        this.params.photometer = new Param("photometer")
+        Object.assign(this.params.photometer, {
+            valType: "code",
+            inputType: "choice",
+            label: "Photometer",
+            hint: "Photometer device, from the device manager, to use for this calibration"
+        })
+        this.params.screen = new Param("screen")
+        Object.assign(this.params.screen, {
+            valType: "code",
+            inputType: "single",
+            label: "Screen",
+            hint: "Screen number to run calibration on"
+        })
+        this.params.patchSize = new Param("patchSize")
+        Object.assign(this.params.patchSize, {
+            val: 0.3,
+            valType: "code",
+            inputType: "single",
+            label: "Patch size",
+            hint: "How much of the screen (0-1) the calibration patch should occupy"
+        })
+        this.params.nPoints = new Param("nPoints")
+        Object.assign(this.params.nPoints, {
+            val: 8,
+            valType: "code",
+            inputType: "single",
+            label: "Calibration points",
+            hint: "How many calibration points to use"
+        })
+        // get photometer classes
+        this.ready = python.liaison.send({
+            command: "run",
+            args: [
+                "psychopy.experiment.monitor:BasePhotometerDeviceBackend.__subclasses__"
+            ]
+        }).then(
+            async resp => {
+                // temp array of allowed vals and allowed labels
+                let temp = {
+                    allowedVals: [],
+                    allowedLabels: []
+                }
+                // add values for each cls
+                for (let cls of resp) {
+                    // add device cls to allowedVals
+                    await python.liaison.send({
+                        command: "get",
+                        args: [
+                            cls.match(/python\:\/\/\/(.*)/)[1] + ".deviceClass"
+                        ]
+                    }, 5000).then(
+                        resp => temp.allowedVals.push(resp)
+                    )
+                    // add device lbl to allowedLabels
+                    await python.liaison.send({
+                        command: "get",
+                        args: [
+                            cls.match(/python\:\/\/\/(.*)/)[1] + ".backendLabel"
+                        ]
+                    }, 5000).then(
+                        resp => temp.allowedLabels.push(resp)
+                    )
+                }
+                // apply temp array
+                Object.assign(this.params.photometer, temp)
+                this.params.photometer.val = temp.allowedVals[0]
+            }
+        )
     }
 }

@@ -19,7 +19,7 @@
 
 <select 
     class=param-choice-input
-    disabled={disabled || param.allowedVals.length == 1} 
+    disabled={disabled || param.allowedVals.length == 1 && param.allowedVals.includes(param.val)} 
     bind:value={param.val}
     style:color={param.valid.value ? "inherit" : "var(--red)"}
     {@attach element => param.registerValidator("choice", validateChoice, 0)}

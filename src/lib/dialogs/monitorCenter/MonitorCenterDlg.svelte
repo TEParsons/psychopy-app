@@ -90,7 +90,6 @@
             )
         }
     });
-    $inspect(monitors.all)
     // refresh on init to populate
     monitors.refresh()
 </script>
