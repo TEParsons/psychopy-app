@@ -142,7 +142,7 @@ export async function installPython(
     // get executable
     python.details.executable = findPython()
     // install liaison
-    proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison --python "${python.details.executable}"`)
+    proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison[websocket] --python "${python.details.executable}"`)
     // install esprima (Py -> JS translation) and PyQt (expInfo dialog)
     proc.execSync(`"${uv.executable}" pip install pyqt6 esprima --python "${python.details.executable}"`)
     // install psychopy (using await and a promise rather than execSync as execSync stalls the whole process)
