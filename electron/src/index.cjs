@@ -190,6 +190,49 @@ async function newWindow(target = null, show = true, fullscreen = false, debug =
 }
 
 
+/**
+ * Opens a new BrowserWindow to login to Pavlovia, and waits for it to have a code in the URL
+ * 
+ * @param {string} url Authentication URL to use
+ * @param {string} pattern Regex pattern we expect to be able to use to get the auth code
+ */
+async function authenticatePavlovia(url) {
+  // create window
+  let win = new BrowserWindow({
+    icon: favicon,
+    width: 980,
+    height: 720,
+    show: true,
+    webPreferences: {
+      v8CacheOptions: "none"
+    }
+  });
+  win.removeMenu();
+  // load auth url
+  win.loadURL(url);
+  // construct promise for the auth code
+  let code = Promise.withResolvers()
+  // on navigate, resolve if we have a code
+  win.webContents.on("did-navigate", (evt, url) => {
+    // search the URL for the auth code
+    let params = new URLSearchParams(
+      url.replace(/https:\/\/.*?(?=\?)/, "")
+    )
+    // if we got one...
+    if (params.get("code")) {
+      // resolve the promise
+      code.resolve(
+        params.get("code")
+      )
+      // close the window
+      win.close()
+    }
+  })
+
+  return code.promise
+}
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -311,6 +354,7 @@ const handlers = {
       get: ipcMain.handle("electron.clipboard.get", (evt) => clipboard),
       set: ipcMain.handle("electron.clipboard.set", (evt, value) => clipboard = value)
     },
+    authenticatePavlovia: ipcMain.handle("electron.authenticatePavlovia", (evt, url) => authenticatePavlovia(url)),
     version: ipcMain.handle("electron.version", (evt) => appVersion),
     quit: ipcMain.handle("electron.quit", (evt) => app.quit())
   },

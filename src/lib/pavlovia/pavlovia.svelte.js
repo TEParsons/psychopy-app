@@ -30,38 +30,173 @@ export var auth = $state({
     state: "",
     challenge: "",
     verifier: "",
-    token: {
-        type: "",
-        token: ""
-    }
+    code: undefined
 })
 
 
-export async function login() {
-    // create a private "state" based on uuid
-    auth.state = String(crypto.randomUUID())
-    // first make the answer - pick random alphanumeric chars
-    auth.verifier = Array.from(
-        {length: randint(44, 127)},
-        () => randof("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
-    ).join("")
-    // create a hash from verifier (via SHA-256 digestion)
-    let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier))
-    // decode hash to make challenge
-    auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace("=", "")
-    // construct auth url params
-    let params = new URLSearchParams({
-        client_id: auth.client,
-        redirect_uri: window.location.href,
-        response_type: "code",
-        state: auth.state,
-        code_challenge: auth.challenge,
-        code_challenge_method: "S256"
+/**
+ * Get the information for the current user as a catchable promise
+ */
+async function getUserInfo(token) {
+    return new Promise((resolve, reject) => {
+        fetch(
+            `${auth.root}/api/v4/user?access_token=${token}`
+        ).then(
+            resp => {
+                if (resp.ok) {
+                    resolve(resp.json())
+                } else {
+                    reject(resp.message)
+                }
+            }
+        )
     })
-    // open authentication url
-    window.open(
-        `${auth.root}/oauth/authorize?${params.toString()}`
-    );
+}
+
+
+/**
+ * Uses the stored refresh token to refresh the stored access token
+ */
+async function refreshToken(username) {
+    return new Promise((resolve, reject) => {
+        fetch(
+            `/api/token/refresh?${new URLSearchParams({
+                root: auth.root,
+                redirect: electron ? auth.root : window.location.href,
+                client: auth.client,
+                refresh: users[username].token.refresh,
+                verifier: auth.verifier
+            }).toString()}`, 
+            { method: "post" }
+        ).then(
+            async resp => {
+                resp = await resp.json()
+                if (resp.access_token && resp.refresh_token) {
+                    // store new tokens
+                    users[username].token.access = resp.access_token;
+                    users[username].token.refresh = resp.refresh_token;
+                    // resolve promise
+                    resolve(resp)
+                } else {
+                    reject(resp.message)
+                }
+            }
+        )
+    })
+}
+
+
+export async function login(username, current) {
+    if (users[username]) {
+        // if we have a stored access token, make sure it's in date
+        if (users[username].token?.access) {
+            // get info
+            let profile = Promise.withResolvers()
+            getUserInfo(
+                `${users[username].token.access}`
+            ).catch(
+                async err => {
+                    // if token has expired, refresh it
+                    await refreshToken(username).catch(
+                        err => profile.reject(err)
+                    )
+                    // then try again
+                    getUserInfo(
+                        `${users[username].token.access}`
+                    ).catch(
+                        suberr => profile.reject([suberr, err])
+                    ).then(
+                        resp => profile.resolve(resp)
+                    )
+                }
+            ).then(
+                resp => profile.resolve(resp)
+            )
+            // update profile on resolution
+            profile.promise.then(
+                resp => {
+                    users[username].profile = resp
+                }
+            )
+            await profile.promise
+        }
+    } else {
+        // if logging in from scratch...
+        // are we working with a code sent via URL?
+        if (!auth.code) {
+            // create a private "state" based on uuid
+            auth.state = String(crypto.randomUUID())
+            // first make the answer - pick random alphanumeric chars
+            auth.verifier = Array.from(
+                {length: randint(44, 127)},
+                () => randof("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+            ).join("")
+            // create a hash from verifier (via SHA-256 digestion)
+            let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier))
+            // decode hash to make challenge
+            auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace("=", "")
+            // construct auth url params
+            let params = new URLSearchParams({
+                client_id: auth.client,
+                redirect_uri: electron ? auth.root : window.location.href,
+                response_type: "code",
+                state: auth.state,
+                code_challenge: auth.challenge,
+                code_challenge_method: "S256"
+            })
+            // construct auth url
+            let url = `${auth.root}/oauth/authorize?${params.toString()}`
+            // open authentication url
+            if (electron) {
+                // get code once ready
+                auth.code = await electron.authenticatePavlovia(url)
+            } else {
+                // if running in browser, open in *this* window
+                // (will redirect and create a new authenticated instance of this webpage when done)
+                navigate(url)
+                // from here, the new instance will call login with a code
+                return
+            }
+        }
+        // request actual auth and refresh tokens
+        let tokens = await fetch(
+            `/api/token/authorize?${new URLSearchParams({
+                root: auth.root,
+                redirect: electron ? auth.root : window.location.href,
+                client: auth.client,
+                code: auth.code,
+                verifier: auth.verifier
+            }).toString()}`, 
+            { method: "post" }
+        ).then(resp => resp.json())
+        // update profile
+        let profile = await fetch(
+            `${auth.root}/api/v4/user?access_token=${tokens.access_token}`
+        ).then(resp => resp.json())
+        // get username incase they logged in as a different user
+        username = profile.username
+        // create user
+        if (username) {
+            users[username] = {
+                token: {
+                    access: tokens.access_token,
+                    refresh: tokens.refresh_token
+                },
+                profile: profile
+            }
+        } else {
+            // if we failed to get a username, this function needs to fail so it can be caught
+            throw new Error("Failed to login")
+        }
+    }
+    // save users (if possible)
+    if (electron) {
+        await electron.paths.pavlovia.users().then(
+            file => electron.files.save(file, JSON.stringify(users, undefined, 4))
+        )
+    }
+
+    return username
 }
 
 export function logout() {
@@ -70,7 +205,10 @@ export function logout() {
         state: "",
         challenge: "",
         verifier: "",
-        token: "",
-        refreshToken: ""
+        token: {
+            code: undefined,
+            refresh: undefined,
+            access: undefined
+        }
     })
 }

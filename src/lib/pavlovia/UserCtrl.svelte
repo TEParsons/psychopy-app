@@ -33,51 +33,42 @@
 </script>
 
 <DropdownButton
-    label={current.user ? current.user.name : "No user"}
-    icon={current.user ? current.user.avatar_url : undefined}
+    label={current.user ? current.user.profile.name : "No user"}
     onclick={(evt) => {
         if (current.user) {
-            window.open(current.user.web_url)
+            window.open(current.user.profile.web_url)
         }
     }}
 >
     <MenuItem
         label="Edit user..."
         icon="/icons/btn-edit.svg"
-    ></MenuItem>
+    />
     <SubMenu
         label="Switch user..."
     >
         {#each Object.values(users) as user}
             <MenuItem
-                label={user.name}
-                icon={user.avatar_url}
-                onclick={(evt) => current.user = user}
-            ></MenuItem>
+                label={user.profile.name}
+                onclick={evt => login(user.profile.username).then(username => current.user = users[username])}
+            />
         {/each}
         <MenuSeparator/>
         <MenuItem
             label="New user..."
-            icon="/icons/btn-new.svg"
-        ></MenuItem>
+            onclick={evt => login().then(username => current.user = users[username])}
+        />
     </SubMenu>
     <MenuSeparator/>
     {#if current.user}
         <MenuItem
             label="Logout"
-            onclick={(evt) => {
-                logout()
-                current.user = undefined
-            }}
-        ></MenuItem>
+            onclick={evt => current.user = undefined}
+        />
     {:else}
         <MenuItem
             label="Login"
-            onclick={(evt) => {
-                login()
-                // placeholder: need to get username from autheticated session
-                current.user = users['ToddOST']
-            }}
-        ></MenuItem>
+            onclick={evt => login().then(username => current.user = users[username])}
+        />
     {/if}
 </DropdownButton>

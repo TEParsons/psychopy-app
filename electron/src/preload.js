@@ -41,6 +41,7 @@ const electron = {
     get: () => ipcRenderer.invoke("electron.clipboard.get").then(resp => resp),
     set: (value) => ipcRenderer.invoke("electron.clipboard.set", value).then(resp => resp)
   },
+  authenticatePavlovia: (url) => ipcRenderer.invoke("electron.authenticatePavlovia", url).then(resp => resp),
   version: () => ipcRenderer.invoke("electron.version").then(resp => resp),
   quit: () => ipcRenderer.invoke("electron.quit")
 };
