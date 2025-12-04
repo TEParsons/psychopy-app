@@ -77,7 +77,7 @@
                         }, 100000).then(
                             details => {
                                 // convert config details to params
-                                for (let [calibName, calib] of Object.entries(details.calibrations)) {
+                                for (let [calibName, calib] of Object.entries(details.calibrations || {})) {
                                     details.calibrations[calibName] = new MonitorConfiguration(name, calibName, calib.calibDate);
                                     details.calibrations[calibName].fromJSON(calib)
                                 }
@@ -117,7 +117,7 @@
                         }
                     >
                         <Listbook>
-                            {#each Object.entries(details.calibrations) as [calibName, calib]}
+                            {#each Object.entries(details.calibrations || {}) as [calibName, calib]}
                                 <NotebookPage
                                     label={calibName}
                                     bind:selected={
