@@ -202,12 +202,11 @@ async function authenticatePavlovia(url) {
     icon: favicon,
     width: 980,
     height: 720,
-    show: true,
-    webPreferences: {
-      v8CacheOptions: "none"
-    }
+    show: true
   });
   win.removeMenu();
+  // make sure any auth cache is cleared
+  await win.webContents.session.clearCache()
   // load auth url
   win.loadURL(url);
   // construct promise for the auth code

@@ -169,6 +169,8 @@ export async function login(username, current) {
             }).toString()}`, 
             { method: "post" }
         ).then(resp => resp.json())
+        // discard code now we're done with it (so we can log in as different users later)
+        auth.code = undefined
         // update profile
         let profile = await fetch(
             `${auth.root}/api/v4/user?access_token=${tokens.access_token}`
