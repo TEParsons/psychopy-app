@@ -364,7 +364,9 @@ export const python = {
   liaison: {
     address: "localhost:8002",
     constants: undefined,
-    send: send,
+    send: (msg, timeout=1000) => send(msg, timeout).catch(err => {
+      throw new Error(err.error?.slice?.(-1), {cause: err.error?.join?.("\n")})
+    }),
     ready: Promise.withResolvers(),
     pending: []
   },
