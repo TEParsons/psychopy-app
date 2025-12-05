@@ -129,8 +129,8 @@ async function newWindow(target = null, show = true, fullscreen = false, debug =
   // create window
   let win = new BrowserWindow({
     icon: favicon,
-    width: 1280,
-    height: 800,
+    width: 1600,
+    height: 900,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
