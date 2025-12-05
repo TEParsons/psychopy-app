@@ -13,13 +13,16 @@
     import { parsePath } from "$lib/utils/files";
     import SetupPython from '$lib/python/SetupPython.svelte';
     import ReadMe from '$lib/dialogs/readme/ReadMe.svelte';
+    import {
+        openFile
+    } from "./callbacks.svelte";
 
     // reference current in context for ease of access
     setContext("current", current)
     // listen for messages from other windows
     if (electron) {
         // for opening files via another window
-        electron.windows.listen("fileOpen", (evt, file) => current.experiment.file = parsePath(file))
+        electron.windows.listen("fileOpen", (evt, file) => openFile(file))
         // mark ready
         electron.windows.emit("ready", true)
     }

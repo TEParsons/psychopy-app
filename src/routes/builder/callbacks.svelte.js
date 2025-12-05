@@ -28,6 +28,11 @@ export async function file_open() {
     if (file === undefined) {
         return
     }
+    // open
+    await openFile(file)
+}
+
+export async function openFile(file) {
     // construct an Experiment object from the file
     current.experiment.fromFile(file);
     // choose current routine
