@@ -16,6 +16,7 @@
     import { IconButton, SwitchButton } from '$lib/utils/buttons';
     import { UserCtrl, ProjectCtrl } from '$lib/pavlovia/pavlovia.svelte';
     import { Experiment } from "$lib/experiment";
+    import { openIn } from "$lib/utils/views.svelte";
 
     let current = getContext("current");
 
@@ -79,7 +80,17 @@
                 (value) => current.runlist[current.selection]?.setPilotMode(value)
             } 
             disabled={current.selection === undefined}
-        />  
+        />
+        <IconButton 
+            icon="/icons/btn-send{current.runlist[current.selection]?.file.ext === ".psyexp" ? "builder" : "coder"}.svg" 
+            label="Open selection in {current.runlist[current.selection]?.file.ext === ".psyexp" ? "Builder" : "Coder"}"
+            onclick={evt => openIn(
+                current.runlist[current.selection]?.file.file, 
+                current.runlist[current.selection]?.file.ext === ".psyexp" ? "builder" : "coder"
+            )} 
+            borderless
+            disabled={!current.runlist[current.selection]}
+        />
     </RibbonSection>
 
     {#if python?.ready}
