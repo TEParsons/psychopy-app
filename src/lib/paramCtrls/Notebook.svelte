@@ -51,11 +51,11 @@
                 if (element.params[jskey]) {
                     if (python?.ready) {
                         // start off just saying "Translating..."
-                        element.params[jskey].val = "Translating..."
+                        element.params[jskey].val = "// Translating..."
                         // do translation in Python
                         python.liaison.send({
                             command: "run",
-                            args: ["psychopy.experiment.py2js_transpiler:translatePythonToJavaScript", element.params[key].val]
+                            args: ["psychopy.experiment.py2js_transpiler:translatePythonToJavaScript", element.params[key].val.trim()]
                         }, 10000).then(resp => {
                             // set value to returned value (or error)
                             if (resp?.error) {
@@ -63,7 +63,9 @@
                             } else {
                                 element.params[jskey].val = resp
                             }
-                        })
+                        }).catch(
+                            err => element.params[jskey].val = `// Error in Python code`
+                        )
                     }
                 }
             }
