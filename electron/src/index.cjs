@@ -360,6 +360,7 @@ const handlers = {
   python: {
     details: ipcMain.handle("python.details", (evt) => python.details),
     start: ipcMain.handle("python.start", (evt) => python.start()),
+    stop: ipcMain.handle("python.stop", (evt) => python.stop()),
     started: ipcMain.handle("python.started", (evt) => python.started),
     uv: {
       dir: ipcMain.handle("python.uv.dir", (evt) => python.uv.dir),

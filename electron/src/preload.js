@@ -52,6 +52,7 @@ const python = {
   details: () => ipcRenderer.invoke("python.details").then(resp => resp),
   output: () => ipcRenderer.invoke("python.output").then(resp => resp),
   start: () => ipcRenderer.invoke("python.start").then(resp => resp),
+  stop: () => ipcRenderer.invoke("python.stop").then(resp => resp),
   started: () => ipcRenderer.invoke("python.started").then(resp => resp),
   uv: {
     dir: () => ipcRenderer.invoke("python.uv.dir").then(resp => resp),

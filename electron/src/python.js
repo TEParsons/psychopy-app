@@ -151,6 +151,23 @@ export async function startPython() {
   })
 }
 
+async function stopPython() {
+  // kill Python process
+  if (python.process) {
+    await python.process.kill()
+    python.started = false
+    python.process = undefined
+  }
+  // kill websocket
+  if (python.socket) {
+    await python.socket.close()
+    python.socket = undefined
+    // remake liaison promises
+    python.liaison.ready = Promise.withResolvers(),
+    python.liaison.pending = []
+  }
+}
+
 async function send(msg, timeout=1000) {
   // wait for liaison to exist before sending messages
   await python.liaison.ready.promise
@@ -333,6 +350,7 @@ export const python = {
   },
   uv: uv,
   start: startPython,
+  stop: () => stopPython(),
   started: false,
   scripts: {
     run: runScript,

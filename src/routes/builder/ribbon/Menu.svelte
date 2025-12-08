@@ -8,6 +8,7 @@
     import { electron, python } from "$lib/globals.svelte";
     import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js";
     import { PluginManagerDlg } from "$lib/dialogs/pluginManager";
+    import { setupPython } from "$lib/python"
 
     import {
         // file
@@ -241,7 +242,6 @@
             label="Open device manager"
             icon="/icons/btn-devices.svg"
             onclick={evt => show.deviceMgrDlg = true}
-            disabled={!python?.ready}
         />
         {#if python?.ready}
             <MenuItem 
@@ -260,6 +260,12 @@
                 onclick={evt => electron.paths.user().then(
                     folder => electron.files.openPath(folder)
                 )}
+            />
+        {/if}
+        {#if python}
+            <MenuItem 
+                label="Reinstall Python"
+                onclick={evt => setupPython(true)}
             />
         {/if}
     </SubMenu>
