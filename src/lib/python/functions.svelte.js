@@ -7,8 +7,6 @@ export async function setupPython(forceReinstall=false) {
         status.ready.resolve()
         return
     }
-    // kill any existing process
-    await python.stop()
     // new promises
     status.ready = Promise.withResolvers();
     status.dismiss = Promise.withResolvers();
@@ -22,11 +20,17 @@ export async function setupPython(forceReinstall=false) {
     let hasPython = await python.uv.findPython().catch(err => status.ready.reject(err?.error || err))
     // install UV
     if (!hasUV || forceReinstall) {
+        // kill any existing process
+        await python.stop()
+        // do install
         status.message = "Downloading UV (a Python installer)..."
         await python.uv.installUV().catch(err => status.ready.reject(err?.error || err))
     }
     // install Python
     if (!hasPython || forceReinstall) {
+        // kill any existing process
+        await python.stop()
+        // do install
         status.message = "Installing Python and PsychoPy library..."
         status.dlg.message = (
             "### Installing Python and PsychoPy library...\n" +

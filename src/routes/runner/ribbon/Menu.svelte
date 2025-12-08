@@ -3,8 +3,9 @@
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu';
     import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
     import { prefs } from "$lib/preferences.svelte"; 
-    import { electron } from "$lib/globals.svelte";
+    import { electron, python } from "$lib/globals.svelte";
     import { showDevTools } from "$lib/utils/views.svelte"
+    import { setupPython } from "$lib/python";
 
     import {
         // file
@@ -140,6 +141,39 @@
             />
         </SubMenu>
     {/if}
+
+    <SubMenu label="Tools" icon="/icons/btn-hamburger.svg">
+        <MenuItem 
+            label="Open device manager"
+            icon="/icons/btn-devices.svg"
+            onclick={evt => show.deviceMgrDlg = true}
+        />
+        {#if python?.ready}
+            <MenuItem 
+                label="Manage plugins and packages"
+                icon="/icons/btn-plugin.svg"
+                onclick={evt => show.pluginMgr = true}
+                disabled={!python?.ready}
+            />
+        {/if}
+
+        {#if electron}
+            <MenuSeparator />
+
+            <MenuItem 
+                label="Open PsychoPy user folder"
+                onclick={evt => electron.paths.user().then(
+                    folder => electron.files.openPath(folder)
+                )}
+            />
+        {/if}
+        {#if python}
+            <MenuItem 
+                label="Reinstall Python"
+                onclick={evt => setupPython(true)}
+            />
+        {/if}
+    </SubMenu>
 
     <SubMenu label="Help">
         <MenuItem 

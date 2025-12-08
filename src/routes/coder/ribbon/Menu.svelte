@@ -2,12 +2,10 @@
     import { getContext } from "svelte";
     import { Menu, MenuItem, MenuSeparator, SubMenu } from '$lib/utils/menu';
     import PrefsDialog from '$lib/dialogs/preferences/PrefsDialog.svelte';
-    import ParamsDialog from "$lib/paramCtrls/ParamsDialog.svelte";
-    import { FindDialog } from "$lib/dialogs/find";
     import { prefs } from "$lib/preferences.svelte"; 
     import { electron, python } from "$lib/globals.svelte";
-    import { DeviceManagerDialog } from "$lib/dialogs/deviceManager/index.js";
     import { PluginManagerDlg } from "$lib/dialogs/pluginManager";
+    import { setupPython } from "$lib/python";
 
     import {
         // file
@@ -185,6 +183,22 @@
             onclick={evt => show.pluginMgr = true}
             disabled={!python?.ready}
         />
+        {#if electron}
+            <MenuSeparator />
+
+            <MenuItem 
+                label="Open PsychoPy user folder"
+                onclick={evt => electron.paths.user().then(
+                    folder => electron.files.openPath(folder)
+                )}
+            />
+        {/if}
+        {#if python}
+            <MenuItem 
+                label="Reinstall Python"
+                onclick={evt => setupPython(true)}
+            />
+        {/if}
     </SubMenu>
 
     <SubMenu label="Help">
