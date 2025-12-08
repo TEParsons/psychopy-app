@@ -177,14 +177,18 @@ async function send(msg, timeout=1000) {
       if (data.evt.id !== msgid) {
         return
       }
-      // log reply
-      logging.log(data.response, `RECEIVED\t${msgid}`, "liaison", false)
       // if ID matches, store and stop listening
       python.socket.removeEventListener("message", lsnr)
       // resolve or reject
       if ("response" in data) {
+        // log reply
+        logging.log(data.response, `RECEIVED\t${msgid}`, "liaison", false)
+        // resolve
         resolve(data.response)
       } else {
+        // log error
+        logging.log(data.error, `ERROR\t${msgid}`, "liaison", false)
+        // reject
         reject(data)
       }
     }
