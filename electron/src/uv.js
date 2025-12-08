@@ -168,31 +168,27 @@ export async function installPython(
     proc.execSync(`"${uv.executable}" pip install git+https://github.com/psychopy/liaison[websocket] --python "${python.details.executable}"`)
     // install metapensiero, esprima (Py -> JS translation) and PyQt (expInfo dialog)
     proc.execSync(`"${uv.executable}" pip install pyqt6 esprima git+https://gitlab.com/peircej/metapensiero.pj --python "${python.details.executable}"`)
-    // install psychopy (using await and a promise rather than execSync as execSync stalls the whole process)
-    await new Promise((resolve, reject) => {
-        if (version.psychopy.major === "dev") {
-                proc.exec(
-                    `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`
-                ).on("close", evt => resolve())
+    // install psychopy
+    if (version.psychopy.major === "dev") {
+            proc.execSync(
+                `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`
+            )
+    } else {
+        // get known versions of PsychoPy
+        let versions = await listPackageVersions("psychopy-lib")
+        logging.log([versions, versions.some(item => item.startsWith(version.psychopy.major)), version.psychopy.str], "UV")
+        // if version exists, install from pip
+        if (versions.some(item => item.startsWith(version.psychopy.major))) {
+            proc.execSync(
+                `"${uv.executable}" pip install psychopy-lib=="${version.psychopy.str}" --python "${python.details.executable}"`
+            )
         } else {
-            // get known versions of PsychoPy
-            listPackageVersions("psychopy-lib").then(versions => {
-                // if version exists, install from pip
-                if (versions.some(item => item.startsWith(version.psychopy.major))) {
-                    proc.exec(
-                        `"${uv.executable}" pip install psychopy-lib=="${version.psychopy.str}" --python "${python.details.executable}"`
-                    ).on("close", evt => resolve())
-                } else {
-                    // if unreleased, install from the release branch
-                    proc.exec(
-                        `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@release --python "${python.details.executable}"`
-                    ).on("close", evt => resolve())
-                }
-            })
+            // if unreleased, install from the release branch
+            proc.execSync(
+                `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib --python "${python.details.executable}"`
+            )
         }
-    })
-
-    return true
+    }
 }
 
 
