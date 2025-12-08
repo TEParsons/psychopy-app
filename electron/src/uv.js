@@ -286,9 +286,6 @@ export function getEnvironments(
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     let output = {}
-    console.log(
-        listPackageVersions("psychopy-lib")
-    )
     // iterate through subfolders in the python folder
     for (let subfolder of fs.readdirSync(folder)) {
         let executable
