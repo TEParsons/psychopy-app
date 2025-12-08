@@ -99,3 +99,8 @@ const python = {
   }
 }
 contextBridge.exposeInMainWorld('python', python)
+
+const git = {
+  sync: (folder, user) => ipcRenderer.invoke("git.sync", folder, user).then(resp => resp)
+}
+contextBridge.exposeInMainWorld('git', git)
