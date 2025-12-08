@@ -124,6 +124,29 @@ export function findPython(
 }
 
 
+export async function listPackageVersions(name) {
+    // ask uvs for available versions
+    try {
+        let resp = decoder.decode(
+            proc.execSync(`"${uv.executable}x" pip index versions ${name}`)
+        );
+    } catch {
+        // if this fails, return a blank list
+        return []
+    }
+    // get string with versions in
+    let versionsStr = resp.match(/Available versions:(.*)/)[1]
+    // if none listed, return a blank list
+    if (!versionsStr) {
+        return []
+    }
+    // parse the response to an array
+    return versionsStr.split(",").map(
+        version => version.trim()
+    )
+}
+
+
 export async function installPython(
     version={python: "3.10", psychopy: appVersion}, 
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
@@ -148,13 +171,24 @@ export async function installPython(
     // install psychopy (using await and a promise rather than execSync as execSync stalls the whole process)
     await new Promise((resolve, reject) => {
         if (version.psychopy.major === "dev") {
-            proc.exec(
-                `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`
-            ).on("close", evt => resolve())
+                proc.exec(
+                    `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@dev --python "${python.details.executable}"`
+                ).on("close", evt => resolve())
         } else {
-            proc.exec(
-                `"${uv.executable}" pip install psychopy=="${version.psychopy.str}" --python "${python.details.executable}"`
-            ).on("close", evt => resolve())
+            // get known versions of PsychoPy
+            listPackageVersions("psychopy-lib").then(versions => {
+                // if version exists, install from pip
+                if (versions.some(item => item.startsWith(version.psychopy.major))) {
+                    proc.exec(
+                        `"${uv.executable}" pip install psychopy-lib=="${version.psychopy.str}" --python "${python.details.executable}"`
+                    ).on("close", evt => resolve())
+                } else {
+                    // if unreleased, install from the release branch
+                    proc.exec(
+                        `"${uv.executable}" pip install git+https://github.com/psychopy/psychopy-lib@release --python "${python.details.executable}"`
+                    ).on("close", evt => resolve())
+                }
+            })
         }
     })
 
@@ -252,6 +286,9 @@ export function getEnvironments(
     folder=path.join(app.getPath("appData"), "psychopy4", ".python")
 ) {
     let output = {}
+    console.log(
+        listPackageVersions("psychopy-lib")
+    )
     // iterate through subfolders in the python folder
     for (let subfolder of fs.readdirSync(folder)) {
         let executable
