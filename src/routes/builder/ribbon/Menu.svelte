@@ -243,12 +243,25 @@
             onclick={evt => show.deviceMgrDlg = true}
             disabled={!python?.ready}
         />
-        <MenuItem 
-            label="Manage plugins and packages"
-            icon="/icons/btn-plugin.svg"
-            onclick={evt => show.pluginMgr = true}
-            disabled={!python?.ready}
-        />
+        {#if python?.ready}
+            <MenuItem 
+                label="Manage plugins and packages"
+                icon="/icons/btn-plugin.svg"
+                onclick={evt => show.pluginMgr = true}
+                disabled={!python?.ready}
+            />
+        {/if}
+
+        {#if electron}
+            <MenuSeparator />
+
+            <MenuItem 
+                label="Open PsychoPy user folder"
+                onclick={evt => electron.paths.user().then(
+                    folder => electron.files.openPath(folder)
+                )}
+            />
+        {/if}
     </SubMenu>
 
     <SubMenu label="Help">
