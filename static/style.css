@@ -1,3 +1,7 @@
+@import url("./fonts/Nunito.css");
+@import url("./fonts/Noto.css");
+@import url("./fonts/JetBrainsMono.css");
+
 :root {
     /* colors */
     --red: #F2545B;
