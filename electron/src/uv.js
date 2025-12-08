@@ -176,7 +176,6 @@ export async function installPython(
     } else {
         // get known versions of PsychoPy
         let versions = await listPackageVersions("psychopy-lib")
-        logging.log([versions, versions.some(item => item.startsWith(version.psychopy.major)), version.psychopy.str], "UV")
         // if version exists, install from pip
         if (versions.some(item => item.startsWith(version.psychopy.major))) {
             proc.execSync(
