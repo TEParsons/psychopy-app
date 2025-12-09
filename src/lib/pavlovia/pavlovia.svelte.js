@@ -78,35 +78,20 @@ export async function login(username, current) {
     if (users[username]) {
         // if we have a stored access token, make sure it's in date
         if (users[username].token?.access) {
-            // get info
-            let profile = Promise.withResolvers()
-            getUserInfo(
-                `${users[username].token.access}`
-            ).catch(
-                async err => {
-                    // if token has expired, refresh it
-                    await refreshToken(username).catch(
-                        err => profile.reject(err)
-                    )
-                    // then try again
-                    getUserInfo(
-                        `${users[username].token.access}`
-                    ).catch(
-                        suberr => profile.reject([suberr, err])
-                    ).then(
-                        resp => profile.resolve(resp)
-                    )
+            try {
+                // Try to get user info with current token
+                const profile = await getUserInfo(users[username].token.access);
+                users[username].profile = profile;
+            } catch (err) {
+                try {
+                    // If that fails, refresh the token and try again
+                    await refreshToken(username);
+                    const profile = await getUserInfo(users[username].token.access);
+                    users[username].profile = profile;
+                } catch (refreshErr) {
+                    throw new Error(`Failed to refresh token and get user info: ${refreshErr.message}`);
                 }
-            ).then(
-                resp => profile.resolve(resp)
-            )
-            // update profile on resolution
-            profile.promise.then(
-                resp => {
-                    users[username].profile = resp
-                }
-            )
-            await profile.promise
+            }
         }
     } else {
         // if logging in from scratch...
@@ -140,14 +125,12 @@ export async function login(username, current) {
                 auth.code = await electron.authenticatePavlovia(url)
             } else {
                 // if running in browser, open in *this* window
-                // (will redirect and create a new authenticated instance of this webpage when done)
                 navigate(url)
-                // from here, the new instance will call login with a code
                 return
             }
         }
         // request actual auth and refresh tokens
-        let tokens = await fetch(
+        const tokensResp = await fetch(
             `/api/token/authorize?${new URLSearchParams({
                 root: auth.root,
                 redirect: electron ? auth.root : window.location.href,
@@ -156,15 +139,31 @@ export async function login(username, current) {
                 verifier: auth.verifier
             }).toString()}`,
             { method: "post" }
-        ).then(resp => resp.json())
+        );
+
+        if (!tokensResp.ok) {
+            throw new Error(`Token request failed: ${tokensResp.statusText}`);
+        }
+
+        const tokens = await tokensResp.json();
+
         // discard code now we're done with it (so we can log in as different users later)
         auth.code = undefined
+
         // update profile
-        let profile = await fetch(
+        const profileResp = await fetch(
             `${auth.root}/api/v4/user?access_token=${tokens.access_token}`
-        ).then(resp => resp.json())
+        );
+
+        if (!profileResp.ok) {
+            throw new Error(`Profile request failed: ${profileResp.statusText}`);
+        }
+
+        const profile = await profileResp.json();
+
         // get username incase they logged in as a different user
         username = profile.username
+
         // create user
         if (username) {
             users[username] = {
@@ -175,15 +174,18 @@ export async function login(username, current) {
                 profile: profile
             }
         } else {
-            // if we failed to get a username, this function needs to fail so it can be caught
-            throw new Error("Failed to login")
+            throw new Error("Failed to login - no username returned");
         }
     }
+
     // save users (if possible)
     if (electron) {
-        await electron.paths.pavlovia.users().then(
-            file => electron.files.save(file, JSON.stringify(users, undefined, 4))
-        )
+        try {
+            const file = await electron.paths.pavlovia.users();
+            await electron.files.save(file, JSON.stringify(users, undefined, 4));
+        } catch (err) {
+            console.warn('Failed to save user data:', err);
+        }
     }
 
     return username
