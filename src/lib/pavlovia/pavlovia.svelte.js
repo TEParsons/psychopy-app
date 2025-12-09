@@ -62,6 +62,10 @@ async function refreshToken(username) {
         { method: "post" }
     );
 
+    if (!resp.ok) {
+        throw new Error(`Token refresh failed: ${resp.statusText}`);
+    }
+
     const data = await resp.json();
 
     if (data.access_token && data.refresh_token) {
@@ -89,25 +93,29 @@ export async function login(username, current) {
                     const profile = await getUserInfo(users[username].token.access);
                     users[username].profile = profile;
                 } catch (refreshErr) {
-                    throw new Error(`Failed to refresh token and get user info: ${refreshErr.message}`);
+                    // If refresh fails, clear the user's tokens and force new OAuth
+                    delete users[username].token;
+                    // Now treat as new user
+                    return login(undefined, current);
                 }
             }
+        } else {
+            // No token at all, treat as new user
+            return login(undefined, current);
         }
     } else {
-        // if logging in from scratch...
-        // are we working with a code sent via URL?
+        // if logging in from scratch
         if (!auth.code) {
-            // create a private "state" based on uuid
-            auth.state = String(crypto.randomUUID())
-            // first make the answer - pick random alphanumeric chars
+            // Reset OAuth state for fresh flow
+            auth.state = String(crypto.randomUUID());
             auth.verifier = Array.from(
                 { length: randint(44, 127) },
                 () => randof("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
-            ).join("")
+            ).join("");
             // create a hash from verifier (via SHA-256 digestion)
-            let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier))
+            let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier));
             // decode hash to make challenge
-            auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace("=", "")
+            auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace(/=/g, "");
             // construct auth url params
             let params = new URLSearchParams({
                 client_id: auth.client,
@@ -116,19 +124,20 @@ export async function login(username, current) {
                 state: auth.state,
                 code_challenge: auth.challenge,
                 code_challenge_method: "S256"
-            })
+            });
             // construct auth url
-            let url = `${auth.root}/oauth/authorize?${params.toString()}`
+            let url = `${auth.root}/oauth/authorize?${params.toString()}`;
             // open authentication url
             if (electron) {
                 // get code once ready
-                auth.code = await electron.authenticatePavlovia(url)
+                auth.code = await electron.authenticatePavlovia(url);
             } else {
                 // if running in browser, open in *this* window
-                navigate(url)
-                return
+                navigate(url);
+                return;
             }
         }
+
         // request actual auth and refresh tokens
         const tokensResp = await fetch(
             `/api/token/authorize?${new URLSearchParams({
@@ -148,7 +157,7 @@ export async function login(username, current) {
         const tokens = await tokensResp.json();
 
         // discard code now we're done with it (so we can log in as different users later)
-        auth.code = undefined
+        auth.code = undefined;
 
         // update profile
         const profileResp = await fetch(
@@ -162,7 +171,7 @@ export async function login(username, current) {
         const profile = await profileResp.json();
 
         // get username incase they logged in as a different user
-        username = profile.username
+        username = profile.username;
 
         // create user
         if (username) {
@@ -172,7 +181,7 @@ export async function login(username, current) {
                     refresh: tokens.refresh_token
                 },
                 profile: profile
-            }
+            };
         } else {
             throw new Error("Failed to login - no username returned");
         }
@@ -188,19 +197,15 @@ export async function login(username, current) {
         }
     }
 
-    return username
+    return username;
 }
 
 export function logout() {
-    // reset all auth params
+    // Only clear OAuth flow state (keep user tokens for 2-hour reuse)
     Object.assign(auth, {
         state: "",
         challenge: "",
         verifier: "",
-        token: {
-            code: undefined,
-            refresh: undefined,
-            access: undefined
-        }
-    })
+        code: undefined
+    });
 }
