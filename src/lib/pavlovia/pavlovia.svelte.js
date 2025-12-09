@@ -58,31 +58,26 @@ async function getUserInfo(token) {
  * Uses the stored refresh token to refresh the stored access token
  */
 async function refreshToken(username) {
-    return new Promise((resolve, reject) => {
-        fetch(
-            `/api/token/refresh?${new URLSearchParams({
-                root: auth.root,
-                redirect: electron ? auth.root : window.location.href,
-                client: auth.client,
-                refresh: users[username].token.refresh,
-                verifier: auth.verifier
-            }).toString()}`, 
-            { method: "post" }
-        ).then(
-            async resp => {
-                resp = await resp.json()
-                if (resp.access_token && resp.refresh_token) {
-                    // store new tokens
-                    users[username].token.access = resp.access_token;
-                    users[username].token.refresh = resp.refresh_token;
-                    // resolve promise
-                    resolve(resp)
-                } else {
-                    reject(resp.message)
-                }
-            }
-        )
-    })
+    const resp = await fetch(
+        `/api/token/refresh?${new URLSearchParams({
+            root: auth.root,
+            redirect: electron ? auth.root : window.location.href,
+            client: auth.client,
+            refresh: users[username].token.refresh,
+            verifier: auth.verifier
+        }).toString()}`,
+        { method: "post" }
+    );
+
+    const data = await resp.json();
+
+    if (data.access_token && data.refresh_token) {
+        users[username].token.access = data.access_token;
+        users[username].token.refresh = data.refresh_token;
+        return data;
+    } else {
+        throw new Error(data.message || 'Token refresh failed');
+    }
 }
 
 
@@ -128,7 +123,7 @@ export async function login(username, current) {
             auth.state = String(crypto.randomUUID())
             // first make the answer - pick random alphanumeric chars
             auth.verifier = Array.from(
-                {length: randint(44, 127)},
+                { length: randint(44, 127) },
                 () => randof("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
             ).join("")
             // create a hash from verifier (via SHA-256 digestion)
@@ -166,7 +161,7 @@ export async function login(username, current) {
                 client: auth.client,
                 code: auth.code,
                 verifier: auth.verifier
-            }).toString()}`, 
+            }).toString()}`,
             { method: "post" }
         ).then(resp => resp.json())
         // discard code now we're done with it (so we can log in as different users later)
