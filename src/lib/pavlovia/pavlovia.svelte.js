@@ -38,19 +38,12 @@ export var auth = $state({
  * Get the information for the current user as a catchable promise
  */
 async function getUserInfo(token) {
-    return new Promise((resolve, reject) => {
-        fetch(
-            `${auth.root}/api/v4/user?access_token=${token}`
-        ).then(
-            resp => {
-                if (resp.ok) {
-                    resolve(resp.json())
-                } else {
-                    reject(resp.message)
-                }
-            }
-        )
-    })
+    const resp = await fetch(`${auth.root}/api/v4/user?access_token=${token}`);
+    if (resp.ok) {
+        return await resp.json();
+    } else {
+        throw new Error(resp.statusText || 'Failed to get user info');
+    }
 }
 
 
