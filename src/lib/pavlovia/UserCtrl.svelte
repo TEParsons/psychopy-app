@@ -40,7 +40,12 @@
         }
     }}
 >
-    <MenuItem label="Edit user..." icon="/icons/btn-edit.svg" />
+    <MenuItem
+        label="Edit user..."
+        icon="/icons/btn-edit.svg"
+        onclick={() =>
+            window.open("https://gitlab.pavlovia.org/-/profile", "_blank")}
+    />
     <SubMenu label="Switch user...">
         {#each Object.values(users) as user}
             <MenuItem
