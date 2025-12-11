@@ -36,7 +36,7 @@
     --body: Noto Sans, var(--emoji);
     --heading: Noto Sans, var(--emoji);
     --mono: JetBrains Mono, var(--emoji);
-    
+
 
     /* defaults */
     color: var(--text);
@@ -71,7 +71,7 @@
         /* defaults */
         color: var(--text);
         background-color: var(--base);
-    }   
+    }
 }
 
 body {
@@ -83,7 +83,7 @@ body {
     transition: border-color .2s, box-shadow .2s;
 }
 
-select, 
+select,
 option,
 input,
 textarea {
@@ -95,18 +95,21 @@ textarea {
     background-color: var(--base);
     border-radius: .25rem;
 }
-select:disabled, 
+
+select:disabled,
 option:disabled,
 input:disabled,
 textarea:disabled {
     opacity: 50%;
 }
-input:enabled:active, 
+
+input:enabled:active,
 input:enabled:focus {
     border-color: var(--blue);
 }
-input:hover, 
-input:active, 
+
+input:hover,
+input:active,
 input:focus {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
 }
@@ -114,12 +117,14 @@ input:focus {
 select {
     transition: border-color .2s, box-shadow .2s;
 }
-select:enabled:active, 
+
+select:enabled:active,
 select:enabled:focus {
     border-color: var(--blue);
 }
-select:hover, 
-select:active, 
+
+select:hover,
+select:active,
 select:focus {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
 }
@@ -135,12 +140,14 @@ button {
     border: none;
     color: var(--text);
     font-family: var(--body);
+    cursor: pointer;
 }
 
 svg {
     aspect-ratio: 1/1;
 }
 
-pre, code {
+pre,
+code {
     font-family: var(--mono);
 }

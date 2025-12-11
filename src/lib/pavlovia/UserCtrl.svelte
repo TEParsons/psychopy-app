@@ -5,12 +5,12 @@
     import { MenuItem, MenuSeparator, SubMenu } from "$lib/utils/menu";
     import { electron } from "$lib/globals.svelte";
 
-    let current = getContext("current")
+    let current = getContext("current");
 
     onMount(async () => {
         // no saved users if not in electron
         if (!electron) {
-            return
+            return;
         }
         // get file path
         let file = await electron.paths.pavlovia.users();
@@ -28,47 +28,67 @@
         // parse JSON
         let data = JSON.parse(content);
         // apply
-        Object.assign(users, data)
-    })
+        Object.assign(users, data);
+    });
 </script>
 
 <DropdownButton
     label={current.user ? current.user.profile.name : "No user"}
     onclick={(evt) => {
         if (current.user) {
-            window.open(current.user.profile.web_url)
+            window.open(current.user.profile.web_url);
         }
     }}
 >
     <MenuItem
         label="Edit user..."
         icon="/icons/btn-edit.svg"
+        onclick={() =>
+            window.open("https://gitlab.pavlovia.org/-/profile", "_blank")}
     />
-    <SubMenu
-        label="Switch user..."
-    >
+    <SubMenu label="Switch user...">
         {#each Object.values(users) as user}
             <MenuItem
                 label={user.profile.name}
-                onclick={evt => login(user.profile.username).then(username => current.user = users[username])}
+                onclick={(evt) =>
+                    login(user.profile.username).then(
+                        (username) => (current.user = users[username]),
+                    )}
             />
         {/each}
-        <MenuSeparator/>
+        <MenuSeparator />
         <MenuItem
             label="New user..."
-            onclick={evt => login().then(username => current.user = users[username])}
+            onclick={(evt) =>
+                login().then((username) => (current.user = users[username]))}
         />
     </SubMenu>
-    <MenuSeparator/>
+    <MenuSeparator />
     {#if current.user}
         <MenuItem
             label="Logout"
-            onclick={evt => current.user = undefined}
+            onclick={(evt) => {
+                logout();
+                current.user = undefined;
+            }}
         />
     {:else}
         <MenuItem
             label="Login"
-            onclick={evt => login().then(username => current.user = users[username])}
+            onclick={(evt) => {
+                if (Object.keys(users).length > 0) {
+                    // Try existing user first
+                    const lastUser = Object.keys(users)[0];
+                    login(lastUser).then(
+                        (username) => (current.user = users[username]),
+                    );
+                } else {
+                    // Only do new user flow if no users exist
+                    login().then(
+                        (username) => (current.user = users[username]),
+                    );
+                }
+            }}
         />
     {/if}
 </DropdownButton>

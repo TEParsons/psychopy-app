@@ -205,8 +205,10 @@ async function authenticatePavlovia(url) {
     show: true
   });
   win.removeMenu();
-  // make sure any auth cache is cleared
-  await win.webContents.session.clearCache()
+  // Clear all storage data to force fresh login
+  await win.webContents.session.clearStorageData({
+    storages: ['cookies', 'localstorage', 'sessionstorage', 'cachestorage', 'websql', 'indexdb']
+  });
   // load auth url
   win.loadURL(url);
   // construct promise for the auth code
@@ -267,7 +269,7 @@ app.on("quit", (evt, code) => {
 })
 
 
-function getFileTree(folder, recursive=false) {
+function getFileTree(folder, recursive = false) {
   let output = [];
 
   try {

@@ -38,19 +38,12 @@ export var auth = $state({
  * Get the information for the current user as a catchable promise
  */
 async function getUserInfo(token) {
-    return new Promise((resolve, reject) => {
-        fetch(
-            `${auth.root}/api/v4/user?access_token=${token}`
-        ).then(
-            resp => {
-                if (resp.ok) {
-                    resolve(resp.json())
-                } else {
-                    reject(resp.message)
-                }
-            }
-        )
-    })
+    const resp = await fetch(`${auth.root}/api/v4/user?access_token=${token}`);
+    if (resp.ok) {
+        return await resp.json();
+    } else {
+        throw new Error(resp.statusText || 'Failed to get user info');
+    }
 }
 
 
@@ -58,31 +51,30 @@ async function getUserInfo(token) {
  * Uses the stored refresh token to refresh the stored access token
  */
 async function refreshToken(username) {
-    return new Promise((resolve, reject) => {
-        fetch(
-            `/api/token/refresh?${new URLSearchParams({
-                root: auth.root,
-                redirect: electron ? auth.root : window.location.href,
-                client: auth.client,
-                refresh: users[username].token.refresh,
-                verifier: auth.verifier
-            }).toString()}`, 
-            { method: "post" }
-        ).then(
-            async resp => {
-                resp = await resp.json()
-                if (resp.access_token && resp.refresh_token) {
-                    // store new tokens
-                    users[username].token.access = resp.access_token;
-                    users[username].token.refresh = resp.refresh_token;
-                    // resolve promise
-                    resolve(resp)
-                } else {
-                    reject(resp.message)
-                }
-            }
-        )
-    })
+    const resp = await fetch(
+        `/api/token/refresh?${new URLSearchParams({
+            root: auth.root,
+            redirect: electron ? auth.root : window.location.href,
+            client: auth.client,
+            refresh: users[username].token.refresh,
+            verifier: auth.verifier
+        }).toString()}`,
+        { method: "post" }
+    );
+
+    if (!resp.ok) {
+        throw new Error(`Token refresh failed: ${resp.statusText}`);
+    }
+
+    const data = await resp.json();
+
+    if (data.access_token && data.refresh_token) {
+        users[username].token.access = data.access_token;
+        users[username].token.refresh = data.refresh_token;
+        return data;
+    } else {
+        throw new Error(data.message || 'Token refresh failed');
+    }
 }
 
 
@@ -90,51 +82,40 @@ export async function login(username, current) {
     if (users[username]) {
         // if we have a stored access token, make sure it's in date
         if (users[username].token?.access) {
-            // get info
-            let profile = Promise.withResolvers()
-            getUserInfo(
-                `${users[username].token.access}`
-            ).catch(
-                async err => {
-                    // if token has expired, refresh it
-                    await refreshToken(username).catch(
-                        err => profile.reject(err)
-                    )
-                    // then try again
-                    getUserInfo(
-                        `${users[username].token.access}`
-                    ).catch(
-                        suberr => profile.reject([suberr, err])
-                    ).then(
-                        resp => profile.resolve(resp)
-                    )
+            try {
+                // Try to get user info with current token
+                const profile = await getUserInfo(users[username].token.access);
+                users[username].profile = profile;
+            } catch (err) {
+                try {
+                    // If that fails, refresh the token and try again
+                    await refreshToken(username);
+                    const profile = await getUserInfo(users[username].token.access);
+                    users[username].profile = profile;
+                } catch (refreshErr) {
+                    // If refresh fails, clear the user's tokens and force new OAuth
+                    delete users[username].token;
+                    // Now treat as new user
+                    return login(undefined, current);
                 }
-            ).then(
-                resp => profile.resolve(resp)
-            )
-            // update profile on resolution
-            profile.promise.then(
-                resp => {
-                    users[username].profile = resp
-                }
-            )
-            await profile.promise
+            }
+        } else {
+            // No token at all, treat as new user
+            return login(undefined, current);
         }
     } else {
-        // if logging in from scratch...
-        // are we working with a code sent via URL?
+        // if logging in from scratch
         if (!auth.code) {
-            // create a private "state" based on uuid
-            auth.state = String(crypto.randomUUID())
-            // first make the answer - pick random alphanumeric chars
+            // Reset OAuth state for fresh flow
+            auth.state = String(crypto.randomUUID());
             auth.verifier = Array.from(
-                {length: randint(44, 127)},
+                { length: randint(44, 127) },
                 () => randof("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
-            ).join("")
+            ).join("");
             // create a hash from verifier (via SHA-256 digestion)
-            let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier))
+            let hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(auth.verifier));
             // decode hash to make challenge
-            auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace("=", "")
+            auth.challenge = btoa(String.fromCharCode(...new Uint8Array(hash))).replace(/=/g, "");
             // construct auth url params
             let params = new URLSearchParams({
                 client_id: auth.client,
@@ -143,40 +124,55 @@ export async function login(username, current) {
                 state: auth.state,
                 code_challenge: auth.challenge,
                 code_challenge_method: "S256"
-            })
+            });
             // construct auth url
-            let url = `${auth.root}/oauth/authorize?${params.toString()}`
+            let url = `${auth.root}/oauth/authorize?${params.toString()}`;
             // open authentication url
             if (electron) {
                 // get code once ready
-                auth.code = await electron.authenticatePavlovia(url)
+                auth.code = await electron.authenticatePavlovia(url);
             } else {
                 // if running in browser, open in *this* window
-                // (will redirect and create a new authenticated instance of this webpage when done)
-                navigate(url)
-                // from here, the new instance will call login with a code
-                return
+                navigate(url);
+                return;
             }
         }
+
         // request actual auth and refresh tokens
-        let tokens = await fetch(
+        const tokensResp = await fetch(
             `/api/token/authorize?${new URLSearchParams({
                 root: auth.root,
                 redirect: electron ? auth.root : window.location.href,
                 client: auth.client,
                 code: auth.code,
                 verifier: auth.verifier
-            }).toString()}`, 
+            }).toString()}`,
             { method: "post" }
-        ).then(resp => resp.json())
+        );
+
+        if (!tokensResp.ok) {
+            throw new Error(`Token request failed: ${tokensResp.statusText}`);
+        }
+
+        const tokens = await tokensResp.json();
+
         // discard code now we're done with it (so we can log in as different users later)
-        auth.code = undefined
+        auth.code = undefined;
+
         // update profile
-        let profile = await fetch(
+        const profileResp = await fetch(
             `${auth.root}/api/v4/user?access_token=${tokens.access_token}`
-        ).then(resp => resp.json())
+        );
+
+        if (!profileResp.ok) {
+            throw new Error(`Profile request failed: ${profileResp.statusText}`);
+        }
+
+        const profile = await profileResp.json();
+
         // get username incase they logged in as a different user
-        username = profile.username
+        username = profile.username;
+
         // create user
         if (username) {
             users[username] = {
@@ -185,32 +181,31 @@ export async function login(username, current) {
                     refresh: tokens.refresh_token
                 },
                 profile: profile
-            }
+            };
         } else {
-            // if we failed to get a username, this function needs to fail so it can be caught
-            throw new Error("Failed to login")
+            throw new Error("Failed to login - no username returned");
         }
     }
+
     // save users (if possible)
     if (electron) {
-        await electron.paths.pavlovia.users().then(
-            file => electron.files.save(file, JSON.stringify(users, undefined, 4))
-        )
+        try {
+            const file = await electron.paths.pavlovia.users();
+            await electron.files.save(file, JSON.stringify(users, undefined, 4));
+        } catch (err) {
+            console.warn('Failed to save user data:', err);
+        }
     }
 
-    return username
+    return username;
 }
 
 export function logout() {
-    // reset all auth params
+    // Only clear OAuth flow state (keep user tokens for 2-hour reuse)
     Object.assign(auth, {
         state: "",
         challenge: "",
         verifier: "",
-        token: {
-            code: undefined,
-            refresh: undefined,
-            access: undefined
-        }
-    })
+        code: undefined
+    });
 }
