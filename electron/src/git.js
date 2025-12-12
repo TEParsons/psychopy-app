@@ -14,22 +14,39 @@ export async function newProject(details, folder, user) {
         fs,
         dir: folder,
         remote: "origin",
-        url: `${details.root}/${details.group}/${details.name}`
+        url: `${details.root}/${details.group}/${details.name}.git`
     })
-    // apply auth
-    remote.username = "oauth2"
-    remote.password = user.token.access
     // push (to create project)
     return await sync(folder, user)
 }
 
-
-export async function sync(folder, user) {
-    // get current branch
-    let branch = await git.currentBranch({
+/**
+ * Make sure a local git repo is compatible with isomorphic git
+ * 
+ * @param {string} folder Folder containing the repo
+ */
+export async function sanitize(folder) {
+    // get remote url
+    let url = await git.getConfig({
         fs,
         dir: folder,
+        path: "remote.origin.url"
     })
+    // make sure it ends with .git
+    if (!url.endsWith(".git")) {
+        await git.setConfig({
+            fs,
+            dir: folder,
+            path: "remote.origin.url",
+            value: url + ".git"
+        })
+    }
+}
+
+
+export async function sync(folder, user, force=false) {
+    // sanitize repo
+    await sanitize(folder)
     // get remote URL
     let remote = new URL(
         await git.getConfig({
@@ -41,19 +58,33 @@ export async function sync(folder, user) {
     // apply auth
     remote.username = "oauth2"
     remote.password = user.token.access
-    // fetch changes from remote
-    await git.pull({
-        fs,
-        http,
-        dir: folder,
-        author: {
-            name: user.profile.name,
-            email: user.profile.email
-        },
-        onAuth: evt => { 
-            return { username: "oauth2", password: user.token.access } 
-        }
-    })
+    // check whether remote exists
+    let remoteExists
+    try {
+        await git.getRemoteInfo({
+            http,
+            url: remote.toString()
+        })
+        remoteExists = true
+    } catch {
+        remoteExists = false
+    }
+    // if remote exists, pull from it
+    if (remoteExists) {
+        await git.pull({
+            fs,
+            http,
+            dir: folder,
+            author: {
+                name: user.profile.name,
+                email: user.profile.email
+            },
+            onAuth: evt => { 
+                return { username: "oauth2", password: user.token.access } 
+            },
+            fastForwardOnly: true
+        })
+    }
     // stage all changes
     for (let file of fs.globSync("*", { cwd: folder })) {
         // skip if gitignored
@@ -88,7 +119,8 @@ export async function sync(folder, user) {
         dir: folder,
         onAuth: evt => { 
             return {username: "oauth2", password: user.token.access} 
-        }
+        },
+        force: force
     })
 
     return sha
