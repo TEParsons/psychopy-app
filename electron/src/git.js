@@ -17,7 +17,18 @@ export async function newProject(details, folder, user) {
         url: `${details.root}/${details.group}/${details.name}.git`
     })
     // push (to create project)
-    return await sync(folder, user)
+    await sync(folder, user)
+
+    return {
+        name: details.name,
+        group: details.group,
+        local: folder,
+        remote: await git.getConfig({
+            fs,
+            dir: folder,
+            path: "remote.origin.url"
+        })
+    }
 }
 
 /**

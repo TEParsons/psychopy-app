@@ -40,11 +40,11 @@
 </script>
 
 <DropdownButton
-    label={current.project ? current.project.id : "No project"}
+    label={current.project ? `${current.project.group}/${current.project.name}` : "No project"}
     icon={current.project ? current.project.avatar_url : undefined}
     onclick={(evt) => {
         if (current.project) {
-            window.open(current.project.web_url)
+            window.open(current.project.remote)
         }
     }}
 >
@@ -57,7 +57,7 @@
     <MenuItem
         label="Edit project"
         icon="/icons/btn-edit.svg"
-        onclick={evt => window.open(current.project.remoteURL, "_blank")}
+        onclick={evt => window.open(current.project.remote, "_blank")}
         disabled={!current.project}
     ></MenuItem>
     <MenuItem

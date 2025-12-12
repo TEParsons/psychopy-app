@@ -24,6 +24,8 @@
             $state.snapshot(details), 
             current.experiment.file.parent, 
             $state.snapshot(current.user)
+        ).then(
+            resp => current.project = resp
         ),
         CANCEL: evt => {}
     }}
