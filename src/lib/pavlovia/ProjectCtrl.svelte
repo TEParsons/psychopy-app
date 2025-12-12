@@ -3,8 +3,9 @@
     import { getContext, onMount } from "svelte";
     import { projects } from "./pavlovia.svelte";
     import { MenuItem, MenuSeparator, SubMenu } from "$lib/utils/menu";
-    import { electron } from "$lib/globals.svelte";
+    import { electron, git } from "$lib/globals.svelte";
     import ManageProjectsDlg from "$lib/dialogs/projects/manage/ManageProjectsDlg.svelte";
+    import NewProjectDlg from "./NewProjectDlg.svelte";
 
     let current = getContext("current")
 
@@ -50,6 +51,8 @@
     <MenuItem
         label="New project"
         icon="/icons/btn-add.svg"
+        onclick={evt => show.newProjectDlg = true}
+        disabled={!current.user}
     ></MenuItem>
     <MenuItem
         label="Edit project"
@@ -70,4 +73,7 @@
 
 <ManageProjectsDlg 
     bind:shown={show.manageProjectsDlg}
+/>
+<NewProjectDlg 
+    bind:shown={show.newProjectDlg}
 />

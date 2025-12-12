@@ -3,6 +3,24 @@ import http from "isomorphic-git/http/node";
 import fs from "node:fs";
 
 
+export async function newProject(details, folder, user) {
+    // initialise local repo
+    await git.init({ 
+        fs, 
+        dir: folder 
+    })
+    // add remote
+    await git.addRemote({
+        fs,
+        dir: folder,
+        remote: "origin",
+        url: `${details.root}/${details.group}/${details.name}`
+    })
+    // push (to create project)
+    return await sync(folder, user)
+}
+
+
 export async function sync(folder, user) {
     // get current branch
     let branch = await git.currentBranch({

@@ -395,7 +395,8 @@ const handlers = {
     }
   },
   git: {
-    sync: ipcMain.handle("git.sync", (evt, folder, user) => git.sync(folder, user))
+    sync: ipcMain.handle("git.sync", (evt, folder, user) => git.sync(folder, user)),
+    newProject: ipcMain.handle("git.newProject", (evt, details, folder, user) => git.newProject(details, folder, user))
   }
 };
 
