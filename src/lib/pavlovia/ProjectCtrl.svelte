@@ -57,6 +57,8 @@
     <MenuItem
         label="Edit project"
         icon="/icons/btn-edit.svg"
+        onclick={evt => window.open(current.project.remoteURL, "_blank")}
+        disabled={!current.project}
     ></MenuItem>
     <MenuItem
         label="Manage local projects..."
