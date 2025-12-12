@@ -16,6 +16,9 @@ export async function newProject(details, folder, user) {
         remote: "origin",
         url: `${details.root}/${details.group}/${details.name}`
     })
+    // apply auth
+    remote.username = "oauth2"
+    remote.password = user.token.access
     // push (to create project)
     return await sync(folder, user)
 }
