@@ -1,0 +1,84 @@
+
+[project]
+name = "psychopy-app"
+dynamic = ["version"]
+requires-python = ">=3.9, <3.12"
+description = "The PsychoPy App is the wxPython application to support the PsychoPy lib but also see PsychoPy Studio"
+readme ={file = "README.md", content-type = "text/markdown"}
+authors = [
+    {name = "Open Science Tools Ltd", email = "support@opensciencetools.org"},
+]
+maintainers = [
+    {name = "Open Science Tools Ltd", email = "support@opensciencetools.org"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    ]
+    
+dependencies = [
+    "psychopy",
+    "websockets",  # new in 2023.2 for session.py
+    # for the app
+    "wxPython >= 4.1.1",
+    "markdown-it-py",
+    "requests",
+    "future",  # only to support legacy versions in useVersion
+    # supporting plugins
+    "setuptools==78.1.1",  # py2app issues https://github.com/ronaldoussoren/py2app/issues/531
+    # pavlovia connections
+    "python-gitlab",
+    "gitpython",
+    "cryptography",  # for sshkeys
+    # psychoJS conversions
+    "astunparse",
+    "esprima",
+    "jedi >= 0.16",
+    "packaging>=24.0",
+    "beautifulsoup4",
+]
+
+[project.optional-dependencies]  # This is optional dependencies
+tests = [
+    "pytest>=6.2.5",
+    "pytest-codecov",
+    "pytest-cov",
+    "pytest-asyncio",
+    "flake8",
+    "xmlschema",
+]
+building = [
+    "bdist-mpkg>=0.5.0; platform_system == \"Darwin\"",
+    "py2app; platform_system == \"Darwin\"",
+    "dmgbuild; platform_system == \"Darwin\"",
+    "polib",
+]
+
+[project.urls]
+Homepage = "https://www.psychopy.org/"
+Download = "https://github.com/psychopy/psychopy/releases/"
+
+[project.gui-scripts]
+psychopy = "psychopy_app:main"
+
+[build-system]
+requires = [
+    "pdm-backend",
+    "distro; platform_system == \"Linux\"",
+    "tomlkit",
+    "packaging",
+    "six",  # for configobj
+    "polib", # for compiling translation files (*.po)
+    "typing-extensions",
+]
+
+[tool.distutils.bdist_wheel]
+universal = 1
