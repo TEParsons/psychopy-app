@@ -15,9 +15,10 @@ import importlib
 from building import compile_po
 from building import semanticVersion
 from pathlib import Path
+import psychopy
 
 root = Path(__file__).parent  # root of the repo
-version = (root / 'psychopy/VERSION').read_text().strip()
+version = psychopy.__version__
 
 def glob_to_list(path, glob_pattern='*'):
     """Convert a glob pattern to a list of files."""
