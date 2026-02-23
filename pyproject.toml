@@ -86,3 +86,7 @@ package-dir = {"" = "src"}  # we're using src layout
 
 [tool.setuptools.packages.find]
 where = ["src"]  # find them automatically in src
+
+
+[tool.setuptools.dynamic]
+version = {attr = "psychopy.__version__"}  # inherit from psychopy attribute
