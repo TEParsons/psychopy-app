@@ -73,13 +73,13 @@ jobs:
         export QT_DEBUG_PLUGINS=1 # let us know about missing dependencies?
     
     - name: Install PsychoPy (lib)
-      path: pp
+      working-directory: pp
       run: |
         uv install . --all-extras 
 
     - name: Install PsychoPy App
       run: |
-        uv install . --all-extras 
+        uv install . 
 
     - name: Build PsychoPy App
       run: |
