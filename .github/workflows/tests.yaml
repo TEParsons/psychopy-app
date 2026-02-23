@@ -74,11 +74,12 @@ jobs:
     
     - name: Install PsychoPy (lib)
       run: |
+        uv python install
         uv pip install pp/. --all-extras -r pp/pyproject.toml
 
     - name: Install PsychoPy App
       run: |
-        uv pip install . 
+        uv pip install .
 
     - name: Build PsychoPy App
       run: |
