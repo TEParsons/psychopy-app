@@ -73,6 +73,7 @@ psychopy = "psychopy_app:main"
 build-backend = 'setuptools.build_meta'
 requires = [
     "setuptools",
+    "psychopy",  # to get __version__
     "distro; platform_system == \"Linux\"",
     "tomlkit",
     "packaging",
