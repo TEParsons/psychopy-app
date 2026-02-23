@@ -1,7 +1,7 @@
 import webbrowser
 import wx
 import wx.richtext
-from psychopy.app.themes import handlers, colors
+from psychopy_app.themes import handlers, colors
 
 
 class InstallStdoutPanel(wx.Panel, handlers.ThemeMixin):
@@ -51,7 +51,7 @@ class InstallStdoutPanel(wx.Panel, handlers.ThemeMixin):
         # Move cursor to end
         self.output.SetInsertionPointEnd()
         # Set font
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.output.BeginFont(fonts.CodeFont().obj)
         # Set style
         self.output.BeginTextColour(color)

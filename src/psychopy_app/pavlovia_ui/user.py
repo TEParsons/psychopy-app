@@ -10,7 +10,7 @@ from . import PavloviaMiniBrowser
 from .functions import logInPavlovia, logOutPavlovia
 from psychopy.localization import _translate
 from psychopy.projects import pavlovia
-from psychopy.app import utils
+from psychopy_app import utils
 import requests
 import io
 from psychopy import prefs

@@ -11,13 +11,13 @@ import platform
 import re
 import os
 
-from psychopy.app.themes import icons
+from psychopy_app.themes import icons
 from psychopy.hardware.speaker import SpeakerDevice
 from . import dialogs
 from psychopy import localization, prefs
 from psychopy.localization import _translate
 from packaging.version import Version
-from psychopy.app.utils import getSystemFonts
+from psychopy_app.utils import getSystemFonts
 import collections
 
 

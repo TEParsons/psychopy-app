@@ -1,8 +1,8 @@
 import wx
 from psychopy import experiment
 from psychopy.experiment.components.routineSettings import RoutineSettingsComponent
-from psychopy.app import utils
-from psychopy.app.themes import icons
+from psychopy_app import utils
+from psychopy_app.themes import icons
 from psychopy.localization import _translate
 from psychopy.tools import stringtools
 

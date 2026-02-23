@@ -12,8 +12,8 @@ import os
 import sys
 import subprocess as sp
 
-from psychopy.app import utils
-from psychopy.app.themes import handlers, icons
+from psychopy_app import utils
+from psychopy_app.themes import handlers, icons
 from psychopy.localization import _translate
 from psychopy.tools.pkgtools import (
     getPackageMetadata, 
@@ -145,7 +145,7 @@ class PIPTerminalPanel(wx.Panel):
         # Style output ctrl
         handlers.ThemeMixin._applyAppTheme(self.output)
         # Apply code font to text ctrl
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.console.SetFont(fonts.coderTheme.base.obj)
 
 
@@ -626,7 +626,7 @@ class PackageDetailsPanel(wx.Panel):
         self.refresh()
 
     def _applyAppTheme(self):
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.nameCtrl.SetFont(fonts.appTheme['h1'].obj)
         self.installBtn.SetBitmap(icons.ButtonIcon(stem="download", size=16).bitmap)
         self.uninstallBtn.SetBitmap(icons.ButtonIcon(stem="delete", size=16).bitmap)

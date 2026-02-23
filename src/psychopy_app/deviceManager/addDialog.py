@@ -1,7 +1,7 @@
-from psychopy.app.deviceManager.utils import DeviceImageList
-from psychopy.app.builder.dialogs.paramCtrls import EVT_PARAM_CHANGED, ParamCtrl
-from psychopy.app.builder.validators import WarningManager
-from psychopy.app.themes import fonts, icons
+from psychopy_app.deviceManager.utils import DeviceImageList
+from psychopy_app.builder.dialogs.paramCtrls import EVT_PARAM_CHANGED, ParamCtrl
+from psychopy_app.builder.validators import WarningManager
+from psychopy_app.themes import fonts, icons
 from psychopy.experiment.devices import DeviceBackend
 from psychopy.experiment.params import Param
 from psychopy.hardware.manager import DeviceManager

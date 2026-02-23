@@ -20,7 +20,7 @@ from psychopy.localization import _translate
 from psychopy.projects import pavlovia
 from psychopy import logging
 
-from psychopy.app.pavlovia_ui import sync, functions
+from psychopy_app.pavlovia_ui import sync, functions
 
 import wx
 from wx.lib import scrolledpanel as scrlpanel

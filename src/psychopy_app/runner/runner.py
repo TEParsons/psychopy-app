@@ -25,11 +25,11 @@ from pathlib import Path
 from subprocess import Popen, PIPE
 
 from psychopy import experiment, logging, alerts
-from psychopy.app.utils import FrameSwitcher, FileDropTarget
+from psychopy_app.utils import FrameSwitcher, FileDropTarget
 from psychopy.localization import _translate
 from psychopy.projects.pavlovia import getProject
 from psychopy.scripts.psyexpCompile import generateScript
-from psychopy.app.runner.scriptProcess import ScriptProcess
+from psychopy_app.runner.scriptProcess import ScriptProcess
 from psychopy.tools import servertools
 import psychopy.tools.versionchooser as versions
 
@@ -1242,7 +1242,7 @@ class RunnerRibbon(ribbon.FrameRibbon):
         self.addSeparator()
 
         # --- Plugin sections ---
-        self.addPluginSections("psychopy.app.builder")
+        self.addPluginSections("psychopy_app.builder")
 
         # --- Views ---
         self.addStretchSpacer()

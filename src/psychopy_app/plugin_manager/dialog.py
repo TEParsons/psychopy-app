@@ -1,12 +1,12 @@
 import wx
 from psychopy import prefs
-from psychopy.app import getAppInstance
-from psychopy.app.plugin_manager import PluginManagerPanel, PackageManagerPanel, InstallStdoutPanel
+from psychopy_app import getAppInstance
+from psychopy_app.plugin_manager import PluginManagerPanel, PackageManagerPanel, InstallStdoutPanel
 from psychopy.experiment import getAllElements
 from psychopy.localization import _translate
 import psychopy.logging as logging
 import psychopy.tools.pkgtools as pkgtools
-import psychopy.app.jobs as jobs
+import psychopy_app.jobs as jobs
 import sys
 import os
 import subprocess as sp
@@ -248,7 +248,7 @@ class EnvironmentManagerDlg(wx.Dialog):
 
         Parameters
         ----------
-        pluginInfo : psychopy.app.plugin_manager.plugins.PluginInfo
+        pluginInfo : psychopy_app.plugin_manager.plugins.PluginInfo
             Info object of the plugin to install.
         version : str or None
             Version of the package to install. If `None`, the latest version
@@ -273,7 +273,7 @@ class EnvironmentManagerDlg(wx.Dialog):
 
         Parameters
         ----------
-        pluginInfo : psychopy.app.plugin_manager.plugins.PluginInfo
+        pluginInfo : psychopy_app.plugin_manager.plugins.PluginInfo
             Info object of the plugin to uninstall.
 
         """

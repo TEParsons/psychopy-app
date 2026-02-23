@@ -29,7 +29,7 @@ from wx.lib import scrolledpanel
 from wx.lib import platebtn
 from wx.html import HtmlWindow
 
-import psychopy.app.plugin_manager.dialog
+import psychopy_app.plugin_manager.dialog
 from .dialogs.paramCtrls import EVT_PARAM_CHANGED
 from .validators import WarningManager
 from ..pavlovia_ui import sync, PavloviaMiniBrowser
@@ -71,7 +71,7 @@ from ..utils import (BasePsychopyToolbar, HoverButton, ThemedPanel, WindowFrozen
                      ToggleButtonArray, HoverMixin)
 
 from psychopy.experiment import getAllStandaloneRoutines
-from psychopy.app import pavlovia_ui
+from psychopy_app import pavlovia_ui
 from psychopy.projects import pavlovia
 from psychopy.tools import stringtools as st
 from psychopy.scripts.psyexpCompile import generateScript
@@ -1602,7 +1602,7 @@ class BuilderFrame(BaseAuiFrame, handlers.ThemeMixin):
     def openPluginManager(self, evt=None):
         # check if the package index is currently being updated, show a message
         # to tell the user to wait before opening the plugin manager
-        dlg = psychopy.app.plugin_manager.dialog.EnvironmentManagerDlg(self)
+        dlg = psychopy_app.plugin_manager.dialog.EnvironmentManagerDlg(self)
         dlg.Show()
         
         return dlg
@@ -3370,7 +3370,7 @@ class ComponentsPanel(scrolledpanel.ScrolledPanel, handlers.ThemeMixin):
         dlg.ShowModal()
 
     def onPluginBtn(self, evt=None):
-        dlg = psychopy.app.plugin_manager.dialog.EnvironmentManagerDlg(self)
+        dlg = psychopy_app.plugin_manager.dialog.EnvironmentManagerDlg(self)
         dlg.Show()
         # Do post-close checks
         dlg.onClose()
@@ -3415,7 +3415,7 @@ class ReadmeFrame(wx.Frame, handlers.ThemeMixin):
             self._applyAppTheme()
 
     def _applyAppTheme(self):
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.SetBackgroundColour(fonts.coderTheme.base.backColor)
         self.ctrl.SetBackgroundColour(fonts.coderTheme.base.backColor)
         self.Update()
@@ -4690,7 +4690,7 @@ class BuilderRibbon(ribbon.FrameRibbon):
         self.addSeparator()
 
         # --- Plugin sections ---
-        self.addPluginSections("psychopy.app.builder")
+        self.addPluginSections("psychopy_app.builder")
 
         # --- Views ---
         self.addStretchSpacer()

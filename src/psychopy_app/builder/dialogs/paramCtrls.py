@@ -13,9 +13,9 @@ import webbrowser
 import wx
 import wx.stc
 
-from psychopy.app.colorpicker import PsychoColorPicker
-from psychopy.app.dialogs import ListWidget
-from psychopy.app.themes import fonts, colors
+from psychopy_app.colorpicker import PsychoColorPicker
+from psychopy_app.dialogs import ListWidget
+from psychopy_app.themes import fonts, colors
 from psychopy.colors import Color
 from psychopy.experiment.exports import NameSpace
 from psychopy.experiment.params import Param, toList
@@ -1841,7 +1841,7 @@ class DeviceCtrl(ChoiceCtrl):
         self.setValue(self.param.val)
     
     def openDeviceManager(self, evt=None):
-        from psychopy.app.deviceManager import DeviceManagerDlg
+        from psychopy_app.deviceManager import DeviceManagerDlg
         # create dialog
         dlg = DeviceManagerDlg(parent=self.GetTopLevelParent())
         # show it
@@ -1856,7 +1856,7 @@ class DeviceCtrl(ChoiceCtrl):
     def onElementOk(self, evt=None):
         # get the device manager
         from psychopy.preferences import prefs
-        from psychopy.app.deviceManager import AddDeviceDlg
+        from psychopy_app.deviceManager import AddDeviceDlg
         # if not setup, ask the user whether they want to set it up
         if self.getValue() and self.getValue() not in prefs.devices:
             # create dialog

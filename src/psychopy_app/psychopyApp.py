@@ -24,7 +24,7 @@ def main():
         prog="PsychoPyApp", description=(
 """Starts the PsychoPy application.
 
-Usage:  python psychopy.app [options] [files]
+Usage:  python psychopy_app [options] [files]
 
 Without options or files provided this starts PsychoPy using prefs to
 decide on the view(s) to open.  If optional [files] is provided action
@@ -98,7 +98,7 @@ depends on the type of the [files]:
 
     # import app and prefs now that args have been parsed
     from psychopy.preferences import prefs
-    from psychopy.app import startApp, quitApp
+    from psychopy_app import startApp, quitApp
     # setup prefs
     prefs.loadAll(userDir=args.userDir)
     # insert fallbacks from prefs for unsupplied call args

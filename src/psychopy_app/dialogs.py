@@ -88,7 +88,7 @@ class RichMessageDialog(wx.Dialog):
             size=(600, 500),
             style=wx.RESIZE_BORDER
     ):
-        from psychopy.app.utils import MarkdownCtrl
+        from psychopy_app.utils import MarkdownCtrl
         # initialise dialog
         wx.Dialog.__init__(
             self, parent,

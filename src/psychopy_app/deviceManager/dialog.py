@@ -1,6 +1,6 @@
-from psychopy.app.deviceManager.addDialog import AddDeviceDlg
-from psychopy.app.deviceManager.panel import DevicePanel
-from psychopy.app.deviceManager.utils import DeviceImageList
+from psychopy_app.deviceManager.addDialog import AddDeviceDlg
+from psychopy_app.deviceManager.panel import DevicePanel
+from psychopy_app.deviceManager.utils import DeviceImageList
 from psychopy.preferences import prefs
 
 

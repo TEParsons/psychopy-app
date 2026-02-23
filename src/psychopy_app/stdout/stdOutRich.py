@@ -9,7 +9,7 @@ import locale
 
 from psychopy import prefs, alerts
 from psychopy.localization import _translate
-from psychopy.app.utils import sanitize
+from psychopy_app.utils import sanitize
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -25,7 +25,7 @@ import wx
 import wx.richtext
 import webbrowser
 from psychopy.localization import _translate
-from psychopy.app.themes import handlers, icons, colors, fonts
+from psychopy_app.themes import handlers, icons, colors, fonts
 
 _prefEncoding = locale.getpreferredencoding()
 

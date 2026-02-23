@@ -1,7 +1,7 @@
-from psychopy.app import utils
-from psychopy.app.builder.dialogs.paramCtrls import EVT_PARAM_CHANGED, ParamCtrl
-from psychopy.app.builder.validators import WarningManager
-from psychopy.app.themes import fonts
+from psychopy_app import utils
+from psychopy_app.builder.dialogs.paramCtrls import EVT_PARAM_CHANGED, ParamCtrl
+from psychopy_app.builder.validators import WarningManager
+from psychopy_app.themes import fonts
 
 
 import wx

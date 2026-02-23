@@ -202,7 +202,7 @@ class Job:
                  inputCallback=None, errorCallback=None, extra=None):
         # use the app instance if parent isn't given
         if parent is None:
-            from psychopy.app import getAppInstance
+            from psychopy_app import getAppInstance
             parent = getAppInstance()
         # command to be called, cannot be changed after spawning the process
         self.parent = parent

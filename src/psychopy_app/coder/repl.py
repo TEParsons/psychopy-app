@@ -10,8 +10,8 @@
 import sys
 import wx
 import wx.richtext
-from psychopy.app.stdout import StdOutRich
-from psychopy.app.themes import handlers, colors, icons, fonts
+from psychopy_app.stdout import StdOutRich
+from psychopy_app.themes import handlers, colors, icons, fonts
 from psychopy.localization import _translate
 import os
 

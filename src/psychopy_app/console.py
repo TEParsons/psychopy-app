@@ -29,7 +29,7 @@ class StdStreamDispatcher:
 
     Parameters
     ----------
-    app : :class:`~psychopy.app._psychopyApp.PsychoPyApp`
+    app : :class:`~psychopy_app._psychopyApp.PsychoPyApp`
         Reference to the application instance.
 
     """

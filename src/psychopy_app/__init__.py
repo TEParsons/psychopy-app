@@ -126,7 +126,7 @@ def startApp(
     # Create the application instance which starts loading it.
     # If `testMode==True`, all messages and errors (i.e. exceptions) will log to
     # console.
-    from psychopy.app._psychopyApp import PsychoPyApp
+    from psychopy_app._psychopyApp import PsychoPyApp
     _psychopyAppInstance = PsychoPyApp(
         0, 
         testMode=testMode, 
@@ -156,7 +156,7 @@ def startApp(
         # Setup redirection of errors to the error reporting dialog box. We
         # don't want this in the test environment since the box will cause the
         # app to stall on error.
-        from psychopy.app.errorDlg import exceptionCallback
+        from psychopy_app.errorDlg import exceptionCallback
 
         # After this point, errors will appear in a dialog box. Messages will
         # continue to be written to the dialog.
@@ -260,7 +260,7 @@ def getAppInstance():
     --------
     Get the coder frame (if any)::
 
-        import psychopy.app as app
+        import psychopy_app as app
         coder = app.getAppInstance().coder
 
     """
@@ -273,7 +273,7 @@ def setAppInstance(obj):
 
     Parameters
     ----------
-    obj : psychopy.app._psychopyApp.PsychoPyApp
+    obj : psychopy_app._psychopyApp.PsychoPyApp
         Current instance of the PsychoPy app
     """
     global _psychopyAppInstance

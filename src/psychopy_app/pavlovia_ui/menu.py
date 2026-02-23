@@ -13,12 +13,12 @@ from psychopy import logging
 from .. import dialogs
 from ..themes import icons
 from .functions import logInPavlovia
-from psychopy.app.pavlovia_ui.project import syncProject
+from psychopy_app.pavlovia_ui.project import syncProject
 from .search import SearchFrame
 from .project import ProjectEditor
 from psychopy.localization import _translate
 from psychopy.projects import pavlovia
-from psychopy.app.pavlovia_ui import sync
+from psychopy_app.pavlovia_ui import sync
 
 
 class PavloviaMenu(wx.Menu):

@@ -1,5 +1,5 @@
 import wx
-from psychopy.app.themes import handlers, icons
+from psychopy_app.themes import handlers, icons
 from psychopy.localization import _translate
 from psychopy.tools import pkgtools
 
@@ -10,7 +10,7 @@ class InstallErrorDlg(wx.Dialog, handlers.ThemeMixin):
     command was tried and what output was received.
     """
     def __init__(self, label, caption=_translate("PIP error"), cmd="", stdout="", stderr=""):
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         # Initialise
         wx.Dialog.__init__(
             self, None,

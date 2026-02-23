@@ -20,7 +20,7 @@ import importlib
 
 from .. import validators
 from psychopy.localization import _translate
-from psychopy.app.coder.codeEditorBase import BaseCodeEditor
+from psychopy_app.coder.codeEditorBase import BaseCodeEditor
 from psychopy.experiment import py2js_transpiler
 
 

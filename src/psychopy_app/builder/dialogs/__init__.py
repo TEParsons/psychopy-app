@@ -29,7 +29,7 @@ from .dlgsConditions import DlgConditions
 from .dlgsCode import DlgCodeComponentProperties, CodeBox
 from .findDlg import BuilderFindDlg
 from . import paramCtrls
-from psychopy.app.utils import HyperLinkCtrl
+from psychopy_app.utils import HyperLinkCtrl
 from psychopy import data, logging, exceptions, plugins
 from psychopy.localization import _translate
 from psychopy.tools import versionchooser as vc, pkgtools

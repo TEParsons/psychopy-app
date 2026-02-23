@@ -1,7 +1,7 @@
 from pathlib import Path
 import wx
 
-from psychopy.app.themes import icons
+from psychopy_app.themes import icons
 
 
 class DeviceImageList(wx.ImageList):

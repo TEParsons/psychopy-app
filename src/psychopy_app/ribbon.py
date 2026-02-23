@@ -6,10 +6,10 @@ import numpy
 import requests
 import wx
 
-from psychopy.app import utils
-from psychopy.app import pavlovia_ui as pavui
-from psychopy.app.pavlovia_ui import sync
-from psychopy.app.themes import icons, handlers, colors
+from psychopy_app import utils
+from psychopy_app import pavlovia_ui as pavui
+from psychopy_app.pavlovia_ui import sync
+from psychopy_app.themes import icons, handlers, colors
 from psychopy.localization import _translate
 from psychopy.projects import pavlovia
 
@@ -425,7 +425,7 @@ class FrameRibbonPluginSection(FrameRibbonSection):
     Subclass of FrameRibbonSection specifically for adding sections to the ribbon via plugins. To
     add a section, create a subclass of FrameRibbonPluginSection in your plugin and add any buttons
     you want it to have in the `__init__` function. Then give it an entry point in either
-    "psychopy.app.builder", "psychopy.app.coder" or "psychopy.app.runner" to tell PsychoPy which
+    "psychopy_app.builder", "psychopy_app.coder" or "psychopy_app.runner" to tell PsychoPy which
     frame to add it to.
     """
     def __init__(self, parent, name, label=None):

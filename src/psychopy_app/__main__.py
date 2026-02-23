@@ -1,3 +1,3 @@
-from psychopy.app.psychopyApp import main
+from psychopy_app.psychopyApp import main
 
 main()

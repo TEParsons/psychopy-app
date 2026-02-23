@@ -11,7 +11,7 @@ import wx
 import wx.stc
 import wx.richtext
 import wx.py
-import psychopy.app
+import psychopy_app
 from ..pavlovia_ui.search import SearchFrame
 from ..pavlovia_ui.user import UserFrame
 from ..themes.ui import ThemeSwitcher
@@ -40,16 +40,16 @@ from psychopy.localization import _translate
 from ..utils import FileDropTarget, BasePsychopyToolbar, FrameSwitcher, updateDemosMenu
 from ..ui import BaseAuiFrame
 from psychopy.projects import pavlovia
-import psychopy.app.pavlovia_ui.menu
-import psychopy.app.plugin_manager.dialog
-from psychopy.app.errorDlg import exceptionCallback
-from psychopy.app.coder.codeEditorBase import BaseCodeEditor
-from psychopy.app.coder.fileBrowser import FileBrowserPanel
-from psychopy.app.coder.sourceTree import SourceTreePanel
-from psychopy.app.themes import handlers, colors
-from psychopy.app.coder.folding import CodeEditorFoldingMixin
-from psychopy.app.stdout.stdOutRich import ScriptOutputPanel
-from psychopy.app.coder.repl import PythonREPLCtrl
+import psychopy_app.pavlovia_ui.menu
+import psychopy_app.plugin_manager.dialog
+from psychopy_app.errorDlg import exceptionCallback
+from psychopy_app.coder.codeEditorBase import BaseCodeEditor
+from psychopy_app.coder.fileBrowser import FileBrowserPanel
+from psychopy_app.coder.sourceTree import SourceTreePanel
+from psychopy_app.themes import handlers, colors
+from psychopy_app.coder.folding import CodeEditorFoldingMixin
+from psychopy_app.stdout.stdOutRich import ScriptOutputPanel
+from psychopy_app.coder.repl import PythonREPLCtrl
 # from ..plugin_manager import PluginManagerFrame
 
 try:
@@ -1085,7 +1085,7 @@ class CodeEditor(BaseCodeEditor, CodeEditorFoldingMixin, handlers.ThemeMixin):
 class CoderFrame(BaseAuiFrame, handlers.ThemeMixin):
 
     def __init__(self, parent, ID, title, files=(), app=None):
-        self.app = app  # type: psychopy.app.PsychoPyApp
+        self.app = app  # type: psychopy_app.PsychoPyApp
         self.frameType = 'coder'
         # things the user doesn't set like winsize etc
         self.appData = self.app.prefs.appData['coder']
@@ -1735,7 +1735,7 @@ class CoderFrame(BaseAuiFrame, handlers.ThemeMixin):
         # self.Bind(wx.EVT_MENU, self.onPushLineToShell, id=item.GetId())
 
         # ---_projects---#000000#FFFFFF---------------------------------------
-        self.pavloviaMenu = psychopy.app.pavlovia_ui.menu.PavloviaMenu(parent=self)
+        self.pavloviaMenu = psychopy_app.pavlovia_ui.menu.PavloviaMenu(parent=self)
         menuBar.Append(self.pavloviaMenu, _translate("&Pavlovia.org"))
 
         # ---_window---#000000#FFFFFF-----------------------------------------
@@ -2856,7 +2856,7 @@ class CoderFrame(BaseAuiFrame, handlers.ThemeMixin):
         # UnitTestFrame.Show()
 
     def openPluginManager(self, evt=None):
-        dlg = psychopy.app.plugin_manager.dialog.EnvironmentManagerDlg(self)
+        dlg = psychopy_app.plugin_manager.dialog.EnvironmentManagerDlg(self)
         dlg.Show()
         # Do post-close checks
         dlg.onClose()
@@ -3057,7 +3057,7 @@ class CoderRibbon(ribbon.FrameRibbon):
         self.addSeparator()
 
         # --- Plugin sections ---
-        self.addPluginSections("psychopy.app.builder")
+        self.addPluginSections("psychopy_app.builder")
 
         # --- Views ---
         self.addStretchSpacer()

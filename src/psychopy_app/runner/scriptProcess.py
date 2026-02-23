@@ -18,9 +18,9 @@ import os.path
 import sys
 
 import wx
-import psychopy.app.jobs as jobs
+import psychopy_app.jobs as jobs
 from wx import BeginBusyCursor, EndBusyCursor, MessageDialog, ICON_ERROR, OK
-from psychopy.app.console import StdStreamDispatcher
+from psychopy_app.console import StdStreamDispatcher
 import psychopy.logging as logging
 
 
@@ -254,7 +254,7 @@ class ScriptProcess:
 
     def _onInputCallback(self, streamBytes):
         """Callback to process data from the input stream of the subprocess.
-        This is called when `~psychopy.app.jobs.Jobs.poll` is called and only if
+        This is called when `~psychopy_app.jobs.Jobs.poll` is called and only if
         there is data in the associated pipe.
 
         The default behavior here is to convert the data to a UTF-8 string and
@@ -270,7 +270,7 @@ class ScriptProcess:
 
     def _onErrorCallback(self, streamBytes):
         """Callback to process data from the error stream of the subprocess.
-        This is called when `~psychopy.app.jobs.Jobs.poll` is called and only if
+        This is called when `~psychopy_app.jobs.Jobs.poll` is called and only if
         there is data in the associated pipe.
 
         The default behavior is to call `_onInputCallback`, forwarding argument

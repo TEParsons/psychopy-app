@@ -169,12 +169,12 @@ class FileDropTarget(wx.FileDropTarget):
         logging.debug(
             'PsychoPyBuilder: received dropped files: %s' % filenames)
         for fname in filenames:
-            if isinstance(self.target, psychopy.app.coder.CoderFrame) and wx.GetKeyState(wx.WXK_ALT):
+            if isinstance(self.target, psychopy_app.coder.CoderFrame) and wx.GetKeyState(wx.WXK_ALT):
                 # If holding ALT and on coder, insert filename into current coder doc
                 if self.app.coder:
                     if self.app.coder.currentDoc:
                         self.app.coder.currentDoc.AddText(fname)
-            if isinstance(self.target, psychopy.app.runner.RunnerFrame):
+            if isinstance(self.target, psychopy_app.runner.RunnerFrame):
                 # If on Runner, load file to run
                 self.app.showRunner()
                 self.app.runner.addTask(fileName=fname)
@@ -635,7 +635,7 @@ class MarkdownCtrl(wx.Panel, handlers.ThemeMixin):
         self.PopupMenu(menu)
 
     def _applyAppTheme(self):
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         spec = fonts.coderTheme.base
         # Set raw text font from coder theme
         self.rawTextCtrl.SetFont(spec.obj)
@@ -1469,21 +1469,21 @@ class FrameSwitcher(wx.Menu):
         items = {}
 
         # Builder
-        if not isinstance(frame, psychopy.app.builder.BuilderFrame):
+        if not isinstance(frame, psychopy_app.builder.BuilderFrame):
             items['builder'] = parent.Append(
                 wx.ID_ANY, _translate("Show &builder"), _translate("Show Builder")
             )
             parent.Bind(wx.EVT_MENU, app.showBuilder, items['builder'])
 
         # Coder
-        if not isinstance(frame, psychopy.app.coder.CoderFrame):
+        if not isinstance(frame, psychopy_app.coder.CoderFrame):
             items['coder'] = parent.Append(
                 wx.ID_ANY, _translate("Show &coder"), _translate("Show Coder")
             )
             parent.Bind(wx.EVT_MENU, app.showCoder, items['coder'])
 
         # Runner
-        if not isinstance(frame, psychopy.app.runner.RunnerFrame):
+        if not isinstance(frame, psychopy_app.runner.RunnerFrame):
             items['runner'] = parent.Append(
                 wx.ID_ANY, _translate("Show &runner"), _translate("Show Runner")
             )

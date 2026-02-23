@@ -8,10 +8,10 @@ from PIL import Image as pil
 
 from psychopy import logging
 from psychopy.tools import pkgtools
-from psychopy.app.themes import theme, handlers, colors, icons
+from psychopy_app.themes import theme, handlers, colors, icons
 from psychopy.tools import stringtools as st
 from psychopy.tools.versionchooser import VersionRange
-from psychopy.app import utils
+from psychopy_app import utils
 from psychopy.localization import _translate
 from psychopy import plugins, __version__
 from psychopy.preferences import prefs
@@ -65,7 +65,7 @@ class AuthorInfo:
         self._avatar = utils.ImageData(value)
 
     def __repr__(self):
-        return (f"<psychopy.app.plugins.AuthorInfo: "
+        return (f"<psychopy_app.plugins.AuthorInfo: "
                 f"{self.name} (@{self.github}, {self.email})>")
 
 
@@ -354,7 +354,7 @@ class PluginBrowserList(wx.Panel, handlers.ThemeMixin):
 
         def _applyAppTheme(self):
             # Set label fonts
-            from psychopy.app.themes import fonts
+            from psychopy_app.themes import fonts
             self.nameLbl.SetFont(fonts.appTheme['h6'].obj)
             self.pipNameLbl.SetFont(fonts.coderTheme.base.obj)
             # Mark installed/active
@@ -739,7 +739,7 @@ class PluginBrowserList(wx.Panel, handlers.ThemeMixin):
         # Set colors
         self.SetBackgroundColour("white")
         # Style heading(s)
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.badItemLbl.SetFont(fonts.appTheme['h6'].obj)
 
     def appendItem(self, info):
@@ -871,7 +871,7 @@ class PluginDetailsPanel(wx.Panel, handlers.ThemeMixin):
         self.keywordsCtrl.SetBackgroundColour("white")
         self.versionCtrl.SetForegroundColour("grey")
         # Set fonts
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.title.SetFont(fonts.appTheme['h1'].obj)
         self.pipName.SetFont(fonts.coderTheme.base.obj)
 
@@ -1142,7 +1142,7 @@ class AuthorDetailsPanel(wx.Panel, handlers.ThemeMixin):
 
     def _applyAppTheme(self):
         # Name font
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         self.name.SetFont(fonts.appTheme['h4'].obj)
         # # Email button bitmap
         # self.emailBtn.SetBitmap(icons.ButtonIcon("email", 16).bitmap)

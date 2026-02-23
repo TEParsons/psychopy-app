@@ -7,7 +7,7 @@
 import traceback
 from pathlib import Path
 
-from psychopy.app.colorpicker import PsychoColorPicker
+from psychopy_app.colorpicker import PsychoColorPicker
 
 import sys
 import pickle
@@ -17,7 +17,7 @@ import time
 import io
 import argparse
 
-from psychopy.app.themes import icons, colors, handlers
+from psychopy_app.themes import icons, colors, handlers
 
 import psychopy
 from psychopy import prefs
@@ -258,7 +258,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
         logging.flush()
 
         # if we're on linux, check if we have the permissions file setup
-        from psychopy.app.linuxconfig import (
+        from psychopy_app.linuxconfig import (
             LinuxConfigDialog, linuxRushAllowed)
 
         if not linuxRushAllowed():
@@ -449,7 +449,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
 
         from psychopy.compatibility import checkCompatibility, checkUpdatesInfo
         # import coder and builder here but only use them later
-        from psychopy.app import coder, builder, runner, dialogs
+        from psychopy_app import coder, builder, runner, dialogs
 
         if 'lastVersion' not in self.prefs.appData:
             # must be before 1.74.00
@@ -527,7 +527,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
             self._codeFont.SetPointSize(int(self._codeFont.GetPointSize()*fontScale))
             self._mainFont.SetPointSize(int(self._mainFont.GetPointSize()*fontScale))
         # apply calculated point size to themed font defaults
-        from psychopy.app.themes import fonts
+        from psychopy_app.themes import fonts
         fonts.AppFont.pointSize = self._mainFont.GetPointSize()
         fonts.CodeFont.pointSize = self._codeFont.GetPointSize()
         # that gets most of the properties of _codeFont but the FaceName
@@ -881,7 +881,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
 
     def showBuilder(self, event=None, fileList=()):
         # have to reimport because it is only local to __init__ so far
-        from psychopy.app import builder
+        from psychopy_app import builder
         for fileName in fileList:
             if os.path.isfile(fileName):
                 self.newBuilderFrame(fileName=fileName)
@@ -911,7 +911,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
 
         Returns
         -------
-        psychopy.app.runner.RunnerFrame
+        psychopy_app.runner.RunnerFrame
             Current Runner frame
         """
         if not self.runner:
@@ -976,7 +976,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
         instance = nb.launch_new_instance()
 
     def openUpdater(self, event=None):
-        from psychopy.app import connections
+        from psychopy_app import connections
         dlg = connections.InstallUpdateDialog(parent=None, ID=-1, app=self)
 
     def colorPicker(self, event=None):
@@ -1096,7 +1096,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
             sys.exit()
 
     def showPrefs(self, event):
-        from psychopy.app.preferencesDlg import PreferencesDlg
+        from psychopy_app.preferencesDlg import PreferencesDlg
         logging.debug('PsychoPyApp: Showing prefs dlg')
         prefsDlg = PreferencesDlg(app=self)
         prefsDlg.ShowModal()
@@ -1189,7 +1189,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
 
     def showSystemInfo(self, event=None):
         """Show system information."""
-        from psychopy.app.sysInfoDlg import SystemInfoDialog
+        from psychopy_app.sysInfoDlg import SystemInfoDialog
         dlg = SystemInfoDialog(None)
         dlg.Show()
 
