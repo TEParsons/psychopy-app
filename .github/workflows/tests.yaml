@@ -73,9 +73,8 @@ jobs:
         export QT_DEBUG_PLUGINS=1 # let us know about missing dependencies?
     
     - name: Install PsychoPy (lib)
-      working-directory: pp
       run: |
-        uv pip install . --all-extras -r pyproject.toml
+        uv pip install pp/. --all-extras -r pp/pyproject.toml
 
     - name: Install PsychoPy App
       run: |
