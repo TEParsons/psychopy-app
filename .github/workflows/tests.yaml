@@ -75,7 +75,7 @@ jobs:
     - name: Install PsychoPy (lib)
       working-directory: pp
       run: |
-        uv pip install . --all-extras 
+        uv pip install . --all-extras -r pyproject.toml
 
     - name: Install PsychoPy App
       run: |
