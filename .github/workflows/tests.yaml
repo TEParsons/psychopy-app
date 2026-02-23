@@ -28,7 +28,7 @@ jobs:
     - name: Install UV
       uses: astral-sh/setup-uv@v7
       with:
-        uv-venv: ".venv"
+        activate-environment: true
 
     - name: Checkout PsychoPy (lib)
       uses: actions/checkout@v3
