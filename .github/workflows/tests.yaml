@@ -21,6 +21,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install UV
+      uses: astral-sh/setup-uv@v7
+      with:
+        uv-venv: ".venv"
 
     - name: Checkout PsychoPy (lib)
       uses: actions/checkout@v3
@@ -29,10 +37,6 @@ jobs:
         ref: dev
         path: pp
 
-    - name: Install UV
-      uses: astral-sh/setup-uv@v7
-      with:
-        python-version: ${{ matrix.python-version }}
     
     - name: get_month
       if: runner.os=='Linux'
