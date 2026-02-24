@@ -83,6 +83,11 @@ jobs:
 
     - name: Install PsychoPy App
       run: |
+        # if runner is ubuntu
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          uv pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-24.04 wxPython
+        fi
+        # then install rest of dependencies and the app itself
         uv pip install .
 
     - name: Build PsychoPy App
