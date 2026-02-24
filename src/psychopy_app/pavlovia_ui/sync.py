@@ -12,7 +12,7 @@ from . import functions
 import re
 from pathlib import Path
 from psychopy.localization import _translate
-from ...tools.stringtools import valid_proj_name
+from psychopy.tools.stringtools import valid_proj_name
 
 
 class InfoStream(wx.TextCtrl):

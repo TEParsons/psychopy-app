@@ -22,8 +22,8 @@ from wx.lib import scrolledpanel
 import psychopy.experiment.utils
 from psychopy.experiment import Param
 
-from ... import dialogs
-from .. import experiment
+from psychopy_app import dialogs
+from psychopy import experiment
 from .. validators import NameValidator, CodeSnippetValidator, WarningManager
 from .dlgsConditions import DlgConditions
 from .dlgsCode import DlgCodeComponentProperties, CodeBox
@@ -34,11 +34,11 @@ from psychopy import data, logging, exceptions, plugins
 from psychopy.localization import _translate
 from psychopy.tools import versionchooser as vc, pkgtools
 from psychopy.alerts import alert
-from ...colorpicker import PsychoColorPicker
+from psychopy_app.colorpicker import PsychoColorPicker
 from pathlib import Path
 
-from ...themes import handlers, icons
-from ... import getAppInstance
+from psychopy_app.themes import handlers, icons
+from psychopy_app import getAppInstance
 
 
 white = wx.Colour(255, 255, 255, 255)

@@ -38,8 +38,8 @@ from ..pavlovia_ui.search import SearchFrame
 from ..pavlovia_ui.user import UserFrame
 from ..pavlovia_ui.functions import logInPavlovia
 from ..deviceManager import DeviceManagerDlg
-from ...experiment import getAllElements, getAllCategories
-from ...experiment.routines import Routine, BaseStandaloneRoutine
+from psychopy.experiment import getAllElements, getAllCategories
+from psychopy.experiment.routines import Routine, BaseStandaloneRoutine
 from psychopy.tools.versionchooser import parseVersionSafely, psychopyVersion
 
 try:
@@ -56,13 +56,13 @@ if Version(wx.__version__) < Version('4.0.3'):
     wx.NewIdRef = wx.NewId
 
 from psychopy.localization import _translate
-from ... import experiment, prefs
+from psychopy import experiment, prefs
+from psychopy import logging, data
+from psychopy.tools.filetools import mergeFolder
 from .. import dialogs, utils, ribbon
 from ..themes import icons, colors, handlers
 from ..themes.ui import ThemeSwitcher
 from ..ui import BaseAuiFrame
-from psychopy import logging, data
-from psychopy.tools.filetools import mergeFolder
 from .dialogs import (DlgComponentProperties, DlgExperimentProperties,
                       DlgCodeComponentProperties, DlgLoopProperties,
                       ParamNotebook, DlgNewRoutine, BuilderFindDlg)

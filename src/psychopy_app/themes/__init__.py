@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from ... import logging, prefs
+from psychopy import logging, prefs
 
 _cache = {}
 

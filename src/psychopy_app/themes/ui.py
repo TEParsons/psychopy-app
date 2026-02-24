@@ -7,7 +7,7 @@ from pathlib import Path
 from . import theme, Theme
 from psychopy.localization import _translate
 from psychopy.tools import filetools as ft
-from ... import prefs
+from psychopy import prefs
 
 
 menuCache = []
