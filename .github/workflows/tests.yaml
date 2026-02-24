@@ -97,13 +97,6 @@ jobs:
       run: |
         uv build --sdist --wheel
 
-    - name: Set nice level (linux)
-      if: runner.os=='Linux'
-      run: |
-        # sudo setcap cap_sys_nice=eip ${{ env.pythonLocation }}/python
-        sudo setcap cap_sys_nice+ep "${{ steps.python.outputs.executable }}"
-        getcap "${{ steps.python.outputs.executable }}"  # did it work?
-
     - name: Test gui toolkits
       if: runner.os=='Linux'
       run: |
