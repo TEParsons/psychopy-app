@@ -97,9 +97,7 @@ jobs:
       run: |
         uv build --sdist --wheel
 
-    - name: Test gui toolkits
-      if: runner.os=='Linux'
+    - name: Try to run the app!
       run: |
-        # quick test of the gui toolkits (without pytest swallowing errors)
-        xvfb-run -a --server-args="-screen 0 1024x768x24" python pp/tests/test_gui/test_DlgFromDictQt.py
-        xvfb-run -a --server-args="-screen 0 1024x768x24" python pp/tests/test_gui/test_DlgFromDictWx.py
+        pytest -rP # including passed tests in report
+        

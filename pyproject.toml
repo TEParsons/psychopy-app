@@ -90,3 +90,11 @@ excludes = ["building/"]
 [tool.pdm.version]
 source = "call"
 getter = "psychopy.__init__:getVersion"
+
+[pytest]
+minversion = "9.0"
+addopts = ["-rP", "--import-mode=importlib"]
+testpaths = [
+    "tests",
+]
+pythonpath = ["src"]
