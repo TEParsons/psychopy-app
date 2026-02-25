@@ -2,6 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/psychopy-app.svg)](https://pypi.python.org/pypi/PsychoPy-App)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)  
+[![pytest](https://github.com/psychopy/psychopy-app/actions/workflows/tests.yaml/badge.svg)](https://github.com/psychopy/psychopy-app/actions/workflows/tests.yaml) 
 
 ---
 
