@@ -99,5 +99,4 @@ jobs:
 
     - name: Try to run the app!
       run: |
-        pytest -rP # including passed tests in report
-        
+        pytest -rP tests # including passed tests in report
