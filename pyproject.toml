@@ -70,10 +70,9 @@ Download = "https://github.com/psychopy/psychopy/releases/"
 psychopy = "psychopy_app:main"
 
 [build-system]
-build-backend = 'setuptools.build_meta'
 requires = [
-    "setuptools",
-    "psychopy",  # to get __version__
+    "pdm-backend",
+    "psychopy",  # to get version string
     "distro; platform_system == \"Linux\"",
     "tomlkit",
     "packaging",
@@ -81,13 +80,21 @@ requires = [
     "polib", # for compiling translation files (*.po)
     "typing-extensions",
 ]
+build-backend = "pdm.backend"
 
-[tool.setuptools]
-package-dir = {"" = "src"}  # we're using src layout
+[tool.pdm.build]
+includes = []
+excludes = ["building/"]
+#source-includes = ["tests/"]
 
-[tool.setuptools.packages.find]
-where = ["src"]  # find them automatically in src
+[tool.pdm.version]
+source = "call"
+getter = "psychopy.__init__:getVersion"
 
-
-[tool.setuptools.dynamic]
-version = {attr = "psychopy.__version__"}  # inherit from psychopy attribute
+[pytest]
+minversion = "9.0"
+addopts = ["-rP", "--import-mode=importlib"]
+testpaths = [
+    "tests",
+]
+pythonpath = ["src"]

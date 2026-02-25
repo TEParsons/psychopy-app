@@ -19,7 +19,7 @@ import wx
 import wx.lib.statbmp
 
 from ..themes import icons
-from ...projects.pavlovia import User
+from psychopy.projects.pavlovia import User
 
 try:
     import wx.lib.agw.hyperlink as wxhl  # 4.0+

@@ -11,7 +11,7 @@ from psychopy import prefs, logging
 from psychopy.constants import NOT_STARTED, STARTED, SKIP, FINISHED
 from . import connections
 from psychopy.tools import versionchooser as vc
-from ..app import pavlovia_ui
+from . import pavlovia_ui
 _t0 = time.time()
 
 

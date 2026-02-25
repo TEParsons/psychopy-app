@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from . import colors, icons, theme
-from ...preferences.preferences import prefs
+from psychopy import prefs
 
 # --- Functions to handle specific subclasses of wx.Window ---
 import wx

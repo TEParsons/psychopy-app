@@ -312,6 +312,7 @@ def getAppFrame(frameName):
         opened.
 
     """
+    global _psychopyAppInstance
     if not isAppStarted():  # PsychoPy is not in GUI mode
         return None
 

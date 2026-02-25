@@ -31,7 +31,7 @@ from ...coder import BaseCodeEditor
 from ...themes import icons, handlers
 from ... import utils
 from ...themes import icons
-from ... import getAppInstance
+from psychopy_app import getAppInstance
 
 inputTypes = {}
 

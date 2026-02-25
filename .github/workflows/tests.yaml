@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
 
   testsuite:
@@ -16,11 +20,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, windows-latest]  # ubuntu takes too long to install extras
         python-version: ['3.10']
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install UV
+      uses: astral-sh/setup-uv@v7
+      with:
+        activate-environment: true
 
     - name: Checkout PsychoPy (lib)
       uses: actions/checkout@v3
@@ -28,11 +40,6 @@ jobs:
         repository: psychopy/psychopy
         ref: dev
         path: pp
-
-    - name: Install UV
-      uses: astral-sh/setup-uv@v7
-      with:
-        python-version: ${{ matrix.python-version }}
     
     - name: get_month
       if: runner.os=='Linux'
@@ -49,16 +56,16 @@ jobs:
     - name: Install Linux system dependencies
       if: runner.os=='Linux'
       run: |
-        # mostly for wxPython:
+        # mostly for wxPython, some for xvfb (virtual display)
         sudo apt-get update
         sudo apt-get install -y -qq python3-dev libgtk-3-dev
         sudo apt-get install -y -qq libgstreamer1.0-0 gstreamer1.0-plugins-base
-        sudo apt-get install -y -qq libwebkit2gtk-4.0-dev
+        sudo apt-get install -y -qq libwebkit2gtk-4.1-dev
         sudo apt-get install -y -qq libpng-dev libjpeg-dev libtiff-dev libnotify-dev libsm-dev
         sudo apt-get install -y -qq libsdl2-dev libsdl2-mixer-2.0-0 libsdl2-image-2.0-0 libsdl2-2.0-0
         sudo apt-get install -y -qq libportaudio2
         # virtual frame buffer
-        sudo apt install llvm-13-dev  # for xvfb
+        sudo apt install llvm-18-dev  # for xvfb
         sudo apt install xvfb xauth libgl1-mesa-dri
 
         # set up fake sound device?
@@ -73,28 +80,27 @@ jobs:
         export QT_DEBUG_PLUGINS=1 # let us know about missing dependencies?
     
     - name: Install PsychoPy (lib)
-      path: pp
       run: |
-        uv install . --all-extras 
+        uv python install
+        # if runner is ubuntu
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          uv pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-24.04 wxPython
+        fi
+        uv pip install pp/. --all-extras -r pp/pyproject.toml
 
     - name: Install PsychoPy App
       run: |
-        uv install . --all-extras 
+        # then install rest of dependencies and the app itself
+        uv pip install .
 
     - name: Build PsychoPy App
       run: |
         uv build --sdist --wheel
 
-    - name: Set nice level (linux)
-      if: runner.os=='Linux'
+    - name: Try to run the app!
       run: |
-        # sudo setcap cap_sys_nice=eip ${{ env.pythonLocation }}/python
-        sudo setcap cap_sys_nice+ep "${{ steps.python.outputs.executable }}"
-        getcap "${{ steps.python.outputs.executable }}"  # did it work?
-
-    - name: Test gui toolkits
-      if: runner.os=='Linux'
-      run: |
-        # quick test of the gui toolkits (without pytest swallowing errors)
-        xvfb-run -a --server-args="-screen 0 1024x768x24" uv run psychopy/tests/test_gui/test_DlgFromDictQt.py
-        xvfb-run -a --server-args="-screen 0 1024x768x24" uv run psychopy/tests/test_gui/test_DlgFromDictWx.py
+        if [ "${{ runner.os }}" == "Linux" ]; then
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" pytest -rP tests # including passed tests in report
+        else
+          pytest -rP tests # including passed tests in report
+        fi

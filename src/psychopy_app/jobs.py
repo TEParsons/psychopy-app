@@ -71,6 +71,7 @@ KILL_NO_PROCESS = wx.KILL_NO_PROCESS
 KILL_ERROR = wx.KILL_ERROR
 
 # PIPE_READER_POLL_INTERVAL = 0.025  # seconds
+from psychopy_app import getAppInstance
 
 
 class PipeReader(Thread):
@@ -202,7 +203,6 @@ class Job:
                  inputCallback=None, errorCallback=None, extra=None):
         # use the app instance if parent isn't given
         if parent is None:
-            from psychopy_app import getAppInstance
             parent = getAppInstance()
         # command to be called, cannot be changed after spawning the process
         self.parent = parent
@@ -304,6 +304,7 @@ class Job:
 
         # bind the event called when the process ends
         # self._process.Bind(wx.EVT_END_PROCESS, self.onTerminate)
+        print(f"app is {getAppInstance()}")
         self.parent.Bind(wx.EVT_IDLE, self.poll)
 
         return self._pid

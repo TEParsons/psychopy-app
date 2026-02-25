@@ -7,7 +7,7 @@ import wx
 import wx.stc as stc
 import re
 
-from ... import prefs
+from psychopy import prefs
 from . import colors, theme, loadSpec
 
 

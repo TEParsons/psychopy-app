@@ -27,7 +27,7 @@ from wx.lib import scrolledpanel as scrlpanel
 
 from .. import utils
 from ..themes import icons
-from ...projects.pavlovia import PavloviaProject
+from psychopy.projects.pavlovia import PavloviaProject
 
 try:
     import wx.lib.agw.hyperlink as wxhl  # 4.0+

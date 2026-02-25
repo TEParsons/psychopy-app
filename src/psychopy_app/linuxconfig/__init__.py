@@ -19,7 +19,7 @@ import sys
 
 import wx
 from .ui import BaseLinuxConfigDialog
-from ...core import rush
+from psychopy.core import rush
 
 # Text that appears at the top of the dialog with provides instructions to the
 # user.
