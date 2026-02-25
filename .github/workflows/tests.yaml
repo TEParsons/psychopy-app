@@ -99,8 +99,8 @@ jobs:
 
     - name: Try to run the app!
       run: |
-      if [ "${{ runner.os }}" == "Linux" ]; then
-        xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" pytest -rP tests # including passed tests in report
-      else
-        pytest -rP tests # including passed tests in report
-      fi
+        if [ "${{ runner.os }}" == "Linux" ]; then
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" pytest -rP tests # including passed tests in report
+        else
+          pytest -rP tests # including passed tests in report
+        fi
