@@ -24,13 +24,20 @@ jobs:
           with:
             python-version: '3.10'
 
+        - name: Install UV
+          uses: astral-sh/setup-uv@v7
+          with:
+            activate-environment: true
+
         - name: Install packages
           run: |
-            python -m pip install build twine wheel
+            uv pip install build twine wheel pdm pdm-backend polib six
+            uv pip install --no-deps git+https://github.com/psychopy/psychopy.git@release  # just for the version number
         
         - name: Build
           run: |
-            python -m build  # don't use uv build or it needs all dependencies to be installed!
+            # build with no-build-isolation to avoid installing build dependencies (slow on linux)
+            uv build --no-build-isolation --wheel --sdist
                 
         - name: Attach binaries
           if: startsWith(github.ref, 'refs/tags/')
