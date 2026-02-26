@@ -1,9 +1,11 @@
-name: build and test
+name: Test build
 
 on:
   workflow_dispatch:  # manual
+  push:
+    branches: [ release, dev ]
   pull_request:
-   branches: [ release, dev ]
+    branches: [ release, dev ]
 
 permissions:
   contents: read
