@@ -1,6 +1,5 @@
 # PsychoPy App (aka "PsychoPy Standalone")
 
-[![PyPI version](https://img.shields.io/pypi/v/psychopy-app.svg)](https://pypi.python.org/pypi/PsychoPy-App)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)  
 [![pytest](https://github.com/psychopy/psychopy-app/actions/workflows/tests.yaml/badge.svg)](https://github.com/psychopy/psychopy-app/actions/workflows/tests.yaml) 
 
@@ -10,10 +9,10 @@ This is the wxPython application to support creating experiments in the PsychoPy
 
 ## History
 
-- from its inception around 2004 until 2026 the code was 
-- [PsychoPy Studio](https://github.com/psychopy/psychopy-studio) : in 2025 the app was rewritten for Electron/web using the Svelte framework in JavaScript, which was first released in 2026. See the 
-- in 2026 this code was moved to its own repository psychopy-app
-- this wxPython application, now dubbed PsychoPy App, will continued to be supported for a short period but the expectation is that it will be fully replaced by 
+- from its inception around 2004 until 2026 the code was included within the psychopy repository. The _app_ and the _lib_ were essentially synonymous.
+- [PsychoPy Studio](https://github.com/psychopy/psychopy-studio) : in 2025 the app was rewritten for Electron/web using the Svelte framework in JavaScript, which was first released in 2026. See the [PsychoPy downloads](https://www.psychopy.org/download.html) to fetch that.
+- in 2026 this code was moved to its own repository psychopy-app, allowing greater independence from the lib and meaning that `pip install psychopy` no longer depends on wxPython`
+- this wxPython application, now dubbed PsychoPy App, will continued to be supported for a short period (until 2027?) but the expectation is that it will be fully replaced by PsychoPy Studio.
 
 ## Motivations
 
