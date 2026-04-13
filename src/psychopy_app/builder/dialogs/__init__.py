@@ -1302,6 +1302,9 @@ class DlgLoopProperties(_BaseParamsDlg):
         panelSizer = wx.GridBagSizer(0, 0)
         panel.SetSizer(panelSizer)
         row = 0
+        # add staircase options to current handler
+        self.currentHandler.params['loopType'].allowedVals += ["staircase", "interleaved staircases"]
+        # make ctrls
         for fieldName in ('name', 'loopType', 'isTrials'):
             try:
                 label = self.currentHandler.params[fieldName].label
