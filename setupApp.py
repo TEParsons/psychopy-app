@@ -8,7 +8,6 @@ from sys import platform
 import setuptools  # noqa: setuptools complains if it isn't explicitly imported before distutils
 from distutils.core import setup
 from packaging.version import Version
-import bdist_mpkg  # noqa: needed to build bdist, even though not explicitly used here
 import py2app  # noqa: needed to build app bundle, even though not explicitly used here
 from ctypes.util import find_library
 import importlib
@@ -25,8 +24,8 @@ def glob_to_list(path, glob_pattern='*'):
     return [str(p.absolute()) for p in Path(path).glob(glob_pattern)]
 
 compile_po.compilePoFiles()
-semanticVersion.updateVersionFile()
-semanticVersion.updateGitShaFile()
+# semanticVersion.updateVersionFile()
+# semanticVersion.updateGitShaFile()
 
 #define the extensions to compile if necess
 packageData = []
@@ -188,7 +187,7 @@ else:
     print("All packages appear to be present. Proceeding to build...")
 
 setup(
-    app=[str(root / 'psychopy/app/psychopyApp.py')],
+    app=[str(root / 'src/psychopy_app/psychopyApp.py')],
     options=dict(py2app=dict(
             includes=includes,
             packages=packages,
@@ -197,7 +196,7 @@ setup(
             argv_emulation=False,  # must be False or app bundle pauses (py2app 0.21 and 0.24 tested)
             site_packages=True,
             frameworks=frameworks,
-            iconfile= str(root / 'psychopy/app/Resources/psychopy.icns'),
+            iconfile= str(root / 'src/psychopy_app/Resources/psychopy.icns'),
             plist=dict(
                 CFBundleIconFile='psychopy.icns',
                 CFBundleName               = "PsychoPy",
@@ -217,7 +216,8 @@ setup(
                 NSMicrophoneUsageDescription="This app may require access to the microphone to record audio for experiments.",
                 NSCameraUsageDescription="This app may require access to the camera to record video for experiments.",                   
             ),
-    ))  # end of the options dict
+    )),  # end of the options dict
+    install_requires=[],
 )
 
 
