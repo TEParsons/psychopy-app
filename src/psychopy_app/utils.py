@@ -252,7 +252,7 @@ def getSystemFonts(encoding='system', fixedWidthOnly=False):
 
 def getAvailableLocales():
     """Get available locales for the locale preference."""
-    # get list of available locales from the localization module
+    # Get list of available locales from the packaged `psychopy_app/locale` folder
     localesPath = Path(__file__).parent / 'locale'
     localePaths = localesPath.glob('*')
     locales = sorted([p.name for p in localePaths if p.is_dir()])
