@@ -376,9 +376,9 @@ class AppSigner:
 
 
 def main():
-
-    with open(thisFolder.parent / "psychopy/VERSION") as f:
-        defaultVersion = f.read().strip()
+    import psychopy
+    defaultVersion = psychopy.__version__
+    
     parser = argparse.ArgumentParser(description="Codesigning PsychoPy.app")
     parser.add_argument("--app", help=("Path to the app bundle, "
                                        "assumed to be in dist/"),
