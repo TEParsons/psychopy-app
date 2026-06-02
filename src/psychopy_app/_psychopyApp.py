@@ -242,7 +242,7 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
         # import localization after wx:
         from psychopy import localization  # needed by splash screen
         self.localization = localization
-        self.locale = localization.setLocaleWX()
+        self.locale = localization.setLocale()
         self.locale.AddCatalog(self.GetAppName())
 
         logging.flush()
