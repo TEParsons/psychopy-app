@@ -521,7 +521,7 @@ class PreferencesDlg(wx.Dialog):
                     # '' corresponds to system locale
                     locales = getAvailableLocales()
                     labels = locales.copy()
-                    locales.insert(0,'')  # '' is system locale)
+                    locales.insert(0,'')  # '' is system locale
                     labels.insert(0, _translate('system locale'))
                     try:
                         default = locales.index(thisPref)
