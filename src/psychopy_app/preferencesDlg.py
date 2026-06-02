@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from glob import glob
 from ast import expr
-import json
 import sys
 from pathlib import Path
-from setuptools.glob import glob
 
 import wx
 import wx.propgrid as pg
@@ -17,7 +14,7 @@ import os
 from psychopy_app.themes import icons
 from psychopy.hardware.speaker import SpeakerDevice
 from . import dialogs
-from psychopy import localization, prefs
+from psychopy import prefs
 from psychopy.localization import _translate
 from packaging.version import Version
 from psychopy_app.utils import getSystemFonts, getAvailableLocales
