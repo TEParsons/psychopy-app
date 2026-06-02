@@ -76,9 +76,8 @@ includes = ['_sitebuiltins',  # needed for help()
             'imp', 'subprocess', 'shlex',
             'shelve',  # for scipy.io
             '_elementtree', 'pyexpat',  # for openpyxl
-            'pyo', 'greenlet', 'zmq', 'tornado',
+            'greenlet', 'zmq', 'tornado',
             'psutil',  # for iohub
-            'tobii_research',  # need tobii_research file and tobiiresearch pkg
             'soundfile', 'sounddevice', 'readline',
             'xlwt',  # writes excel files for pandas
             'msgpack_numpy',
