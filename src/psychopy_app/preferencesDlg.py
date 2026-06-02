@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from glob import glob
+from ast import expr
 import json
 import sys
 from pathlib import Path
+from setuptools.glob import glob
 
 import wx
 import wx.propgrid as pg
@@ -17,7 +20,7 @@ from . import dialogs
 from psychopy import localization, prefs
 from psychopy.localization import _translate
 from packaging.version import Version
-from psychopy_app.utils import getSystemFonts
+from psychopy_app.utils import getSystemFonts, getAvailableLocales
 import collections
 
 
@@ -519,21 +522,22 @@ class PreferencesDlg(wx.Dialog):
                 elif prefName == 'locale':
                     thisPref = self.app.prefs.app['locale']
                     # '' corresponds to system locale
-                    locales = [''] + self.app.localization.available
+                    locales = getAvailableLocales()
+                    labels = locales.copy()
+                    locales.insert(0,'')  # '' is system locale)
+                    labels.insert(0, _translate('system locale'))
                     try:
                         default = locales.index(thisPref)
                     except ValueError:
                         # set default locale ''
                         default = locales.index('')
                     # '' must be appended after other labels are translated
-                    labels = self.app.localization.available.copy()
-                    labels.insert(0, _translate('system locale'))
                     self.proPrefs.addEnumItem(
                             sectionName,
                             pLabel,
                             prefName,
                             labels=labels,
-                            values=[i for i in range(len(locales))],
+                            values=[i for i in range(len(labels))],
                             value=default, helpText=helpText)
                 # # single directory
                 elif prefName in ('unpackedDemosDir',):
@@ -644,7 +648,7 @@ class PreferencesDlg(wx.Dialog):
                     continue
                 elif prefName == 'locale':
                     # '' corresponds to system locale
-                    locales = [''] + self.app.localization.available
+                    locales = [''] + getAvailableLocales()
                     self.app.prefs.app['locale'] = \
                         locales[thisPref]
                     self.prefsCfg[sectionName][prefName] = \

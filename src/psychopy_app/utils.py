@@ -250,6 +250,13 @@ def getSystemFonts(encoding='system', fixedWidthOnly=False):
 
     return fontEnum.GetFacenames(encoding, fixedWidthOnly=fixedWidthOnly)
 
+def getAvailableLocales():
+    """Get available locales for the locale preference."""
+    # get list of available locales from the localization module
+    localesPath = Path(__file__).parent / 'locale'
+    localePaths = localesPath.glob('*')
+    locales = sorted([p.name for p in localePaths if p.is_dir()])
+    return locales
 
 class ImageData(pil.Image):
     def __new__(cls, source):
