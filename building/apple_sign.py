@@ -309,7 +309,7 @@ class AppSigner:
         # then build new one
 
         icon = (thisFolder.parent /
-                'psychopy/app/Resources/psychopy.icns').resolve()
+                'src/psychopy_app/Resources/psychopy.icns').resolve()
         background = (thisFolder / "dmg722x241.tiff").resolve()
         dmgbuild.build_dmg(
                 filename=dmgFilename,
