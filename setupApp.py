@@ -33,17 +33,33 @@ requires = []
 
 if platform != 'darwin':
     raise RuntimeError("setupApp.py is only for building Mac Standalone bundle")
+if platform.machine() == 'arm64':
+    homebrewLibs = Path('/opt/homebrew')  # default homebrew location on Apple Silicon
+else:
+    homebrewLibs = Path('/usr/local/libs')  # default homebrew location on Intel Macs
 
-resources = glob_to_list(root / 'src/psychopy_app/Resources', '*')
-frameworks = [ # these installed using homebrew
-              find_library("libevent"),
-              find_library("libmp3lame"),
-              find_library("libglfw"),
-              # libffi comes in the system
-              "/usr/local/opt/libffi/lib/libffi.dylib",
-              ]
+frameworks = []
+for libName in ["libevent", "libglfw", "libffi", "libmp3lame"]:
+    libPath = find_library(libName)
+    if not libPath:
+        print(f"Couldn't find {libName} library in system paths. Checking homebrew...")
+        libPath = list(homebrewLibs.glob(f'**/{libName}.dylib'))
+    if type(libPath) == list and len(libPath) > 0:
+        print(f"Found multiple {libName} libraries: {libPath}")
+        libPath = libPath[0]  # take the first match
+        print(f"Using {libName} library: {libPath}")
+    if not libPath:
+        if libName == 'libmp3lame':
+            brewName = 'lame'  # homebrew name is different
+        else:   
+            brewName = libName.replace('lib', '')  # homebrew names don't have 'lib' prefix
+        raise ImportError(f"Couldn't find {libName} library. Try installing it using homebrew like this?: brew install {brewName}")
+    frameworks.append(libPath)
+
 opencvLibs = glob_to_list(Path(sys.exec_prefix, 'lib'), 'libopencv*.2.4.dylib')
 frameworks.extend(opencvLibs)
+
+resources = glob_to_list(root / 'src/psychopy_app/Resources', '*')
 
 import macholib
 #print("~"*60 + "macholib version: "+macholib.__version__)
