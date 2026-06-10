@@ -676,7 +676,11 @@ class VersionCtrl(ChoiceCtrl):
             "",
             *versions._versionFilter(versions.availableVersions(), None)
         ]:
-            self.choices.append(version)
+            # substitute "latest" for blank
+            if version == "latest":
+                self.choices.append("")
+            else:
+                self.choices.append(version)
             self.labels.append(version)
         # apply to ctrl
         self.ctrl.SetItems(self.labels)
