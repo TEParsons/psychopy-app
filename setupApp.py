@@ -4,7 +4,7 @@
 
 import os
 import sys
-from sys import platform
+import platform
 import setuptools  # noqa: setuptools complains if it isn't explicitly imported before distutils
 from distutils.core import setup
 from packaging.version import Version
@@ -31,9 +31,9 @@ compile_po.compilePoFiles()
 packageData = []
 requires = []
 
-if platform != 'darwin':
+if sys.platform != 'darwin':
     raise RuntimeError("setupApp.py is only for building Mac Standalone bundle")
-if platform.machine() == 'arm64':
+if sys.platform == 'darwin' and platform.machine() == 'arm64':
     homebrewLibs = Path('/opt/homebrew')  # default homebrew location on Apple Silicon
 else:
     homebrewLibs = Path('/usr/local/libs')  # default homebrew location on Intel Macs
