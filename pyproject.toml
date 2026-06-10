@@ -45,6 +45,7 @@ dependencies = [
     "jedi >= 0.16",
     "packaging>=24.0",
     "beautifulsoup4",
+    "pytz",
 ]
 
 [project.optional-dependencies]  # This is optional dependencies
