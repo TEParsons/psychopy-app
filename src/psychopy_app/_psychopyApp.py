@@ -247,9 +247,12 @@ class PsychoPyApp(wx.App, handlers.ThemeMixin):
         else:
             locale = self.prefs.app['locale']
         # convert locale to a format wx likes
-        locale = wx.Locale.FindLanguageInfo(
-            locale.replace("-", "_")
-        ).Language
+        try:
+            locale = wx.Locale.FindLanguageInfo(
+                locale.replace("-", "_")
+            ).Language
+        except:
+            locale = wx.Locale.GetSystemLanguage()
         if not wx.Locale.IsAvailable(locale):
             locale = wx.Locale.GetSystemLanguage()
         # set locale
