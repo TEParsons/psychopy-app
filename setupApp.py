@@ -9,7 +9,7 @@ import setuptools  # noqa: setuptools complains if it isn't explicitly imported 
 from distutils.core import setup
 from packaging.version import Version
 import py2app  # noqa: needed to build app bundle, even though not explicitly used here
-from ctypes.util import find_library
+from ctypes import util
 import importlib
 from building import compile_po
 from building import semanticVersion
@@ -27,6 +27,26 @@ compile_po.compilePoFiles()
 # semanticVersion.updateVersionFile()
 # semanticVersion.updateGitShaFile()
 
+def find_library(libName):
+    """Search for the specified library in system paths and homebrew directories."""
+
+    libPath = util.find_library(libName)
+    if libPath:
+        print(f"Found {libName} library in system paths: {libPath}")
+        return libPath
+    # else search homebrew
+    if platform.machine() == 'arm64':
+        homebrewLibs = Path('/opt/homebrew')  # default homebrew location on Apple Silicon
+    else:
+        homebrewLibs = Path('/usr/local/libs')  # default homebrew location on Intel Macs
+    libPath = list(homebrewLibs.glob(f'**/{libName}.dylib'))
+    if len(libPath) > 0:
+        print(f"Found multiple {libName} libraries: {libPath}")
+        libPath = libPath[0]  # take the first match
+    if libPath:
+        print(f"Using {libName} library: {libPath}")
+        return libPath
+    
 #define the extensions to compile if necess
 packageData = []
 requires = []
@@ -39,20 +59,17 @@ else:
     homebrewLibs = Path('/usr/local/libs')  # default homebrew location on Intel Macs
 
 frameworks = []
+# check dylibs
+homebrewNames = {
+    'libevent': 'libevent',
+    'libglfw': 'glfw',
+    'libffi': 'libffi',
+    'libmp3lame': 'lame'
+}
 for libName in ["libevent", "libglfw", "libffi", "libmp3lame"]:
     libPath = find_library(libName)
     if not libPath:
-        print(f"Couldn't find {libName} library in system paths. Checking homebrew...")
-        libPath = list(homebrewLibs.glob(f'**/{libName}.dylib'))
-    if type(libPath) == list and len(libPath) > 0:
-        print(f"Found multiple {libName} libraries: {libPath}")
-        libPath = libPath[0]  # take the first match
-        print(f"Using {libName} library: {libPath}")
-    if not libPath:
-        if libName == 'libmp3lame':
-            brewName = 'lame'  # homebrew name is different
-        else:   
-            brewName = libName.replace('lib', '')  # homebrew names don't have 'lib' prefix
+        brewName = homebrewNames.get(libName, libName)
         raise ImportError(f"Couldn't find {libName} library. Try installing it using homebrew like this?: brew install {brewName}")
     frameworks.append(libPath)
 
