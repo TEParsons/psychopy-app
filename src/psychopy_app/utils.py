@@ -34,7 +34,7 @@ from wx.lib.wordwrap import wordwrap
 from wx.lib.stattext import GenStaticText
 import wx.lib.mixins.listctrl as listmixin
 
-import psychopy
+import psychopy_app
 from psychopy import logging
 from . import pavlovia_ui
 from .themes import colors, handlers, icons
