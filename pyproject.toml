@@ -36,8 +36,6 @@ dependencies = [
     # pavlovia connections
     "python-gitlab",
     "gitpython",
-    "cryptography==48.0.1; sys_platform == 'darwin' and platform_machine == 'x86_64'",  # for sshkeys
-    "cryptography; sys_platform != 'darwin' or platform_machine != 'x86_64'",
     # psychoJS conversions
     "astunparse",
     "esprima",
@@ -82,6 +80,10 @@ requires = [
     "typing-extensions",
 ]
 build-backend = "pdm.backend"
+
+[tool.uv]
+exclude-newer = "7 days"
+exclude-newer-package = { psychopy = false }
 
 [tool.pdm.build]
 includes = []
