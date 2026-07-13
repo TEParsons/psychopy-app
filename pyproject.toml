@@ -37,7 +37,8 @@ dependencies = [
     # pavlovia connections
     "python-gitlab",
     "gitpython",
-    "cryptography",  # for sshkeys
+    "cryptography==48.0.1; sys_platform == 'darwin' and platform_machine == 'x86_64'",  # for sshkeys
+    "cryptography; sys_platform != 'darwin' or platform_machine != 'x86_64'",
     # psychoJS conversions
     "astunparse",
     "esprima",
