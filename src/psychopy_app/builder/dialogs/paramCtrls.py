@@ -5,6 +5,7 @@
 # Copyright (C) 2002-2018 Jonathan Peirce (C) 2019-2025 Open Science Tools Ltd.
 # Distributed under the terms of the GNU General Public License (GPL).
 import ast
+import importlib
 import os
 import subprocess
 import sys
@@ -600,15 +601,57 @@ class ChoiceCtrl(BaseParamCtrl):
         # set initial choices
         self.populate()
 
+    def actualizeOptions(self, value):
+        """
+        Convert call syntax (`python:///...(...)`) into actual options
+
+        Parameters
+        ----------
+        value : str
+            Value to process
+        """
+        res = re.match(
+            pattern=r"^python:\/\/\/(?P<ref>.*?)(?:\((?P<args>.*?)\)|$)",
+            string=self.param.allowedVals
+        )
+        # actualize ref
+        ref = res.group("ref")
+        func = []
+        if ":" in ref:
+            ref, funcref = ref.split(":", maxsplit=1)
+            funcref = funcref.split(".")
+        func = importlib.import_module(ref)
+        for lvl in funcref:
+            func = getattr(func, lvl)
+        # actualize args
+        args = res.group("args")
+        if args:
+            args = [
+                arg.strip() for arg in args.split(",")
+            ]
+        else:
+            args = []
+        for i, arg in enumerate(args):
+            if arg.startswith("$") and arg[1:] in self.element.params:
+                args[i] = self.element.params[arg[1:]].val
+            elif arg.startswith("$") and hasattr(self.element, "profile") and arg[1:] in self.element.profile:
+                args[i] = self.element.profile[arg[1:]]
+        
+        return func(*args)
+
     def populate(self):
-        # convert values to a list (by executing method of just converting value)
+        # convert values to a list (by executing method or just converting value)
         if callable(self.param.allowedVals):
             choices = [str(val) for val in self.param.allowedVals()]
+        elif isinstance(self.param.allowedVals, str) and self.param.allowedVals.startswith("python:///"):
+            choices = self.actualizeOptions(self.param.allowedVals)
         else:
             choices = [str(val) for val in self.param.allowedVals]
-        # convert labels to a list (by executing method of just converting value)
+        # convert labels to a list (by executing method or just converting value)
         if callable(self.param.allowedLabels):
             labels = self.param.allowedLabels()
+        elif isinstance(self.param.allowedLabels, str) and self.param.allowedLabels.startswith("python:///"):
+            labels = self.actualizeOptions(self.param.allowedLabels)
         elif self.param.allowedLabels:
             labels = list(self.param.allowedLabels)
         else:
