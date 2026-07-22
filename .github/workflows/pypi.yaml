@@ -71,7 +71,6 @@ jobs:
               dist/*
         
         - name: Upload to PyPi
-          if: startsWith(github.ref, 'refs/tags/')
           uses: pypa/gh-action-pypi-publish@release/v1
 
         - name: Upload to GH Artifacts
