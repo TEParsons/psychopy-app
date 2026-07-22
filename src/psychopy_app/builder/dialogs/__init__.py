@@ -871,6 +871,9 @@ class _BaseParamsDlg(wx.Dialog):
         This method returns wx.ID_OK (as from ShowModal), but also
         sets self.OK to be True or False
         """
+        # check depends to show/hide necessary ctrls
+        for panel in self.panels:
+            panel.checkDepends()
         # add buttons for OK and Cancel
         buttons = wx.BoxSizer(wx.HORIZONTAL)
         # help button if we know the url
@@ -1099,7 +1102,52 @@ class DlgLoopProperties(_BaseParamsDlg):
             wx.Panel.__init__(self, parent)
             # store loop object
             self.loop = loop
+            self.parent = parent
 
+        def checkDepends(self):
+            # do nothing if loop doesn't have any dependencies
+            if not hasattr(self.loop, "depends"):
+                return
+
+            for thisDep in self.loop.depends:
+                # skip if param ctrl doesn't exist yet
+                if thisDep['dependsOn'] not in self.parent.paramCtrls:
+                    continue
+                # construct cond string
+                condString = "self.parent.paramCtrls['{dependsOn}'].getValue() {condition}".format(**thisDep)
+                # evaluate
+                outcome = eval(condString)
+                # get action
+                if outcome:
+                    action = thisDep['true']
+                else:
+                    action = thisDep['false']
+                # get control for dependent param
+                ctrl = self.parent.paramCtrls.get(thisDep['param'], None)
+                # abort if ctrl doesn't exist
+                if ctrl is None:
+                    return
+
+                # do action
+                if action == "hide":
+                    ctrl.setVisible(False)
+                if action == "show":
+                    ctrl.setVisible(True)
+                if action == "enable":
+                    for attr in ('valueCtrl', 'nameCtrl', 'updatesCtrl'):
+                        if hasattr(ctrl, attr):
+                            getattr(ctrl, attr).Enable()
+                if action == "disable":
+                    for attr in ('valueCtrl', 'nameCtrl', 'updatesCtrl'):
+                        if hasattr(ctrl, attr):
+                            getattr(ctrl, attr).Disable()
+
+                # layout controls
+                if self.GetSizer():
+                    self.GetSizer().SetEmptyCellSize((0, 0))
+                self.Layout()
+                self.Refresh()
+    
     def __init__(self, frame, title="Loop Properties", loop=None,
                  helpUrl=None, pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=_style, depends=[], timeout=None):
@@ -1130,6 +1178,7 @@ class DlgLoopProperties(_BaseParamsDlg):
         self.condNamesInFile = []
         self.warnings = WarningManager(self)
         self.loop = loop
+        self.paramCtrls = {}
         # create a valid new name; save old name in case we need to revert
         namespace = frame.exp.namespace
         defaultName = namespace.makeValid('trials')
@@ -1198,7 +1247,6 @@ class DlgLoopProperties(_BaseParamsDlg):
         self.params.update(self.trialHandler.params)
         self.params.update(self.stairHandler.params)
         self.params.update(self.multiStairHandler.params)
-        self.paramCtrls = {}
         self.paramCtrls.update(self.globalCtrls)
         self.paramCtrls.update(self.constantsCtrls)
         self.paramCtrls.update(self.staircaseCtrls)
@@ -1211,11 +1259,6 @@ class DlgLoopProperties(_BaseParamsDlg):
         self.show()
         if self.OK:
             self.params = self.getParams()
-            # convert endPoints from str to list
-            _endP = self.params['endPoints'].val
-            self.params['endPoints'].val = eval("%s" % _endP)
-            # then sort the list so the endpoints are in correct order
-            self.params['endPoints'].val.sort()
             if loop:
                 # editing an existing loop
                 namespace.remove(oldLoopName)
@@ -1298,7 +1341,7 @@ class DlgLoopProperties(_BaseParamsDlg):
             return str(self.expPath / self._conditionsFile)
 
     def makeGlobalCtrls(self):
-        panel = self.LoopParamsPanel(parent=self, loop=self.loop)
+        panel = self.LoopParamsPanel(parent=self, loop=self.trialHandler)
         panelSizer = wx.GridBagSizer(0, 0)
         panel.SetSizer(panelSizer)
         row = 0
@@ -1335,7 +1378,7 @@ class DlgLoopProperties(_BaseParamsDlg):
         handler = self.trialHandler
         # loop through the params
         keys = list(handler.params.keys())
-        panel = self.LoopParamsPanel(parent=self, loop=self.loop)
+        panel = self.LoopParamsPanel(parent=self, loop=self.trialHandler)
         panel.app=self.app
         panelSizer = wx.GridBagSizer(0, 0)
         panel.SetSizer(panelSizer)
@@ -1410,7 +1453,7 @@ class DlgLoopProperties(_BaseParamsDlg):
 
     def makeMultiStairCtrls(self):
         # a list of controls for the random/sequential versions
-        panel = self.LoopParamsPanel(parent=self, loop=self.loop)
+        panel = self.LoopParamsPanel(parent=self, loop=self.multiStairHandler)
         panel.app = self.app
         panelSizer = wx.GridBagSizer(0, 0)
         panel.SetSizer(panelSizer)
@@ -1482,18 +1525,26 @@ class DlgLoopProperties(_BaseParamsDlg):
                 else:
                     panelSizer.Add(ctrls.valueCtrl, [row, 1], border=3, flag=wx.EXPAND | wx.ALL)
                 row += 1
+            # update conditions file param on change
+            if fieldName == "stairType":
+                def onStairType(evt):
+                    self.multiStairCtrls['conditionsFile'] = self.multiStairCtrls[f"conditionsFile_{evt.GetString()}"]
+                ctrls.setChangesCallback(onStairType)
             # Bind file button with its own special method
-            if fieldName == 'conditionsFile':
+            if fieldName.startswith("conditionsFile"):
                 ctrls.valueCtrl.fileBtn.Bind(wx.EVT_BUTTON, self.onBrowseTrialsFile)
             # store info about the field
             self.multiStairCtrls[fieldName] = ctrls
+        # set initial stair type
+        self.multiStairCtrls['conditionsFile'] = self.multiStairCtrls[f"conditionsFile_simple"]
         panelSizer.AddGrowableCol(1, 1)
+
         return panel
 
     def makeStaircaseCtrls(self):
         """Setup the controls for a StairHandler
         """
-        panel = self.LoopParamsPanel(parent=self, loop=self.loop)
+        panel = self.LoopParamsPanel(parent=self, loop=self.stairHandler)
         panelSizer = wx.GridBagSizer(0, 0)
         panel.SetSizer(panelSizer)
         row = 0
